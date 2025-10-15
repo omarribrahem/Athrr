@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="منصة أثر التعليمية - محتوى متخصص لكلية التجارة" />
+  <meta name="keywords" content="اقتصاد، محاسبة، إدارة، تجارة، business, economics, accounting, finance" />
+ 
+  <title>عنوان المحاضرة - منصة أثر</title>
+  
+  <!-- ==================== FONTS ==================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- ==================== MATH RENDERING ==================== -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true,
+        packages: {'[+]': ['ams', 'newcommand', 'mathtools', 'boldsymbol']},
+        macros: {
+          RR: "{\\mathbb{R}}",
+          ZZ: "{\\mathbb{Z}}",
+          NN: "{\\mathbb{N}}",
+          bold: ["{\\bf #1}", 1],
+          Delta: "{\\varDelta}",
+          Sigma: "{\\varSigma}"
+        }
+      },
+      svg: { fontCache: 'global', scale: 1.1 },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process'
+      },
+      startup: {
+        pageReady: () => {
+          console.log('✅ MathJax is ready!');
+          return MathJax.startup.defaultPageReady();
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
+  
+  <!-- KaTeX (Alternative) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  
+  <!-- ==================== BUSINESS/FINANCE LIBRARIES ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/@formulajs/formulajs/dist/formula.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/financejs@4.1.0/finance.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/accounting@0.4.1/accounting.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/numeral@2.0.6/numeral.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/decimal.js@10.4.3/decimal.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/big.js@6.2.1/big.min.js"></script>
+  
+  <!-- ==================== STATISTICS & DATA ANALYSIS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+  <script src="https://unpkg.com/simple-statistics@7.8.3/dist/simple-statistics.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/regression@2.0.1/dist/regression.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  
+  <!-- ==================== CHARTS & GRAPHS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://s3.tradingview.com/tv.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js"></script>
+
+  <!-- ==================== TABLES & DATA GRIDS ==================== -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+  <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+  
+  <!-- ==================== DIAGRAMS & FLOWCHARTS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+  <script src="https://unpkg.com/vis-network@9.1.6/dist/vis-network.min.js"></script>
+  <link href="https://unpkg.com/vis-network@9.1.6/dist/dist/vis-network.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
+  <script src="https://unpkg.com/gojs@3.0.0/release/go.js"></script>
+  
+  <!-- ==================== ANIMATIONS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/ScrollTrigger.min.js"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  
+  <!-- ==================== CODE HIGHLIGHTING ==================== -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+  
+  <!-- ==================== PDF & PRINTING ==================== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+  <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css">
+  
+  <!-- ==================== MARKDOWN & TEXT ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.2/dist/markdown-it.min.js"></script>
+  
+  <!-- ==================== UI COMPONENTS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+  <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
+  <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.min.js"></script>
+  
+  <!-- ==================== CALENDAR & TIME ==================== -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+  
+  <!-- ==================== ICONS ==================== -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- ==================== UTILITIES ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+  
+  <!-- ==================== ACADEMIC TOOLS ==================== -->
+  <link href="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/minified/introjs.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/intro.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.css">
+  <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.js.iife.js"></script>
+  
+  <!-- ==================== SWIPER (Sliders) ==================== -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  
+  <!-- ==================== ENHANCEMENTS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.1/Sortable.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+  <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+
+  <!-- ==================== CUSTOM STYLES ==================== -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- Background -->
+  <div class="background-waves">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
+
+  <!-- Translation Button -->
+  <button class="translation-button" id="translationButton" aria-label="تبديل اللغة">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25C9.36657 2.25 6.94277 3.22321 5.16629 4.83371M12.75 2.25V7.5M12.75 7.5H18M12.75 7.5L5.16629 4.83371M11.25 21.75V16.5M11.25 16.5H6M11.25 16.5L18.8337 19.1663M5.16629 4.83371C3.22321 6.94277 2.25 9.36657 2.25 12M2.25 12C2.25 14.6334 3.22321 17.0572 4.83371 18.8337M18.8337 19.1663C20.7768 17.0572 21.75 14.6334 21.75 12M18.8337 4.83371C17.0572 3.22321 14.6334 2.25 12 2.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="translation-text">English</span>
+  </button>
+
+  <!-- AI FAB Button -->
+  <button class="ai-fab-button" id="aiChatButton" aria-label="مساعد أثر الذكي">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f59e0b;">
+      <path d="M12 8V4H8"></path>
+      <rect x="4" y="12" width="16" height="8" rx="2"></rect>
+      <path d="M2 14h2"></path>
+      <path d="M20 14h2"></path>
+      <path d="M15 13v-2a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v2"></path>
+    </svg>
+    <span class="ai-fab-text" id="aiFabText">أثر AI</span>
+  </button>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toastNotification"></div>
+
+  <!-- AI Chat Modal -->
+  <div class="ai-chat-modal" id="aiChatModal">
+    <div class="ai-chat-container">
+      <div class="ai-chat-header">
+        <h3 id="ai-chat-title">اسأل أثر AI</h3>
+        <button class="ai-chat-close-btn" id="aiChatCloseBtn" aria-label="إغلاق">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="ai-chat-messages" id="aiChatMessages"></div>
+      <div class="ai-chat-input-area">
+        <input type="text" id="ai-chat-input" placeholder="اكتب سؤالك هنا...">
+        <button id="ai-chat-send-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- ==================== VIDEO PLAYER SECTION ==================== -->
+    <section class="video-section">
+      <div class="video-card-player" data-aos="fade-down">
+        <div class="video-info">
+          <h2>🎬 فيديو شرح: مقدمة في المحاسبة</h2>
+          <p id="playerInfo">مشغل فيديو ذكي - يكتشف جهازك تلقائياً</p>
+          <span class="device-badge" id="deviceBadge">جاري التحميل...</span>
+        </div>
+
+        <div class="video-player-wrapper">
+          <div class="video-player" id="videoPlayer">
+            <video id="video" playsinline preload="auto"></video>
+
+            <div class="loading-spinner" id="loadingSpinner"></div>
+
+            <!-- Simple Controls -->
+            <div class="simple-controls">
+              <div class="simple-progress" id="simpleProgress">
+                <div class="simple-progress-filled" id="simpleProgressFilled"></div>
+              </div>
+              <div class="simple-controls-row">
+                <button class="simple-btn" id="simplePlayBtn">
+                  <i class="fas fa-play"></i>
+                </button>
+                <span class="simple-time">
+                  <span id="simpleCurrentTime">0:00</span> / <span id="simpleDuration">0:00</span>
+                </span>
+                <button class="simple-btn" id="simpleFullscreenBtn">
+                  <i class="fas fa-expand"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- iOS Controls -->
+            <div class="ios-controls">
+              <div class="video-bars" id="videoBars">
+                <div class="top-bar-bg"></div>
+                <div class="bottom-bar-bg"></div>
+              </div>
+
+              <div class="tap-indicator left" id="tapLeft">
+                <i class="fas fa-backward"></i>
+              </div>
+              <div class="tap-indicator right" id="tapRight">
+                <i class="fas fa-forward"></i>
+              </div>
+
+              <div class="top-controls">
+                <div class="top-left-group">
+                  <button class="control-bubble glass-bubble" id="closeBtn">
+                    <i class="fas fa-times"></i>
+                  </button>
+                  <button class="control-bubble glass-bubble" id="pipBtn" style="display:none;">
+                    <i class="fas fa-clone"></i>
+                  </button>
+                </div>
+                
+                <div class="volume-control">
+                  <div class="volume-slider-container">
+                    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1" />
+                  </div>
+                  <button class="control-bubble glass-bubble" id="volumeBtn">
+                    <i class="fas fa-volume-up"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="center-play-controls">
+                <button class="skip-bubble glass-bubble" id="skipBack">
+                  <i class="fas fa-rotate-left"></i>
+                  <span class="skip-number">10</span>
+                </button>
+
+                <button class="play-bubble glass-bubble" id="playBtn">
+                  <i class="fas fa-play"></i>
+                </button>
+
+                <button class="skip-bubble glass-bubble" id="skipForward">
+                  <i class="fas fa-rotate-right"></i>
+                  <span class="skip-number">10</span>
+                </button>
+              </div>
+
+              <div class="bottom-timeline">
+                <div class="progress-wrapper" id="progressWrapper">
+                  <div class="progress-track">
+                    <div class="progress-buffered" id="progressBuffered"></div>
+                    <div class="progress-filled" id="progressFilled"></div>
+                  </div>
+                </div>
+
+                <div class="time-row">
+                  <span class="time-text" id="currentTime">0:00</span>
+                  <span class="time-text" id="remainingTime">-0:00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ARABIC CONTENT ==================== -->
+    <div class="ar-content">
+      
+      <!-- المقدمة -->
+      <div class="glassy-card" data-aos="fade-up">
+        <h1>💼 مقدمة في المحاسبة</h1>
+        <p>المحاسبة هي <mark class="highlight-green">لغة الأعمال</mark> التي تستخدم لتسجيل وتصنيف وتلخيص المعاملات المالية. في هذه المحاضرة، سنتعرف على <strong>المبادئ الأساسية</strong> للمحاسبة وكيفية تطبيقها في الحياة العملية.</p>
+      </div>
+
+      <!-- المعادلة المحاسبية -->
+      <div class="glassy-card" data-aos="fade-up">
+        <h2>📊 المعادلة المحاسبية الأساسية</h2>
+        <p>المعادلة المحاسبية هي <mark class="highlight-business">الأساس</mark> الذي تقوم عليه المحاسبة، وتنص على:</p>
+        
+        <div class="formula-box">
+          \[ \text{الأصول} = \text{الالتزامات} + \text{حقوق الملكية} \]
+        </div>
+
+        <p>حيث:</p>
+        <ul>
+          <li><strong>الأصول (Assets):</strong> كل ما تملكه الشركة من موارد اقتصادية</li>
+          <li><strong>الالتزامات (Liabilities):</strong> الديون والالتزامات المستحقة على الشركة</li>
+          <li><strong>حقوق الملكية (Equity):</strong> حصة المالكين في الشركة</li>
+        </ul>
+      </div>
+
+      <!-- جدول مقارن -->
+      <div class="glassy-card" data-aos="fade-up">
+        <h2>📋 أنواع الحسابات</h2>
+        <div class="table-container">
+          <table class="concepts-table">
+            <thead>
+              <tr>
+                <th>نوع الحساب</th>
+                <th>الوصف</th>
+                <th>أمثلة</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>الأصول</strong></td>
+                <td>موارد تملكها الشركة</td>
+                <td>النقدية، المخزون، المباني</td>
+              </tr>
+              <tr>
+                <td><strong>الالتزامات</strong></td>
+                <td>ديون على الشركة</td>
+                <td>القروض، الموردون، الضرائب</td>
+              </tr>
+              <tr>
+                <td><strong>حقوق الملكية</strong></td>
+                <td>حصة المالكين</td>
+                <td>رأس المال، الأرباح المحتجزة</td>
+              </tr>
+              <tr>
+                <td><strong>الإيرادات</strong></td>
+                <td>دخل من العمليات</td>
+                <td>المبيعات، الخدمات</td>
+              </tr>
+              <tr>
+                <td><strong>المصروفات</strong></td>
+                <td>تكاليف التشغيل</td>
+                <td>الرواتب، الإيجار، الكهرباء</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- مثال عملي -->
+      <div class="glassy-card" data-aos="fade-up">
+        <h2>💡 مثال عملي</h2>
+        <div class="alert-box alert-info">
+          <i class="fas fa-lightbulb"></i>
+          <div>
+            <strong>مثال:</strong> شركة "أثر" بدأت بـ <span class="currency">100,000 جنيه</span> رأس مال، واقترضت <span class="currency">50,000 جنيه</span> من البنك.
+          </div>
+        </div>
+
+        <p>لنطبق المعادلة المحاسبية:</p>
+        
+        <div class="formula-box">
+          \[ \text{الأصول} = 150{,}000 \text{ جنيه (نقدية)} \]
+          \[ \text{الالتزامات} = 50{,}000 \text{ جنيه (قرض)} \]
+          \[ \text{حقوق الملكية} = 100{,}000 \text{ جنيه (رأس المال)} \]
+        </div>
+
+        <p><strong>التحقق:</strong> \( 150{,}000 = 50{,}000 + 100{,}000 \) ✓</p>
+      </div>
+
+      <!-- سؤال تفاعلي -->
+      <div class="question-container" onclick="toggleQuestion(this)">
+        <div class="question-header">
+          <svg class="question-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span>ما هي المعادلة المحاسبية الصحيحة؟</span>
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+        <div class="question-content">
+          <ul class="mcq-options">
+            <li class="mcq-option" data-answer="correct">الأصول = الالتزامات + حقوق الملكية</li>
+            <li class="mcq-option" data-answer="wrong">الأصول = الالتزامات - حقوق الملكية</li>
+            <li class="mcq-option" data-answer="wrong">الأصول + الالتزامات = حقوق الملكية</li>
+            <li class="mcq-option" data-answer="wrong">حقوق الملكية = الأصول + الالتزامات</li>
+          </ul>
+          
+          <div class="solution-content" style="display:none;">
+            <strong>✅ الحل:</strong>
+            <p>المعادلة المحاسبية الأساسية هي: <mark class="highlight-green">الأصول = الالتزامات + حقوق الملكية</mark></p>
+            <p>هذه المعادلة تعكس أن كل ما تملكه الشركة (الأصول) يساوي ما عليها من ديون (الالتزامات) + حصة المالكين (حقوق الملكية).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- النقاط الرئيسية -->
+      <div class="glassy-card" data-aos="fade-up">
+        <h2>🎯 النقاط الرئيسية</h2>
+        <div class="alert-box alert-success">
+          <i class="fas fa-check-circle"></i>
+          <div>
+            <ul style="margin:0;padding-right:20px;">
+              <li>المحاسبة هي لغة الأعمال المستخدمة عالمياً</li>
+              <li>المعادلة المحاسبية يجب أن تكون متوازنة دائماً</li>
+              <li>كل معاملة مالية تؤثر على طرفي المعادلة</li>
+              <li>فهم الأساسيات ضروري قبل الانتقال للمستوى المتقدم</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    
+    <!-- ==================== ENGLISH CONTENT ==================== -->
+    <div class="en-content" style="display:none;">
+      
+      <div class="glassy-card" data-aos="fade-up">
+        <h1>💼 Introduction to Accounting</h1>
+        <p>Accounting is the <mark class="highlight-green">language of business</mark> used to record, classify,
+and summarize financial transactions. In this lecture, we'll learn the <strong>fundamental principles</strong> of accounting.</p>
+      </div>
+
+      <div class="glassy-card" data-aos="fade-up">
+        <h2>📊 The Accounting Equation</h2>
+        <p>The accounting equation is the <mark class="highlight-business">foundation</mark> of accounting:</p>
+        
+        <div class="formula-box">
+          \[ \text{Assets} = \text{Liabilities} + \text{Equity} \]
+        </div>
+
+        <p>Where:</p>
+        <ul>
+          <li><strong>Assets:</strong> Economic resources owned by the company</li>
+          <li><strong>Liabilities:</strong> Debts and obligations owed by the company</li>
+          <li><strong>Equity:</strong> Owners' stake in the company</li>
+        </ul>
+      </div>
+
+      <div class="glassy-card" data-aos="fade-up">
+        <h2>📋 Types of Accounts</h2>
+        <div class="table-container">
+          <table class="concepts-table">
+            <thead>
+              <tr>
+                <th>Account Type</th>
+                <th>Description</th>
+                <th>Examples</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Assets</strong></td>
+                <td>Resources owned</td>
+                <td>Cash, Inventory, Buildings</td>
+              </tr>
+              <tr>
+                <td><strong>Liabilities</strong></td>
+                <td>Debts owed</td>
+                <td>Loans, Payables, Taxes</td>
+              </tr>
+              <tr>
+                <td><strong>Equity</strong></td>
+                <td>Owners' share</td>
+                <td>Capital, Retained Earnings</td>
+              </tr>
+              <tr>
+                <td><strong>Revenue</strong></td>
+                <td>Income earned</td>
+                <td>Sales, Services</td>
+              </tr>
+              <tr>
+                <td><strong>Expenses</strong></td>
+                <td>Operating costs</td>
+                <td>Salaries, Rent, Utilities</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="glassy-card" data-aos="fade-up">
+        <h2>💡 Practical Example</h2>
+        <div class="alert-box alert-info">
+          <i class="fas fa-lightbulb"></i>
+          <div>
+            <strong>Example:</strong> "Athr" company started with <span class="currency">100,000 EGP</span> capital and borrowed <span class="currency">50,000 EGP</span> from the bank.
+          </div>
+        </div>
+
+        <p>Applying the accounting equation:</p>
+        
+        <div class="formula-box">
+          \[ \text{Assets} = 150{,}000 \text{ EGP (Cash)} \]
+          \[ \text{Liabilities} = 50{,}000 \text{ EGP (Loan)} \]
+          \[ \text{Equity} = 100{,}000 \text{ EGP (Capital)} \]
+        </div>
+
+        <p><strong>Verification:</strong> \( 150{,}000 = 50{,}000 + 100{,}000 \) ✓</p>
+      </div>
+
+      <div class="glassy-card" data-aos="fade-up">
+        <h2>🎯 Key Takeaways</h2>
+        <div class="alert-box alert-success">
+          <i class="fas fa-check-circle"></i>
+          <div>
+            <ul style="margin:0;padding-left:20px;">
+              <li>Accounting is the universal business language</li>
+              <li>The accounting equation must always balance</li>
+              <li>Every transaction affects both sides of the equation</li>
+              <li>Understanding basics is essential before advancing</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==================== LECTURE NAVIGATION ==================== -->
+    <div class="lecture-navigation">
+      <a href="javascript:history.back();" class="nav-btn home-btn">
+        <i class="fas fa-arrow-right"></i>
+        <span>العودة للمنصة</span>
+      </a>
+      
+      <a href="lecture2.html" class="nav-btn next-btn">
+        <span>المحاضرة التالية</span>
+        <i class="fas fa-arrow-left"></i>
+      </a>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <div class="footer-info">
+      <div class="footer-brand">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+        </svg>
+        منصة أثر التعليمية
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-disclaimer">
+        جميع الحقوق محفوظة © 2025 | تم التطوير بـ 💚
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== CUSTOM SCRIPTS ==================== -->
+  <script src="../js/script.js"></script>
+</body>
+</html>
