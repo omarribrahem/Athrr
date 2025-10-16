@@ -1,1 +1,589 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="منصة أثر التعليمية - محتوى متخصص لكلية التجارة" />
+  <meta name="keywords" content="اقتصاد، محاسبة، إدارة، تجارة، business, economics, accounting, finance" />
+ 
+  <title>عنوان المحاضرة - منصة أثر</title>
+  
+  <!-- ==================== FONTS ==================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- ==================== MATH RENDERING ==================== -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true,
+        packages: {'[+]': ['ams', 'newcommand', 'mathtools', 'boldsymbol']},
+        macros: {
+          RR: "{\\mathbb{R}}",
+          ZZ: "{\\mathbb{Z}}",
+          NN: "{\\mathbb{N}}",
+          bold: ["{\\bf #1}", 1],
+          Delta: "{\\varDelta}",
+          Sigma: "{\\varSigma}"
+        }
+      },
+      svg: { fontCache: 'global', scale: 1.1 },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process'
+      },
+      startup: {
+        pageReady: () => {
+          console.log('✅ MathJax is ready!');
+          return MathJax.startup.defaultPageReady();
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
+  
+  <!-- KaTeX (Alternative) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  
+  <!-- ==================== BUSINESS/FINANCE LIBRARIES ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/@formulajs/formulajs/dist/formula.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/financejs@4.1.0/finance.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/accounting@0.4.1/accounting.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/numeral@2.0.6/numeral.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/decimal.js@10.4.3/decimal.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/big.js@6.2.1/big.min.js"></script>
+  
+  <!-- ==================== STATISTICS & DATA ANALYSIS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+  <script src="https://unpkg.com/simple-statistics@7.8.3/dist/simple-statistics.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/regression@2.0.1/dist/regression.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  
+  <!-- ==================== CHARTS & GRAPHS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://s3.tradingview.com/tv.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js"></script>
 
+  <!-- ==================== TABLES & DATA GRIDS ==================== -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+  <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+  
+  <!-- ==================== DIAGRAMS & FLOWCHARTS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+  <script src="https://unpkg.com/vis-network@9.1.6/dist/vis-network.min.js"></script>
+  <link href="https://unpkg.com/vis-network@9.1.6/dist/dist/vis-network.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
+  <script src="https://unpkg.com/gojs@3.0.0/release/go.js"></script>
+  
+  <!-- ==================== ANIMATIONS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/ScrollTrigger.min.js"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  
+  <!-- ==================== CODE HIGHLIGHTING ==================== -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+  
+  <!-- ==================== PDF & PRINTING ==================== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+  <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css">
+  
+  <!-- ==================== MARKDOWN & TEXT ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.2/dist/markdown-it.min.js"></script>
+  
+  <!-- ==================== UI COMPONENTS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+  <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
+  <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.min.js"></script>
+  
+  <!-- ==================== CALENDAR & TIME ==================== -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+  
+  <!-- ==================== ICONS ==================== -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- ==================== UTILITIES ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+  
+  <!-- ==================== ACADEMIC TOOLS ==================== -->
+  <link href="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/minified/introjs.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/intro.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.css">
+  <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.js.iife.js"></script>
+  
+  <!-- ==================== SWIPER (Sliders) ==================== -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  
+  <!-- ==================== ENHANCEMENTS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.1/Sortable.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+  <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+
+  <!-- ==================== CUSTOM STYLES ==================== -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- Background -->
+  <div class="background-waves">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
+
+  <!-- Translation Button -->
+  <button class="translation-button" id="translationButton" aria-label="تبديل اللغة">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25C9.36657 2.25 6.94277 3.22321 5.16629 4.83371M12.75 2.25V7.5M12.75 7.5H18M12.75 7.5L5.16629 4.83371M11.25 21.75V16.5M11.25 16.5H6M11.25 16.5L18.8337 19.1663M5.16629 4.83371C3.22321 6.94277 2.25 9.36657 2.25 12M2.25 12C2.25 14.6334 3.22321 17.0572 4.83371 18.8337M18.8337 19.1663C20.7768 17.0572 21.75 14.6334 21.75 12M18.8337 4.83371C17.0572 3.22321 14.6334 2.25 12 2.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="translation-text">English</span>
+  </button>
+
+  <!-- AI FAB Button -->
+  <button class="ai-fab-button" id="aiChatButton" aria-label="مساعد أثر الذكي">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f59e0b;">
+      <path d="M12 8V4H8"></path>
+      <rect x="4" y="12" width="16" height="8" rx="2"></rect>
+      <path d="M2 14h2"></path>
+      <path d="M20 14h2"></path>
+      <path d="M15 13v-2a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v2"></path>
+    </svg>
+    <span class="ai-fab-text" id="aiFabText">أثر AI</span>
+  </button>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toastNotification"></div>
+
+  <!-- AI Chat Modal -->
+  <div class="ai-chat-modal" id="aiChatModal">
+    <div class="ai-chat-container">
+      <div class="ai-chat-header">
+        <h3 id="ai-chat-title">اسأل أثر AI</h3>
+        <button class="ai-chat-close-btn" id="aiChatCloseBtn" aria-label="إغلاق">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="ai-chat-messages" id="aiChatMessages"></div>
+      <div class="ai-chat-input-area">
+        <input type="text" id="ai-chat-input" placeholder="اكتب سؤالك هنا...">
+        <button id="ai-chat-send-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- ==================== VIDEO PLAYER SECTION ==================== -->
+    <section class="video-section">
+      <div class="video-card-player" data-aos="fade-down">
+        <div class="video-info">
+          <h2>🎬 فيديو شرح: مقدمة في المحاسبة</h2>
+          <p id="playerInfo">مشغل فيديو ذكي - يكتشف جهازك تلقائياً</p>
+          <span class="device-badge" id="deviceBadge">جاري التحميل...</span>
+        </div>
+
+        <div class="video-player-wrapper">
+          <div class="video-player" id="videoPlayer">
+            <video id="video" playsinline preload="auto"></video>
+
+            <div class="loading-spinner" id="loadingSpinner"></div>
+
+            <!-- Simple Controls -->
+            <div class="simple-controls">
+              <div class="simple-progress" id="simpleProgress">
+                <div class="simple-progress-filled" id="simpleProgressFilled"></div>
+              </div>
+              <div class="simple-controls-row">
+                <button class="simple-btn" id="simplePlayBtn">
+                  <i class="fas fa-play"></i>
+                </button>
+                <span class="simple-time">
+                  <span id="simpleCurrentTime">0:00</span> / <span id="simpleDuration">0:00</span>
+                </span>
+                <button class="simple-btn" id="simpleFullscreenBtn">
+                  <i class="fas fa-expand"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- iOS Controls -->
+            <div class="ios-controls">
+              <div class="video-bars" id="videoBars">
+                <div class="top-bar-bg"></div>
+                <div class="bottom-bar-bg"></div>
+              </div>
+
+              <div class="tap-indicator left" id="tapLeft">
+                <i class="fas fa-backward"></i>
+              </div>
+              <div class="tap-indicator right" id="tapRight">
+                <i class="fas fa-forward"></i>
+              </div>
+
+              <div class="top-controls">
+                <div class="top-left-group">
+                  <button class="control-bubble glass-bubble" id="closeBtn">
+                    <i class="fas fa-times"></i>
+                  </button>
+                  <button class="control-bubble glass-bubble" id="pipBtn" style="display:none;">
+                    <i class="fas fa-clone"></i>
+                  </button>
+                </div>
+                
+                <div class="volume-control">
+                  <div class="volume-slider-container">
+                    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1" />
+                  </div>
+                  <button class="control-bubble glass-bubble" id="volumeBtn">
+                    <i class="fas fa-volume-up"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="center-play-controls">
+                <button class="skip-bubble glass-bubble" id="skipBack">
+                  <i class="fas fa-rotate-left"></i>
+                  <span class="skip-number">10</span>
+                </button>
+
+                <button class="play-bubble glass-bubble" id="playBtn">
+                  <i class="fas fa-play"></i>
+                </button>
+
+                <button class="skip-bubble glass-bubble" id="skipForward">
+                  <i class="fas fa-rotate-right"></i>
+                  <span class="skip-number">10</span>
+                </button>
+              </div>
+
+              <div class="bottom-timeline">
+                <div class="progress-wrapper" id="progressWrapper">
+                  <div class="progress-track">
+                    <div class="progress-buffered" id="progressBuffered"></div>
+                    <div class="progress-filled" id="progressFilled"></div>
+                  </div>
+                </div>
+
+                <div class="time-row">
+                  <span class="time-text" id="currentTime">0:00</span>
+                  <span class="time-text" id="remainingTime">-0:00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ARABIC CONTENT ==================== -->
+   <!-- ==================== ARABIC CONTENT ==================== -->
+<div class="ar-content">
+
+<!-- ==================== PROGRESS BAR ==================== -->
+<div id="scrollProgress"></div>
+
+<!-- ==================== TOAST NOTIFICATION ==================== -->
+<div id="toastNotification" class="toast-notification"></div>
+
+<!-- ==================== MAIN CONTAINER ==================== -->
+<div class="container">
+
+  <!-- ==================== LECTURE HEADER ==================== -->
+  <div class="lecture-header" data-aos="fade-down">
+    <h1>🏭 وظيفة الإنتاج</h1>
+    <div class="subtitle">The Production Function</div>
+    <div class="description">
+      رحلة تعليمية شاملة في عالم إدارة العمليات الإنتاجية - من التنبؤ إلى التسليم النهائي
+    </div>
+  </div>
+
+  <!-- ==================== المقدمة ==================== -->
+  <div class="glassy-card" data-aos="fade-up">
+    <div class="section-title">
+      <span class="icon">🎯</span>
+      المقدمة: الوظائف الأساسية في الأعمال
+    </div>
+    <div class="concept-content">
+      <p style="font-size: 1.3rem; line-height: 2; margin-bottom: 1.5rem;">
+        أي مؤسسة تجارية في العالم بتشتغل من خلال <strong>أربع وظائف أساسية مترابطة</strong>:
+      </p>
+    </div>
+
+    <!-- شبكة الوظائف الأربعة -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+      
+      <div class="concept-box" data-aos="zoom-in" data-aos-delay="100" style="border-right-color: var(--color-management);">
+        <div class="concept-title">
+          🏭 الإنتاج
+          <span class="en">Production</span>
+        </div>
+        <div class="concept-content">خلق القيمة الفعلية للمنتج</div>
+      </div>
+
+      <div class="concept-box" data-aos="zoom-in" data-aos-delay="200" style="border-right-color: #e11d48;">
+        <div class="concept-title">
+          📢 التسويق
+          <span class="en">Marketing</span>
+        </div>
+        <div class="concept-content">الترويج والوصول للعملاء</div>
+      </div>
+
+      <div class="concept-box" data-aos="zoom-in" data-aos-delay="300" style="border-right-color: var(--color-finance);">
+        <div class="concept-title">
+          💰 التمويل
+          <span class="en">Finance</span>
+        </div>
+        <div class="concept-content">إدارة الموارد المالية</div>
+      </div>
+
+      <div class="concept-box" data-aos="zoom-in" data-aos-delay="400" style="border-right-color: #7c3aed;">
+        <div class="concept-title">
+          👥 الموارد البشرية
+          <span class="en">HR</span>
+        </div>
+        <div class="concept-content">إدارة القوى العاملة</div>
+      </div>
+
+    </div>
+
+    <div style="background: linear-gradient(135deg, rgba(234, 88, 12, 0.1), rgba(37, 99, 235, 0.1)); padding: 2rem; border-radius: 16px; margin-top: 2rem;">
+      <p style="font-size: 1.3rem; line-height: 2;">
+        <strong style="color: var(--color-management); font-size: 1.4rem;">🎯 التركيز اليوم:</strong> 
+        وظيفة الإنتاج أو العمليات - الوظيفة اللي بتخلق القيمة الفعلية للمنتج أو الخدمة وبتحوّل المدخلات لمخرجات قابلة للبيع!
+      </p>
+    </div>
+  </div>
+
+  <!-- ==================== تعريف وظيفة الإنتاج ==================== -->
+  <div class="glassy-card" data-aos="fade-up">
+    <div class="section-title">
+      <span class="icon">📋</span>
+      ما هي وظيفة الإنتاج؟
+    </div>
+
+    <div class="concept-box" style="background: linear-gradient(135deg, #fff7ed, #ffedd5); border-right-color: var(--color-management);">
+      <div class="concept-title" style="font-size: 1.8rem;">
+        📌 التعريف الرسمي
+      </div>
+      <div class="concept-content" style="font-size: 1.3rem; line-height: 2;">
+        <strong>وظيفة الإنتاج (Production Function)</strong> تشير إلى <strong>جميع الأنشطة المرتبطة بشكل مباشر بإنشاء السلع والخدمات</strong>. 
+        باختصار، هي العملية اللي بتحوّل المدخلات (زي المواد الخام والعمالة) إلى مخرجات (زي المنتجات الجاهزة للبيع).
+      </div>
+    </div>
+
+    <!-- Mermaid Diagram: عملية التحويل الأساسية -->
+    <div style="background: white; padding: 2rem; border-radius: 16px; margin: 2rem 0; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
+      <h3 style="text-align: center; color: var(--color-management); margin-bottom: 1.5rem; font-size: 1.6rem;">
+        📊 عملية التحويل الأساسية
+      </h3>
+      <div class="mermaid" style="text-align: center;">
+graph LR
+    A[المدخلات<br/>Inputs<br/>🔧 مواد خام<br/>👷 عمالة<br/>💰 رأس المال] -->|عملية التحويل<br/>Transformation| B[المخرجات<br/>Outputs<br/>📦 منتجات<br/>🎯 خدمات]
+    B -->|تغذية راجعة<br/>Feedback| A
+    
+    style A fill:#dbeafe,stroke:#2563eb,stroke-width:3px
+    style B fill:#dcfce7,stroke:#16a34a,stroke-width:3px
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== الأنشطة الستة لوظيفة الإنتاج ==================== -->
+  <div class="glassy-card" data-aos="fade-up">
+    <div class="section-title">
+      <span class="icon">⚙️</span>
+      الأنشطة الستة لوظيفة الإنتاج
+    </div>
+
+    <div class="concept-content" style="font-size: 1.3rem; margin-bottom: 2rem;">
+      وظيفة الإنتاج بتشمل <strong>ستة أنشطة أساسية مترابطة</strong>، كل واحد منهم ضروري لنجاح العملية الإنتاجية:
+    </div>
+
+    <!-- Swiper للأنشطة الستة -->
+    <div class="swiper activitiesSwiper" style="margin: 2rem 0;">
+      <div class="swiper-wrapper">
+        
+        <!-- النشاط 1: التنبؤ -->
+        <div class="swiper-slide">
+          <div style="background: linear-gradient(135deg, #ede9fe, #ddd6fe); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
+            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">🔮</div>
+            <h3 style="color: #7c3aed; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
+              التنبؤ<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Forecasting</span>
+            </h3>
+            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
+              تقدير الطلب المستقبلي على السلع والخدمات، وتقدير كمية الموارد اللازمة لإنتاج المستوى المطلوب من المخرجات
+            </p>
+            <div style="background: rgba(124, 58, 237, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
+              <strong style="color: #7c3aed;">💡 مثال:</strong> مصنع عصاير يتنبأ باحتياجات الصيف القادم
+            </div>
+          </div>
+        </div>
+
+        <!-- النشاط 2: تخطيط الطاقة -->
+        <div class="swiper-slide">
+          <div style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
+            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">⚡</div>
+            <h3 style="color: #2563eb; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
+              تخطيط الطاقة<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Capacity Planning</span>
+            </h3>
+            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
+              تحديد الطاقة الإنتاجية اللي المنظمة محتاجاها عشان تلبي التغيرات في الطلب على منتجاتها
+            </p>
+            <div style="background: rgba(37, 99, 235, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
+              <strong style="color: #2563eb;">💡 مثال:</strong> موازنة قدرة المصنع مع حجم الطلب المتوقع
+            </div>
+          </div>
+        </div>
+
+        <!-- النشاط 3: الجدولة -->
+        <div class="swiper-slide">
+          <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
+            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">📅</div>
+            <h3 style="color: #d97706; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
+              الجدولة<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Scheduling</span>
+            </h3>
+            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
+              ترتيب حمل العمل اللي هيتم تنفيذه بطريقة مثالية، وتخصيص موارد الإنتاج بكفاءة
+            </p>
+            <div style="background: rgba(217, 119, 6, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
+              <strong style="color: #d97706;">💡 مثال:</strong> ترتيب 10 أوامر إنتاج على 5 ماكينات بأقل وقت
+            </div>
+          </div>
+        </div>
+
+        <!-- النشاط 4: إدارة المخزون -->
+        <div class="swiper-slide">
+          <div style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
+            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">📦</div>
+            <h3 style="color: #059669; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
+              إدارة المخزون<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Managing Inventories</span>
+            </h3>
+            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
+              عملية الطلب والتخزين واستخدام المخزون (مواد خام، عمل تحت التشغيل، سلع تامة)
+            </p>
+            <div style="background: rgba(5, 150, 105, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
+              <strong style="color: #059669;">💡 مثال:</strong> نظام JIT (Just-in-Time) من تويوتا
+            </div>
+          </div>
+        </div>
+
+        <!-- النشاط 5: ضمان الجودة -->
+        <div class="swiper-slide">
+          <div style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
+            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">✅</div>
+            <h3 style="color: #dc2626; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
+              ضمان الجودة<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Assuring Quality</span>
+            </h3>
+            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
+              منع حدوث العيوب في المنتجات المُصنَّعة من خلال التركيز على العملية نفسها
+            </p>
+            <div style="background: rgba(220, 38, 38, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
+              <strong style="color: #dc2626;">💡 مثال:</strong> تطبيق Six Sigma لتحسين الجودة
+            </div>
+          </div>
+        </div>
+
+        <!-- النشاط 6: تحديد المواقع -->
+        <div class="swiper-slide">
+          <div style="background: linear-gradient(135deg, #fce7f3, #fbcfe8); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
+            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">📍</div>
+            <h3 style="color: #db2777; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
+              تحديد مواقع المنشآت<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Locating Facilities</span>
+            </h3>
+            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
+              تحديد موقع المنشأة التجارية بناءً على القرب من العملاء، العمال، ووسائل النقل
+            </p>
+            <div style="background: rgba(219, 39, 119, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
+              <strong style="color: #db2777;">💡 مثال:</strong> اختيار موقع مصنع قريب من الأسواق الرئيسية
+            </div>
+          </div>
+        </div>
+
+      </div>
+      
+      <!-- Navigation -->
+      <div class="swiper-button-next" style="color: var(--color-management);"></div>
+      <div class="swiper-button-prev" style="color: var(--color-management);"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+
+  </div>
+
+    
+    <!-- ==================== ENGLISH CONTENT ==================== -->
+    <div class="en-content" style="display:none;">
+      
+      
+    </div>
+
+  </main>
+
+  <!-- ==================== CUSTOM SCRIPTS ==================== -->
+  <script src="../js/script.js"></script>
+</body>
+</html>
