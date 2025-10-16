@@ -1,2440 +1,1 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="منصة أثر التعليمية - محتوى متخصص لكلية التجارة" />
-  <meta name="keywords" content="اقتصاد، محاسبة، إدارة، تجارة، business, economics, accounting, finance" />
- 
-  <title>عنوان المحاضرة - منصة أثر</title>
-  
-  <!-- ==================== FONTS ==================== -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  
-  <!-- ==================== MATH RENDERING ==================== -->
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']],
-        processEscapes: true,
-        processEnvironments: true,
-        packages: {'[+]': ['ams', 'newcommand', 'mathtools', 'boldsymbol']},
-        macros: {
-          RR: "{\\mathbb{R}}",
-          ZZ: "{\\mathbb{Z}}",
-          NN: "{\\mathbb{N}}",
-          bold: ["{\\bf #1}", 1],
-          Delta: "{\\varDelta}",
-          Sigma: "{\\varSigma}"
-        }
-      },
-      svg: { fontCache: 'global', scale: 1.1 },
-      options: {
-        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-        ignoreHtmlClass: 'tex2jax_ignore',
-        processHtmlClass: 'tex2jax_process'
-      },
-      startup: {
-        pageReady: () => {
-          console.log('✅ MathJax is ready!');
-          return MathJax.startup.defaultPageReady();
-        }
-      }
-    };
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
-  
-  <!-- KaTeX (Alternative) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-  
-  <!-- ==================== BUSINESS/FINANCE LIBRARIES ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/@formulajs/formulajs/dist/formula.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/financejs@4.1.0/finance.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/accounting@0.4.1/accounting.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/numeral@2.0.6/numeral.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/decimal.js@10.4.3/decimal.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/big.js@6.2.1/big.min.js"></script>
-  
-  <!-- ==================== STATISTICS & DATA ANALYSIS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
-  <script src="https://unpkg.com/simple-statistics@7.8.3/dist/simple-statistics.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/regression@2.0.1/dist/regression.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
-  
-  <!-- ==================== CHARTS & GRAPHS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="https://code.highcharts.com/highcharts.js"></script>
-  <script src="https://code.highcharts.com/modules/exporting.js"></script>
-  <script src="https://code.highcharts.com/modules/export-data.js"></script>
-  <script src="https://s3.tradingview.com/tv.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js"></script>
 
-  <!-- ==================== TABLES & DATA GRIDS ==================== -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-  <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-  
-  <!-- ==================== DIAGRAMS & FLOWCHARTS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
-  <script src="https://unpkg.com/vis-network@9.1.6/dist/vis-network.min.js"></script>
-  <link href="https://unpkg.com/vis-network@9.1.6/dist/dist/vis-network.min.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
-  <script src="https://unpkg.com/gojs@3.0.0/release/go.js"></script>
-  
-  <!-- ==================== ANIMATIONS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/ScrollTrigger.min.js"></script>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  
-  <!-- ==================== CODE HIGHLIGHTING ==================== -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-  
-  <!-- ==================== PDF & PRINTING ==================== -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-  <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css">
-  
-  <!-- ==================== MARKDOWN & TEXT ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.2/dist/markdown-it.min.js"></script>
-  
-  <!-- ==================== UI COMPONENTS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  <script src="https://unpkg.com/@popperjs/core@2"></script>
-  <script src="https://unpkg.com/tippy.js@6"></script>
-  <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
-  <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.min.js"></script>
-  
-  <!-- ==================== CALENDAR & TIME ==================== -->
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
-  
-  <!-- ==================== ICONS ==================== -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
-  <!-- ==================== UTILITIES ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
-  
-  <!-- ==================== ACADEMIC TOOLS ==================== -->
-  <link href="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/minified/introjs.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/intro.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.css">
-  <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.js.iife.js"></script>
-  
-  <!-- ==================== SWIPER (Sliders) ==================== -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  
-  <!-- ==================== ENHANCEMENTS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.1/Sortable.min.js"></script>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
-  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
-  <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
-
-  <!-- ==================== CUSTOM STYLES ==================== -->
-  <link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
-  <!-- Background -->
-  <div class="background-waves">
-    <div class="wave-layer"></div>
-    <div class="wave-layer"></div>
-    <div class="wave-layer"></div>
-  </div>
-
-  <!-- Translation Button -->
-  <button class="translation-button" id="translationButton" aria-label="تبديل اللغة">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25C9.36657 2.25 6.94277 3.22321 5.16629 4.83371M12.75 2.25V7.5M12.75 7.5H18M12.75 7.5L5.16629 4.83371M11.25 21.75V16.5M11.25 16.5H6M11.25 16.5L18.8337 19.1663M5.16629 4.83371C3.22321 6.94277 2.25 9.36657 2.25 12M2.25 12C2.25 14.6334 3.22321 17.0572 4.83371 18.8337M18.8337 19.1663C20.7768 17.0572 21.75 14.6334 21.75 12M18.8337 4.83371C17.0572 3.22321 14.6334 2.25 12 2.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <span class="translation-text">English</span>
-  </button>
-
-  <!-- AI FAB Button -->
-  <button class="ai-fab-button" id="aiChatButton" aria-label="مساعد أثر الذكي">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f59e0b;">
-      <path d="M12 8V4H8"></path>
-      <rect x="4" y="12" width="16" height="8" rx="2"></rect>
-      <path d="M2 14h2"></path>
-      <path d="M20 14h2"></path>
-      <path d="M15 13v-2a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v2"></path>
-    </svg>
-    <span class="ai-fab-text" id="aiFabText">أثر AI</span>
-  </button>
-
-  <!-- Toast Notification -->
-  <div class="toast-notification" id="toastNotification"></div>
-
-  <!-- AI Chat Modal -->
-  <div class="ai-chat-modal" id="aiChatModal">
-    <div class="ai-chat-container">
-      <div class="ai-chat-header">
-        <h3 id="ai-chat-title">اسأل أثر AI</h3>
-        <button class="ai-chat-close-btn" id="aiChatCloseBtn" aria-label="إغلاق">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-      <div class="ai-chat-messages" id="aiChatMessages"></div>
-      <div class="ai-chat-input-area">
-        <input type="text" id="ai-chat-input" placeholder="اكتب سؤالك هنا...">
-        <button id="ai-chat-send-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13"></line>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Main Content -->
-  <main class="main-content">
-
-    <!-- ==================== VIDEO PLAYER SECTION ==================== -->
-    <section class="video-section">
-      <div class="video-card-player" data-aos="fade-down">
-        <div class="video-info">
-          <h2>🎬 فيديو شرح: مقدمة في المحاسبة</h2>
-          <p id="playerInfo">مشغل فيديو ذكي - يكتشف جهازك تلقائياً</p>
-          <span class="device-badge" id="deviceBadge">جاري التحميل...</span>
-        </div>
-
-        <div class="video-player-wrapper">
-          <div class="video-player" id="videoPlayer">
-            <video id="video" playsinline preload="auto"></video>
-
-            <div class="loading-spinner" id="loadingSpinner"></div>
-
-            <!-- Simple Controls -->
-            <div class="simple-controls">
-              <div class="simple-progress" id="simpleProgress">
-                <div class="simple-progress-filled" id="simpleProgressFilled"></div>
-              </div>
-              <div class="simple-controls-row">
-                <button class="simple-btn" id="simplePlayBtn">
-                  <i class="fas fa-play"></i>
-                </button>
-                <span class="simple-time">
-                  <span id="simpleCurrentTime">0:00</span> / <span id="simpleDuration">0:00</span>
-                </span>
-                <button class="simple-btn" id="simpleFullscreenBtn">
-                  <i class="fas fa-expand"></i>
-                </button>
-              </div>
-            </div>
-
-            <!-- iOS Controls -->
-            <div class="ios-controls">
-              <div class="video-bars" id="videoBars">
-                <div class="top-bar-bg"></div>
-                <div class="bottom-bar-bg"></div>
-              </div>
-
-              <div class="tap-indicator left" id="tapLeft">
-                <i class="fas fa-backward"></i>
-              </div>
-              <div class="tap-indicator right" id="tapRight">
-                <i class="fas fa-forward"></i>
-              </div>
-
-              <div class="top-controls">
-                <div class="top-left-group">
-                  <button class="control-bubble glass-bubble" id="closeBtn">
-                    <i class="fas fa-times"></i>
-                  </button>
-                  <button class="control-bubble glass-bubble" id="pipBtn" style="display:none;">
-                    <i class="fas fa-clone"></i>
-                  </button>
-                </div>
-                
-                <div class="volume-control">
-                  <div class="volume-slider-container">
-                    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1" />
-                  </div>
-                  <button class="control-bubble glass-bubble" id="volumeBtn">
-                    <i class="fas fa-volume-up"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div class="center-play-controls">
-                <button class="skip-bubble glass-bubble" id="skipBack">
-                  <i class="fas fa-rotate-left"></i>
-                  <span class="skip-number">10</span>
-                </button>
-
-                <button class="play-bubble glass-bubble" id="playBtn">
-                  <i class="fas fa-play"></i>
-                </button>
-
-                <button class="skip-bubble glass-bubble" id="skipForward">
-                  <i class="fas fa-rotate-right"></i>
-                  <span class="skip-number">10</span>
-                </button>
-              </div>
-
-              <div class="bottom-timeline">
-                <div class="progress-wrapper" id="progressWrapper">
-                  <div class="progress-track">
-                    <div class="progress-buffered" id="progressBuffered"></div>
-                    <div class="progress-filled" id="progressFilled"></div>
-                  </div>
-                </div>
-
-                <div class="time-row">
-                  <span class="time-text" id="currentTime">0:00</span>
-                  <span class="time-text" id="remainingTime">-0:00</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== ARABIC CONTENT ==================== -->
-    <body>
-
-<!-- ==================== PROGRESS BAR ==================== -->
-<div id="scrollProgress"></div>
-
-<!-- ==================== TOAST NOTIFICATION ==================== -->
-<div id="toastNotification" class="toast-notification"></div>
-
-<!-- ==================== MAIN CONTAINER ==================== -->
-<div class="container">
-
-  <!-- ==================== LECTURE HEADER ==================== -->
-  <div class="lecture-header" data-aos="fade-down">
-    <h1>🏭 وظيفة الإنتاج</h1>
-    <div class="subtitle">The Production Function</div>
-    <div class="description">
-      رحلة تعليمية شاملة في عالم إدارة العمليات الإنتاجية - من التنبؤ إلى التسليم النهائي
-    </div>
-  </div>
-
-  <!-- ==================== المقدمة ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
-    <div class="section-title">
-      <span class="icon">🎯</span>
-      المقدمة: الوظائف الأساسية في الأعمال
-    </div>
-    <div class="concept-content">
-      <p style="font-size: 1.3rem; line-height: 2; margin-bottom: 1.5rem;">
-        أي مؤسسة تجارية في العالم بتشتغل من خلال <strong>أربع وظائف أساسية مترابطة</strong>:
-      </p>
-    </div>
-
-    <!-- شبكة الوظائف الأربعة -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
-      
-      <div class="concept-box" data-aos="zoom-in" data-aos-delay="100" style="border-right-color: var(--color-management);">
-        <div class="concept-title">
-          🏭 الإنتاج
-          <span class="en">Production</span>
-        </div>
-        <div class="concept-content">خلق القيمة الفعلية للمنتج</div>
-      </div>
-
-      <div class="concept-box" data-aos="zoom-in" data-aos-delay="200" style="border-right-color: #e11d48;">
-        <div class="concept-title">
-          📢 التسويق
-          <span class="en">Marketing</span>
-        </div>
-        <div class="concept-content">الترويج والوصول للعملاء</div>
-      </div>
-
-      <div class="concept-box" data-aos="zoom-in" data-aos-delay="300" style="border-right-color: var(--color-finance);">
-        <div class="concept-title">
-          💰 التمويل
-          <span class="en">Finance</span>
-        </div>
-        <div class="concept-content">إدارة الموارد المالية</div>
-      </div>
-
-      <div class="concept-box" data-aos="zoom-in" data-aos-delay="400" style="border-right-color: #7c3aed;">
-        <div class="concept-title">
-          👥 الموارد البشرية
-          <span class="en">HR</span>
-        </div>
-        <div class="concept-content">إدارة القوى العاملة</div>
-      </div>
-
-    </div>
-
-    <div style="background: linear-gradient(135deg, rgba(234, 88, 12, 0.1), rgba(37, 99, 235, 0.1)); padding: 2rem; border-radius: 16px; margin-top: 2rem;">
-      <p style="font-size: 1.3rem; line-height: 2;">
-        <strong style="color: var(--color-management); font-size: 1.4rem;">🎯 التركيز اليوم:</strong> 
-        وظيفة الإنتاج أو العمليات - الوظيفة اللي بتخلق القيمة الفعلية للمنتج أو الخدمة وبتحوّل المدخلات لمخرجات قابلة للبيع!
-      </p>
-    </div>
-  </div>
-
-  <!-- ==================== تعريف وظيفة الإنتاج ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
-    <div class="section-title">
-      <span class="icon">📋</span>
-      ما هي وظيفة الإنتاج؟
-    </div>
-
-    <div class="concept-box" style="background: linear-gradient(135deg, #fff7ed, #ffedd5); border-right-color: var(--color-management);">
-      <div class="concept-title" style="font-size: 1.8rem;">
-        📌 التعريف الرسمي
-      </div>
-      <div class="concept-content" style="font-size: 1.3rem; line-height: 2;">
-        <strong>وظيفة الإنتاج (Production Function)</strong> تشير إلى <strong>جميع الأنشطة المرتبطة بشكل مباشر بإنشاء السلع والخدمات</strong>. 
-        باختصار، هي العملية اللي بتحوّل المدخلات (زي المواد الخام والعمالة) إلى مخرجات (زي المنتجات الجاهزة للبيع).
-      </div>
-    </div>
-
-    <!-- Mermaid Diagram: عملية التحويل الأساسية -->
-    <div style="background: white; padding: 2rem; border-radius: 16px; margin: 2rem 0; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
-      <h3 style="text-align: center; color: var(--color-management); margin-bottom: 1.5rem; font-size: 1.6rem;">
-        📊 عملية التحويل الأساسية
-      </h3>
-      <div class="mermaid" style="text-align: center;">
-graph LR
-    A[المدخلات<br/>Inputs<br/>🔧 مواد خام<br/>👷 عمالة<br/>💰 رأس المال] -->|عملية التحويل<br/>Transformation| B[المخرجات<br/>Outputs<br/>📦 منتجات<br/>🎯 خدمات]
-    B -->|تغذية راجعة<br/>Feedback| A
-    
-    style A fill:#dbeafe,stroke:#2563eb,stroke-width:3px
-    style B fill:#dcfce7,stroke:#16a34a,stroke-width:3px
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== الأنشطة الستة لوظيفة الإنتاج ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
-    <div class="section-title">
-      <span class="icon">⚙️</span>
-      الأنشطة الستة لوظيفة الإنتاج
-    </div>
-
-    <div class="concept-content" style="font-size: 1.3rem; margin-bottom: 2rem;">
-      وظيفة الإنتاج بتشمل <strong>ستة أنشطة أساسية مترابطة</strong>، كل واحد منهم ضروري لنجاح العملية الإنتاجية:
-    </div>
-
-    <!-- Swiper للأنشطة الستة -->
-    <div class="swiper activitiesSwiper" style="margin: 2rem 0;">
-      <div class="swiper-wrapper">
-        
-        <!-- النشاط 1: التنبؤ -->
-        <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #ede9fe, #ddd6fe); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
-            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">🔮</div>
-            <h3 style="color: #7c3aed; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              التنبؤ<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Forecasting</span>
-            </h3>
-            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
-              تقدير الطلب المستقبلي على السلع والخدمات، وتقدير كمية الموارد اللازمة لإنتاج المستوى المطلوب من المخرجات
-            </p>
-            <div style="background: rgba(124, 58, 237, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
-              <strong style="color: #7c3aed;">💡 مثال:</strong> مصنع عصاير يتنبأ باحتياجات الصيف القادم
-            </div>
-          </div>
-        </div>
-
-        <!-- النشاط 2: تخطيط الطاقة -->
-        <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
-            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">⚡</div>
-            <h3 style="color: #2563eb; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              تخطيط الطاقة<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Capacity Planning</span>
-            </h3>
-            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
-              تحديد الطاقة الإنتاجية اللي المنظمة محتاجاها عشان تلبي التغيرات في الطلب على منتجاتها
-            </p>
-            <div style="background: rgba(37, 99, 235, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
-              <strong style="color: #2563eb;">💡 مثال:</strong> موازنة قدرة المصنع مع حجم الطلب المتوقع
-            </div>
-          </div>
-        </div>
-
-        <!-- النشاط 3: الجدولة -->
-        <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
-            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">📅</div>
-            <h3 style="color: #d97706; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              الجدولة<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Scheduling</span>
-            </h3>
-            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
-              ترتيب حمل العمل اللي هيتم تنفيذه بطريقة مثالية، وتخصيص موارد الإنتاج بكفاءة
-            </p>
-            <div style="background: rgba(217, 119, 6, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
-              <strong style="color: #d97706;">💡 مثال:</strong> ترتيب 10 أوامر إنتاج على 5 ماكينات بأقل وقت
-            </div>
-          </div>
-        </div>
-
-        <!-- النشاط 4: إدارة المخزون -->
-        <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
-            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">📦</div>
-            <h3 style="color: #059669; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              إدارة المخزون<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Managing Inventories</span>
-            </h3>
-            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
-              عملية الطلب والتخزين واستخدام المخزون (مواد خام، عمل تحت التشغيل، سلع تامة)
-            </p>
-            <div style="background: rgba(5, 150, 105, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
-              <strong style="color: #059669;">💡 مثال:</strong> نظام JIT (Just-in-Time) من تويوتا
-            </div>
-          </div>
-        </div>
-
-        <!-- النشاط 5: ضمان الجودة -->
-        <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
-            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">✅</div>
-            <h3 style="color: #dc2626; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              ضمان الجودة<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Assuring Quality</span>
-            </h3>
-            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
-              منع حدوث العيوب في المنتجات المُصنَّعة من خلال التركيز على العملية نفسها
-            </p>
-            <div style="background: rgba(220, 38, 38, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
-              <strong style="color: #dc2626;">💡 مثال:</strong> تطبيق Six Sigma لتحسين الجودة
-            </div>
-          </div>
-        </div>
-
-        <!-- النشاط 6: تحديد المواقع -->
-        <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #fce7f3, #fbcfe8); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
-            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">📍</div>
-            <h3 style="color: #db2777; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              تحديد مواقع المنشآت<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Locating Facilities</span>
-            </h3>
-            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
-              تحديد موقع المنشأة التجارية بناءً على القرب من العملاء، العمال، ووسائل النقل
-            </p>
-            <div style="background: rgba(219, 39, 119, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
-              <strong style="color: #db2777;">💡 مثال:</strong> اختيار موقع مصنع قريب من الأسواق الرئيسية
-            </div>
-          </div>
-        </div>
-
-      </div>
-      
-      <!-- Navigation -->
-      <div class="swiper-button-next" style="color: var(--color-management);"></div>
-      <div class="swiper-button-prev" style="color: var(--color-management);"></div>
-      <div class="swiper-pagination"></div>
-    </div>
-
-  </div>
-
-  <!-- ==================== القسم 1: التنبؤ والـ 6Ms ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
-    <div class="section-title">
-      <span class="icon">🔮</span>
-      التنبؤ: قراءة المستقبل بعيون الحاضر
-    </div>
-
-    <div class="concept-content" style="font-size: 1.25rem; line-height: 2; margin-bottom: 2rem;">
-      <strong>التنبؤ (Forecasting)</strong> هو عملية تقدير الطلب المستقبلي على السلع والخدمات، وكمان تقدير كمية الموارد اللازمة لإنتاج المستوى المطلوب من المخرجات.
-    </div>
-
-    <!-- مثال عملي -->
-    <div style="background: linear-gradient(135deg, #fff7ed, #ffedd5); padding: 2rem; border-radius: 16px; margin: 2rem 0; border-right: 5px solid #f97316;">
-      <div style="font-size: 1.4rem; font-weight: 700; color: #ea580c; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem;">
-        <span style="font-size: 2rem;">🍊</span>
-        مثال عملي: مصنع عصاير
-      </div>
-      <p style="font-size: 1.2rem; line-height: 1.9;">
-        تخيل إنك صاحب مصنع عصاير، ومحتاج تعرف هتبيع <strong>كام زجاجة عصير في الصيف الجاي</strong> عشان تحدد:
-      </p>
-      <ul style="font-size: 1.15rem; margin-right: 2rem; margin-top: 1rem; line-height: 2;">
-        <li>🍊 تشتري <strong>كام طن برتقان</strong></li>
-        <li>👷 توظف <strong>كام عامل</strong></li>
-        <li>⚙️ تحتاج <strong>كام ماكينة تعبئة</strong></li>
-      </ul>
-      <div style="background: rgba(234, 88, 12, 0.1); padding: 1.2rem; border-radius: 12px; margin-top: 1.5rem; font-size: 1.15rem; font-weight: 600; color: #c2410c;">
-        ✨ ده بالظبط دور التنبؤ!
-      </div>
-    </div>
-
-    <!-- الـ 6Ms للإدارة -->
-    <div class="section-subtitle">
-      📊 الـ 6Ms للإدارة (6Ms of Management)
-    </div>
-
-    <div class="concept-content" style="font-size: 1.2rem; margin-bottom: 1.5rem;">
-      التنبؤ الإنتاجي بيعتمد على تقدير <strong>الموارد الستة الأساسية</strong> اللي لازم أي عملية إنتاجية تاخد بالها منهم:
-    </div>
-
-    <!-- جدول الـ 6Ms تفاعلي -->
-    <div class="interactive-table" data-aos="fade-up">
-      <table id="sixMsTable" class="display" style="width:100%">
-        <thead>
-          <tr>
-            <th>الرقم</th>
-            <th>الـ M</th>
-            <th>المعنى بالعربية</th>
-            <th>الشرح التفصيلي</th>
-            <th>الرمز</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td><strong>Market</strong></td>
-            <td>السوق</td>
-            <td>الطلب المتوقع على المنتج</td>
-            <td style="font-size: 1.8rem;">🎯</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td><strong>Materials</strong></td>
-            <td>المواد</td>
-            <td>المواد الخام والأجزاء اللازمة للعمليات</td>
-            <td style="font-size: 1.8rem;">🧱</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td><strong>Man</strong></td>
-            <td>العمالة</td>
-            <td>كمية العمالة المطلوبة لتنفيذ العمل</td>
-            <td style="font-size: 1.8rem;">👷</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td><strong>Methods</strong></td>
-            <td>الأساليب</td>
-            <td>تقنيات الإنتاج اللي هتُستخدم</td>
-            <td style="font-size: 1.8rem;">🔧</td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td><strong>Money</strong></td>
-            <td>المال</td>
-            <td>الموارد المالية المطلوبة لتنفيذ العمليات</td>
-            <td style="font-size: 1.8rem;">💰</td>
-          </tr>
-          <tr>
-            <td>6</td>
-            <td><strong>Machines</strong></td>
-            <td>الآلات</td>
-            <td>المعدات المستخدمة في عملية الإنتاج</td>
-            <td style="font-size: 1.8rem;">⚙️</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- ملاحظة مهمة: Forecasting vs Predictions -->
-    <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 2rem; border-radius: 16px; margin: 2.5rem 0; border-right: 5px solid #f59e0b;">
-      <div style="font-size: 1.5rem; font-weight: 700; color: #d97706; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem;">
-        <span style="font-size: 2.5rem;">⚠️</span>
-        ملاحظة مهمة: الفرق بين Forecasting و Predictions
-      </div>
-      <div style="font-size: 1.2rem; line-height: 2;">
-        <p style="margin-bottom: 1rem;">
-          <strong style="color: #ea580c;">Forecasting:</strong> تنبؤات مبنية على <strong>بيانات تاريخية فعلية</strong> لمنتجات موجودة بالفعل في السوق.
-        </p>
-        <p>
-          <strong style="color: #ea580c;">Predictions:</strong> توقعات مبنية على <strong>تخمينات مدروسة</strong> لمنتجات جديدة <strong>مالهاش تاريخ سابق</strong> في السوق.
-        </p>
-      </div>
-    </div>
-
-    <!-- سؤال MCQ 1 -->
-    <div class="mcq-container" data-aos="flip-up">
-      <div class="mcq-question">
-        ❓ ما هو المصطلح المستخدم لوصف تقدير الطلب على منتج جديد ليس له تاريخ مبيعات؟
-      </div>
-      <div class="mcq-options">
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq1')">
-          أ) Forecasting
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, true, 'mcq1')">
-          ب) Predictions ✨
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq1')">
-          ج) Capacity Planning
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq1')">
-          د) Scheduling
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ==================== القسم 2: تخطيط الطاقة الإنتاجية ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
-    <div class="section-title">
-      <span class="icon">⚡</span>
-      تخطيط الطاقة الإنتاجية: الموازنة بين القدرة والطلب
-    </div>
-
-    <div class="concept-box" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-right-color: #2563eb;">
-      <div class="concept-title" style="color: #2563eb;">
-        📌 ما هي الطاقة الإنتاجية؟
-        <span class="en">Capacity</span>
-      </div>
-      <div class="concept-content" style="font-size: 1.25rem;">
-        <strong>الطاقة الإنتاجية (Capacity)</strong> تشير إلى <strong>الحد الأقصى من المخرجات اللي ممكن إنتاجها</strong>. 
-        يعني لو عندك مصنع بسكويت، الطاقة الإنتاجية هي أقصى عدد من علب البسكويت اللي المصنع يقدر ينتجها في اليوم أو الشهر.
-      </div>
-    </div>
-
-    <!-- نوعا الطاقة الإنتاجية -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin: 2.5rem 0;">
-      
-      <div class="comparison-card" style="border-top: 4px solid #3b82f6;" data-aos="fade-right">
-        <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">🎯</div>
-        <div class="comparison-title" style="color: #3b82f6; font-size: 1.7rem;">
-          طاقة التصميم
-          <div style="font-family: var(--font-english); font-size: 1.3rem; margin-top: 0.5rem;">Design Capacity</div>
-        </div>
-        <div style="font-size: 1.15rem; line-height: 2; color: #334155;">
-          <p style="margin-bottom: 1rem;">
-            الحد الأقصى <strong>النظري</strong> للمخرجات اللي ممكن إنتاجها تحت <strong>ظروف مثالية</strong> خلال فترة زمنية محددة.
-          </p>
-          <div style="background: rgba(59, 130, 246, 0.1); padding: 1.2rem; border-radius: 12px; border-right: 3px solid #3b82f6;">
-            <strong>💡 مثال:</strong> الماكينة شغالة 24 ساعة بدون توقف، وكل حاجة ماشية 100%
-          </div>
-        </div>
-      </div>
-
-      <div class="comparison-card" style="border-top: 4px solid #10b981;" data-aos="fade-left">
-        <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">✅</div>
-        <div class="comparison-title" style="color: #10b981; font-size: 1.7rem;">
-          الطاقة الفعلية
-          <div style="font-family: var(--font-english); font-size: 1.3rem; margin-top: 0.5rem;">Effective Capacity</div>
-        </div>
-        <div style="font-size: 1.15rem; line-height: 2; color: #334155;">
-          <p style="margin-bottom: 1rem;">
-            مستوى المخرجات اللي ممكن إنتاجها تحت <strong>الظروف الحالية</strong> (زي صيانة الماكينات، فترات الراحة، استراحة الغداء).
-          </p>
-          <div style="background: rgba(16, 185, 129, 0.1); padding: 1.2rem; border-radius: 12px; border-right: 3px solid #10b981;">
-            <strong>💡 مثال:</strong> الطاقة الحقيقية اللي المصنع بيشتغل بيها في الواقع، مش النظرية
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- رسم بياني: الفجوة بين الطاقة والطلب -->
-    <div class="chart-container" data-aos="zoom-in" style="background: white; padding: 2.5rem; border-radius: 16px; margin: 2.5rem 0; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
-      <h3 style="text-align: center; color: var(--color-business); margin-bottom: 2rem; font-size: 1.8rem;">
-        📊 الفجوة بين الطاقة الإنتاجية والطلب
-      </h3>
-      <canvas id="capacityDemandChart" style="max-height: 400px;"></canvas>
-    </div>
-
-    <!-- جدول المقارنة: فائض vs عجز -->
-    <div style="margin: 2.5rem 0;">
-      <h3 style="color: var(--color-business); font-size: 1.6rem; margin-bottom: 1.5rem; text-align: center;">
-        ⚖️ ماذا يحدث عند عدم التوازن؟
-      </h3>
-      
-      <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
-          <thead style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">
-            <tr>
-              <th style="padding: 1.5rem; color: white; font-size: 1.3rem; text-align: right;">الحالة</th>
-              <th style="padding: 1.5rem; color: white; font-size: 1.3rem; text-align: right;">الوضع</th>
-              <th style="padding: 1.5rem; color: white; font-size: 1.3rem; text-align: right;">النتيجة</th>
-              <th style="padding: 1.5rem; color: white; font-size: 1.3rem; text-align: center;">التأثير</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom: 2px solid #e2e8f0;">
-              <td style="padding: 1.5rem; font-size: 1.15rem;">الطاقة > الطلب</td>
-              <td style="padding: 1.5rem; font-size: 1.15rem; color: #f59e0b; font-weight: 600;">فائض في الطاقة</td>
-              <td style="padding: 1.5rem; font-size: 1.15rem;">موارد غير مستغلة (Unutilized Resources)</td>
-              <td style="padding: 1.5rem; text-align: center; font-size: 2rem;">⚠️</td>
-            </tr>
-            <tr>
-              <td style="padding: 1.5rem; font-size: 1.15rem;">الطاقة < الطلب</td>
-              <td style="padding: 1.5rem; font-size: 1.15rem; color: #ef4444; font-weight: 600;">عجز في الطاقة</td>
-              <td style="padding: 1.5rem; font-size: 1.15rem;">عدم رضا العملاء (Customer Dissatisfaction)</td>
-              <td style="padding: 1.5rem; text-align: center; font-size: 2rem;">❌</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- طرق زيادة الطاقة الإنتاجية -->
-    <div class="section-subtitle">
-      🚀 طرق زيادة الطاقة الإنتاجية
-    </div>
-
-    <div class="concept-content" style="font-size: 1.2rem; margin-bottom: 1.5rem;">
-      لو لقيت إن الطاقة الإنتاجية أقل من الطلب، فيه طرق كتير لزيادة الطاقة:
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-      
-      <div class="concept-box" data-aos="flip-left" data-aos-delay="100" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-right-color: #f59e0b;">
-        <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">🔬</div>
-        <div class="concept-title" style="color: #d97706; font-size: 1.4rem;">
-          تقنيات إنتاج جديدة
-        </div>
-        <div class="concept-content">
-          Introducing New Production Techniques
-        </div>
-      </div>
-
-      <div class="concept-box" data-aos="flip-left" data-aos-delay="200" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-right-color: #3b82f6;">
-        <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">⚙️</div>
-        <div class="concept-title" style="color: #2563eb; font-size: 1.4rem;">
-          معدات جديدة
-        </div>
-        <div class="concept-content">
-          Using New Equipment
-        </div>
-      </div>
-
-      <div class="concept-box" data-aos="flip-left" data-aos-delay="300" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-right-color: #10b981;">
-        <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">🧱</div>
-        <div class="concept-title" style="color: #059669; font-size: 1.4rem;">
-          مواد أفضل
-        </div>
-        <div class="concept-content">
-          Using Better Materials
-        </div>
-      </div>
-
-      <div class="concept-box" data-aos="flip-left" data-aos-delay="400" style="background: linear-gradient(135deg, #fce7f3, #fbcfe8); border-right-color: #ec4899;">
-        <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">👷</div>
-        <div class="concept-title" style="color: #db2777; font-size: 1.4rem;">
-          زيادة العمال/الماكينات
-        </div>
-        <div class="concept-content">
-          Increasing Workers/Machines
-        </div>
-      </div>
-
-      <div class="concept-box" data-aos="flip-left" data-aos-delay="500" style="background: linear-gradient(135deg, #ede9fe, #ddd6fe); border-right-color: #8b5cf6;">
-        <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">🌙</div>
-        <div class="concept-title" style="color: #7c3aed; font-size: 1.4rem;">
-          زيادة نوبات العمل
-        </div>
-        <div class="concept-content">
-          Increasing Work Shifts
-        </div>
-      </div>
-
-      <div class="concept-box" data-aos="flip-left" data-aos-delay="600" style="background: linear-gradient(135deg, #ffedd5, #fed7aa); border-right-color: #f97316;">
-        <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">🏭</div>
-        <div class="concept-title" style="color: #ea580c; font-size: 1.4rem;">
-          منشآت إضافية
-        </div>
-        <div class="concept-content">
-          Acquiring Additional Facilities
-        </div>
-      </div>
-
-    </div>
-
-    <!-- سؤال MCQ 2 -->
-    <div class="mcq-container" data-aos="flip-up" style="margin-top: 3rem;">
-      <div class="mcq-question">
-        ❓ ما الفرق بين طاقة التصميم والطاقة الفعلية؟
-      </div>
-      <div class="mcq-options">
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq2')">
-          أ) طاقة التصميم هي الإنتاج الفعلي، والطاقة الفعلية هي الإنتاج النظري
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, true, 'mcq2')">
-          ب) طاقة التصميم هي الحد الأقصى النظري، والطاقة الفعلية تأخذ في الاعتبار الظروف الواقعية ✨
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq2')">
-          ج) كلاهما متطابقان
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq2')">
-          د) لا يوجد فرق
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ==================== القسم 3: الجدولة ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
-    <div class="section-title">
-      <span class="icon">📅</span>
-      الجدولة: ترتيب العمل بذكاء
-    </div>
-
-    <div class="concept-box" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-right-color: #f59e0b;">
-      <div class="concept-title" style="color: #d97706;">
-        📌 ما هي الجدولة؟
-        <span class="en">Scheduling</span>
-      </div>
-      <div class="concept-content" style="font-size: 1.25rem;">
-        <strong>الجدولة (Scheduling)</strong> هي عملية <strong>ترتيب حمل العمل اللي هيتم تنفيذه بطريقة مثالية</strong>. 
-        الجدولة بتشمل تخصيص موارد الإنتاج بكفاءة.
-      </div>
-    </div>
-
-    <!-- مثال تفاعلي: محاكاة جدولة -->
-    <div style="background: white; padding: 2.5rem; border-radius: 16px; margin: 2.5rem 0; box-shadow: 0 8px 24px rgba(0,0,0,0.1);" data-aos="zoom-in">
-      <h3 style="color: #d97706; font-size: 1.7rem; margin-bottom: 1.5rem; text-align: center;">
-        🎮 مثال تفاعلي: جدولة الإنتاج
-      </h3>
-      
-      <div style="background: linear-gradient(135deg, #fff7ed, #ffedd5); padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
-        <p style="font-size: 1.2rem; line-height: 2;">
-          <strong>السيناريو:</strong> لو عندك <strong style="color: #ea580c;">5 ماكينات</strong> و <strong style="color: #2563eb;">10 أوامر إنتاج</strong>، 
-          إزاي هترتب الأوامر دي على الماكينات بحيث تخلص الشغل في <strong>أقل وقت</strong> وبـ<strong>أقل تكلفة</strong>؟
-        </p>
-      </div>
-
-      <!-- رسم Gantt Chart بسيط -->
-      <div class="mermaid" style="background: #f8fafc; padding: 1.5rem; border-radius: 12px;">
-gantt
-    title جدول إنتاج مبسط (Gantt Chart)
-    dateFormat HH:mm
-    axisFormat %H:%M
-    
-    section ماكينة 1
-    أمر A1 :a1, 08:00, 2h
-    أمر B1 :b1, after a1, 1h
-    
-    section ماكينة 2
-    أمر A2 :a2, 08:00, 3h
-    أمر B2 :b2, after a2, 2h
-    
-    section ماكينة 3
-    أمر A3 :a3, 08:00, 1h
-    أمر B3 :b3, after a3, 3h
-    
-    section ماكينة 4
-    أمر A4 :a4, 08:00, 2h
-    أمر B4 :b4, after a4, 1h
-    
-    section ماكينة 5
-    أمر A5 :a5, 08:00, 1h
-    أمر B5 :b5, after a5, 2h
-      </div>
-    </div>
-
-    <!-- أهداف الجدولة -->
-    <div style="background: linear-gradient(135deg, rgba(217, 119, 6, 0.1), rgba(251, 146, 60, 0.1)); padding: 2rem; border-radius: 16px; border-right: 5px solid #f59e0b; margin: 2rem 0;">
-      <div style="font-size: 1.5rem; font-weight: 700; color: #ea580c; margin-bottom: 1.5rem;">
-        🎯 الهدف من الجدولة:
-      </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-        <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-          <div style="font-size: 2rem; margin-bottom: 0.5rem;">⏱️</div>
-          <div style="font-size: 1.2rem; font-weight: 600; color: #d97706;">تقليل الوقت</div>
-          <div style="font-size: 1rem; color: #64748b; margin-top: 0.5rem;">Minimize Production Time</div>
-        </div>
-        <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-          <div style="font-size: 2rem; margin-bottom: 0.5rem;">💵</div>
-          <div style="font-size: 1.2rem; font-weight: 600; color: #d97706;">تقليل التكلفة</div>
-          <div style="font-size: 1rem; color: #64748b; margin-top: 0.5rem;">Minimize Production Cost</div>
-        </div>
-        <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📦</div>
-          <div style="font-size: 1.2rem; font-weight: 600; color: #d97706;">دقة التسليم</div>
-          <div style="font-size: 1rem; color: #64748b; margin-top: 0.5rem;">Accurate Delivery Dates</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- سؤال MCQ 3 -->
-    <div class="mcq-container" data-aos="flip-up">
-      <div class="mcq-question">
-        ❓ ما هو الهدف الأساسي من الجدولة؟
-      </div>
-      <div class="mcq-options">
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq3')">
-          أ) زيادة عدد العمال
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, true, 'mcq3')">
-          ب) تقليل التكلفة والوقت والحفاظ على مواعيد التسليم ✨
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq3')">
-          ج) زيادة المخزون
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq3')">
-          د) تحسين التسويق
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ==================== القسم 4: إدارة المخزون ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
-    <div class="section-title">
-      <span class="icon">📦</span>
-      إدارة المخزون: التوازن بين التوفر والتكلفة
-    </div>
-
-    <div class="concept-box" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-right-color: #059669;">
-      <div class="concept-title" style="color: #059669;">
-        📌 ما هي إدارة المخزون؟
-        <span class="en">Inventory Management</span>
-      </div>
-      <div class="concept-content" style="font-size: 1.25rem;">
-        <strong>إدارة المخزون (Inventory Management)</strong> تشير إلى عملية <strong>الطلب والتخزين واستخدام المخزون</strong>.
-      </div>
-    </div>
-
-    <!-- أنواع المخزون الثلاثة -->
-    <div class="section-subtitle">
-      🏷️ الأنواع الثلاثة للمخزون
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
-      
-      <div class="comparison-card" style="border-top: 4px solid #f59e0b;" data-aos="fade-up" data-aos-delay="100">
-        <div style="font-size: 3.5rem; text-align: center; margin-bottom: 1rem;">🧱</div>
-        <div class="comparison-title" style="color: #f59e0b; font-size: 1.6rem;">
-          المواد الخام
-          <div style="font-family: var(--font-english); font-size: 1.2rem; margin-top: 0.5rem;">Raw Materials</div>
-        </div>
-        <div style="font-size: 1.15rem; line-height: 2; color: #334155;">
-          المواد اللي بيتم عليها عملية التحويل لإنتاج المخرجات المطلوبة
-        </div>
-        <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 12px; margin-top: 1rem; font-size: 1rem; color: #92400e;">
-          <strong>مثال:</strong> خشب، معادن، قطن، بلاستيك
-        </div>
-      </div>
-
-      <div class="comparison-card" style="border-top: 4px solid #3b82f6;" data-aos="fade-up" data-aos-delay="200">
-        <div style="font-size: 3.5rem; text-align: center; margin-bottom: 1rem;">⚙️</div>
-        <div class="comparison-title" style="color: #3b82f6; font-size: 1.6rem;">
-          العمل تحت التشغيل
-          <div style="font-family: var(--font-english); font-size: 1.2rem; margin-top: 0.5rem;">Work in Process</div>
-        </div>
-        <div style="font-size: 1.15rem; line-height: 2; color: #334155;">
-          منتجات نصف مُصنّعة ولسه مش جاهزة للبيع
-        </div>
-        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 12px; margin-top: 1rem; font-size: 1rem; color: #1e3a8a;">
-          <strong>مثال:</strong> سيارة قيد التجميع، ملابس قيد الخياطة
-        </div>
-      </div>
-
-      <div class="comparison-card" style="border-top: 4px solid #10b981;" data-aos="fade-up" data-aos-delay="300">
-        <div style="font-size: 3.5rem; text-align: center; margin-bottom: 1rem;">✅</div>
-        <div class="comparison-title" style="color: #10b981; font-size: 1.6rem;">
-          السلع التامة
-          <div style="font-family: var(--font-english); font-size: 1.2rem; margin-top: 0.5rem;">Finished Goods</div>
-        </div>
-        <div style="font-size: 1.15rem; line-height: 2; color: #334155;">
-          سلع جاهزة للبيع والتسليم للعملاء
-        </div>
-        <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 12px; margin-top: 1rem; font-size: 1rem; color: #065f46;">
-          <strong>مثال:</strong> سيارة مكتملة، ملابس جاهزة، منتجات معبأة
-        </div>
-      </div>
-
-    </div>
-
-    <!-- رسم بياني: دورة المخزون -->
-    <div style="background: white; padding: 2.5rem; border-radius: 16px; margin: 2.5rem 0; box-shadow: 0 8px 24px rgba(0,0,0,0.1);" data-aos="zoom-in">
-      <h3 style="text-align: center; color: var(--color-finance); margin-bottom: 2rem; font-size: 1.8rem;">
-        🔄 دورة حياة المخزون
-      </h3>
-      <div class="mermaid">
-graph LR
-    A[🧱 المواد الخام<br/>Raw Materials] -->|عملية التصنيع| B[⚙️ العمل تحت التشغيل<br/>Work in Process]
-    B -->|إتمام التصنيع| C[✅ السلع التامة<br/>Finished Goods]
-    C -->|البيع والتسليم| D[👤 العميل<br/>Customer]
-    D -.->|طلب جديد| A
-    
-    style A fill:#fed7aa,stroke:#f97316,stroke-width:3px
-    style B fill:#bfdbfe,stroke:#3b82f6,stroke-width:3px
-    style C fill:#a7f3d0,stroke:#10b981,stroke-width:3px
-    style D fill:#fce7f3,stroke:#ec4899,stroke-width:3px
-      </div>
-    </div>
-
-    <!-- نظام JIT -->
-    <div class="section-subtitle" style="margin-top: 3rem;">
-      🇯🇵 نظام JIT (Just-in-Time): الفلسفة اليابانية
-    </div>
-
-    <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 2.5rem; border-radius: 16px; border-right: 5px solid #dc2626; margin: 2rem 0;">
-      <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-        <div style="font-size: 3.5rem;">🚗</div>
-        <div>
-          <div style="font-size: 1.7rem; font-weight: 700; color: #dc2626;">
-            Just-in-Time (JIT)
-          </div>
-          <div style="font-size: 1.3rem; color: #92400e; font-family: var(--font-english);">
-            Toyota Production System (TPS)
-          </div>
-        </div>
-      </div>
-      
-      <div style="font-size: 1.2rem; line-height: 2; color: #78350f;">
-        <p style="margin-bottom: 1rem;">
-          نظام تصنيع تم تطويره بواسطة <strong>شركة تويوتا اليابانية</strong> في السبعينيات، بيتم فيه توصيل المواد أو الأجزاء للمصنع 
-          <strong>مباشرة قبل ما تكون مطلوبة</strong>، وذلك لتقليل تكاليف التخزين.
-        </p>
-        <div style="background: rgba(220, 38, 38, 0.15); padding: 1.5rem; border-radius: 12px; border-right: 3px solid #dc2626; margin-top: 1.5rem;">
-          <strong style="font-size: 1.3rem; color: #991b1b;">🎯 الهدف الأساسي:</strong>
-          <div style="font-size: 1.4rem; margin-top: 0.8rem; font-weight: 600;">
-            الوصول لمستوى <span style="color: #dc2626; font-size: 1.6rem;">صفر مخزون</span> (Zero Inventories)
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- متطلبات نجاح JIT -->
-    <div style="background: white; padding: 2.5rem; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); margin: 2rem 0;" data-aos="fade-up">
-      <h3 style="color: #dc2626; font-size: 1.6rem; margin-bottom: 1.5rem; text-align: center;">
-        ✅ متطلبات نجاح JIT
-      </h3>
-      
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
-        <div style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 1.5rem; border-radius: 12px; text-align: center;">
-          <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">📊</div>
-          <div style="font-size: 1.15rem; font-weight: 600; color: #991b1b;">إنتاج ثابت</div>
-          <div style="font-size: 0.95rem; color: #7f1d1d; margin-top: 0.5rem;">Steady Production</div>
-        </div>
-        
-        <div style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 1.5rem; border-radius: 12px; text-align: center;">
-          <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">👨‍🔧</div>
-          <div style="font-size: 1.15rem; font-weight: 600; color: #991b1b;">قوة عاملة عالية الجودة</div>
-          <div style="font-size: 0.95rem; color: #7f1d1d; margin-top: 0.5rem;">High Quality Workforce</div>
-        </div>
-        
-        <div style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 1.5rem; border-radius: 12px; text-align: center;">
-          <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">🚚</div>
-          <div style="font-size: 1.15rem; font-weight: 600; color: #991b1b;">موردين موثوقين</div>
-          <div style="font-size: 0.95rem; color: #7f1d1d; margin-top: 0.5rem;">Reliable Suppliers</div>
-        </div>
-        
-        <div style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 1.5rem; border-radius: 12px; text-align: center;">
-          <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">⚙️</div>
-          <div style="font-size: 1.15rem; font-weight: 600; color: #991b1b;">لا أعطال</div>
-          <div style="font-size: 0.95rem; color: #7f1d1d; margin-top: 0.5rem;">No Machine Breakdowns</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- مزايا وعيوب JIT -->
-    <div class="comparison-table" style="margin: 2.5rem 0;">
-      
-      <div class="comparison-card pros" data-aos="fade-right">
-        <div class="comparison-title">
-          <span style="font-size: 2.5rem;">✅</span>
-          المزايا (Pros)
-        </div>
-        <ul style="font-size: 1.15rem; line-height: 2; margin-right: 1.5rem;">
-          <li style="margin-bottom: 1rem;">
-            <strong>دورات إنتاج قصيرة:</strong> المصنعون يقدروا ينتقلوا بسرعة من منتج لآخر
-          </li>
-          <li style="margin-bottom: 1rem;">
-            <strong>تقليل تكاليف التخزين:</strong> توفير في مساحات المخازن وتكاليف الصيانة
-          </li>
-          <li>
-            <strong>إنفاق أقل:</strong> المواد الخام بتُشترى بس حسب الطلبات المطلوبة
-          </li>
-        </ul>
-      </div>
-
-      <div class="comparison-card cons" data-aos="fade-left">
-        <div class="comparison-title">
-          <span style="font-size: 2.5rem;">⚠️</span>
-          العيوب (Cons)
-        </div>
-        <ul style="font-size: 1.15rem; line-height: 2; margin-right: 1.5rem;">
-          <li style="margin-bottom: 1rem;">
-            <strong>مشاكل الموردين:</strong> الموردين ممكن يواجهوا مشاكل تمنعهم من التوصيل في الوقت المناسب
-          </li>
-          <li>
-            <strong>طلب مفاجئ:</strong> طلب غير متوقع على المنتج ممكن ميسمحش للموردين بتوصيل المواد الخام في الوقت المناسب
-          </li>
-        </ul>
-      </div>
-
-    </div>
-
-    <!-- نظام MRP -->
-    <div class="section-subtitle" style="margin-top: 3rem;">
-      💻 نظام MRP: الحل الرقمي
-    </div>
-
-    <div class="concept-box" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-right-color: #3b82f6;">
-      <div class="concept-title" style="color: #2563eb;">
-        📊 تخطيط متطلبات المواد
-        <span class="en">Material Requirement Planning (MRP)</span>
-      </div>
-      <div class="concept-content" style="font-size: 1.2rem;">
-        نظام إدارة مخزون <strong>قائم على الكمبيوتر</strong> بيُستخدم لتحسين الإنتاجية. النظام ده بيساعد في <strong>حساب كميات المواد المطلوبة بدقة</strong> وتوقيت طلبها بناءً على جدول الإنتاج.
-      </div>
-    </div>
-
-    <!-- سؤال MCQ 4 -->
-    <div class="mcq-container" data-aos="flip-up" style="margin-top: 2.5rem;">
-      <div class="mcq-question">
-        ❓ ما هو الهدف الأساسي لنظام JIT؟
-      </div>
-      <div class="mcq-options">
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq4')">
-          أ) زيادة المخزون
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, true, 'mcq4')">
-          ب) الوصول لمستوى صفر مخزون ✨
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq4')">
-          ج) زيادة تكاليف التخزين
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq4')">
-          د) تقليل جودة المنتج
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ==================== القسم 5: ضمان الجودة ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
-    <div class="section-title">
-      <span class="icon">✅</span>
-      ضمان الجودة: الوقاية خير من العلاج
-    </div>
-
-    <div style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 2.5rem; border-radius: 16px; border-right: 5px solid #dc2626; margin-bottom: 2.5rem;">
-      <div style="font-size: 1.6rem; font-weight: 700; color: #991b1b; margin-bottom: 1.5rem;">
-        🎯 الفكرة الأساسية
-      </div>
-      <div style="font-size: 1.25rem; line-height: 2; color: #7f1d1d;">
-        <strong>ضمان الجودة (Quality Assurance)</strong> يهدف إلى <strong>منع حدوث العيوب</strong> في المنتجات المُصنَّعة من الأساس، 
-        بينما <strong>مراقبة الجودة (Quality Control)</strong> تركز على <strong>تحديد العيوب</strong> بعد حدوثها.
-      </div>
-    </div>
-
-    <!-- مقارنة QA vs QC -->
-    <div style="background: white; padding: 2.5rem; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); margin: 2.5rem 0;" data-aos="zoom-in">
-      <h3 style="text-align: center; color: #dc2626; margin-bottom: 2rem; font-size: 1.8rem;">
-        ⚖️ ضمان الجودة vs مراقبة الجودة
-      </h3>
-      
-      <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse;">
-          <thead style="background: linear-gradient(135deg, #dc2626, #991b1b);">
-            <tr>
-              <th style="padding: 1.5rem; color: white; font-size: 1.3rem; text-align: right;">الجانب</th>
-              <th style="padding: 1.5rem; color: white; font-size: 1.3rem; text-align: right;">ضمان الجودة (QA)</th>
-              <th style="padding: 1.5rem; color: white; font-size: 1.3rem; text-align: right;">مراقبة الجودة (QC)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom: 2px solid #e2e8f0;">
-              <td style="padding: 1.5rem; font-weight: 600; background: #fef3c7;">التوجه</td>
-              <td style="padding: 1.5rem;">
-                <div style="font-weight: 600; color: #059669; margin-bottom: 0.5rem;">موجّه للعملية</div>
-                <div style="font-size: 0.95rem; color: #64748b;">Process-Oriented</div>
-              </td>
-              <td style="padding: 1.5rem;">
-                <div style="font-weight: 600; color: #3b82f6; margin-bottom: 0.5rem;">موجّه للمنتج</div>
-                <div style="font-size: 0.95rem; color: #64748b;">Product-Oriented</div>
-              </td>
-            </tr>
-            <tr style="border-bottom: 2px solid #e2e8f0;">
-              <td style="padding: 1.5rem; font-weight: 600; background: #fef3c7;">الهدف</td>
-              <td style="padding: 1.5rem;">
-                <div style="font-weight: 600; color: #059669; margin-bottom: 0.5rem;">منع العيوب</div>
-                <div style="font-size: 0.95rem; color: #64748b;">Preventing Defects</div>
-              </td>
-              <td style="padding: 1.5rem;">
-                <div style="font-weight: 600; color: #3b82f6; margin-bottom: 0.5rem;">تحديد العيوب</div>
-                <div style="font-size: 0.95rem; color: #64748b;">Identifying Defects</div>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 1.5rem; font-weight: 600; background: #fef3c7;">التوقيت</td>
-              <td style="padding: 1.5rem;">
-                <div style="font-weight: 600; color: #059669; margin-bottom: 0.5rem;">قبل الإنتاج وأثناءه</div>
-                <div style="font-size: 0.95rem; color: #64748b;">Before & During Production</div>
-              </td>
-              <td style="padding: 1.5rem;">
-                <div style="font-weight: 600; color: #3b82f6; margin-bottom: 0.5rem;">بعد الإنتاج</div>
-                <div style="font-size: 0.95rem; color: #64748b;">After Production</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- رسم توضيحي: QA vs QC -->
-    <div style="background: white; padding: 2rem; border-radius: 16px; margin: 2rem 0; box-shadow: 0 8px 24px rgba(0,0,0,0.1);" data-aos="fade-up">
-      <div class="mermaid">
-graph TB
-    Start[بداية عملية الإنتاج] -->|ضمان الجودة QA| QA[🛡️ تصميم عملية سليمة<br/>منع العيوب من الأساس]
-    QA --> Produce[⚙️ عملية الإنتاج]
-    Produce -->|مراقبة الجودة QC| QC[🔍 فحص المنتجات<br/>تحديد العيوب]
-    QC --> Decision{هل يوجد عيوب؟}
-    Decision -->|نعم ❌| Reject[رفض/إعادة تصنيع]
-    Decision -->|لا ✅| Accept[قبول ← العميل]
-    Reject --> Feedback[تغذية راجعة]
-    Feedback -->|تحسين العملية| QA
-    
-    style Start fill:#e0f2fe,stroke:#0369a1,stroke-width:2px
-    style QA fill:#d1fae5,stroke:#059669,stroke-width:3px
-    style Produce fill:#fef3c7,stroke:#d97706,stroke-width:2px
-    style QC fill:#dbeafe,stroke:#2563eb,stroke-width:3px
-    style Accept fill:#a7f3d0,stroke:#10b981,stroke-width:3px
-    style Reject fill:#fecaca,stroke:#ef4444,stroke-width:3px
-      </div>
-    </div>
-
-    <!-- Six Sigma -->
-    <div class="section-subtitle" style="margin-top: 3rem;">
-      📈 Six Sigma: التحسين المستمر
-    </div>
-
-    <div style="background: linear-gradient(135deg, #1e293b, #334155); color: white; padding: 2.5rem; border-radius: 16px; margin: 2rem 0; box-shadow: 0 12px 32px rgba(0,0,0,0.3);" data-aos="zoom-in">
-      <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
-        <div style="font-size: 4rem;">σ</div>
-        <div>
-          <div style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">ستة سيجما</div>
-          <div style="font-size: 1.4rem; font-family: var(--font-english); opacity: 0.9;">Six Sigma (6σ)</div>
-        </div>
-      </div>
-      
-      <div style="font-size: 1.2rem; line-height: 2; margin-bottom: 2rem;">
-        مجموعة من التقنيات المستخدمة لـ<strong>تحسين العمليات</strong>، <strong>تقليل الوقت</strong>، <strong>تحسين الجودة</strong>، 
-        وزيادة مستوى رضا العملاء.
-      </div>
-      
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
-        <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; backdrop-filter: blur(10px);">
-          <div style="font-size: 2rem; margin-bottom: 0.8rem;">🎯</div>
-          <div style="font-size: 1.1rem; font-weight: 600;">تحديد أسباب العيوب</div>
-        </div>
-        <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; backdrop-filter: blur(10px);">
-          <div style="font-size: 2rem; margin-bottom: 0.8rem;">🗑️</div>
-          <div style="font-size: 1.1rem; font-weight: 600;">إزالة العيوب</div>
-        </div>
-        <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; backdrop-filter: blur(10px);">
-          <div style="font-size: 2rem; margin-bottom: 0.8rem;">📊</div>
-          <div style="font-size: 1.1rem; font-weight: 600;">تقليل التباين</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- سؤال MCQ 5 -->
-    <div class="mcq-container" data-aos="flip-up" style="margin-top: 2.5rem;">
-      <div class="mcq-question">
-        ❓ ما الفرق الأساسي بين ضمان الجودة ومراقبة الجودة؟
-      </div>
-      <div class="mcq-options">
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq5')">
-          أ) ضمان الجودة يركز على تحديد العيوب، ومراقبة الجودة تركز على منعها
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, true, 'mcq5')">
-          ب) ضمان الجودة موجّه للعملية ويمنع العيوب، ومراقبة الجودة موجّهة للمنتج وتحدد العيوب ✨
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq5')">
-          ج) كلاهما متطابقان
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq5')">
-          د) لا يوجد فرق
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ==================== القسم 6: تحديد مواقع المنشآت ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
-    <div class="section-title">
-      <span class="icon">📍</span>
-      تحديد مواقع المنشآت: الموقع الاستراتيجي
-    </div>
-
-    <div class="concept-box" style="background: linear-gradient(135deg, #fce7f3, #fbcfe8); border-right-color: #db2777;">
-      <div class="concept-title" style="color: #db2777;">
-        📌 لماذا الموقع مهم؟
-        <span class="en">Locating Facilities</span>
-      </div>
-      <div class="concept-content" style="font-size: 1.25rem;">
-        <strong>تحديد مواقع المنشآت (Locating Facilities)</strong> يشير إلى تحديد موقع المنشأة التجارية. 
-        قرار الموقع هو <strong>قرار استراتيجي</strong>، لأنه بيؤثر على المنظمة على <strong>المدى الطويل</strong>.
-      </div>
-    </div>
-
-    <!-- عوامل اختيار الموقع -->
-    <div style="margin: 2.5rem 0;">
-      <h3 style="color: var(--color-management); font-size: 1.7rem; margin-bottom: 2rem; text-align: center;">
-        🎯 الموقع الصحيح يُمكّن الشركة من:
-      </h3>
-      
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
-        
-        <div class="concept-box" data-aos="flip-up" data-aos-delay="100" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-right-color: #3b82f6;">
-          <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">👥</div>
-          <div class="concept-title" style="color: #2563eb; font-size: 1.4rem; text-align: center;">
-            الوصول للعملاء
-          </div>
-          <div class="concept-content" style="text-align: center;">
-            Sufficient Access to Customers
-          </div>
-        </div>
-
-        <div class="concept-box" data-aos="flip-up" data-aos-delay="200" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-right-color: #10b981;">
-          <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">👷</div>
-          <div class="concept-title" style="color: #059669; font-size: 1.4rem; text-align: center;">
-            الوصول للعمال
-          </div>
-          <div class="concept-content" style="text-align: center;">
-            Sufficient Access to Workers
-          </div>
-        </div>
-
-        <div class="concept-box" data-aos="flip-up" data-aos-delay="300" style="background: linear-gradient(135deg, #fed7aa, #fdba74); border-right-color: #f97316;">
-          <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">🚚</div>
-          <div class="concept-title" style="color: #ea580c; font-size: 1.4rem; text-align: center;">
-            سهولة النقل
-          </div>
-          <div class="concept-content" style="text-align: center;">
-            Accessibility to Transportation
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- مخطط تفاعلي: عوامل الموقع -->
-    <div style="background: white; padding: 2.5rem; border-radius: 16px; margin: 2.5rem 0; box-shadow: 0 8px 24px rgba(0,0,0,0.1);" data-aos="zoom-in">
-      <h3 style="text-align: center; color: var(--color-management); margin-bottom: 2rem; font-size: 1.7rem;">
-        🗺️ شبكة عوامل اختيار الموقع
-      </h3>
-      <div id="locationFactorsNetwork" style="height: 500px;"></div>
-    </div>
-
-    <!-- تحذير -->
-    <div style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 2rem; border-radius: 16px; border-right: 5px solid #ef4444; margin: 2rem 0;">
-      <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-        <span style="font-size: 2.5rem;">⚠️</span>
-        <div style="font-size: 1.5rem; font-weight: 700; color: #991b1b;">تحذير مهم!</div>
-      </div>
-      <div style="font-size: 1.2rem; line-height: 2; color: #7f1d1d;">
-        لو اخترت موقع مصنع في منطقة <strong>بعيدة عن العملاء ووسائل النقل</strong>، التكاليف هتزيد والعملاء مش هيقدروا يوصلوا بسهولة
-        —وده هيأثر بشكل <strong>سلبي على المبيعات والأرباح</strong>.
-      </div>
-    </div>
-
-    <!-- سؤال MCQ 6 -->
-    <div class="mcq-container" data-aos="flip-up">
-      <div class="mcq-question">
-        ❓ لماذا يُعتبر قرار اختيار موقع المنشأة قراراً استراتيجياً؟
-      </div>
-      <div class="mcq-options">
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq6')">
-          أ) لأنه يؤثر على المدى القصير فقط
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, true, 'mcq6')">
-          ب) لأنه يؤثر على المنظمة على المدى الطويل ✨
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq6')">
-          ج) لأنه غير مهم
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq6')">
-          د) لأنه قرار تكتيكي
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ==================== القسم 7: عملية التحويل الكاملة ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
-    <div class="section-title">
-      <span class="icon">🔄</span>
-      عملية التحويل: من المدخلات للمخرجات
-    </div>
-
-    <div class="concept-content" style="font-size: 1.3rem; line-height: 2; margin-bottom: 2rem;">
-      وظيفة الإنتاج بتتضمن <strong>تحويل المدخلات إلى مخرجات</strong> (Transformation of Inputs into Outputs). 
-      خلينا نفهم كل عنصر بالتفصيل:
-    </div>
-
-    <!-- المدخلات الأربعة -->
-    <div class="section-subtitle">
-      📥 المدخلات: الموارد الأساسية
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2.5rem 0;">
-      
-      <!-- الأرض -->
-      <div class="comparison-card" style="border-top: 4px solid #84cc16;" data-aos="fade-up" data-aos-delay="100">
-        <div style="font-size: 3.5rem; text-align: center; margin-bottom: 1rem;">🏞️</div>
-        <div class="comparison-title" style="color: #84cc16; font-size: 1.6rem;">
-          الأرض
-          <div style="font-family: var(--font-english); font-size: 1.2rem; margin-top: 0.5rem;">Land</div>
-        </div>
-        <div style="font-size: 1.15rem; line-height: 2; color: #334155;">
-          الموقع اللي بتوضع فيه المنشآت المختلفة
-        </div>
-      </div>
-
-      <!-- العمالة -->
-      <div class="comparison-card" style="border-top: 4px solid #f59e0b;" data-aos="fade-up" data-aos-delay="200">
-        <div style="font-size: 3.5rem; text-align: center; margin-bottom: 1rem;">👷</div>
-        <div class="comparison-title" style="color: #f59e0b; font-size: 1.6rem;">
-          العمالة
-          <div style="font-family: var(--font-english); font-size: 1.2rem; margin-top: 0.5rem;">Labor</div>
-        </div>
-        <div style="font-size: 1.15rem; line-height: 2; color: #334155;">
-          <strong>عمالة يدوية:</strong> العمال على خط الإنتاج
-          <br/>
-          <strong>عمالة فكرية:</strong> المديرين والمخططين
-        </div>
-      </div>
-
-      <!-- رأس المال -->
-      <div class="comparison-card" style="border-top: 4px solid #3b82f6;" data-aos="fade-up" data-aos-delay="300">
-        <div style="font-size: 3.5rem; text-align: center; margin-bottom: 1rem;">💰</div>
-        <div class="comparison-title" style="color: #3b82f6; font-size: 1.6rem;">
-          رأس المال
-          <div style="font-family: var(--font-english); font-size: 1.2rem; margin-top: 0.5rem;">Capital</div>
-        </div>
-        <div style="font-size: 1.1rem; line-height: 2; color: #334155;">
-          المال المستخدم للحصول على:
-          <ul style="margin-right: 1.5rem; margin-top: 0.8rem;">
-            <li>🧱 المواد الخام</li>
-            <li>⚙️ المعدات</li>
-            <li>🏭 المنشآت</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- المعرفة -->
-      <div class="comparison-card" style="border-top: 4px solid #8b5cf6;" data-aos="fade-up" data-aos-delay="400">
-        <div style="font-size: 3.5rem; text-align: center; margin-bottom: 1rem;">📚</div>
-        <div class="comparison-title" style="color: #8b5cf6; font-size: 1.6rem;">
-          المعرفة
-          <div style="font-family: var(--font-english); font-size: 1.2rem; margin-top: 0.5rem;">Knowledge</div>
-        </div>
-        <div style="font-size: 1.15rem; line-height: 2; color: #334155;">
-          المعلومات المتعلقة بكل الجوانب المختلفة للأعمال
-        </div>
-      </div>
-
-    </div>
-
-    <!-- رسم E
-Charts للمدخلات -->
-    <div style="background: white; padding: 2.5rem; border-radius: 16px; margin: 2.5rem 0; box-shadow: 0 8px 24px rgba(0,0,0,0.1);" data-aos="zoom-in">
-      <h3 style="text-align: center; color: var(--color-management); margin-bottom: 2rem; font-size: 1.7rem;">
-        📊 نسب المدخلات في أنواع مختلفة من الأعمال
-      </h3>
-      <canvas id="inputsChart" style="max-height: 400px;"></canvas>
-    </div>
-
-    <!-- عملية التحويل -->
-    <div class="section-subtitle" style="margin-top: 3rem;">
-      ⚙️ عملية التحويل: إضافة القيمة
-    </div>
-
-    <div class="concept-box" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-right-color: #f59e0b;">
-      <div class="concept-title" style="color: #d97706;">
-        🔄 ما هي عملية التحويل؟
-        <span class="en">Transformation Process</span>
-      </div>
-      <div class="concept-content" style="font-size: 1.25rem;">
-        نشاط أو مجموعة من الأنشطة المستخدمة لـ<strong>تغيير المدخلات وإضافة قيمة ليها</strong> لتقديم مخرجات للعملاء.
-      </div>
-    </div>
-
-    <!-- أشكال عملية التحويل -->
-    <div style="margin: 2.5rem 0;">
-      <h3 style="color: var(--color-management); font-size: 1.6rem; margin-bottom: 1.5rem; text-align: center;">
-        🔧 أشكال عملية التحويل
-      </h3>
-      
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-        
-        <div class="concept-box" data-aos="flip-left" data-aos-delay="100" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-right-color: #3b82f6;">
-          <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">🏭</div>
-          <div class="concept-title" style="color: #2563eb; font-size: 1.3rem;">
-            الإنتاج المادي
-          </div>
-          <div class="concept-content">
-            Physical Production: التصنيع، البناء، توليد الطاقة
-          </div>
-        </div>
-
-        <div class="concept-box" data-aos="flip-left" data-aos-delay="200" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-right-color: #10b981;">
-          <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">📦</div>
-          <div class="concept-title" style="color: #059669; font-size: 1.3rem;">
-            التخزين
-          </div>
-          <div class="concept-content">
-            Storage: معالجة بعض المنتجات (جبن، نبيذ)
-          </div>
-        </div>
-
-        <div class="concept-box" data-aos="flip-left" data-aos-delay="300" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-right-color: #f59e0b;">
-          <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">🚚</div>
-          <div class="concept-title" style="color: #d97706; font-size: 1.3rem;">
-            النقل
-          </div>
-          <div class="concept-content">
-            Transportation: خدمات البريد، التوصيل
-          </div>
-        </div>
-
-        <div class="concept-box" data-aos="flip-left" data-aos-delay="400" style="background: linear-gradient(135deg, #ede9fe, #ddd6fe); border-right-color: #8b5cf6;">
-          <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">💱</div>
-          <div class="concept-title" style="color: #7c3aed; font-size: 1.3rem;">
-            التبادل
-          </div>
-          <div class="concept-content">
-            Exchanging: البنوك، شهادات الإيداع
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- التغذية الراجعة -->
-    <div class="section-subtitle" style="margin-top: 3rem;">
-      🔁 التغذية الراجعة: الرقابة والتحسين
-    </div>
-
-    <div style="background: linear-gradient(135deg, #fce7f3, #fbcfe8); padding: 2.5rem; border-radius: 16px; border-right: 5px solid #db2777; margin: 2rem 0;">
-      <div style="font-size: 1.5rem; font-weight: 700; color: #be185d; margin-bottom: 1.5rem;">
-        📊 التغذية الراجعة (Feedback)
-      </div>
-      <div style="font-size: 1.2rem; line-height: 2; color: #831843;">
-        معلومات بترجع من <strong>العملاء</strong> لعملية التحويل و/أو من <strong>عملية التحويل</strong> للمدخلات. 
-        بتُستخدم كوسيلة <strong>رقابة (Control)</strong> لاتخاذ إجراءات تصحيحية.
-      </div>
-    </div>
-
-    <!-- رسم دورة التغذية الراجعة الكاملة -->
-    <div style="background: white; padding: 2.5rem; border-radius: 16px; margin: 2.5rem 0; box-shadow: 0 8px 24px rgba(0,0,0,0.1);" data-aos="zoom-in">
-      <h3 style="text-align: center; color: var(--color-management); margin-bottom: 2rem; font-size: 1.8rem;">
-        🔄 دورة التحويل الكاملة مع التغذية الراجعة
-      </h3>
-      <div class="mermaid">
-graph TB
-    Inputs[📥 المدخلات<br/>Inputs<br/><br/>🏞️ الأرض<br/>👷 العمالة<br/>💰 رأس المال<br/>📚 المعرفة] -->|عملية التحويل| Transform[⚙️ عملية التحويل<br/>Transformation Process<br/><br/>🏭 تصنيع<br/>📦 تخزين<br/>🚚 نقل<br/>💱 تبادل]
-    
-    Transform --> Outputs[📤 المخرجات<br/>Outputs<br/><br/>📦 منتجات<br/>🎯 خدمات<br/>✨ قيمة مضافة]
-    
-    Outputs -->|تغذية راجعة من العملاء| Feedback1[🔍 مراجعة الجودة<br/>والكمية والتوقيت]
-    
-    Feedback1 -->|تحسينات| Transform
-    
-    Transform -->|تغذية راجعة داخلية| Feedback2[🔧 مراجعة المواد<br/>والموارد]
-    
-    Feedback2 -->|تحسينات| Inputs
-    
-    style Inputs fill:#dbeafe,stroke:#2563eb,stroke-width:3px
-    style Transform fill:#fef3c7,stroke:#f59e0b,stroke-width:3px
-    style Outputs fill:#d1fae5,stroke:#10b981,stroke-width:3px
-    style Feedback1 fill:#fce7f3,stroke:#db2777,stroke-width:2px
-    style Feedback2 fill:#ede9fe,stroke:#8b5cf6,stroke-width:2px
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ==================== القسم 8: إدارة الإنتاج والتحديات ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
-    <div class="section-title">
-      <span class="icon">👨‍💼</span>
-      إدارة الإنتاج: دور المدير
-    </div>
-
-    <div class="concept-box" style="background: linear-gradient(135deg, #fff7ed, #ffedd5); border-right-color: #ea580c;">
-      <div class="concept-title" style="color: #ea580c;">
-        📌 ما هي إدارة الإنتاج؟
-        <span class="en">Production Management</span>
-      </div>
-      <div class="concept-content" style="font-size: 1.25rem;">
-        إدارة عملية التحويل اللي مرتبطة بشكل مباشر بإنشاء السلع والخدمات. <strong>مدير الإنتاج</strong> مسؤول عن اتخاذ قرارات متعلقة بـ<strong>تصميم النظام</strong> و<strong>عمليات النظام</strong>.
-      </div>
-    </div>
-
-    <!-- قرارات المدير -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin: 2.5rem 0;">
-      
-      <div class="comparison-card" style="border-top: 4px solid #2563eb;" data-aos="fade-right">
-        <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">📐</div>
-        <div class="comparison-title" style="color: #2563eb; font-size: 1.7rem;">
-          تصميم النظام
-          <div style="font-family: var(--font-english); font-size: 1.3rem; margin-top: 0.5rem;">System Design</div>
-        </div>
-        <div style="font-size: 1.1rem; line-height: 2; color: #334155; margin-top: 1rem;">
-          <strong style="color: #1e40af; font-size: 1.2rem;">القرارات الاستراتيجية:</strong>
-          <ul style="margin-right: 1.5rem; margin-top: 1rem;">
-            <li style="margin-bottom: 0.8rem;">📍 اختيار الموقع</li>
-            <li style="margin-bottom: 0.8rem;">⚡ الطاقة الإنتاجية</li>
-            <li style="margin-bottom: 0.8rem;">📋 تخطيط الإنتاج</li>
-            <li>⚙️ الحصول على المعدات واستبدالها</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="comparison-card" style="border-top: 4px solid #059669;" data-aos="fade-left">
-        <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">🔧</div>
-        <div class="comparison-title" style="color: #059669; font-size: 1.7rem;">
-          عمليات النظام
-          <div style="font-family: var(--font-english); font-size: 1.3rem; margin-top: 0.5rem;">System Operations</div>
-        </div>
-        <div style="font-size: 1.1rem; line-height: 2; color: #334155; margin-top: 1rem;">
-          <strong style="color: #065f46; font-size: 1.2rem;">القرارات التشغيلية:</strong>
-          <ul style="margin-right: 1.5rem; margin-top: 1rem;">
-            <li style="margin-bottom: 0.8rem;">👥 الموظفين</li>
-            <li style="margin-bottom: 0.8rem;">📦 جدولة المخزون</li>
-            <li>✅ فحص الجودة</li>
-          </ul>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- التحديات الرئيسية -->
-    <div class="section-subtitle" style="margin-top: 3rem;">
-      ⚠️ التحديات الرئيسية لإدارة الإنتاج
-    </div>
-
-    <div style="background: linear-gradient(135deg, #1e293b, #334155); color: white; padding: 3rem; border-radius: 16px; margin: 2rem 0; box-shadow: 0 12px 32px rgba(0,0,0,0.3);" data-aos="zoom-in">
-      <div style="font-size: 1.8rem; font-weight: 700; margin-bottom: 2.5rem; text-align: center;">
-        🎯 التحديات الثلاثة الكبرى
-      </div>
-      
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
-        
-        <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; backdrop-filter: blur(10px); border-top: 3px solid #f59e0b;">
-          <div style="font-size: 3rem; margin-bottom: 1rem;">💼</div>
-          <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem;">العمل بموارد أقل</div>
-          <div style="font-family: var(--font-english); font-size: 1.1rem; opacity: 0.9; margin-bottom: 1rem;">Working with Fewer Resources</div>
-          <div style="font-size: 1.1rem; line-height: 1.9; opacity: 0.95;">
-            تقليص الحجم (Downsizing) لتقليل التكاليف، والعمل بعدد أقل من العمال مع زيادة الإنتاجية
-          </div>
-        </div>
-
-        <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; backdrop-filter: blur(10px); border-top: 3px solid #dc2626;">
-          <div style="font-size: 3rem; margin-bottom: 1rem;">⚖️</div>
-          <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem;">التنظيمات والمسؤولية</div>
-          <div style="font-family: var(--font-english); font-size: 1.1rem; opacity: 0.9; margin-bottom: 1rem;">Regulations & Product Liability</div>
-          <div style="font-size: 1.1rem; line-height: 1.9; opacity: 0.95;">
-            الشركات مسؤولة قانونياً عن أضرار منتجاتها، فبتستخدم Six Sigma لتحسين الجودة
-          </div>
-        </div>
-
-        <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; backdrop-filter: blur(10px); border-top: 3px solid #10b981;">
-          <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
-          <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem;">الإنتاج الرشيق</div>
-          <div style="font-family: var(--font-english); font-size: 1.1rem; opacity: 0.9; margin-bottom: 1rem;">Lean Production</div>
-          <div style="font-size: 1.1rem; line-height: 1.9; opacity: 0.95;">
-            استخدام الحد الأدنى من الموارد لإنتاج حجم كبير من السلع عالية الجودة
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ==================== القسم 9: التطور التاريخي ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
-    <div class="section-title">
-      <span class="icon">📜</span>
-      تطور إدارة الإنتاج: من الحرف اليدوية للإنتاج الضخم
-    </div>
-
-    <!-- Timeline التطور -->
-    <div style="background: white; padding: 3rem; border-radius: 16px; margin: 2rem 0; box-shadow: 0 8px 24px rgba(0,0,0,0.1);" data-aos="zoom-in">
-      <h3 style="text-align: center; color: var(--color-management); margin-bottom: 3rem; font-size: 1.8rem;">
-        ⏳ الخط الزمني لتطور الإنتاج
-      </h3>
-      
-      <div class="mermaid">
-timeline
-    title تطور إدارة الإنتاج عبر التاريخ
-    
-    section ما قبل الثورة الصناعية
-        الإنتاج الحرفي : عمال مهرة
-                         : أدوات بسيطة
-                         : كميات صغيرة
-                         : مكلف وبطيء
-    
-    section الثورة الصناعية
-        أنظمة القياس القياسية : منتجات موحدة
-                                : كميات كبيرة
-                                : عبر المصانع
-    
-    section الإدارة العلمية
-        الأجزاء القابلة للتبادل : أجزاء دقيقة
-                                  : سهلة التركيب
-        تقسيم العمل : مهام صغيرة
-                     : تخصص العمال
-    
-    section العصر الحديث
-        الإنتاج الضخم : عمال مهارات منخفضة
-                       : ماكينات موحدة
-                       : أحجام ضخمة
-      </div>
-    </div>
-
-    <!-- مقارنة الإنتاج الحرفي vs الإنتاج الضخم -->
-    <div style="margin: 3rem 0;">
-      <h3 style="color: var(--color-management); font-size: 1.7rem; margin-bottom: 2rem; text-align: center;">
-        ⚖️ الإنتاج الحرفي vs الإنتاج الضخم
-      </h3>
-      
-      <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
-          <thead style="background: linear-gradient(135deg, #ea580c, #c2410c);">
-            <tr>
-              <th style="padding: 1.5rem; color: white; font-size: 1.3rem; text-align: right;">المعيار</th>
-              <th style="padding: 1.5rem; color: white; font-size: 1.3rem; text-align: right;">الإنتاج الحرفي<br/><span style="font-size: 1rem; opacity: 0.9;">Craft Production</span></th>
-              <th style="padding: 1.5rem; color: white; font-size: 1.3rem; text-align: right;">الإنتاج الضخم<br/><span style="font-size: 1rem; opacity: 0.9;">Mass Production</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom: 2px solid #e2e8f0;">
-              <td style="padding: 1.5rem; font-weight: 600; background: #fef3c7;">العمالة</td>
-              <td style="padding: 1.5rem;">عمال ذوو <strong style="color: #059669;">مهارات عالية</strong></td>
-              <td style="padding: 1.5rem;">عمال ذوو <strong style="color: #dc2626;">مهارات منخفضة</strong></td>
-            </tr>
-            <tr style="border-bottom: 2px solid #e2e8f0;">
-              <td style="padding: 1.5rem; font-weight: 600; background: #fef3c7;">الأدوات</td>
-              <td style="padding: 1.5rem;">أدوات <strong>بسيطة ومرنة</strong></td>
-              <td style="padding: 1.5rem;">ماكينات <strong>موحدة ومتخصصة</strong></td>
-            </tr>
-            <tr style="border-bottom: 2px solid #e2e8f0;">
-              <td style="padding: 1.5rem; font-weight: 600; background: #fef3c7;">الكمية</td>
-              <td style="padding: 1.5rem;"><strong style="color: #f59e0b;">كميات صغيرة</strong></td>
-              <td style="padding: 1.5rem;"><strong style="color: #10b981;">أحجام كبيرة</strong></td>
-            </tr>
-            <tr style="border-bottom: 2px solid #e2e8f0;">
-              <td style="padding: 1.5rem; font-weight: 600; background: #fef3c7;">المنتجات</td>
-              <td style="padding: 1.5rem;">سلع <strong style="color: #8b5cf6;">مخصصة</strong></td>
-              <td style="padding: 1.5rem;">منتجات <strong style="color: #3b82f6;">موحدة</strong></td>
-            </tr>
-            <tr style="border-bottom: 2px solid #e2e8f0;">
-              <td style="padding: 1.5rem; font-weight: 600; background: #fef3c7;">السرعة</td>
-              <td style="padding: 1.5rem;"><strong style="color: #dc2626;">بطيء</strong></td>
-              <td style="padding: 1.5rem;"><strong style="color: #10b981;">سريع</strong></td>
-            </tr>
-            <tr>
-              <td style="padding: 1.5rem; font-weight: 600; background: #fef3c7;">التكلفة</td>
-              <td style="padding: 1.5rem;"><strong style="color: #dc2626;">مكلف</strong></td>
-              <td style="padding: 1.5rem;"><strong style="color: #10b981;">أقل تكلفة (وفورات الحجم)</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- مفاهيم الإدارة العلمية -->
-    <div style="background: linear-gradient(135deg, #ede9fe, #ddd6fe); padding: 2.5rem; border-radius: 16px; border-right: 5px solid #8b5cf6; margin: 2.5rem 0;">
-      <div style="font-size: 1.7rem; font-weight: 700; color: #6d28d9; margin-bottom: 2rem;">
-        🔬 مفاهيم الإدارة العلمية الأساسية
-      </div>
-      
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-        
-        <div style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-          <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔩</div>
-          <div style="font-size: 1.4rem; font-weight: 700; color: #7c3aed; margin-bottom: 0.8rem;">
-            الأجزاء القابلة للتبادل
-          </div>
-          <div style="font-family: var(--font-english); font-size: 1.1rem; color: #6d28d9; margin-bottom: 1rem;">
-            Interchangeable Parts
-          </div>
-          <div style="font-size: 1.1rem; line-height: 2; color: #334155;">
-            أجزاء من المنتج بتُصنع <strong>بدقة</strong> بحيث يمكن <strong>تركيبها بسهولة</strong> في المنتج. كل الأجزاء متطابقة ويمكن تبادلها.
-          </div>
-        </div>
-
-        <div style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-          <div style="font-size: 2.5rem; margin-bottom: 1rem;">👥</div>
-          <div style="font-size: 1.4rem; font-weight: 700; color: #7c3aed; margin-bottom: 0.8rem;">
-            تقسيم العمل
-          </div>
-          <div style="font-family: var(--font-english); font-size: 1.1rem; color: #6d28d9; margin-bottom: 1rem;">
-            Division of Labor
-          </div>
-          <div style="font-size: 1.1rem; line-height: 2; color: #334155;">
-            تقسيم عملية الإنتاج لـ<strong>مهام صغيرة</strong> بحيث كل عامل بيؤدي <strong>جزء صغير فقط</strong> من العمل، مما يزيد الكفاءة والسرعة.
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- سؤال MCQ 7 -->
-    <div class="mcq-container" data-aos="flip-up">
-      <div class="mcq-question">
-        ❓ ما هو الفرق الأساسي بين الإنتاج الحرفي والإنتاج الضخم؟
-      </div>
-      <div class="mcq-options">
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq7')">
-          أ) الإنتاج الحرفي يستخدم ماكينات موحدة، والإنتاج الضخم يستخدم أدوات بسيطة
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq7')">
-          ب) الإنتاج الحرفي ينتج كميات كبيرة، والإنتاج الضخم ينتج كميات صغيرة
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, true, 'mcq7')">
-          ج) الإنتاج الحرفي يستخدم عمال مهرة وينتج كميات صغيرة، والإنتاج الضخم يستخدم عمال ذوو مهارات منخفضة وينتج كميات كبيرة ✨
-        </div>
-        <div class="mcq-option" onclick="checkAnswer(this, false, 'mcq7')">
-          د) لا يوجد فرق
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ==================== القسم 10: جدول المفاهيم الشامل ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
-    <div class="section-title">
-      <span class="icon">📚</span>
-      جدول المفاهيم الأساسية الشامل
-    </div>
-
-    <div class="concept-content" style="font-size: 1.3rem; margin-bottom: 2rem; text-align: center;">
-      جدول تفاعلي كامل يحتوي على <strong>جميع المفاهيم والمصطلحات</strong> التي تم شرحها في المحاضرة
-    </div>
-
-    <!-- جدول تفاعلي ضخم -->
-    <div class="interactive-table" data-aos="fade-up">
-      <table id="conceptsTable" class="display" style="width:100%">
-        <thead>
-          <tr>
-            <th>المفهوم بالعربية</th>
-            <th>Concept (English)</th>
-            <th>التعريف</th>
-            <th>الخلاصة</th>
-            <th>الرمز</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- سيتم إضافة كل المفاهيم هنا عبر JavaScript -->
-        </tbody>
-      </table>
-    </div>
-
-  </div>
-
-  <!-- ==================== الخلاصة النهائية ==================== -->
-  <div class="glassy-card" data-aos="fade-up" style="background: linear-gradient(135deg, rgba(234, 88, 12, 0.15), rgba(37, 99, 235, 0.15));">
-    <div class="section-title" style="color: var(--color-management);">
-      <span class="icon">🎓</span>
-      الخلاصة النهائية
-    </div>
-
-    <div style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
-      <div style="font-size: 1.4rem; line-height: 2.2; color: #334155;">
-        <p style="margin-bottom: 1.5rem;">
-          🎯 <strong>وظيفة الإنتاج</strong> هي القلب النابض لأي منظمة تجارية، فهي المسؤولة عن <strong>تحويل المدخلات إلى مخرجات ذات قيمة</strong>.
-        </p>
-        
-        <p style="margin-bottom: 1.5rem;">
-          ⚙️ الوظيفة تشمل <strong>ستة أنشطة أساسية</strong>: التنبؤ، تخطيط الطاقة، الجدولة، إدارة المخزون، ضمان الجودة، وتحديد المواقع.
-        </p>
-        
-        <p style="margin-bottom: 1.5rem;">
-          📊 <strong>مدير الإنتاج</strong> مسؤول عن اتخاذ قرارات استراتيجية (تصميم النظام) وتشغيلية (عمليات النظام) لضمان الكفاءة والفعالية.
-        </p>
-        
-        <p style="margin-bottom: 1.5rem;">
-          🚀 التحديات المعاصرة تشمل: العمل بموارد أقل، الالتزام بالتنظيمات، وتطبيق <strong>الإنتاج الرشيق</strong> و<strong>Six Sigma</strong>.
-        </p>
-        
-        <p>
-          📜 تطورت إدارة الإنتاج من <strong>الإنتاج الحرفي</strong> البطيء والمكلف إلى <strong>الإنتاج الضخم</strong> السريع والفعّال بفضل مفاهيم الإدارة العلمية.
-        </p>
-      </div>
-    </div>
-
-    <!-- رسالة ختامية -->
-    <div style="background: linear-gradient(135deg, #1e293b, #334155); color: white; padding: 2.5rem; border-radius: 16px; margin-top: 2.5rem; text-align: center; box-shadow: 0 12px 32px rgba(0,0,0,0.3);">
-      <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
-      <div style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem;">
-        تهانينا! أتممت رحلة وظيفة الإنتاج
-      </div>
-      <div style="font-size: 1.3rem; opacity: 0.95;">
-        الآن أنت تفهم كيف تُدار العمليات الإنتاجية من البداية للنهاية!
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
-<!-- ==================== SCRIPTS ==================== -->
-<script>
-// ==================== INITIALIZE LIBRARIES ====================
-document.addEventListener('DOMContentLoaded', function() {
-  
-  // Initialize AOS
-  AOS.init({
-    duration: 800,
-    easing: 'ease-in-out',
-    once: true,
-    offset: 100
-  });
-
-  // Initialize Mermaid
-  mermaid.initialize({ 
-    startOnLoad: true,
-    theme: 'default',
-    themeVariables: {
-      primaryColor: '#ea580c',
-      primaryTextColor: '#fff',
-      primaryBorderColor: '#c2410c',
-      lineColor: '#64748b',
-      secondaryColor: '#2563eb',
-      tertiaryColor: '#10b981'
-    }
-  });
-
-  // Initialize Swiper للأنشطة الستة
-  const activitiesSwiper = new Swiper('.activitiesSwiper', {
-    slidesPerView: 1,
-    spaceBetween: 30,
-    loop: true,
-    autoplay: {
-      delay: 4000,
-      disableOnInteraction: false,
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-    breakpoints: {
-      768: {
-        slidesPerView: 2,
-      },
-      1024: {
-        slidesPerView: 3,
-      }
-    }
-  });
-
-  // Initialize DataTables للجدول التفاعلي
-  $('#sixMsTable').DataTable({
-    language: {
-      url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json'
-    },
-    pageLength: 10,
-    order: [[0, 'asc']],
-    responsive: true
-  });
-
-  // Initialize جدول المفاهيم الشامل
-  const conceptsData = [
-    ['وظيفة الإنتاج', 'Production Function', 'جميع الأنشطة المرتبطة مباشرة بإنشاء السلع والخدمات', 'خلق القيمة', '🏭'],
-    ['التنبؤ', 'Forecasting', 'تقدير الطلب المستقبلي والموارد اللازمة للإنتاج', 'قراءة المستقبل', '🔮'],
-    ['السوق', 'Market', 'الطلب المتوقع على المنتج', 'الطلب', '🎯'],
-    ['المواد', 'Materials', 'المواد الخام والأجزاء اللازمة للعمليات', 'المواد الخام', '🧱'],
-    ['العمالة', 'Man', 'كمية العمالة المطلوبة لتنفيذ العمل', 'القوى العاملة', '👷'],
-    ['الأساليب', 'Methods', 'تقنيات الإنتاج اللي هتُستخدم', 'التقنيات', '🔧'],
-    ['المال', 'Money', 'الموارد المالية المطلوبة لتنفيذ العمليات', 'التمويل', '💰'],
-    ['الآلات', 'Machines', 'المعدات المستخدمة في عملية الإنتاج', 'المعدات', '⚙️'],
-    ['الطاقة الإنتاجية', 'Capacity', 'الحد الأقصى من المخرجات الممكن إنتاجها', 'القدرة', '⚡'],
-    ['تخطيط الطاقة', 'Capacity Planning', 'تحديد الطاقة المطلوبة لتلبية الطلب', 'الموازنة', '📊'],
-    ['طاقة التصميم', 'Design Capacity', 'الحد الأقصى النظري تحت ظروف مثالية', 'القدرة المثالية', '🎯'],
-    ['الطاقة الفعلية', 'Effective Capacity', 'الإنتاج الممكن تحت الظروف الحالية', 'القدرة الواقعية', '✅'],
-    ['الجدولة', 'Scheduling', 'ترتيب حمل العمل بطريقة مثالية', 'التنظيم', '📅'],
-    ['إدارة المخزون', 'Inventory Management', 'الطلب والتخزين واستخدام المخزون', 'إدارة المواد', '📦'],
-    ['المواد الخام', 'Raw Materials', 'المواد المستخدمة في التحويل', 'مواد أولية', '🧱'],
-    ['العمل تحت التشغيل', 'Work in Process', 'منتجات نصف مُصنّعة', 'منتج جزئي', '⚙️'],
-    ['السلع التامة', 'Finished Goods', 'سلع جاهزة للبيع', 'منتج نهائي', '✅'],
-    ['في الوقت المناسب', 'Just-in-Time (JIT)', 'توصيل المواد قبل الحاجة مباشرة', 'صفر مخزون', '🚗'],
-    ['نظام تويوتا', 'Toyota Production System', 'نظام JIT المطوّر بواسطة تويوتا', 'JIT', '🇯🇵'],
-    ['تخطيط متطلبات المواد', 'Material Requirement Planning', 'نظام مخزون قائم على الكمبيوتر', 'نظام رقمي', '💻'],
-    ['ضمان الجودة', 'Quality Assurance', 'منع العيوب في المنتجات', 'الوقاية', '🛡️'],
-    ['مراقبة الجودة', 'Quality Control', 'تحديد العيوب في المنتجات', 'الفحص', '🔍'],
-    ['ستة سيجما', 'Six Sigma', 'تقنيات لتحسين العمليات وتقليل العيوب', 'التحسين المستمر', 'σ'],
-    ['تحديد المواقع', 'Locating Facilities', 'تحديد موقع المنشأة', 'الموقع الاستراتيجي', '📍'],
-    ['المنفعة الشكلية', 'Form Utility', 'القيمة المضافة بإتاحة المنتج بالشكل الصحيح', 'قيمة الشكل', '✨'],
-    ['المدخلات', 'Inputs', 'الموارد المستخدمة لإنتاج المخرجات', 'الموارد', '📥'],
-    ['الأرض', 'Land', 'الموقع الموضوعة فيه المنشآت', 'المكان', '🏞️'],
-    ['رأس المال', 'Capital', 'المال لشراء المواد والمعدات والمنشآت', 'التمويل', '💰'],
-    ['المعرفة', 'Knowledge', 'المعلومات المتعلقة بالأعمال', 'المعلومات', '📚'],
-    ['عملية التحويل', 'Transformation Process', 'تغيير المدخلات وإضافة قيمة', 'التحويل', '⚙️'],
-    ['التغذية الراجعة', 'Feedback', 'معلومات راجعة للرقابة والتصحيح', 'الرقابة', '🔁'],
-    ['إدارة الإنتاج', 'Production Management', 'إدارة عملية التحويل', 'الإدارة', '👨‍💼'],
-    ['تصميم النظام', 'System Design', 'قرارات الموقع والطاقة والتخطيط', 'التخطيط', '📐'],
-    ['عمليات النظام', 'System Operations', 'قرارات الموظفين والجدولة والجودة', 'التشغيل', '🔧'],
-    ['الإنتاج الرشيق', 'Lean Production', 'إنتاج حجم كبير بموارد قليلة', 'الكفاءة', '🎯'],
-    ['الإنتاج الحرفي', 'Craft Production', 'عمال مهرة ينتجون كميات صغيرة مخصصة', 'الإنتاج اليدوي', '🎨'],
-    ['وفورات الحجم', 'Economies of Scale', 'انخفاض التكلفة مع زيادة الإنتاج', 'توفير التكلفة', '📉'],
-    ['الأجزاء القابلة للتبادل', 'Interchangeable Parts', 'أجزاء دقيقة قابلة للتركيب بسهولة', 'الأجزاء المتطابقة', '🔩'],
-    ['تقسيم العمل', 'Division of Labor', 'تقسيم الإنتاج لمهام صغيرة', 'التخصص', '👥'],
-    ['الإنتاج الضخم', 'Mass Production', 'عمال ذوو مهارات منخفضة ينتجون كميات كبيرة', 'الإنتاج الكمي', '🏭']
-  ];
-
-  $('#conceptsTable').DataTable({
-    data: conceptsData,
-    language: {
-      url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json'
-    },
-    pageLength: 15,
-    order: [[0, 'asc']],
-    responsive: true,
-    columnDefs: [
-      { width: '15%', targets: 0 },
-      { width: '20%', targets: 1 },
-      { width: '35%', targets: 2 },
-      { width: '20%', targets: 3 },
-      { width: '10%', targets: 4, className: 'dt-center' }
-    ]
-  });
-
-  // رسم بياني: الفجوة بين الطاقة والطلب
-  const capacityCtx = document.getElementById('capacityDemandChart').getContext('2d');
-  new Chart(capacityCtx, {
-    type: 'line',
-    data: {
-      labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس'],
-      datasets: [
-        {
-          label: 'طاقة التصميم (Design Capacity)',
-          data: [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
-          borderColor: '#3b82f6',
-          backgroundColor: 'rgba(59, 130, 246, 0.1)',
-          borderWidth: 3,
-          borderDash: [5, 5],
-          tension: 0
-        },
-        {
-          label: 'الطاقة الفعلية (Effective Capacity)',
-          data: [800, 820, 810, 830, 825, 815, 835, 820],
-          borderColor: '#10b981',
-          backgroundColor: 'rgba(16, 185, 129, 0.1)',
-          borderWidth: 3,
-          tension: 0.3
-        },
-        {
-          label: 'الطلب الفعلي (Actual Demand)',
-          data: [700, 750, 850, 820, 900, 950, 880, 870],
-          borderColor: '#f59e0b',
-          backgroundColor: 'rgba(245, 158, 11, 0.1)',
-          borderWidth: 3,
-          tension: 0.4
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        legend: {
-          position: 'top',
-          labels: {
-            font: { size: 14, family: 'IBM Plex Sans Arabic' },
-            padding: 20
-          }
-        },
-        tooltip: {
-          titleFont: { size: 14, family: 'IBM Plex Sans Arabic' },
-          bodyFont: { size: 13, family: 'IBM Plex Sans Arabic' },
-          padding: 12
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: 'الوحدات المنتجة',
-            font: { size: 14, family: 'IBM Plex Sans Arabic' }
-          },
-          ticks: {
-            font: { size: 12 }
-          }
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'الشهر',
-            font: { size: 14, family: 'IBM Plex Sans Arabic' }
-          },
-          ticks: {
-            font: { size: 12, family: 'IBM Plex Sans Arabic' }
-          }
-        }
-      }
-    }
-  });
-
-  // رسم بياني: نسب المدخلات
-  const inputsCtx = document.getElementById('inputsChart').getContext('2d');
-  new Chart(inputsCtx, {
-    type: 'radar',
-    data: {
-      labels: ['الأرض (Land)', 'العمالة (Labor)', 'رأس المال (Capital)', 'المعرفة (Knowledge)'],
-      datasets: [
-        {
-          label: 'مصنع تعليب',
-          data: [20, 35, 30, 15],
-          borderColor: '#f59e0b',
-          backgroundColor: 'rgba(245, 158, 11, 0.2)',
-          borderWidth: 2
-        },
-        {
-          label: 'مستشفى',
-          data: [15, 40, 25, 20],
-          borderColor: '#10b981',
-          backgroundColor: 'rgba(16, 185, 129, 0.2)',
-          borderWidth: 2
-        },
-        {
-          label: 'شركة برمجيات',
-          data: [10, 30, 20, 40],
-          borderColor: '#8b5cf6',
-          backgroundColor: 'rgba(139, 92, 246, 0.2)',
-          borderWidth: 2
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        legend: {
-          position: 'top',
-          labels: {
-            font: { size: 14, family: 'IBM Plex Sans Arabic' },
-            padding: 20
-          }
-        }
-      },
-      scales: {
-        r: {
-          beginAtZero: true,
-          max: 50,
-          ticks: {
-            font: { size: 11, family: 'IBM Plex Sans Arabic' },
-            stepSize: 10
-          },
-          pointLabels: {
-            font: { size: 13, family: 'IBM Plex Sans Arabic' }
-          }
-        }
-      }
-    }
-  });
-
-  // شبكة عوامل اختيار الموقع باستخدام vis-network
-  const locationContainer = document.getElementById('locationFactorsNetwork');
-  const locationNodes = new vis.DataSet([
-    { id: 1, label: '📍\nموقع المنشأة\nFacility Location', color: '#ea580c', font: { size: 16, multi: true, bold: true }, shape: 'box' },
-    { id: 2, label: '👥 القرب من العملاء\nCustomers', color: '#3b82f6' },
-    { id: 3, label: '👷 القرب من العمال\nWorkers', color: '#10b981' },
-    { id: 4, label: '🚚 وسائل النقل\nTransportation', color: '#f59e0b' },
-    { id: 5, label: '🏗️ تكلفة الأرض\nLand Cost', color: '#8b5cf6' },
-    { id: 6, label: '⚡ الطاقة والمرافق\nUtilities', color: '#ec4899' },
-    { id: 7, label: '🏛️ القوانين المحلية\nLocal Laws', color: '#14b8a6' },
-    { id: 8, label: '🧱 القرب من الموردين\nSuppliers', color: '#f97316' }
-  ]);
-
-  const locationEdges = new vis.DataSet([
-    { from: 1, to: 2, arrows: 'to', color: { color: '#3b82f6' } },
-    { from: 1, to: 3, arrows: 'to', color: { color: '#10b981' } },
-    { from: 1, to: 4, arrows: 'to', color: { color: '#f59e0b' } },
-    { from: 1, to: 5, arrows: 'to', color: { color: '#8b5cf6' } },
-    { from: 1, to: 6, arrows: 'to', color: { color: '#ec4899' } },
-    { from: 1, to: 7, arrows: 'to', color: { color: '#14b8a6' } },
-    { from: 1, to: 8, arrows: 'to', color: { color: '#f97316' } }
-  ]);
-
-  const locationData = { nodes: locationNodes, edges: locationEdges };
-  const locationOptions = {
-    nodes: {
-      shape: 'ellipse',
-      size: 25,
-      font: { size: 14, face: 'IBM Plex Sans Arabic' },
-      borderWidth: 2,
-      shadow: true
-    },
-    edges: {
-      width: 2,
-      shadow: true,
-      smooth: { type: 'continuous' }
-    },
-    physics: {
-      stabilization: false,
-      barnesHut: {
-        gravitationalConstant: -2000,
-        springConstant: 0.001,
-        springLength: 200
-      }
-    }
-  };
-
-  new vis.Network(locationContainer, locationData, locationOptions);
-
-});
-
-// ==================== MCQ ANSWER CHECKING ====================
-let answeredQuestions = new Set();
-
-function checkAnswer(element, isCorrect, questionId) {
-  // منع الإجابة مرتين على نفس السؤال
-  if (answeredQuestions.has(questionId)) return;
-  
-  answeredQuestions.add(questionId);
-  
-  // تعطيل جميع الخيارات في السؤال
-  const allOptions = element.parentElement.querySelectorAll('.mcq-option');
-  allOptions.forEach(opt => {
-    opt.style.pointerEvents = 'none';
-  });
-  
-  if (isCorrect) {
-    element.classList.add('correct');
-    
-    // Confetti celebration!
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#10b981', '#22c55e', '#4ade80']
-    });
-    
-    // SweetAlert2 للإجابة الصحيحة
-    Swal.fire({
-      icon: 'success',
-      title: 'إجابة صحيحة! 🎉',
-      text: 'ممتاز! أنت تفهم المفهوم جيداً',
-      confirmButtonText: 'متابعة',
-      confirmButtonColor: '#10b981',
-      timer: 3000,
-      timerProgressBar: true
-    });
-    
-  } else {
-    element.classList.add('wrong');
-    
-    // SweetAlert2 للإجابة الخاطئة
-    Swal.fire({
-      icon: 'error',
-      title: 'إجابة خاطئة',
-      text: 'حاول مرة أخرى وراجع المحتوى',
-      confirmButtonText: 'فهمت',
-      confirmButtonColor: '#ef4444'
-    });
-  }
-}
-
-// ==================== SCROLL PROGRESS BAR ====================
-window.addEventListener('scroll', function() {
-  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  const scrolled = (winScroll / height) * 100;
-  
-  const progressBar = document.getElementById('scrollProgress');
-  if (progressBar) {
-    progressBar.style.width = scrolled + '%';
-  }
-});
-
-// ==================== ANIMATIONS ====================
-// تحريك الأرقام باستخدام CountUp
-const observerOptions = {
-  threshold: 0.5,
-  rootMargin: '0px 0px -100px 0px'
-};
-
-const observer = new IntersectionObserver(function(entries) {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const countElements = entry.target.querySelectorAll('[data-count]');
-      countElements.forEach(el => {
-        const target = parseInt(el.getAttribute('data-count'));
-        const countUp = new CountUp(el, target, {
-          duration: 2.5,
-          separator: ',',
-          decimal: '.'
-        });
-        if (!countUp.error) {
-          countUp.start();
-        }
-      });
-      observer.unobserve(entry.target);
-    }
-  });
-}, observerOptions);
-
-document.querySelectorAll('.glassy-card').forEach(card => {
-  observer.observe(card);
-});
-
-</script>
-
-<!-- إدراج محتوى script.txt هنا إذا لزم الأمر -->
-
-    </div>
-
-    
-    <!-- ==================== ENGLISH CONTENT ==================== -->
-    <div class="en-content" style="display:none;">
-      
-      
-    </div>
-
-  </main>
-
-  <!-- ==================== CUSTOM SCRIPTS ==================== -->
-  <script src="../js/script.js"></script>
-</body>
-</html>
