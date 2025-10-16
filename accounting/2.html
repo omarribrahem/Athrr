@@ -1,900 +1,1 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="منصة أثر التعليمية - محتوى متخصص لكلية التجارة" />
-  <meta name="keywords" content="اقتصاد، محاسبة، إدارة، تجارة، business, economics, accounting, finance" />
- 
-  <title>عنوان المحاضرة - منصة أثر</title>
-  
-  <!-- ==================== FONTS ==================== -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  
-  <!-- ==================== MATH RENDERING ==================== -->
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']],
-        processEscapes: true,
-        processEnvironments: true,
-        packages: {'[+]': ['ams', 'newcommand', 'mathtools', 'boldsymbol']},
-        macros: {
-          RR: "{\\mathbb{R}}",
-          ZZ: "{\\mathbb{Z}}",
-          NN: "{\\mathbb{N}}",
-          bold: ["{\\bf #1}", 1],
-          Delta: "{\\varDelta}",
-          Sigma: "{\\varSigma}"
-        }
-      },
-      svg: { fontCache: 'global', scale: 1.1 },
-      options: {
-        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-        ignoreHtmlClass: 'tex2jax_ignore',
-        processHtmlClass: 'tex2jax_process'
-      },
-      startup: {
-        pageReady: () => {
-          console.log('✅ MathJax is ready!');
-          return MathJax.startup.defaultPageReady();
-        }
-      }
-    };
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
-  
-  <!-- KaTeX (Alternative) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-  
-  <!-- ==================== BUSINESS/FINANCE LIBRARIES ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/@formulajs/formulajs/dist/formula.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/financejs@4.1.0/finance.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/accounting@0.4.1/accounting.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/numeral@2.0.6/numeral.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/decimal.js@10.4.3/decimal.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/big.js@6.2.1/big.min.js"></script>
-  
-  <!-- ==================== STATISTICS & DATA ANALYSIS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
-  <script src="https://unpkg.com/simple-statistics@7.8.3/dist/simple-statistics.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/regression@2.0.1/dist/regression.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
-  
-  <!-- ==================== CHARTS & GRAPHS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="https://code.highcharts.com/highcharts.js"></script>
-  <script src="https://code.highcharts.com/modules/exporting.js"></script>
-  <script src="https://code.highcharts.com/modules/export-data.js"></script>
-  <script src="https://s3.tradingview.com/tv.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js"></script>
-
-  <!-- ==================== TABLES & DATA GRIDS ==================== -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-  <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-  
-  <!-- ==================== DIAGRAMS & FLOWCHARTS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
-  <script src="https://unpkg.com/vis-network@9.1.6/dist/vis-network.min.js"></script>
-  <link href="https://unpkg.com/vis-network@9.1.6/dist/dist/vis-network.min.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
-  <script src="https://unpkg.com/gojs@3.0.0/release/go.js"></script>
-  
-  <!-- ==================== ANIMATIONS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/ScrollTrigger.min.js"></script>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  
-  <!-- ==================== CODE HIGHLIGHTING ==================== -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-  
-  <!-- ==================== PDF & PRINTING ==================== -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-  <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css">
-  
-  <!-- ==================== MARKDOWN & TEXT ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.2/dist/markdown-it.min.js"></script>
-  
-  <!-- ==================== UI COMPONENTS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  <script src="https://unpkg.com/@popperjs/core@2"></script>
-  <script src="https://unpkg.com/tippy.js@6"></script>
-  <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
-  <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.min.js"></script>
-  
-  <!-- ==================== CALENDAR & TIME ==================== -->
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
-  
-  <!-- ==================== ICONS ==================== -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
-  <!-- ==================== UTILITIES ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
-  
-  <!-- ==================== ACADEMIC TOOLS ==================== -->
-  <link href="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/minified/introjs.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/intro.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.css">
-  <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.js.iife.js"></script>
-  
-  <!-- ==================== SWIPER (Sliders) ==================== -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  
-  <!-- ==================== ENHANCEMENTS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.1/Sortable.min.js"></script>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
-  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
-  <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
-
-  <!-- ==================== CUSTOM STYLES ==================== -->
-  <link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
-  <!-- Background -->
-  <div class="background-waves">
-    <div class="wave-layer"></div>
-    <div class="wave-layer"></div>
-    <div class="wave-layer"></div>
-  </div>
-
-  <!-- Translation Button -->
-  <button class="translation-button" id="translationButton" aria-label="تبديل اللغة">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25C9.36657 2.25 6.94277 3.22321 5.16629 4.83371M12.75 2.25V7.5M12.75 7.5H18M12.75 7.5L5.16629 4.83371M11.25 21.75V16.5M11.25 16.5H6M11.25 16.5L18.8337 19.1663M5.16629 4.83371C3.22321 6.94277 2.25 9.36657 2.25 12M2.25 12C2.25 14.6334 3.22321 17.0572 4.83371 18.8337M18.8337 19.1663C20.7768 17.0572 21.75 14.6334 21.75 12M18.8337 4.83371C17.0572 3.22321 14.6334 2.25 12 2.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <span class="translation-text">English</span>
-  </button>
-
-  <!-- AI FAB Button -->
-  <button class="ai-fab-button" id="aiChatButton" aria-label="مساعد أثر الذكي">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f59e0b;">
-      <path d="M12 8V4H8"></path>
-      <rect x="4" y="12" width="16" height="8" rx="2"></rect>
-      <path d="M2 14h2"></path>
-      <path d="M20 14h2"></path>
-      <path d="M15 13v-2a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v2"></path>
-    </svg>
-    <span class="ai-fab-text" id="aiFabText">أثر AI</span>
-  </button>
-
-  <!-- Toast Notification -->
-  <div class="toast-notification" id="toastNotification"></div>
-
-  <!-- AI Chat Modal -->
-  <div class="ai-chat-modal" id="aiChatModal">
-    <div class="ai-chat-container">
-      <div class="ai-chat-header">
-        <h3 id="ai-chat-title">اسأل أثر AI</h3>
-        <button class="ai-chat-close-btn" id="aiChatCloseBtn" aria-label="إغلاق">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-      <div class="ai-chat-messages" id="aiChatMessages"></div>
-      <div class="ai-chat-input-area">
-        <input type="text" id="ai-chat-input" placeholder="اكتب سؤالك هنا...">
-        <button id="ai-chat-send-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13"></line>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Main Content -->
-  <main class="main-content">
-
-    <!-- ==================== VIDEO PLAYER SECTION ==================== -->
-    <section class="video-section">
-      <div class="video-card-player" data-aos="fade-down">
-        <div class="video-info">
-          <h2>🎬 فيديو شرح: مقدمة في المحاسبة</h2>
-          <p id="playerInfo">مشغل فيديو ذكي - يكتشف جهازك تلقائياً</p>
-          <span class="device-badge" id="deviceBadge">جاري التحميل...</span>
-        </div>
-
-        <div class="video-player-wrapper">
-          <div class="video-player" id="videoPlayer">
-            <video id="video" playsinline preload="auto"></video>
-
-            <div class="loading-spinner" id="loadingSpinner"></div>
-
-            <!-- Simple Controls -->
-            <div class="simple-controls">
-              <div class="simple-progress" id="simpleProgress">
-                <div class="simple-progress-filled" id="simpleProgressFilled"></div>
-              </div>
-              <div class="simple-controls-row">
-                <button class="simple-btn" id="simplePlayBtn">
-                  <i class="fas fa-play"></i>
-                </button>
-                <span class="simple-time">
-                  <span id="simpleCurrentTime">0:00</span> / <span id="simpleDuration">0:00</span>
-                </span>
-                <button class="simple-btn" id="simpleFullscreenBtn">
-                  <i class="fas fa-expand"></i>
-                </button>
-              </div>
-            </div>
-
-            <!-- iOS Controls -->
-            <div class="ios-controls">
-              <div class="video-bars" id="videoBars">
-                <div class="top-bar-bg"></div>
-                <div class="bottom-bar-bg"></div>
-              </div>
-
-              <div class="tap-indicator left" id="tapLeft">
-                <i class="fas fa-backward"></i>
-              </div>
-              <div class="tap-indicator right" id="tapRight">
-                <i class="fas fa-forward"></i>
-              </div>
-
-              <div class="top-controls">
-                <div class="top-left-group">
-                  <button class="control-bubble glass-bubble" id="closeBtn">
-                    <i class="fas fa-times"></i>
-                  </button>
-                  <button class="control-bubble glass-bubble" id="pipBtn" style="display:none;">
-                    <i class="fas fa-clone"></i>
-                  </button>
-                </div>
-                
-                <div class="volume-control">
-                  <div class="volume-slider-container">
-                    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1" />
-                  </div>
-                  <button class="control-bubble glass-bubble" id="volumeBtn">
-                    <i class="fas fa-volume-up"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div class="center-play-controls">
-                <button class="skip-bubble glass-bubble" id="skipBack">
-                  <i class="fas fa-rotate-left"></i>
-                  <span class="skip-number">10</span>
-                </button>
-
-                <button class="play-bubble glass-bubble" id="playBtn">
-                  <i class="fas fa-play"></i>
-                </button>
-
-                <button class="skip-bubble glass-bubble" id="skipForward">
-                  <i class="fas fa-rotate-right"></i>
-                  <span class="skip-number">10</span>
-                </button>
-              </div>
-
-              <div class="bottom-timeline">
-                <div class="progress-wrapper" id="progressWrapper">
-                  <div class="progress-track">
-                    <div class="progress-buffered" id="progressBuffered"></div>
-                    <div class="progress-filled" id="progressFilled"></div>
-                  </div>
-                </div>
-
-                <div class="time-row">
-                  <span class="time-text" id="currentTime">0:00</span>
-                  <span class="time-text" id="remainingTime">-0:00</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== ARABIC CONTENT ==================== -->
-<!-- ==================== ARABIC CONTENT ==================== -->
-<div class="ar-content">
-
-  <!-- المقدمة -->
-  <div class="glassy-card" data-aos="fade-up">
-    <h1 style="text-align: center; background: linear-gradient(135deg, #16a34a, #059669); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; font-size: 2.5rem;">
-      وظيفة الإنتاج في إدارة العمليات
-    </h1>
-    <p style="text-align: center; font-size: 1.15rem; color: #64748b; margin-bottom: 0; font-weight: 500;">
-      رحلة تعليمية متكاملة عن Production Function في عالم الأعمال
-    </p>
-  </div>
-
-  <!-- الوظائف الأساسية -->
-  <div class="glassy-card" data-aos="fade-up" data-aos-delay="100">
-    <h2>الوظائف الأساسية في الأعمال</h2>
-    <p style="line-height: 1.9; color: #475569;">
-      أي مؤسسة تجارية في العالم بتشتغل من خلال <strong style="color: #16a34a;">أربع وظائف أساسية مترابطة</strong>، كل واحدة منهم ليها دور محدد في تحقيق أهداف المنظمة.
-    </p>
-    
-    <!-- العناصر الزجاجية -->
-    <div class="stats-grid" style="margin-top: 30px;">
-      <div class="stat-card" style="background: rgba(255,255,255,0.6); border: 2px solid rgba(22,163,74,0.2); position: relative; overflow: hidden; backdrop-filter: blur(10px);" data-aos="zoom-in" data-aos-delay="100">
-        <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, rgba(22,163,74,0.15), rgba(5,150,105,0.1)); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(22,163,74,0.15);">
-          <i class="fas fa-industry" style="font-size: 2.2rem; color: #16a34a;"></i>
-        </div>
-        <div class="stat-label" style="font-size: 1.2rem; font-weight: 700; color: #166534;">الإنتاج</div>
-        <div style="font-size: 0.95rem; margin-top: 8px; color: #64748b; font-weight: 500;">Production</div>
-      </div>
-
-      <div class="stat-card" style="background: rgba(255,255,255,0.6); border: 2px solid rgba(37,99,235,0.2); position: relative; overflow: hidden; backdrop-filter: blur(10px);" data-aos="zoom-in" data-aos-delay="200">
-        <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, rgba(37,99,235,0.15), rgba(29,78,216,0.1)); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(37,99,235,0.15);">
-          <i class="fas fa-bullhorn" style="font-size: 2.2rem; color: #2563eb;"></i>
-        </div>
-        <div class="stat-label" style="font-size: 1.2rem; font-weight: 700; color: #1e40af;">التسويق</div>
-        <div style="font-size: 0.95rem; margin-top: 8px; color: #64748b; font-weight: 500;">Marketing</div>
-      </div>
-
-      <div class="stat-card" style="background: rgba(255,255,255,0.6); border: 2px solid rgba(5,150,105,0.2); position: relative; overflow: hidden; backdrop-filter: blur(10px);" data-aos="zoom-in" data-aos-delay="300">
-        <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, rgba(5,150,105,0.15), rgba(4,120,87,0.1)); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(5,150,105,0.15);">
-          <i class="fas fa-coins" style="font-size: 2.2rem; color: #059669;"></i>
-        </div>
-        <div class="stat-label" style="font-size: 1.2rem; font-weight: 700; color: #065f46;">التمويل</div>
-        <div style="font-size: 0.95rem; margin-top: 8px; color: #64748b; font-weight: 500;">Finance</div>
-      </div>
-
-      <div class="stat-card" style="background: rgba(255,255,255,0.6); border: 2px solid rgba(124,58,237,0.2); position: relative; overflow: hidden; backdrop-filter: blur(10px);" data-aos="zoom-in" data-aos-delay="400">
-        <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(109,40,217,0.1)); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(124,58,237,0.15);">
-          <i class="fas fa-users" style="font-size: 2.2rem; color: #7c3aed;"></i>
-        </div>
-        <div class="stat-label" style="font-size: 1.2rem; font-weight: 700; color: #5b21b6;">الموارد البشرية</div>
-        <div style="font-size: 0.95rem; margin-top: 8px; color: #64748b; font-weight: 500;">Human Resources</div>
-      </div>
-    </div>
-
-    <div class="alert-box alert-info" style="margin-top: 30px; border-radius: 16px; background: rgba(245,158,11,0.08); border: 2px solid rgba(245,158,11,0.2);">
-      <div style="width: 55px; height: 55px; background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.15)); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-        <i class="fas fa-lightbulb" style="font-size: 1.6rem; color: #f59e0b;"></i>
-      </div>
-      <div>
-        <strong style="color: #92400e; font-size: 1.05rem;">النهاردة هنركز على:</strong>
-        <span style="color: #475569;"> الوظيفة اللي بتخلق القيمة الفعلية للمنتج أو الخدمة—وهي <strong style="color: #16a34a;">وظيفة الإنتاج أو العمليات</strong>.</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- تعريف وظيفة الإنتاج -->
-  <div class="glassy-card" data-aos="fade-up" data-aos-delay="150">
-    <h2>ما هي وظيفة الإنتاج؟</h2>
-    
-    <div class="formula-box" style="position: relative; overflow: hidden; border-radius: 16px; background: rgba(124,58,237,0.05); border: 2px solid rgba(124,58,237,0.2);">
-      <div style="position: absolute; top: 20px; left: 20px; width: 65px; height: 65px; background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(109,40,217,0.15)); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-        <i class="fas fa-bookmark" style="font-size: 1.9rem; color: #7c3aed;"></i>
-      </div>
-      <h4 style="margin-bottom: 18px; color: #5b21b6; padding-right: 90px; font-size: 1.15rem;">
-        التعريف
-      </h4>
-      <p style="font-size: 1.08rem; line-height: 2; margin-bottom: 0; color: #1e293b;">
-        <strong>وظيفة الإنتاج (Production Function)</strong> تشير إلى <mark class="highlight-green">كل الأنشطة اللي مرتبطة بشكل مباشر بإنشاء السلع والخدمات</mark>. يعني باختصار، هي العملية اللي بتحوّل <strong>المدخلات</strong> (زي المواد الخام والعمالة) لـ<strong>مخرجات</strong> (زي المنتجات الجاهزة للبيع).
-      </p>
-    </div>
-
-    <p style="margin-top: 30px; line-height: 1.9; color: #475569; font-size: 1.05rem;">
-      الوظيفة دي بتشمل مجموعة كبيرة من الأنشطة المترابطة:
-    </p>
-
-    <!-- الأنشطة كقائمة زجاجية -->
-    <div style="display: grid; gap: 15px; margin-top: 25px;">
-      <div style="background: rgba(255,255,255,0.6); border: 2px solid rgba(22,163,74,0.2); border-radius: 16px; padding: 18px 24px; display: flex; align-items: center; gap: 18px; backdrop-filter: blur(10px); transition: all 0.3s ease;" data-aos="fade-right" data-aos-delay="100" onmouseover="this.style.transform='translateX(-8px)'; this.style.boxShadow='0 8px 30px rgba(22,163,74,0.2)';" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='none';">
-        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #16a34a, #15803d); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 15px rgba(22,163,74,0.3);">
-          <i class="fas fa-chart-line" style="font-size: 1.4rem; color: white;"></i>
-        </div>
-        <div>
-          <div style="font-weight: 700; color: #166534; font-size: 1.05rem;">التنبؤ</div>
-          <div style="font-size: 0.9rem; color: #64748b; margin-top: 2px;">Forecasting</div>
-        </div>
-      </div>
-
-      <div style="background: rgba(255,255,255,0.6); border: 2px solid rgba(37,99,235,0.2); border-radius: 16px; padding: 18px 24px; display: flex; align-items: center; gap: 18px; backdrop-filter: blur(10px); transition: all 0.3s ease;" data-aos="fade-right" data-aos-delay="200" onmouseover="this.style.transform='translateX(-8px)'; this.style.boxShadow='0 8px 30px rgba(37,99,235,0.2)';" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='none';">
-        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 15px rgba(37,99,235,0.3);">
-          <i class="fas fa-bolt" style="font-size: 1.4rem; color: white;"></i>
-        </div>
-        <div>
-          <div style="font-weight: 700; color: #1e40af; font-size: 1.05rem;">تخطيط الطاقة الإنتاجية</div>
-          <div style="font-size: 0.9rem; color: #64748b; margin-top: 2px;">Capacity Planning</div>
-        </div>
-      </div>
-
-      <div style="background: rgba(255,255,255,0.6); border: 2px solid rgba(245,158,11,0.2); border-radius: 16px; padding: 18px 24px; display: flex; align-items: center; gap: 18px; backdrop-filter: blur(10px); transition: all 0.3s ease;" data-aos="fade-right" data-aos-delay="300" onmouseover="this.style.transform='translateX(-8px)'; this.style.boxShadow='0 8px 30px rgba(245,158,11,0.2)';" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='none';">
-        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 15px rgba(245,158,11,0.3);">
-          <i class="fas fa-calendar-alt" style="font-size: 1.4rem; color: white;"></i>
-        </div>
-        <div>
-          <div style="font-weight: 700; color: #92400e; font-size: 1.05rem;">الجدولة</div>
-          <div style="font-size: 0.9rem; color: #64748b; margin-top: 2px;">Scheduling</div>
-        </div>
-      </div>
-
-      <div style="background: rgba(255,255,255,0.6); border: 2px solid rgba(124,58,237,0.2); border-radius: 16px; padding: 18px 24px; display: flex; align-items: center; gap: 18px; backdrop-filter: blur(10px); transition: all 0.3s ease;" data-aos="fade-right" data-aos-delay="400" onmouseover="this.style.transform='translateX(-8px)'; this.style.boxShadow='0 8px 30px rgba(124,58,237,0.2)';" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='none';">
-        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #7c3aed, #6d28d9); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 15px rgba(124,58,237,0.3);">
-          <i class="fas fa-box" style="font-size: 1.4rem; color: white;"></i>
-        </div>
-        <div>
-          <div style="font-weight: 700; color: #5b21b6; font-size: 1.05rem;">إدارة المخزون</div>
-          <div style="font-size: 0.9rem; color: #64748b; margin-top: 2px;">Managing Inventories</div>
-        </div>
-      </div>
-
-      <div style="background: rgba(255,255,255,0.6); border: 2px solid rgba(5,150,105,0.2); border-radius: 16px; padding: 18px 24px; display: flex; align-items: center; gap: 18px; backdrop-filter: blur(10px); transition: all 0.3s ease;" data-aos="fade-right" data-aos-delay="500" onmouseover="this.style.transform='translateX(-8px)'; this.style.boxShadow='0 8px 30px rgba(5,150,105,0.2)';" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='none';">
-        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #059669, #047857); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 15px rgba(5,150,105,0.3);">
-          <i class="fas fa-check-circle" style="font-size: 1.4rem; color: white;"></i>
-        </div>
-        <div>
-          <div style="font-weight: 700; color: #065f46; font-size: 1.05rem;">ضمان الجودة</div>
-          <div style="font-size: 0.9rem; color: #64748b; margin-top: 2px;">Assuring Quality</div>
-        </div>
-      </div>
-
-      <div style="background: rgba(255,255,255,0.6); border: 2px solid rgba(220,38,38,0.2); border-radius: 16px; padding: 18px 24px; display: flex; align-items: center; gap: 18px; backdrop-filter: blur(10px); transition: all 0.3s ease;" data-aos="fade-right" data-aos-delay="600" onmouseover="this.style.transform='translateX(-8px)'; this.style.boxShadow='0 8px 30px rgba(220,38,38,0.2)';" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='none';">
-        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #dc2626, #b91c1c); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 15px rgba(220,38,38,0.3);">
-          <i class="fas fa-map-marker-alt" style="font-size: 1.4rem; color: white;"></i>
-        </div>
-        <div>
-          <div style="font-weight: 700; color: #991b1b; font-size: 1.05rem;">تحديد مواقع المنشآت</div>
-          <div style="font-size: 0.9rem; color: #64748b; margin-top: 2px;">Locating Facilities</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- التنبؤ -->
-  <div class="glassy-card" data-aos="fade-up" data-aos-delay="200">
-    <h2>التنبؤ: قراءة المستقبل بعيون الحاضر</h2>
-    
-    <p style="line-height: 1.9; color: #475569; font-size: 1.05rem;">
-      <strong>التنبؤ (Forecasting)</strong> هو عملية تقدير <mark class="highlight-blue">الطلب المستقبلي على السلع والخدمات</mark> اللي بتقدمها الشركة، وكمان تقدير <mark class="highlight-yellow">كمية الموارد اللازمة</mark> لإنتاج المستوى المطلوب من المخرجات.
-    </p>
-
-    <div class="alert-box alert-warning" style="margin: 25px 0; border-radius: 16px; background: rgba(37,99,235,0.08); border: 2px solid rgba(37,99,235,0.2);">
-      <div style="width: 55px; height: 55px; background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(29,78,216,0.15)); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-        <i class="fas fa-flask" style="font-size: 1.6rem; color: #2563eb;"></i>
-      </div>
-      <div>
-        <strong style="color: #1e40af; font-size: 1.05rem;">مثال عملي:</strong>
-        <span style="color: #475569;"> تخيل إنك صاحب مصنع عصاير، ومحتاج تعرف هتبيع كام زجاجة عصير في الصيف الجاي عشان تحدد تشتري كام طن برتقان، وتوظف كام عامل، وتحتاج كام ماكينة تعبئة—ده بالظبط دور التنبؤ!</span>
-      </div>
-    </div>
-
-    <h3 style="margin-top: 40px; color: #166534;">الـ 6Ms للإدارة</h3>
-    <p style="line-height: 1.9; color: #475569;">
-      التنبؤ الإنتاجي بيعتمد على تقدير الموارد الستة الأساسية:
-    </p>
-
-    <!-- جدول الـ 6Ms -->
-    <div class="table-container" style="margin-top: 25px;" data-aos="fade-up">
-      <table class="concepts-table">
-        <thead>
-          <tr>
-            <th style="width: 80px; text-align: center;">الرقم</th>
-            <th>الـ M</th>
-            <th>المعنى بالعربية</th>
-            <th>الشرح</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr data-aos="fade-up" data-aos-delay="100">
-            <td style="text-align: center;">
-              <div style="width: 40px; height: 40px; margin: 0 auto; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;">1</div>
-            </td>
-            <td><strong style="color: #2563eb;">Market</strong></td>
-            <td><strong>السوق</strong></td>
-            <td>الطلب المتوقع على المنتج</td>
-          </tr>
-          <tr data-aos="fade-up" data-aos-delay="150">
-            <td style="text-align: center;">
-              <div style="width: 40px; height: 40px; margin: 0 auto; background: linear-gradient(135deg, #16a34a, #15803d); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;">2</div>
-            </td>
-            <td><strong style="color: #16a34a;">Materials</strong></td>
-            <td><strong>المواد</strong></td>
-            <td>المواد الخام والأجزاء اللازمة للعمليات</td>
-          </tr>
-          <tr data-aos="fade-up" data-aos-delay="200">
-            <td style="text-align: center;">
-              <div style="width: 40px; height: 40px; margin: 0 auto; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;">3</div>
-            </td>
-            <td><strong style="color: #f59e0b;">Man</strong></td>
-            <td><strong>العمالة</strong></td>
-            <td>كمية العمالة المطلوبة لتنفيذ العمل</td>
-          </tr>
-          <tr data-aos="fade-up" data-aos-delay="250">
-            <td style="text-align: center;">
-              <div style="width: 40px; height: 40px; margin: 0 auto; background: linear-gradient(135deg, #7c3aed, #6d28d9); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;">4</div>
-            </td>
-            <td><strong style="color: #7c3aed;">Methods</strong></td>
-            <td><strong>الأساليب</strong></td>
-            <td>تقنيات الإنتاج اللي هتُستخدم</td>
-          </tr>
-          <tr data-aos="fade-up" data-aos-delay="300">
-            <td style="text-align: center;">
-              <div style="width: 40px; height: 40px; margin: 0 auto; background: linear-gradient(135deg, #059669, #047857); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;">5</div>
-            </td>
-            <td><strong style="color: #059669;">Money</strong></td>
-            <td><strong>المال</strong></td>
-            <td>الموارد المالية المطلوبة لتنفيذ العمليات</td>
-          </tr>
-          <tr data-aos="fade-up" data-aos-delay="350">
-            <td style="text-align: center;">
-              <div style="width: 40px; height: 40px; margin: 0 auto; background: linear-gradient(135deg, #dc2626, #b91c1c); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;">6</div>
-            </td>
-            <td><strong style="color: #dc2626;">Machines</strong></td>
-            <td><strong>الآلات</strong></td>
-            <td>المعدات المستخدمة في عملية الإنتاج</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="alert-box alert-info" style="margin-top: 30px; border-radius: 16px; background: rgba(124,58,237,0.08); border: 2px solid rgba(124,58,237,0.2);">
-      <div style="width: 55px; height: 55px; background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(109,40,217,0.15)); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-        <i class="fas fa-info-circle" style="font-size: 1.6rem; color: #7c3aed;"></i>
-      </div>
-      <div>
-        <strong style="color: #5b21b6; font-size: 1.05rem;">ملحوظة مهمة:</strong>
-        <span style="color: #475569;"> لو الشركة هتطلق منتج جديد ملوش تاريخ سابق في السوق، التوقعات دي بنسميها <strong>"تنبؤات" (Predictions)</strong> مش Forecasts، لأنها بتعتمد على تخمينات مدروسة أكتر من بيانات تاريخية.</span>
-      </div>
-    </div>
-
-    <!-- سؤال MCQ محسّن -->
-    <div style="margin-top: 40px;" data-aos="fade-up">
-      <div id="question-1" style="background: rgba(255,255,255,0.6); border: 2px solid rgba(22,163,74,0.2); border-radius: 20px; padding: 25px; backdrop-filter: blur(10px);">
-        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid rgba(22,163,74,0.15);">
-          <div style="width: 55px; height: 55px; background: linear-gradient(135deg, #16a34a, #15803d); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 6px 20px rgba(22,163,74,0.3);">
-            <i class="fas fa-question-circle" style="font-size: 1.7rem; color: white;"></i>
-          </div>
-          <div>
-            <div style="font-weight: 800; color: #166534; font-size: 1.25rem;">سؤال امتحان محتمل</div>
-            <div style="font-size: 0.9rem; color: #64748b; margin-top: 3px;">اختر الإجابة الصحيحة</div>
-          </div>
-        </div>
-
-        <p style="font-weight: 600; color: #1e293b; margin-bottom: 25px; font-size: 1.1rem; line-height: 1.8; padding: 18px; background: rgba(22,163,74,0.05); border-radius: 14px; border-right: 4px solid #16a34a;">
-          ما هو المصطلح المستخدم لوصف تقدير الطلب على منتج جديد ليس له تاريخ مبيعات؟
-        </p>
-
-        <div class="mcq-options-new" style="display: grid; gap: 14px;">
-          <div class="option-item" data-correct="false" style="background: rgba(255,255,255,0.8); border: 2px solid rgba(148,163,184,0.25); border-radius: 14px; padding: 18px 22px; cursor: pointer; transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 15px; position: relative; overflow: hidden;">
-            <div class="option-circle" style="width: 42px; height: 42px; background: rgba(148,163,184,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #64748b; flex-shrink: 0; font-size: 1.1rem; transition: all 0.3s ease;">أ</div>
-            <span style="font-weight: 500; color: #1e293b; font-size: 1.05rem;">Forecasting</span>
-            <div class="ripple" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none;"></div>
-          </div>
-
-          <div class="option-item" data-correct="true" style="background: rgba(255,255,255,0.8); border: 2px solid rgba(148,163,184,0.25); border-radius: 14px; padding: 18px 22px; cursor: pointer; transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 15px; position: relative; overflow: hidden;">
-            <div class="option-circle" style="width: 42px; height: 42px; background: rgba(148,163,184,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #64748b; flex-shrink: 0; font-size: 1.1rem; transition: all 0.3s ease;">ب</div>
-            <span style="font-weight: 500; color: #1e293b; font-size: 1.05rem;">Predictions</span>
-            <div class="ripple" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none;"></div>
-          </div>
-
-          <div class="option-item" data-correct="false" style="background: rgba(255,255,255,0.8); border: 2px solid rgba(148,163,184,0.25); border-radius: 14px; padding: 18px 22px; cursor: pointer; transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 15px; position: relative; overflow: hidden;">
-            <div class="option-circle" style="width: 42px; height: 42px; background: rgba(148,163,184,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #64748b; flex-shrink: 0; font-size: 1.1rem; transition: all 0.3s ease;">ج</div>
-            <span style="font-weight: 500; color: #1e293b; font-size: 1.05rem;">Capacity Planning</span>
-            <div class="ripple" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none;"></div>
-          </div>
-
-          <div class="option-item" data-correct="false" style="background: rgba(255,255,255,0.8); border: 2px solid rgba(148,163,184,0.25); border-radius: 14px; padding: 18px 22px; cursor: pointer; transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 15px; position: relative; overflow: hidden;">
-            <div class="option-circle" style="width: 42px; height: 42px; background: rgba(148,163,184,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #64748b; flex-shrink: 0; font-size: 1.1rem; transition: all 0.3s ease;">د</div>
-            <span style="font-weight: 500; color: #1e293b; font-size: 1.05rem;">Scheduling</span>
-            <div class="ripple" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none;"></div>
-          </div>
-        </div>
-
-        <div class="answer-explanation" style="display: none; margin-top: 25px; padding: 22px; background: linear-gradient(135deg, rgba(22,163,74,0.12), rgba(5,150,105,0.08)); border: 2px solid rgba(22,163,74,0.3); border-radius: 14px; opacity: 0; transform: translateY(-15px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
-          <div style="display: flex; align-items: start; gap: 18px;">
-            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #16a34a, #15803d); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 6px 20px rgba(22,163,74,0.3);">
-              <i class="fas fa-check" style="font-size: 1.5rem; color: white;"></i>
-            </div>
-            <div>
-              <strong style="color: #166534; font-size: 1.1rem; display: block; margin-bottom: 10px;">الإجابة الصحيحة: ب) Predictions</strong>
-              <p style="margin: 0; line-height: 1.8; color: #475569; font-size: 1rem;">
-                لأن المنتجات الجديدة بدون تاريخ مبيعات بتعتمد على تخمينات مدروسة (Predictions)، مش على بيانات تاريخية حقيقية (Forecasts).
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- أزرار التحكم بشكل كبسولات -->
-  <div class="glassy-card" data-aos="fade-up" data-aos-delay="250">
-    <h3 style="margin-bottom: 20px;">تحكم في المحتوى</h3>
-    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-      <button class="pill-button" style="background: linear-gradient(135deg, #16a34a, #15803d); color: white; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 6px 20px rgba(22,163,74,0.3); transition: all 0.3s ease; font-size: 1rem;" onmouseover="this.style.transform='translateY(-4px) scale(1.05)'; this.style.boxShadow='0 10px 30px rgba(22,163,74,0.4)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 6px 20px rgba(22,163,74,0.3)';">
-        <i class="fas fa-download"></i>
-        <span>تحميل كـ PDF</span>
-      </button>
-
-      <button class="pill-button" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 6px 20px rgba(37,99,235,0.3); transition: all 0.3s ease; font-size: 1rem;" onmouseover="this.style.transform='translateY(-4px) scale(1.05)'; this.style.boxShadow='0 10px 30px rgba(37,99,235,0.4)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 6px 20px rgba(37,99,235,0.3)';">
-        <i class="fas fa-print"></i>
-        <span>طباعة المحتوى</span>
-      </button>
-
-      <button class="pill-button" style="background: linear-gradient(135deg, #7c3aed, #6d28d9); color: white; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 6px 20px rgba(124,58,237,0.3); transition: all 0.3s ease; font-size: 1rem;" onmouseover="this.style.transform='translateY(-4px) scale(1.05)'; this.style.boxShadow='0 10px 30px rgba(124,58,237,0.4)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 6px 20px rgba(124,58,237,0.3)';">
-        <i class="fas fa-share-alt"></i>
-        <span>مشاركة</span>
-      </button>
-    </div>
-  </div>
-
-</div>
-
-<!-- JavaScript للأسئلة التفاعلية المحسّنة -->
-<script>
-(function() {
-  const options = document.querySelectorAll('#question-1 .option-item');
-  const explanation = document.querySelector('#question-1 .answer-explanation');
-  
-  options.forEach((option, index) => {
-    // Stagger animation for options appearance
-    gsap.from(option, {
-      opacity: 0,
-      x: -30,
-      duration: 0.5,
-      delay: index * 0.1,
-      ease: 'power2.out'
-    });
-
-    // Hover animation
-    option.addEventListener('mouseenter', function() {
-      if (!this.classList.contains('answered')) {
-        gsap.to(this, {
-          scale: 1.02,
-          boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-          borderColor: 'rgba(22,163,74,0.4)',
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-      }
-    });
-
-    option.addEventListener('mouseleave', function() {
-      if (!this.classList.contains('answered')) {
-        gsap.to(this, {
-          scale: 1,
-          boxShadow: 'none',
-          borderColor: 'rgba(148,163,184,0.25)',
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-      }
-    });
-
-    // Click handler
-    option.addEventListener('click', function() {
-      if (this.classList.contains('answered')) return;
-      
-      const isCorrect = this.getAttribute('data-correct') === 'true';
-      const circle = this.querySelector('.option-circle');
-      const ripple = this.querySelector('.ripple');
-      
-      // Disable all options
-      options.forEach(opt => {
-        opt.classList.add('answered');
-        opt.style.pointerEvents = 'none';
-      });
-
-      // Ripple effect
-      gsap.fromTo(ripple, 
-        { scale: 0, opacity: 0.5, background: isCorrect ? 'rgba(22,163,74,0.3)' : 'rgba(239,68,68,0.3)' },
-        { scale: 4, opacity: 0, duration: 0.8, ease: 'power2.out' }
-      );
-
-      if (isCorrect) {
-        // Correct answer animation
-        const timeline = gsap.timeline();
-        
-        timeline.to(this, {
-          background: 'linear-gradient(135deg, rgba(22,163,74,0.2), rgba(5,150,105,0.15))',
-          borderColor: 'rgba(22,163,74,0.6)',
-          borderWidth: '3px',
-          scale: 1.03,
-          duration: 0.4,
-          ease: 'back.out(1.5)'
-        });
-
-        timeline.to(circle, {
-          background: 'linear-gradient(135deg, #16a34a, #15803d)',
-          color: 'white',
-          scale: 1.15,
-          duration: 0.3,
-          ease: 'back.out(2)'
-        }, '-=0.2');
-
-        // Change circle content to checkmark
-        setTimeout(() => {
-          circle.innerHTML = '<i class="fas fa-check" style="font-size: 1.2rem;"></i>';
-          gsap.from(circle.querySelector('i'), {
-            scale: 0,
-            rotation: -180,
-            duration: 0.6,
-            ease: 'elastic.out(1, 0.5)'
-          });
-        }, 200);
-
-        // Confetti celebration
-        confetti({
-          particleCount: 120,
-          spread: 80,
-          origin: { y: 0.6 },
-          colors: ['#16a34a', '#22c55e', '#4ade80', '#86efac'],
-          ticks: 200,
-          gravity: 1.2,
-          scalar: 1.2
-        });
-
-        // Sound effect (optional)
-        const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGnuLyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGnuLyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGnuLyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGnuLyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGnuLyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGnuLyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGnuLyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGnuLyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGnuLyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGnuLyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFA==');
-        audio.volume = 0.3;
-        audio.play().catch(() => {});
-
-      } else {
-        // Wrong answer animation
-        const timeline = gsap.timeline();
-        
-        // Shake animation
-        timeline.to(this, {
-          x: [-8, 8, -8, 8, -4, 4, 0],
-          duration: 0.6,
-          ease: 'power2.out'
-        });
-
-        timeline.to(this, {
-          background: 'linear-gradient(135deg, rgba(239,68,68,0.15), rgba(220,38,38,0.1))',
-          borderColor: 'rgba(239,68,68,0.5)',
-          borderWidth: '3px',
-          duration: 0.3
-        }, '-=0.3');
-
-        timeline.to(circle, {
-          background: 'linear-gradient(135deg, #ef4444, #dc2626)',
-          color: 'white',
-          duration: 0.3
-        }, '-=0.3');
-
-        // Change to X icon
-        setTimeout(() => {
-          circle.innerHTML = '<i class="fas fa-times" style="font-size: 1.2rem;"></i>';
-        }, 300);
-
-        // Highlight correct answer
-        options.forEach(opt => {
-          if (opt.getAttribute('data-correct') === 'true') {
-            const correctCircle = opt.querySelector('.option-circle');
-            
-            gsap.to(opt, {
-              background: 'linear-gradient(135deg, rgba(22,163,74,0.2), rgba(5,150,105,0.15))',
-              borderColor: 'rgba(22,163,74,0.6)',
-              borderWidth: '3px',
-              scale: 1.03,
-              duration: 0.4,
-              delay: 0.4,
-              ease: 'back.out(1.5)'
-            });
-
-            gsap.to(correctCircle, {
-              background: 'linear-gradient(135deg, #16a34a, #15803d)',
-              color: 'white',
-              scale: 1.15,
-              duration: 0.3,
-              delay: 0.4,
-              ease: 'back.out(2)'
-            });
-
-            setTimeout(() => {
-              correctCircle.innerHTML = '<i class="fas fa-check" style="font-size: 1.2rem;"></i>';
-              gsap.from(correctCircle.querySelector('i'), {
-                scale: 0,
-                rotation: -180,
-                duration: 0.6,
-                ease: 'elastic.out(1, 0.5)'
-              });
-            }, 600);
-          }
-        });
-      }
-
-      // Show explanation after delay
-      setTimeout(() => {
-        explanation.style.display = 'block';
-        gsap.to(explanation, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power2.out'
-        });
-
-        // Smooth scroll to explanation
-        explanation.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'nearest',
-          inline: 'nearest'
-        });
-      }, isCorrect ? 1000 : 1200);
-    });
-  });
-})();
-</script>
-
-<style>
-/* Additional hover effects for stat cards */
-.stat-card {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.stat-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-}
-</style>
-
-
-
-
-    
-    <!-- ==================== ENGLISH CONTENT ==================== -->
-    <div class="en-content" style="display:none;">
-      
-      
-    </div>
-
-  </main>
-
-  <!-- ==================== CUSTOM SCRIPTS ==================== -->
-  <script src="../js/script.js"></script>
-</body>
-</html>
 
