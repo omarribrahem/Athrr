@@ -1,1 +1,1036 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="منصة أثر التعليمية - محتوى متخصص لكلية التجارة" />
+  <meta name="keywords" content="اقتصاد، محاسبة، إدارة، تجارة، business, economics, accounting, finance" />
+ 
+  <title>عنوان المحاضرة - منصة أثر</title>
+  
+  <!-- ==================== FONTS ==================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- ==================== MATH RENDERING ==================== -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true,
+        packages: {'[+]': ['ams', 'newcommand', 'mathtools', 'boldsymbol']},
+        macros: {
+          RR: "{\\mathbb{R}}",
+          ZZ: "{\\mathbb{Z}}",
+          NN: "{\\mathbb{N}}",
+          bold: ["{\\bf #1}", 1],
+          Delta: "{\\varDelta}",
+          Sigma: "{\\varSigma}"
+        }
+      },
+      svg: { fontCache: 'global', scale: 1.1 },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process'
+      },
+      startup: {
+        pageReady: () => {
+          console.log('✅ MathJax is ready!');
+          return MathJax.startup.defaultPageReady();
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
+  
+  <!-- KaTeX (Alternative) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  
+  <!-- ==================== BUSINESS/FINANCE LIBRARIES ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/@formulajs/formulajs/dist/formula.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/financejs@4.1.0/finance.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/accounting@0.4.1/accounting.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/numeral@2.0.6/numeral.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/decimal.js@10.4.3/decimal.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/big.js@6.2.1/big.min.js"></script>
+  
+  <!-- ==================== STATISTICS & DATA ANALYSIS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+  <script src="https://unpkg.com/simple-statistics@7.8.3/dist/simple-statistics.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/regression@2.0.1/dist/regression.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  
+  <!-- ==================== CHARTS & GRAPHS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://s3.tradingview.com/tv.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js"></script>
 
+  <!-- ==================== TABLES & DATA GRIDS ==================== -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+  <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+  
+  <!-- ==================== DIAGRAMS & FLOWCHARTS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+  <script src="https://unpkg.com/vis-network@9.1.6/dist/vis-network.min.js"></script>
+  <link href="https://unpkg.com/vis-network@9.1.6/dist/dist/vis-network.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
+  <script src="https://unpkg.com/gojs@3.0.0/release/go.js"></script>
+  
+  <!-- ==================== ANIMATIONS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/ScrollTrigger.min.js"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  
+  <!-- ==================== CODE HIGHLIGHTING ==================== -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+  
+  <!-- ==================== PDF & PRINTING ==================== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+  <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css">
+  
+  <!-- ==================== MARKDOWN & TEXT ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.2/dist/markdown-it.min.js"></script>
+  
+  <!-- ==================== UI COMPONENTS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+  <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
+  <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.min.js"></script>
+  
+  <!-- ==================== CALENDAR & TIME ==================== -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+  
+  <!-- ==================== ICONS ==================== -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- ==================== UTILITIES ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+  
+  <!-- ==================== ACADEMIC TOOLS ==================== -->
+  <link href="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/minified/introjs.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/intro.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.css">
+  <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.js.iife.js"></script>
+  
+  <!-- ==================== SWIPER (Sliders) ==================== -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  
+  <!-- ==================== ENHANCEMENTS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.1/Sortable.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver"></script>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+  <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+
+  <!-- ==================== CUSTOM STYLES ==================== -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- Background -->
+  <div class="background-waves">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
+
+  <!-- Translation Button -->
+  <button class="translation-button" id="translationButton" aria-label="تبديل اللغة">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25C9.36657 2.25 6.94277 3.22321 5.16629 4.83371M12.75 2.25V7.5M12.75 7.5H18M12.75 7.5L5.16629 4.83371M11.25 21.75V16.5M11.25 16.5H6M11.25 16.5L18.8337 19.1663M5.16629 4.83371C3.22321 6.94277 2.25 9.36657 2.25 12M2.25 12C2.25 14.6334 3.22321 17.0572 4.83371 18.8337M18.8337 19.1663C20.7768 17.0572 21.75 14.6334 21.75 12M18.8337 4.83371C17.0572 3.22321 14.6334 2.25 12 2.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="translation-text">English</span>
+  </button>
+
+  <!-- AI FAB Button -->
+  <button class="ai-fab-button" id="aiChatButton" aria-label="مساعد أثر الذكي">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f59e0b;">
+      <path d="M12 8V4H8"></path>
+      <rect x="4" y="12" width="16" height="8" rx="2"></rect>
+      <path d="M2 14h2"></path>
+      <path d="M20 14h2"></path>
+      <path d="M15 13v-2a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v2"></path>
+    </svg>
+    <span class="ai-fab-text" id="aiFabText">أثر AI</span>
+  </button>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toastNotification"></div>
+
+  <!-- AI Chat Modal -->
+  <div class="ai-chat-modal" id="aiChatModal">
+    <div class="ai-chat-container">
+      <div class="ai-chat-header">
+        <h3 id="ai-chat-title">اسأل أثر AI</h3>
+        <button class="ai-chat-close-btn" id="aiChatCloseBtn" aria-label="إغلاق">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="ai-chat-messages" id="aiChatMessages"></div>
+      <div class="ai-chat-input-area">
+        <input type="text" id="ai-chat-input" placeholder="اكتب سؤالك هنا...">
+        <button id="ai-chat-send-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- ==================== VIDEO PLAYER SECTION ==================== -->
+    <section class="video-section">
+      <div class="video-card-player" data-aos="fade-down">
+        <div class="video-info">
+          <h2>🎬 فيديو شرح: مقدمة في المحاسبة</h2>
+          <p id="playerInfo">مشغل فيديو ذكي - يكتشف جهازك تلقائياً</p>
+          <span class="device-badge" id="deviceBadge">جاري التحميل...</span>
+        </div>
+
+        <div class="video-player-wrapper">
+          <div class="video-player" id="videoPlayer">
+            <video id="video" playsinline preload="auto"></video>
+
+            <div class="loading-spinner" id="loadingSpinner"></div>
+
+            <!-- Simple Controls -->
+            <div class="simple-controls">
+              <div class="simple-progress" id="simpleProgress">
+                <div class="simple-progress-filled" id="simpleProgressFilled"></div>
+              </div>
+              <div class="simple-controls-row">
+                <button class="simple-btn" id="simplePlayBtn">
+                  <i class="fas fa-play"></i>
+                </button>
+                <span class="simple-time">
+                  <span id="simpleCurrentTime">0:00</span> / <span id="simpleDuration">0:00</span>
+                </span>
+                <button class="simple-btn" id="simpleFullscreenBtn">
+                  <i class="fas fa-expand"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- iOS Controls -->
+            <div class="ios-controls">
+              <div class="video-bars" id="videoBars">
+                <div class="top-bar-bg"></div>
+                <div class="bottom-bar-bg"></div>
+              </div>
+
+              <div class="tap-indicator left" id="tapLeft">
+                <i class="fas fa-backward"></i>
+              </div>
+              <div class="tap-indicator right" id="tapRight">
+                <i class="fas fa-forward"></i>
+              </div>
+
+              <div class="top-controls">
+                <div class="top-left-group">
+                  <button class="control-bubble glass-bubble" id="closeBtn">
+                    <i class="fas fa-times"></i>
+                  </button>
+                  <button class="control-bubble glass-bubble" id="pipBtn" style="display:none;">
+                    <i class="fas fa-clone"></i>
+                  </button>
+                </div>
+                
+                <div class="volume-control">
+                  <div class="volume-slider-container">
+                    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1" />
+                  </div>
+                  <button class="control-bubble glass-bubble" id="volumeBtn">
+                    <i class="fas fa-volume-up"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="center-play-controls">
+                <button class="skip-bubble glass-bubble" id="skipBack">
+                  <i class="fas fa-rotate-left"></i>
+                  <span class="skip-number">10</span>
+                </button>
+
+                <button class="play-bubble glass-bubble" id="playBtn">
+                  <i class="fas fa-play"></i>
+                </button>
+
+                <button class="skip-bubble glass-bubble" id="skipForward">
+                  <i class="fas fa-rotate-right"></i>
+                  <span class="skip-number">10</span>
+                </button>
+              </div>
+
+              <div class="bottom-timeline">
+                <div class="progress-wrapper" id="progressWrapper">
+                  <div class="progress-track">
+                    <div class="progress-buffered" id="progressBuffered"></div>
+                    <div class="progress-filled" id="progressFilled"></div>
+                  </div>
+                </div>
+
+                <div class="time-row">
+                  <span class="time-text" id="currentTime">0:00</span>
+                  <span class="time-text" id="remainingTime">-0:00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ARABIC CONTENT ==================== -->
+<!-- ==================== ARABIC CONTENT ==================== -->
+<div class="ar-content">
+
+  <!-- Hero Section with Animated Counters -->
+  <section class="hero-section" data-aos="fade-up">
+    <div class="glassy-card hero-card">
+      <div class="hero-content">
+        <span class="hero-badge">
+          <i class="fas fa-industry"></i>
+          إدارة عمليات الإنتاج
+        </span>
+        <h1 class="hero-title">وظيفة الإنتاج</h1>
+        <h2 class="hero-subtitle">The Production Function</h2>
+        <p class="hero-description">
+          رحلة تعليمية متكاملة لفهم كيف تُخلق القيمة في المؤسسات التجارية من خلال تحويل المدخلات إلى مخرجات
+        </p>
+        
+        <!-- Animated Statistics -->
+        <div class="hero-stats">
+          <div class="stat-item" data-aos="zoom-in" data-aos-delay="100">
+            <i class="fas fa-tasks"></i>
+            <h3 class="counter" data-target="6">0</h3>
+            <p>نشاط أساسي</p>
+          </div>
+          <div class="stat-item" data-aos="zoom-in" data-aos-delay="200">
+            <i class="fas fa-chart-line"></i>
+            <h3 class="counter" data-target="35">0</h3>
+            <p>مفهوم رئيسي</p>
+          </div>
+          <div class="stat-item" data-aos="zoom-in" data-aos-delay="300">
+            <i class="fas fa-lightbulb"></i>
+            <h3 class="counter" data-target="12">0</h3>
+            <p>مثال تطبيقي</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Introduction Section -->
+  <section class="content-section" data-aos="fade-up">
+    <div class="glassy-card">
+      <div class="section-header">
+        <i class="fas fa-briefcase section-icon"></i>
+        <h2>المقدمة: الوظائف الأساسية في الأعمال</h2>
+      </div>
+      
+      <p class="lead-paragraph">
+        أي مؤسسة تجارية في العالم بتشتغل من خلال <strong>أربع وظائف أساسية مترابطة</strong>، هي: 
+        الإنتاج، والتسويق، والتمويل، والموارد البشرية. كل وظيفة من دول ليها دور محدد، 
+        لكن النهاردة هنركز على الوظيفة اللي بتخلق القيمة الفعلية للمنتج أو الخدمة—وهي 
+        <span class="highlight-text">وظيفة الإنتاج أو العمليات</span>.
+      </p>
+
+      <!-- Mermaid Diagram -->
+      <div class="diagram-container" data-aos="fade-up">
+        <h3 class="section-subtitle">
+          <i class="fas fa-project-diagram"></i>
+          الوظائف المترابطة في المؤسسة
+        </h3>
+        <div id="businessFunctionsDiagram" class="mermaid-diagram"></div>
+      </div>
+
+      <!-- Definition Box with Tooltip -->
+      <div class="definition-box" data-aos="fade-up">
+        <div class="definition-icon">
+          <i class="fas fa-cogs"></i>
+        </div>
+        <div class="definition-content">
+          <h3>
+            وظيفة الإنتاج (Production Function)
+            <i class="fas fa-info-circle tooltip-icon" 
+               data-tippy-content="جميع الأنشطة المرتبطة بشكل مباشر بإنشاء السلع والخدمات"></i>
+          </h3>
+          <p class="definition-ar">
+            جميع الأنشطة المرتبطة بشكل مباشر بإنشاء السلع والخدمات—العملية اللي بتحوّل المدخلات 
+            (زي المواد الخام والعمالة) لمخرجات (زي المنتجات الجاهزة للبيع).
+          </p>
+          <p class="definition-en">
+            All activities directly associated with the creation of goods and services.
+          </p>
+        </div>
+      </div>
+
+      <!-- Interactive Activity Cards -->
+      <div class="activities-section" data-aos="fade-up">
+        <h3 class="section-subtitle">
+          <i class="fas fa-list-check"></i>
+          الأنشطة الرئيسية لوظيفة الإنتاج (6 أنشطة)
+        </h3>
+        
+        <div class="activity-cards-grid">
+          <div class="activity-card" data-aos="flip-left" data-aos-delay="100" 
+               data-tippy-content="تقدير الطلب المستقبلي والموارد اللازمة">
+            <div class="activity-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+              <i class="fas fa-crystal-ball"></i>
+            </div>
+            <h4>التنبؤ</h4>
+            <p class="activity-en">Forecasting</p>
+            <p class="activity-desc">تقدير الطلب المستقبلي والموارد اللازمة</p>
+            <div class="activity-metric">
+              <i class="fas fa-chart-line"></i>
+              <span>6Ms</span>
+            </div>
+          </div>
+
+          <div class="activity-card" data-aos="flip-left" data-aos-delay="200"
+               data-tippy-content="تحديد القدرة الإنتاجية المطلوبة">
+            <div class="activity-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+              <i class="fas fa-gauge-high"></i>
+            </div>
+            <h4>تخطيط الطاقة</h4>
+            <p class="activity-en">Capacity Planning</p>
+            <p class="activity-desc">تحديد القدرة الإنتاجية المطلوبة</p>
+            <div class="activity-metric">
+              <i class="fas fa-balance-scale"></i>
+              <span>Design vs Effective</span>
+            </div>
+          </div>
+
+          <div class="activity-card" data-aos="flip-left" data-aos-delay="300"
+               data-tippy-content="ترتيب حمل العمل بطريقة مثالية">
+            <div class="activity-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+            <h4>الجدولة</h4>
+            <p class="activity-en">Scheduling</p>
+            <p class="activity-desc">ترتيب حمل العمل بطريقة مثالية</p>
+            <div class="activity-metric">
+              <i class="fas fa-clock"></i>
+              <span>تقليل الوقت</span>
+            </div>
+          </div>
+
+          <div class="activity-card" data-aos="flip-left" data-aos-delay="400"
+               data-tippy-content="الطلب والتخزين والاستخدام">
+            <div class="activity-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+              <i class="fas fa-boxes-stacked"></i>
+            </div>
+            <h4>إدارة المخزون</h4>
+            <p class="activity-en">Managing Inventories</p>
+            <p class="activity-desc">JIT & MRP Systems</p>
+            <div class="activity-metric">
+              <i class="fas fa-warehouse"></i>
+              <span>3 أنواع</span>
+            </div>
+          </div>
+
+          <div class="activity-card" data-aos="flip-left" data-aos-delay="500"
+               data-tippy-content="منع حدوث العيوب في المنتجات">
+            <div class="activity-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+              <i class="fas fa-shield-halved"></i>
+            </div>
+            <h4>ضمان الجودة</h4>
+            <p class="activity-en">Assuring Quality</p>
+            <p class="activity-desc">منع حدوث العيوب</p>
+            <div class="activity-metric">
+              <i class="fas fa-check-double"></i>
+              <span>Six Sigma</span>
+            </div>
+          </div>
+
+          <div class="activity-card" data-aos="flip-left" data-aos-delay="600"
+               data-tippy-content="اختيار موقع المنشأة الأمثل">
+            <div class="activity-icon" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <h4>تحديد المواقع</h4>
+            <p class="activity-en">Locating Facilities</p>
+            <p class="activity-desc">اختيار موقع المنشأة</p>
+            <div class="activity-metric">
+              <i class="fas fa-location-dot"></i>
+              <span>قرار استراتيجي</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Forecasting Section with 6Ms Interactive Cards -->
+  <section class="content-section" data-aos="fade-up">
+    <div class="glassy-card">
+      <div class="section-header">
+        <i class="fas fa-crystal-ball section-icon" style="color: #667eea;"></i>
+        <h2>التنبؤ: قراءة المستقبل بعيون الحاضر</h2>
+      </div>
+
+      <div class="intro-box" data-aos="fade-up">
+        <p>
+          <strong>التنبؤ (Forecasting)</strong> هو عملية تقدير الطلب المستقبلي على السلع والخدمات، 
+          وكمان تقدير كمية الموارد اللازمة لإنتاج المستوى المطلوب من المخرجات.
+        </p>
+        <div class="example-badge">
+          <i class="fas fa-lightbulb"></i>
+          <strong>مثال:</strong> صاحب مصنع عصاير محتاج يعرف هيبيع كام زجاجة في الصيف الجاي 
+          عشان يحدد يشتري كام طن برتقان، ويوظف كام عامل، ويحتاج كام ماكينة تعبئة.
+        </div>
+      </div>
+
+      <!-- 6Ms Flip Cards -->
+      <div class="sixms-section" data-aos="fade-up">
+        <h3 class="section-subtitle">
+          <i class="fas fa-sitemap"></i>
+          الـ 6Ms للإدارة (6Ms of Management)
+        </h3>
+        <p class="concept-description">
+          التنبؤ الإنتاجي بيعتمد على تقدير الموارد الستة الأساسية:
+        </p>
+
+        <div class="sixms-grid">
+          <div class="sixm-card" data-aos="zoom-in" data-aos-delay="100">
+            <div class="sixm-front">
+              <div class="sixm-icon">
+                <i class="fas fa-store"></i>
+              </div>
+              <h4>Market</h4>
+              <p class="sixm-ar">السوق</p>
+              <span class="flip-hint">
+                <i class="fas fa-hand-pointer"></i>
+                اضغط للمزيد
+              </span>
+            </div>
+            <div class="sixm-back">
+              <h4>السوق (Market)</h4>
+              <p>الطلب المتوقع على المنتج في السوق المستهدف</p>
+              <div class="sixm-example">
+                <i class="fas fa-chart-line"></i>
+                تحليل حجم الطلب
+              </div>
+            </div>
+          </div>
+
+          <div class="sixm-card" data-aos="zoom-in" data-aos-delay="200">
+            <div class="sixm-front">
+              <div class="sixm-icon">
+                <i class="fas fa-boxes"></i>
+              </div>
+              <h4>Materials</h4>
+              <p class="sixm-ar">المواد</p>
+              <span class="flip-hint">
+                <i class="fas fa-hand-pointer"></i>
+                اضغط للمزيد
+              </span>
+            </div>
+            <div class="sixm-back">
+              <h4>المواد (Materials)</h4>
+              <p>المواد الخام والأجزاء اللازمة للعمليات الإنتاجية</p>
+              <div class="sixm-example">
+                <i class="fas fa-cube"></i>
+                تقدير الكميات
+              </div>
+            </div>
+          </div>
+
+          <div class="sixm-card" data-aos="zoom-in" data-aos-delay="300">
+            <div class="sixm-front">
+              <div class="sixm-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <h4>Man</h4>
+              <p class="sixm-ar">العمالة</p>
+              <span class="flip-hint">
+                <i class="fas fa-hand-pointer"></i>
+                اضغط للمزيد
+              </span>
+            </div>
+            <div class="sixm-back">
+              <h4>العمالة (Man)</h4>
+              <p>كمية العمالة المطلوبة لتنفيذ العمل بكفاءة</p>
+              <div class="sixm-example">
+                <i class="fas fa-user-check"></i>
+                تخطيط القوى العاملة
+              </div>
+            </div>
+          </div>
+
+          <div class="sixm-card" data-aos="zoom-in" data-aos-delay="400">
+            <div class="sixm-front">
+              <div class="sixm-icon">
+                <i class="fas fa-wrench"></i>
+              </div>
+              <h4>Methods</h4>
+              <p class="sixm-ar">الأساليب</p>
+              <span class="flip-hint">
+                <i class="fas fa-hand-pointer"></i>
+                اضغط للمزيد
+              </span>
+            </div>
+            <div class="sixm-back">
+              <h4>الأساليب (Methods)</h4>
+              <p>تقنيات الإنتاج والأساليب التي سيتم استخدامها</p>
+              <div class="sixm-example">
+                <i class="fas fa-cogs"></i>
+                اختيار التقنيات
+              </div>
+            </div>
+          </div>
+
+          <div class="sixm-card" data-aos="zoom-in" data-aos-delay="500">
+            <div class="sixm-front">
+              <div class="sixm-icon">
+                <i class="fas fa-dollar-sign"></i>
+              </div>
+              <h4>Money</h4>
+              <p class="sixm-ar">المال</p>
+              <span class="flip-hint">
+                <i class="fas fa-hand-pointer"></i>
+                اضغط للمزيد
+              </span>
+            </div>
+            <div class="sixm-back">
+              <h4>المال (Money)</h4>
+              <p>الموارد المالية المطلوبة لتنفيذ العمليات</p>
+              <div class="sixm-example">
+                <i class="fas fa-coins"></i>
+                وضع الميزانية
+              </div>
+            </div>
+          </div>
+
+          <div class="sixm-card" data-aos="zoom-in" data-aos-delay="600">
+            <div class="sixm-front">
+              <div class="sixm-icon">
+                <i class="fas fa-cog"></i>
+              </div>
+              <h4>Machines</h4>
+              <p class="sixm-ar">الآلات</p>
+              <span class="flip-hint">
+                <i class="fas fa-hand-pointer"></i>
+                اضغط للمزيد
+              </span>
+            </div>
+            <div class="sixm-back">
+              <h4>الآلات (Machines)</h4>
+              <p>المعدات والآلات المستخدمة في عملية الإنتاج</p>
+              <div class="sixm-example">
+                <i class="fas fa-robot"></i>
+                تحديد المعدات
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Forecasting vs Predictions Alert -->
+      <div class="alert-box alert-info" data-aos="fade-up">
+        <div class="alert-icon">
+          <i class="fas fa-info-circle"></i>
+        </div>
+        <div class="alert-content">
+          <h4>الفرق بين التنبؤ والتوقعات</h4>
+          <p>
+            لو الشركة هتطلق <strong>منتج جديد</strong> ملوش تاريخ سابق في السوق، 
+            التوقعات دي بنسميها <strong>"تنبؤات" (Predictions)</strong> مش Forecasts، 
+            لأنها بتعتمد على تخمينات مدروسة أكتر من بيانات تاريخية.
+          </p>
+        </div>
+      </div>
+
+      <!-- Interactive MCQ with SweetAlert2 -->
+      <div class="question-container" data-aos="fade-up">
+        <div class="question-header">
+          <i class="fas fa-question-circle"></i>
+          <h3>سؤال تفاعلي</h3>
+        </div>
+        <p class="question-text">
+          ما هو المصطلح المستخدم لوصف تقدير الطلب على منتج جديد ليس له تاريخ مبيعات؟
+        </p>
+        <div class="mcq-options" id="quiz1">
+          <button class="mcq-option" data-answer="wrong" data-feedback="التنبؤ (Forecasting) يعتمد على بيانات تاريخية">
+            <span class="option-letter">A</span>
+            <span class="option-text">Forecasting</span>
+          </button>
+          <button class="mcq-option" data-answer="correct" data-feedback="صحيح! Predictions للمنتجات الجديدة بدون تاريخ">
+            <span class="option-letter">B</span>
+            <span class="option-text">Predictions</span>
+          </button>
+          <button class="mcq-option" data-answer="wrong" data-feedback="تخطيط الطاقة يخص القدرة الإنتاجية">
+            <span class="option-letter">C</span>
+            <span class="option-text">Capacity Planning</span>
+          </button>
+          <button class="mcq-option" data-answer="wrong" data-feedback="الجدولة تخص ترتيب العمل">
+            <span class="option-letter">D</span>
+            <span class="option-text">Scheduling</span>
+          </button>
+        </div>
+        <div class="feedback-box" id="feedback1" style="display: none;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capacity Planning with Interactive Calculator -->
+  <section class="content-section" data-aos="fade-up">
+    <div class="glassy-card">
+      <div class="section-header">
+        <i class="fas fa-gauge-high section-icon" style="color: #f093fb;"></i>
+        <h2>تخطيط الطاقة الإنتاجية: الموازنة بين القدرة والطلب</h2>
+      </div>
+
+      <div class="intro-box" data-aos="fade-up">
+        <p>
+          <strong>الطاقة الإنتاجية (Capacity)</strong> تشير إلى الحد الأقصى من المخرجات اللي ممكن إنتاجها. 
+          <strong>تخطيط الطاقة الإنتاجية</strong> هو عملية تحديد الطاقة المطلوبة لتلبية التغيرات في الطلب.
+        </p>
+      </div>
+
+      <!-- Capacity Types Comparison -->
+      <div class="capacity-comparison" data-aos="fade-up">
+        <h3 class="section-subtitle">
+          <i class="fas fa-balance-scale"></i>
+          نوعا الطاقة الإنتاجية
+        </h3>
+
+        <div class="capacity-cards">
+          <div class="capacity-card design" data-aos="fade-right"
+               data-tippy-content="الحد الأقصى النظري تحت ظروف مثالية">
+            <div class="capacity-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <h4>طاقة التصميم</h4>
+            <p class="capacity-en">Design Capacity</p>
+            <p class="capacity-desc">
+              الحد الأقصى النظري للمخرجات تحت ظروف مثالية—لو الماكينة شغالة 24 ساعة بدون توقف
+            </p>
+            <div class="capacity-formula">
+              <code>Design Capacity = 100%</code>
+            </div>
+          </div>
+
+          <div class="capacity-card effective" data-aos="fade-left"
+               data-tippy-content="الإنتاج الممكن تحت الظروف الحالية">
+            <div class="capacity-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h4>الطاقة الفعلية</h4>
+            <p class="capacity-en">Effective Capacity</p>
+            <p class="capacity-desc">
+              مستوى المخرجات الممكن إنتاجها تحت الظروف الحالية (صيانة، فترات راحة)
+            </p>
+            <div class="capacity-formula">
+              <code>Effective Capacity ≈ 75-85%</code>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Calculator with Math.js -->
+      <div class="calculator-advanced" data-aos="fade-up">
+        <h3 class="calculator-title">
+          <i class="fas fa-calculator"></i>
+          حاسبة كفاءة الطاقة الإنتاجية (Capacity Efficiency Calculator)
+        </h3>
+        <p class="calculator-description">
+          احسب كفاءة الطاقة الإنتاجية بناءً على الإنتاج الفعلي وطاقة التصميم
+        </p>
+
+        <div class="calculator-grid">
+          <div class="calc-input-group">
+            <label>
+              <i class="fas fa-star"></i>
+              طاقة التصميم (Design Capacity)
+              <i class="fas fa-info-circle tooltip-mini" 
+                 data-tippy-content="الحد الأقصى النظري للإنتاج"></i>
+            </label>
+            <input type="number" id="designCapacity" placeholder="1000" min="1" value="1000">
+            <span class="input-unit">وحدة/يوم</span>
+          </div>
+
+          <div class="calc-input-group">
+            <label>
+              <i class="fas fa-chart-line"></i>
+              الطاقة الفعلية (Effective Capacity)
+              <i class="fas fa-info-circle tooltip-mini"
+                 data-tippy-content="الإنتاج الممكن في الظروف الحالية"></i>
+            </label>
+            <input type="number" id="effectiveCapacity" placeholder="750" min="1" value="750">
+            <span class="input-unit">وحدة/يوم</span>
+          </div>
+
+          <div class="calc-input-group">
+            <label>
+              <i class="fas fa-box"></i>
+              الإنتاج الفعلي (Actual Output)
+              <i class="fas fa-info-circle tooltip-mini"
+                 data-tippy-content="الإنتاج الفعلي المُحقق"></i>
+            </label>
+            <input type="number" id="actualOutput" placeholder="700" min="1" value="700">
+            <span class="input-unit">وحدة/يوم</span>
+          </div>
+
+          <button class="calculate-btn" id="calculateCapacity">
+            <i class="fas fa-play"></i>
+            احسب الكفاءة
+          </button>
+        </div>
+
+        <!-- Results Section -->
+        <div class="calculator-results" id="capacityResults" style="display: none;">
+          <div class="results-grid">
+            <div class="result-card">
+              <div class="result-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                <i class="fas fa-percentage"></i>
+              </div>
+              <div class="result-content">
+                <span class="result-label">كفاءة الاستخدام</span>
+                <span class="result-en">Utilization</span>
+                <h3 class="result-value" id="utilizationResult">0%</h3>
+              </div>
+            </div>
+
+            <div class="result-card">
+              <div class="result-icon" style="background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);">
+                <i class="fas fa-gauge-high"></i>
+              </div>
+              <div class="result-content">
+                <span class="result-label">كفاءة التشغيل</span>
+                <span class="result-en">Efficiency</span>
+                <h3 class="result-value" id="efficiencyResult">0%</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart.js Visualization -->
+          <div class="result-chart">
+            <canvas id="capacityChart"></canvas>
+          </div>
+
+          <!-- Formulas Box -->
+          <div class="formulas-box">
+            <h4>
+              <i class="fas fa-flask"></i>
+              المعادلات المستخدمة:
+            </h4>
+            <div class="formula-item">
+              <code>Utilization = (Actual Output / Design Capacity) × 100</code>
+            </div>
+            <div class="formula-item">
+              <code>Efficiency = (Actual Output / Effective Capacity) × 100</code>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gap Analysis Table -->
+      <div class="gap-analysis" data-aos="fade-up">
+        <h3 class="section-subtitle">
+          <i class="fas fa-compress-arrows-alt"></i>
+          تحليل الفجوة بين الطاقة والطلب
+        </h3>
+
+        <div class="analysis-table-wrapper">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>الحالة</th>
+                <th>الوضع</th>
+                <th>النتيجة</th>
+                <th>الإجراء المطلوب</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="surplus-row"
+                  data-tippy-content="فائض في الطاقة يعني موارد غير مستغلة">
+                <td>
+                  <div class="table-badge surplus">
+                    <i class="fas fa-arrow-up"></i>
+                    فائض
+                  </div>
+                </td>
+                <td>الطاقة > الطلب</td>
+                <td>موارد غير مستغلة (Unutilized Resources)</td>
+                <td>تقليل الإنتاج أو البحث عن أسواق جديدة</td>
+              </tr>
+              <tr class="deficit-row"
+                  data-tippy-content="عجز في الطاقة يؤدي لعدم رضا العملاء">
+                <td>
+                  <div class="table-badge deficit">
+                    <i class="fas fa-arrow-down"></i>
+                    عجز
+                  </div>
+                </td>
+                <td>الطاقة < الطلب</td>
+                <td>عدم رضا العملاء (Customer Dissatisfaction)</td>
+                <td>زيادة الطاقة الإنتاجية</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Ways to Increase Capacity -->
+      <div class="increase-methods" data-aos="fade-up">
+        <h3 class="section-subtitle">
+          <i class="fas fa-rocket"></i>
+          طرق زيادة الطاقة الإنتاجية (6 طرق)
+        </h3>
+
+        <div class="methods-grid">
+          <div class="method-card" data-aos="zoom-in" data-aos-delay="100">
+            <div class="method-number">1</div>
+            <i class="fas fa-microchip"></i>
+            <h4>تقنيات جديدة</h4>
+            <p>New Production Techniques</p>
+          </div>
+
+          <div class="method-card" data-aos="zoom-in" data-aos-delay="200">
+            <div class="method-number">2</div>
+            <i class="fas fa-robot"></i>
+            <h4>معدات جديدة</h4>
+            <p>New Equipment</p>
+          </div>
+
+          <div class="method-card" data-aos="zoom-in" data-aos-delay="300">
+            <div class="method-number">3</div>
+            <i class="fas fa-cubes"></i>
+            <h4>مواد أفضل</h4>
+            <p>Better Materials</p>
+          </div>
+
+          <div class="method-card" data-aos="zoom-in" data-aos-delay="400">
+            <div class="method-number">4</div>
+            <i class="fas fa-users-gear"></i>
+            <h4>زيادة العمال</h4>
+            <p>More Workers</p>
+          </div>
+
+          <div class="method-card" data-aos="zoom-in" data-aos-delay="500">
+            <div class="method-number">5</div>
+            <i class="fas fa-clock"></i>
+            <h4>نوبات إضافية</h4>
+            <p>Additional Shifts</p>
+          </div>
+
+          <div class="method-card" data-aos="zoom-in" data-aos-delay="600">
+            <div class="method-number">6</div>
+            <i class="fas fa-building"></i>
+            <h4>منشآت جديدة</h4>
+            <p>New Facilities</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz 2 -->
+      <div class="question-container" data-aos="fade-up">
+        <div class="question-header">
+          <i class="fas fa-question-circle"></i>
+          <h3>سؤال تفاعلي</h3>
+        </div>
+        <p class="question-text">
+          ما الفرق بين طاقة التصميم والطاقة الفعلية؟
+        </p>
+        <div class="mcq-options" id="quiz2">
+          <button class="mcq-option" data-answer="wrong">
+            <span class="option-letter">A</span>
+            <span class="option-text">طاقة التصميم هي الإنتاج الفعلي</span>
+          </button>
+          <button class="mcq-option" data-answer="correct">
+            <span class="option-letter">B</span>
+            <span class="option-text">طاقة التصميم نظرية والفعلية تأخذ الظروف الواقعية</span>
+          </button>
+          <button class="mcq-option" data-answer="wrong">
+            <span class="option-letter">C</span>
+            <span class="option-text">كلاهما متطابقان</span>
+          </button>
+          <button class="mcq-option" data-answer="wrong">
+            <span class="option-letter">D</span>
+            <span class="option-text">لا يوجد فرق</span>
+          </button>
+        </div>
+        <div class="feedback-box" id="feedback2" style="display: none;"></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- تابع في التعليق التالي... -->
+
+    
+    <!-- ==================== ENGLISH CONTENT ==================== -->
+    <div class="en-content" style="display:none;">
+      
+      
+    </div>
+
+  </main>
+
+  <!-- ==================== CUSTOM SCRIPTS ==================== -->
+  <script src="../js/script.js"></script>
+</body>
+</html>
