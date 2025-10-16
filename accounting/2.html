@@ -344,86 +344,131 @@
     <!-- ==================== ARABIC CONTENT ==================== -->
     <!-- Scroll Progress Indicator -->
 <div style="position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.3); z-index: 9999;">
-  <div id="scrollProgressBar" style="height: 100%; background: linear-gradient(90deg, #ea580c, #2563eb); width: 0%; transition: width 0.1s;"></div>
+  <div id="scrollProgressBar" style="height: 100%; background: linear-gradient(90deg, #ea580c, #2563eb, #10b981); width: 0%; transition: width 0.1s;"></div>
 </div>
+
+<!-- Progress Circle (for mobile) -->
+<div id="progressCircle" style="position: fixed; bottom: 80px; left: 20px; width: 60px; height: 60px; z-index: 9998;"></div>
 
 <!-- Main Container -->
 <div class="container">
 
-  <!-- ==================== LECTURE HEADER ==================== -->
-  <div class="lecture-header" data-aos="fade-down">
-    <h1>🏭 وظيفة الإنتاج</h1>
-    <div class="subtitle">The Production Function</div>
-    <div class="description">
-      رحلة تعليمية شاملة في عالم إدارة العمليات الإنتاجية - من التنبؤ إلى التسليم النهائي
+  <!-- ==================== LECTURE HEADER with Particles ==================== -->
+  <div class="lecture-header" data-aos="fade-down" style="position: relative; overflow: hidden;">
+    <!-- Animated Background -->
+    <div id="headerParticles" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.1;"></div>
+    
+    <div style="position: relative; z-index: 2;">
+      <h1 style="font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem;">
+        <span style="display: inline-block;" data-aos="zoom-in" data-aos-delay="100">🏭</span>
+        <span style="display: inline-block;" data-aos="fade-right" data-aos-delay="200">وظيفة الإنتاج</span>
+      </h1>
+      <div class="subtitle" data-aos="fade-left" data-aos-delay="300" style="font-size: 1.8rem;">The Production Function</div>
+      <div class="description" data-aos="fade-up" data-aos-delay="400" style="font-size: 1.3rem; margin-top: 1.5rem;">
+        رحلة تعليمية شاملة في عالم إدارة العمليات الإنتاجية - من التنبؤ إلى التسليم النهائي
+      </div>
+      
+      <!-- Stats Counter -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; margin-top: 2.5rem;">
+        <div style="text-align: center;" data-aos="flip-up" data-aos-delay="500">
+          <div style="font-size: 3rem; font-weight: 700; color: #fbbf24;" data-count="6" class="counter">0</div>
+          <div style="font-size: 1.1rem; opacity: 0.9;">أنشطة رئيسية</div>
+        </div>
+        <div style="text-align: center;" data-aos="flip-up" data-aos-delay="600">
+          <div style="font-size: 3rem; font-weight: 700; color: #22c55e;" data-count="40" class="counter">0</div>
+          <div style="font-size: 1.1rem; opacity: 0.9;">مفهوم أساسي</div>
+        </div>
+        <div style="text-align: center;" data-aos="flip-up" data-aos-delay="700">
+          <div style="font-size: 3rem; font-weight: 700; color: #3b82f6;" data-count="10" class="counter">0</div>
+          <div style="font-size: 1.1rem; opacity: 0.9;">رسوم تفاعلية</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- ==================== المقدمة ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
+  <!-- ==================== المقدمة مع Intro.js Tour ==================== -->
+  <div class="glassy-card" data-aos="fade-up" id="intro-section" data-intro="مرحباً! هنا نبدأ رحلتنا في فهم الوظائف الأساسية">
     <div class="section-title">
       <span class="icon">🎯</span>
       المقدمة: الوظائف الأساسية في الأعمال
+      <button onclick="startTour()" style="margin-right: auto; padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #ea580c, #dc2626); color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1rem; font-weight: 600;">
+        🎓 ابدأ الجولة التعليمية
+      </button>
     </div>
+    
     <div class="concept-content">
       <p style="font-size: 1.3rem; line-height: 2; margin-bottom: 1.5rem;">
         أي مؤسسة تجارية في العالم بتشتغل من خلال <strong>أربع وظائف أساسية مترابطة</strong>:
       </p>
     </div>
 
-    <!-- شبكة الوظائف الأربعة -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+    <!-- شبكة الوظائف الأربعة مع Hover Effects -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;" id="functions-grid" data-intro="هذه هي الوظائف الأربعة الرئيسية لأي شركة">
       
-      <div class="concept-box" data-aos="zoom-in" data-aos-delay="100" style="border-right-color: #ea580c;">
+      <div class="concept-box function-card" data-aos="zoom-in" data-aos-delay="100" style="border-right-color: #ea580c; cursor: pointer; transition: all 0.3s;" onmouseenter="animateCard(this)" data-intro="الإنتاج: القلب النابض للشركة">
         <div class="concept-title">
-          🏭 الإنتاج
+          <span style="font-size: 2.5rem;">🏭</span> الإنتاج
           <span class="en">Production</span>
         </div>
         <div class="concept-content">خلق القيمة الفعلية للمنتج</div>
+        <div style="margin-top: 1rem; padding: 1rem; background: rgba(234, 88, 12, 0.1); border-radius: 8px; font-size: 0.9rem; display: none;" class="extra-info">
+          <strong>الدور:</strong> تحويل المواد الخام إلى منتجات نهائية
+        </div>
       </div>
 
-      <div class="concept-box" data-aos="zoom-in" data-aos-delay="200" style="border-right-color: #e11d48;">
+      <div class="concept-box function-card" data-aos="zoom-in" data-aos-delay="200" style="border-right-color: #e11d48; cursor: pointer; transition: all 0.3s;" onmouseenter="animateCard(this)">
         <div class="concept-title">
-          📢 التسويق
+          <span style="font-size: 2.5rem;">📢</span> التسويق
           <span class="en">Marketing</span>
         </div>
         <div class="concept-content">الترويج والوصول للعملاء</div>
+        <div style="margin-top: 1rem; padding: 1rem; background: rgba(225, 29, 72, 0.1); border-radius: 8px; font-size: 0.9rem; display: none;" class="extra-info">
+          <strong>الدور:</strong> جذب العملاء وزيادة المبيعات
+        </div>
       </div>
 
-      <div class="concept-box" data-aos="zoom-in" data-aos-delay="300" style="border-right-color: #059669;">
+      <div class="concept-box function-card" data-aos="zoom-in" data-aos-delay="300" style="border-right-color: #059669; cursor: pointer; transition: all 0.3s;" onmouseenter="animateCard(this)">
         <div class="concept-title">
-          💰 التمويل
+          <span style="font-size: 2.5rem;">💰</span> التمويل
           <span class="en">Finance</span>
         </div>
         <div class="concept-content">إدارة الموارد المالية</div>
+        <div style="margin-top: 1rem; padding: 1rem; background: rgba(5, 150, 105, 0.1); border-radius: 8px; font-size: 0.9rem; display: none;" class="extra-info">
+          <strong>الدور:</strong> ضمان توفر السيولة والاستثمار الأمثل
+        </div>
       </div>
 
-      <div class="concept-box" data-aos="zoom-in" data-aos-delay="400" style="border-right-color: #7c3aed;">
+      <div class="concept-box function-card" data-aos="zoom-in" data-aos-delay="400" style="border-right-color: #7c3aed; cursor: pointer; transition: all 0.3s;" onmouseenter="animateCard(this)">
         <div class="concept-title">
-          👥 الموارد البشرية
+          <span style="font-size: 2.5rem;">👥</span> الموارد البشرية
           <span class="en">HR</span>
         </div>
         <div class="concept-content">إدارة القوى العاملة</div>
+        <div style="margin-top: 1rem; padding: 1rem; background: rgba(124, 58, 237, 0.1); border-radius: 8px; font-size: 0.9rem; display: none;" class="extra-info">
+          <strong>الدور:</strong> توظيف وتدريب وتطوير الموظفين
+        </div>
       </div>
 
     </div>
 
-    <div style="background: linear-gradient(135deg, rgba(234, 88, 12, 0.1), rgba(37, 99, 235, 0.1)); padding: 2rem; border-radius: 16px; margin-top: 2rem;">
-      <p style="font-size: 1.3rem; line-height: 2;">
+    <!-- Animated Focus Box -->
+    <div style="background: linear-gradient(135deg, rgba(234, 88, 12, 0.1), rgba(37, 99, 235, 0.1)); padding: 2rem; border-radius: 16px; margin-top: 2rem; position: relative; overflow: hidden;" data-aos="fade-up">
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%); animation: shimmer 3s infinite;"></div>
+      <p style="font-size: 1.3rem; line-height: 2; position: relative; z-index: 2;">
         <strong style="color: #ea580c; font-size: 1.4rem;">🎯 التركيز اليوم:</strong> 
         وظيفة الإنتاج أو العمليات - الوظيفة اللي بتخلق القيمة الفعلية للمنتج أو الخدمة وبتحوّل المدخلات لمخرجات قابلة للبيع!
       </p>
     </div>
   </div>
 
-  <!-- ==================== تعريف وظيفة الإنتاج ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
+  <!-- ==================== تعريف وظيفة الإنتاج مع Mermaid ==================== -->
+  <div class="glassy-card" data-aos="fade-up" data-intro="التعريف الأساسي لوظيفة الإنتاج">
     <div class="section-title">
       <span class="icon">📋</span>
       ما هي وظيفة الإنتاج؟
     </div>
 
-    <div class="concept-box" style="background: linear-gradient(135deg, #fff7ed, #ffedd5); border-right-color: #ea580c;">
+    <div class="concept-box" style="background: linear-gradient(135deg, #fff7ed, #ffedd5); border-right-color: #ea580c;" data-aos="zoom-in">
       <div class="concept-title" style="font-size: 1.8rem;">
         📌 التعريف الرسمي
       </div>
@@ -433,9 +478,9 @@
       </div>
     </div>
 
-    <!-- Mermaid Diagram -->
-    <div style="background: white; padding: 2rem; border-radius: 16px; margin: 2rem 0; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
-      <h3 style="text-align: center; color: #ea580c; margin-bottom: 1.5rem; font-size: 1.6rem;">
+    <!-- Mermaid Diagram مع Animation -->
+    <div style="background: white; padding: 2.5rem; border-radius: 16px; margin: 2rem 0; box-shadow: 0 8px 24px rgba(0,0,0,0.1);" data-aos="flip-up">
+      <h3 style="text-align: center; color: #ea580c; margin-bottom: 1.5rem; font-size: 1.7rem;">
         📊 عملية التحويل الأساسية
       </h3>
       <div class="mermaid">
@@ -446,179 +491,496 @@ graph LR
     style A fill:#dbeafe,stroke:#2563eb,stroke-width:3px
     style B fill:#dcfce7,stroke:#16a34a,stroke-width:3px
       </div>
+      
+      <!-- Interactive Buttons تحت الرسم -->
+      <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+        <button onclick="explainInputs()" style="padding: 0.8rem 1.5rem; background: #dbeafe; color: #1e40af; border: 2px solid #2563eb; border-radius: 12px; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+          🔍 اشرح المدخلات
+        </button>
+        <button onclick="explainProcess()" style="padding: 0.8rem 1.5rem; background: #fef3c7; color: #92400e; border: 2px solid #f59e0b; border-radius: 12px; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+          ⚙️ اشرح العملية
+        </button>
+        <button onclick="explainOutputs()" style="padding: 0.8rem 1.5rem; background: #dcfce7; color: #065f46; border: 2px solid #10b981; border-radius: 12px; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+          📦 اشرح المخرجات
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- ==================== الأنشطة الستة ==================== -->
-  <div class="glassy-card" data-aos="fade-up">
+  <!-- ==================== الأنشطة الستة مع Swiper متطور ==================== -->
+  <div class="glassy-card" data-aos="fade-up" data-intro="الأنشطة الستة الأساسية لوظيفة الإنتاج">
     <div class="section-title">
       <span class="icon">⚙️</span>
       الأنشطة الستة لوظيفة الإنتاج
+      <button onclick="toggleActivitiesView()" style="margin-right: auto; padding: 0.5rem 1.2rem; background: #3b82f6; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 0.9rem;">
+        <i class="fas fa-th"></i> تبديل العرض
+      </button>
     </div>
 
     <div class="concept-content" style="font-size: 1.3rem; margin-bottom: 2rem;">
       وظيفة الإنتاج بتشمل <strong>ستة أنشطة أساسية مترابطة</strong>، كل واحد منهم ضروري لنجاح العملية الإنتاجية:
     </div>
 
-    <!-- Swiper Slider -->
-    <div class="swiper activitiesSwiper" style="margin: 2rem 0;">
+    <!-- Swiper Container -->
+    <div class="swiper activitiesSwiper" style="margin: 2rem 0;" id="activities-swiper">
       <div class="swiper-wrapper">
         
-        <!-- Activity 1 -->
+        <!-- Activity 1: Forecasting -->
         <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #ede9fe, #ddd6fe); padding: 2.5rem; border-radius: 16px; min-height: 400px;">
-            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">🔮</div>
-            <h3 style="color: #7c3aed; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              التنبؤ<br/><span style="font-family: Inter; font-size: 1.5rem;">Forecasting</span>
+          <div class="activity-card" style="background: linear-gradient(135deg, #ede9fe, #ddd6fe); padding: 2.5rem; border-radius: 16px; min-height: 450px; position: relative; overflow: hidden;">
+            <div class="activity-icon" style="font-size: 5rem; text-align: center; margin-bottom: 1rem; animation: bounce 2s infinite;">🔮</div>
+            <h3 style="color: #7c3aed; font-size: 2rem; text-align: center; margin-bottom: 1rem; font-weight: 700;">
+              التنبؤ
             </h3>
-            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
+            <p style="font-family: Inter; font-size: 1.3rem; text-align: center; color: #6d28d9; margin-bottom: 1.5rem;">Forecasting</p>
+            
+            <p style="font-size: 1.15rem; line-height: 2; text-align: center; margin-bottom: 1.5rem;">
               تقدير الطلب المستقبلي على السلع والخدمات، وتقدير كمية الموارد اللازمة لإنتاج المستوى المطلوب من المخرجات
             </p>
-            <div style="background: rgba(124, 58, 237, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
-              <strong style="color: #7c3aed;">💡 مثال:</strong> مصنع عصاير يتنبأ باحتياجات الصيف القادم
+            
+            <div style="background: rgba(124, 58, 237, 0.15); padding: 1.5rem; border-radius: 12px; border-right: 4px solid #7c3aed;">
+              <strong style="color: #6d28d9; font-size: 1.2rem;">💡 مثال عملي:</strong>
+              <p style="margin-top: 0.5rem; line-height: 1.8;">مصنع عصاير يتنبأ باحتياجات الصيف القادم من البرتقال والعمالة</p>
             </div>
+            
+            <button onclick="showActivityDetails(1)" style="width: 100%; margin-top: 1.5rem; padding: 0.8rem; background: #7c3aed; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem;">
+              📚 تفاصيل أكثر
+            </button>
           </div>
         </div>
 
-        <!-- Activity 2 -->
+        <!-- Activity 2: Capacity Planning -->
         <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); padding: 2.5rem; border-radius: 16px; min-height: 400px;">
-            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">⚡</div>
-            <h3 style="color: #2563eb; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              تخطيط الطاقة<br/><span style="font-family: Inter; font-size: 1.5rem;">Capacity Planning</span>
+          <div class="activity-card" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); padding: 2.5rem; border-radius: 16px; min-height: 450px;">
+            <div style="font-size: 5rem; text-align: center; margin-bottom: 1rem; animation: pulse 2s infinite;">⚡</div>
+            <h3 style="color: #2563eb; font-size: 2rem; text-align: center; margin-bottom: 1rem; font-weight: 700;">
+              تخطيط الطاقة
             </h3>
-            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
+            <p style="font-family: Inter; font-size: 1.3rem; text-align: center; color: #1e40af; margin-bottom: 1.5rem;">Capacity Planning</p>
+            
+            <p style="font-size: 1.15rem; line-height: 2; text-align: center; margin-bottom: 1.5rem;">
               تحديد الطاقة الإنتاجية اللي المنظمة محتاجاها عشان تلبي التغيرات في الطلب على منتجاتها
             </p>
-            <div style="background: rgba(37, 99, 235, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
-              <strong style="color: #2563eb;">💡 مثال:</strong> موازنة قدرة المصنع مع حجم الطلب المتوقع
+            
+            <div style="background: rgba(37, 99, 235, 0.15); padding: 1.5rem; border-radius: 12px; border-right: 4px solid #2563eb;">
+              <strong style="color: #1e40af; font-size: 1.2rem;">💡 مثال عملي:</strong>
+              <p style="margin-top: 0.5rem; line-height: 1.8;">موازنة قدرة المصنع مع حجم الطلب المتوقع في مواسم الذروة</p>
             </div>
+            
+            <button onclick="showActivityDetails(2)" style="width: 100%; margin-top: 1.5rem; padding: 0.8rem; background: #2563eb; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem;">
+              📚 تفاصيل أكثر
+            </button>
           </div>
         </div>
 
-        <!-- Activity 3 -->
+        <!-- Activity 3: Scheduling -->
         <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 2.5rem; border-radius: 16px; min-height: 400px;">
-            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">📅</div>
-            <h3 style="color: #d97706; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              الجدولة<br/><span style="font-family: Inter; font-size: 1.5rem;">Scheduling</span>
+          <div class="activity-card" style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 2.5rem; border-radius: 16px; min-height: 450px;">
+            <div style="font-size: 5rem; text-align: center; margin-bottom: 1rem; animation: swing 2s infinite;">📅</div>
+            <h3 style="color: #d97706; font-size: 2rem; text-align: center; margin-bottom: 1rem; font-weight: 700;">
+              الجدولة
             </h3>
-            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
+            <p style="font-family: Inter; font-size: 1.3rem; text-align: center; color: #92400e; margin-bottom: 1.5rem;">Scheduling</p>
+            
+            <p style="font-size: 1.15rem; line-height: 2; text-align: center; margin-bottom: 1.5rem;">
               ترتيب حمل العمل اللي هيتم تنفيذه بطريقة مثالية، وتخصيص موارد الإنتاج بكفاءة
             </p>
-            <div style="background: rgba(217, 119, 6, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
-              <strong style="color: #d97706;">💡 مثال:</strong> ترتيب 10 أوامر إنتاج على 5 ماكينات بأقل وقت
+            
+            <div style="background: rgba(217, 119, 6, 0.15); padding: 1.5rem; border-radius: 12px; border-right: 4px solid #d97706;">
+              <strong style="color: #92400e; font-size: 1.2rem;">💡 مثال عملي:</strong>
+              <p style="margin-top: 0.5rem; line-height: 1.8;">ترتيب 10 أوامر إنتاج على 5 ماكينات لإنجازها في أقل وقت</p>
             </div>
+            
+            <button onclick="showActivityDetails(3)" style="width: 100%; margin-top: 1.5rem; padding: 0.8rem; background: #d97706; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem;">
+              📚 تفاصيل أكثر
+            </button>
           </div>
         </div>
 
-        <!-- Activity 4 -->
+        <!-- Activity 4: Inventory Management -->
         <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); padding: 2.5rem; border-radius: 16px; min-height: 400px;">
-            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">📦</div>
-            <h3 style="color: #059669; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              إدارة المخزون<br/><span style="font-family: Inter; font-size: 1.5rem;">Managing Inventories</span>
+          <div class="activity-card" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); padding: 2.5rem; border-radius: 16px; min-height: 450px;">
+            <div style="font-size: 5rem; text-align: center; margin-bottom: 1rem; animation: rotate 3s infinite;">📦</div>
+            <h3 style="color: #059669; font-size: 2rem; text-align: center; margin-bottom: 1rem; font-weight: 700;">
+              إدارة المخزون
             </h3>
-            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
+            <p style="font-family: Inter; font-size: 1.3rem; text-align: center; color: #065f46; margin-bottom: 1.5rem;">Managing Inventories</p>
+            
+            <p style="font-size: 1.15rem; line-height: 2; text-align: center; margin-bottom: 1.5rem;">
               عملية الطلب والتخزين واستخدام المخزون (مواد خام، عمل تحت التشغيل، سلع تامة)
             </p>
-            <div style="background: rgba(5, 150, 105, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
-              <strong style="color: #059669;">💡 مثال:</strong> نظام JIT من تويوتا
+            
+            <div style="background: rgba(5, 150, 105, 0.15); padding: 1.5rem; border-radius: 12px; border-right: 4px solid #059669;">
+              <strong style="color: #065f46; font-size: 1.2rem;">💡 مثال عملي:</strong>
+              <p style="margin-top: 0.5rem; line-height: 1.8;">نظام JIT (Just-in-Time) من تويوتا لتقليل المخزون لصفر</p>
             </div>
+            
+            <button onclick="showActivityDetails(4)" style="width: 100%; margin-top: 1.5rem; padding: 0.8rem; background: #059669; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem;">
+              📚 تفاصيل أكثر
+            </button>
           </div>
         </div>
 
-        <!-- Activity 5 -->
+        <!-- Activity 5: Quality Assurance -->
         <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 2.5rem; border-radius: 16px; min-height: 400px;">
-            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">✅</div>
-            <h3 style="color: #dc2626; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              ضمان الجودة<br/><span style="font-family: Inter; font-size: 1.5rem;">Assuring Quality</span>
+          <div class="activity-card" style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 2.5rem; border-radius: 16px; min-height: 450px;">
+            <div style="font-size: 5rem; text-align: center; margin-bottom: 1rem; animation: flash 2s infinite;">✅</div>
+            <h3 style="color: #dc2626; font-size: 2rem; text-align: center; margin-bottom: 1rem; font-weight: 700;">
+              ضمان الجودة
             </h3>
-            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
+            <p style="font-family: Inter; font-size: 1.3rem; text-align: center; color: #991b1b; margin-bottom: 1.5rem;">Assuring Quality</p>
+            
+            <p style="font-size: 1.15rem; line-height: 2; text-align: center; margin-bottom: 1.5rem;">
               منع حدوث العيوب في المنتجات المُصنَّعة من خلال التركيز على العملية نفسها
             </p>
-            <div style="background: rgba(220, 38, 38, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
-              <strong style="color: #dc2626;">💡 مثال:</strong> تطبيق Six Sigma لتحسين الجودة
+            
+            <div style="background: rgba(220, 38, 38, 0.15); padding: 1.5rem; border-radius: 12px; border-right: 4px solid #dc2626;">
+              <strong style="color: #991b1b; font-size: 1.2rem;">💡 مثال عملي:</strong>
+              <p style="margin-top: 0.5rem; line-height: 1.8;">تطبيق Six Sigma لتحسين الجودة وتقليل العيوب</p>
             </div>
+            
+            <button onclick="showActivityDetails(5)" style="width: 100%; margin-top: 1.5rem; padding: 0.8rem; background: #dc2626; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem;">
+              📚 تفاصيل أكثر
+            </button>
           </div>
         </div>
 
-        <!-- Activity 6 -->
+        <!-- Activity 6: Locating Facilities -->
         <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #fce7f3, #fbcfe8); padding: 2.5rem; border-radius: 16px; min-height: 400px;">
-            <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">📍</div>
-            <h3 style="color: #db2777; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              تحديد مواقع المنشآت<br/><span style="font-family: Inter; font-size: 1.5rem;">Locating Facilities</span>
+          <div class="activity-card" style="background: linear-gradient(135deg, #fce7f3, #fbcfe8); padding: 2.5rem; border-radius: 16px; min-height: 450px;">
+            <div style="font-size: 5rem; text-align: center; margin-bottom: 1rem; animation: ping 2s infinite;">📍</div>
+            <h3 style="color: #db2777; font-size: 2rem; text-align: center; margin-bottom: 1rem; font-weight: 700;">
+              تحديد مواقع المنشآت
             </h3>
-            <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
+            <p style="font-family: Inter; font-size: 1.3rem; text-align: center; color: #be185d; margin-bottom: 1.5rem;">Locating Facilities</p>
+            
+            <p style="font-size: 1.15rem; line-height: 2; text-align: center; margin-bottom: 1.5rem;">
               تحديد موقع المنشأة التجارية بناءً على القرب من العملاء، العمال، ووسائل النقل
             </p>
-            <div style="background: rgba(219, 39, 119, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
-              <strong style="color: #db2777;">💡 مثال:</strong> اختيار موقع مصنع قريب من الأسواق الرئيسية
+            
+            <div style="background: rgba(219, 39, 119, 0.15); padding: 1.5rem; border-radius: 12px; border-right: 4px solid #db2777;">
+              <strong style="color: #be185d; font-size: 1.2rem;">💡 مثال عملي:</strong>
+              <p style="margin-top: 0.5rem; line-height: 1.8;">اختيار موقع مصنع قريب من الأسواق الرئيسية والموانئ</p>
             </div>
+            
+            <button onclick="showActivityDetails(6)" style="width: 100%; margin-top: 1.5rem; padding: 0.8rem; background: #db2777; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem;">
+              📚 تفاصيل أكثر
+            </button>
           </div>
         </div>
 
       </div>
       
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
+      <!-- Swiper Controls -->
+      <div class="swiper-button-next" style="color: #ea580c;"></div>
+      <div class="swiper-button-prev" style="color: #ea580c;"></div>
       <div class="swiper-pagination"></div>
+      
+      <!-- Swiper Progress Bar -->
+      <div style="margin-top: 2rem;">
+        <div style="width: 100%; height: 8px; background: rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden;">
+          <div id="swiperProgress" style="height: 100%; background: linear-gradient(90deg, #ea580c, #dc2626); width: 16.66%; transition: width 0.3s;"></div>
+        </div>
+        <div style="text-align: center; margin-top: 1rem; font-size: 1.1rem; font-weight: 600; color: #64748b;">
+          <span id="currentActivity">1</span> / 6 الأنشطة
+        </div>
+      </div>
     </div>
 
+    <!-- Grid View (Alternative) -->
+    <div id="activities-grid" style="display: none; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
+      <!-- سيتم ملؤها ديناميكياً -->
+    </div>
   </div>
 
 </div>
 
-<!-- Initialize Swiper & AOS -->
+<!-- CSS Animations -->
+<style>
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes swing {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  75% { transform: rotate(-5deg); }
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes ping {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.function-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.function-card:hover .extra-info {
+  display: block !important;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<!-- ==================== JAVASCRIPT ==================== -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize AOS
+  
+  // ==================== Initialize Libraries ====================
+  // AOS
   AOS.init({
     duration: 800,
     easing: 'ease-in-out',
-    once: true
+    once: false,
+    mirror: true
   });
 
-  // Initialize Mermaid
+  // Mermaid
   mermaid.initialize({ 
     startOnLoad: true,
-    theme: 'default'
+    theme: 'default',
+    themeVariables: {
+      primaryColor: '#ea580c',
+      primaryTextColor: '#fff',
+      primaryBorderColor: '#c2410c',
+      lineColor: '#64748b',
+      secondaryColor: '#2563eb',
+      tertiaryColor: '#10b981'
+    }
   });
 
-  // Initialize Swiper
-  new Swiper('.activitiesSwiper', {
+  // ==================== CountUp للأرقام ====================
+  const counters = document.querySelectorAll('.counter');
+  const observerOptions = {
+    threshold: 0.5
+  };
+
+  const counterObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const target = parseInt(entry.target.getAttribute('data-count'));
+        let current = 0;
+        const increment = target / 50;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            entry.target.textContent = target;
+            clearInterval(timer);
+          } else {
+            entry.target.textContent = Math.ceil(current);
+          }
+        }, 30);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  counters.forEach(counter => counterObserver.observe(counter));
+
+  // ==================== Progress Circle ====================
+  const progressCircle = new ProgressBar.Circle('#progressCircle', {
+    color: '#ea580c',
+    strokeWidth: 6,
+    trailWidth: 3,
+    easing: 'easeInOut',
+    duration: 400,
+    text: {
+      autoStyleContainer: false
+    },
+    from: { color: '#ea580c', width: 6 },
+    to: { color: '#10b981', width: 6 },
+    step: function(state, circle) {
+      circle.path.setAttribute('stroke', state.color);
+      circle.path.setAttribute('stroke-width', state.width);
+      const value = Math.round(circle.value() * 100);
+      circle.setText(value + '%');
+    }
+  });
+
+  // ==================== Scroll Progress ====================
+  window.addEventListener('scroll', function() {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height);
+    
+    document.getElementById('scrollProgressBar').style.width = (scrolled * 100) + '%';
+    progressCircle.animate(scrolled);
+  });
+
+  // ==================== Swiper ====================
+  const activitiesSwiper = new Swiper('.activitiesSwiper', {
     slidesPerView: 1,
     spaceBetween: 30,
     loop: true,
     autoplay: {
-      delay: 4000,
+      delay: 5000,
       disableOnInteraction: false,
+      pauseOnMouseEnter: true
     },
     pagination: {
       el: '.swiper-pagination',
       clickable: true,
+      dynamicBullets: true
     },
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
     },
     breakpoints: {
-      768: { slidesPerView: 2 },
-      1024: { slidesPerView: 3 }
+      768: { slidesPerView: 2, spaceBetween: 20 },
+      1024: { slidesPerView: 3, spaceBetween: 30 }
+    },
+    on: {
+      slideChange: function() {
+        const progress = ((this.realIndex + 1) / 6) * 100;
+        document.getElementById('swiperProgress').style.width = progress + '%';
+        document.getElementById('currentActivity').textContent = this.realIndex + 1;
+      }
     }
   });
 
-  // Scroll Progress
-  window.addEventListener('scroll', function() {
-    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (winScroll / height) * 100;
-    document.getElementById('scrollProgressBar').style.width = scrolled + '%';
-  });
+  // ==================== Particles Background ====================
+  if (typeof particlesJS !== 'undefined') {
+    particlesJS('headerParticles', {
+      particles: {
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        color: { value: '#ffffff' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.5, random: false },
+        size: { value: 3, random: true },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: '#ffffff',
+          opacity: 0.4,
+          width: 1
+        },
+        move: { enable: true, speed: 2 }
+      }
+    });
+  }
+
 });
+
+// ==================== Interactive Functions ====================
+function animateCard(card) {
+  anime({
+    targets: card,
+    scale: [1, 1.05],
+    duration: 300,
+    easing: 'easeOutQuad'
+  });
+}
+
+function startTour() {
+  introJs().setOptions({
+    nextLabel: 'التالي',
+    prevLabel: 'السابق',
+    doneLabel: 'انتهى',
+    skipLabel: 'تخطي',
+    scrollToElement: true,
+    tooltipClass: 'introjs-custom'
+  }).start();
+}
+
+function explainInputs() {
+  Swal.fire({
+    icon: 'info',
+    title: '🔧 المدخلات',
+    html: '<p style="font-size: 1.1rem; line-height: 2; text-align: right;">المدخلات هي:<br/>• <strong>المواد الخام</strong>: زي الخشب والحديد<br/>• <strong>العمالة</strong>: الموظفين والعمال<br/>• <strong>رأس المال</strong>: الأموال والمعدات<br/>• <strong>المعرفة</strong>: الخبرات والتكنولوجيا</p>',
+    confirmButtonText: 'فهمت!',
+    confirmButtonColor: '#2563eb'
+  });
+}
+
+function explainProcess() {
+  Swal.fire({
+    icon: 'info',
+    title: '⚙️ عملية التحويل',
+    html: '<p style="font-size: 1.1rem; line-height: 2; text-align: right;">عملية التحويل تشمل:<br/>• <strong>التصنيع</strong>: تحويل المواد الخام<br/>• <strong>التجميع</strong>: تركيب الأجزاء<br/>• <strong>التخزين</strong>: حفظ المنتجات<br/>• <strong>النقل</strong>: توصيل المنتجات</p>',
+    confirmButtonText: 'فهمت!',
+    confirmButtonColor: '#f59e0b'
+  });
+}
+
+function explainOutputs() {
+  Swal.fire({
+    icon: 'info',
+    title: '📦 المخرجات',
+    html: '<p style="font-size: 1.1rem; line-height: 2; text-align: right;">المخرجات هي:<br/>• <strong>المنتجات النهائية</strong>: سلع جاهزة للبيع<br/>• <strong>الخدمات</strong>: خدمات تُقدم للعملاء<br/>• <strong>القيمة المضافة</strong>: الفرق بين سعر البيع والتكلفة</p>',
+    confirmButtonText: 'فهمت!',
+    confirmButtonColor: '#10b981'
+  });
+}
+
+function showActivityDetails(activityNum) {
+  const details = {
+    1: { title: 'التنبؤ', content: 'التنبؤ يعتمد على الـ 6Ms: السوق، المواد، العمالة، الأساليب، المال، الآلات. بيستخدم بيانات تاريخية لتوقع الطلب المستقبلي.' },
+    2: { title: 'تخطيط الطاقة', content: 'يشمل طاقة التصميم (الحد الأقصى النظري) والطاقة الفعلية (الإنتاج الفعلي). الهدف تقليل الفجوة بين الطلب والطاقة.' },
+    3: { title: 'الجدولة', content: 'ترتيب الأعمال لتقليل الوقت والتكلفة. بيستخدم Gantt Charts وخوارزميات الأولوية لتحسين الكفاءة.' },
+    4: { title: 'إدارة المخزون', content: 'بيشمل المواد الخام، العمل تحت التشغيل، والسلع التامة. بيستخدم JIT أو MRP لتحسين المخزون.' },
+    5: { title: 'ضمان الجودة', content: 'موجّه للعملية لمنع العيوب قبل حدوثها. بيستخدم Six Sigma وأدوات الجودة الشاملة.' },
+    6: { title: 'تحديد المواقع', content: 'قرار استراتيجي طويل المدى. بيراعي القرب من العملاء، العمال، النقل، والموردين.' }
+  };
+  
+  const activity = details[activityNum];
+  Swal.fire({
+    title: activity.title,
+    html: `<p style="font-size: 1.1rem; line-height: 2; text-align: right;">${activity.content}</p>`,
+    icon: 'success',
+    confirmButtonText: 'رائع!',
+    confirmButtonColor: '#ea580c',
+    showCloseButton: true
+  });
+  
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 }
+  });
+}
+
+function toggleActivitiesView() {
+  const swiper = document.getElementById('activities-swiper');
+  const grid = document.getElementById('activities-grid');
+  
+  if (swiper.style.display === 'none') {
+    swiper.style.display = 'block';
+    grid.style.display = 'none';
+  } else {
+    swiper.style.display = 'none';
+    grid.style.display = 'grid';
+  }
+}
 </script>
+
 
     
     <!-- ==================== ENGLISH CONTENT ==================== -->
