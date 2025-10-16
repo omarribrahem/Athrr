@@ -342,16 +342,12 @@
     </section>
 
     <!-- ==================== ARABIC CONTENT ==================== -->
-   <!-- ==================== ARABIC CONTENT ==================== -->
-<div class="ar-content">
+    <!-- Scroll Progress Indicator -->
+<div style="position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.3); z-index: 9999;">
+  <div id="scrollProgressBar" style="height: 100%; background: linear-gradient(90deg, #ea580c, #2563eb); width: 0%; transition: width 0.1s;"></div>
+</div>
 
-<!-- ==================== PROGRESS BAR ==================== -->
-<div id="scrollProgress"></div>
-
-<!-- ==================== TOAST NOTIFICATION ==================== -->
-<div id="toastNotification" class="toast-notification"></div>
-
-<!-- ==================== MAIN CONTAINER ==================== -->
+<!-- Main Container -->
 <div class="container">
 
   <!-- ==================== LECTURE HEADER ==================== -->
@@ -378,7 +374,7 @@
     <!-- شبكة الوظائف الأربعة -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
       
-      <div class="concept-box" data-aos="zoom-in" data-aos-delay="100" style="border-right-color: var(--color-management);">
+      <div class="concept-box" data-aos="zoom-in" data-aos-delay="100" style="border-right-color: #ea580c;">
         <div class="concept-title">
           🏭 الإنتاج
           <span class="en">Production</span>
@@ -394,7 +390,7 @@
         <div class="concept-content">الترويج والوصول للعملاء</div>
       </div>
 
-      <div class="concept-box" data-aos="zoom-in" data-aos-delay="300" style="border-right-color: var(--color-finance);">
+      <div class="concept-box" data-aos="zoom-in" data-aos-delay="300" style="border-right-color: #059669;">
         <div class="concept-title">
           💰 التمويل
           <span class="en">Finance</span>
@@ -414,7 +410,7 @@
 
     <div style="background: linear-gradient(135deg, rgba(234, 88, 12, 0.1), rgba(37, 99, 235, 0.1)); padding: 2rem; border-radius: 16px; margin-top: 2rem;">
       <p style="font-size: 1.3rem; line-height: 2;">
-        <strong style="color: var(--color-management); font-size: 1.4rem;">🎯 التركيز اليوم:</strong> 
+        <strong style="color: #ea580c; font-size: 1.4rem;">🎯 التركيز اليوم:</strong> 
         وظيفة الإنتاج أو العمليات - الوظيفة اللي بتخلق القيمة الفعلية للمنتج أو الخدمة وبتحوّل المدخلات لمخرجات قابلة للبيع!
       </p>
     </div>
@@ -427,7 +423,7 @@
       ما هي وظيفة الإنتاج؟
     </div>
 
-    <div class="concept-box" style="background: linear-gradient(135deg, #fff7ed, #ffedd5); border-right-color: var(--color-management);">
+    <div class="concept-box" style="background: linear-gradient(135deg, #fff7ed, #ffedd5); border-right-color: #ea580c;">
       <div class="concept-title" style="font-size: 1.8rem;">
         📌 التعريف الرسمي
       </div>
@@ -437,12 +433,12 @@
       </div>
     </div>
 
-    <!-- Mermaid Diagram: عملية التحويل الأساسية -->
+    <!-- Mermaid Diagram -->
     <div style="background: white; padding: 2rem; border-radius: 16px; margin: 2rem 0; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">
-      <h3 style="text-align: center; color: var(--color-management); margin-bottom: 1.5rem; font-size: 1.6rem;">
+      <h3 style="text-align: center; color: #ea580c; margin-bottom: 1.5rem; font-size: 1.6rem;">
         📊 عملية التحويل الأساسية
       </h3>
-      <div class="mermaid" style="text-align: center;">
+      <div class="mermaid">
 graph LR
     A[المدخلات<br/>Inputs<br/>🔧 مواد خام<br/>👷 عمالة<br/>💰 رأس المال] -->|عملية التحويل<br/>Transformation| B[المخرجات<br/>Outputs<br/>📦 منتجات<br/>🎯 خدمات]
     B -->|تغذية راجعة<br/>Feedback| A
@@ -453,7 +449,7 @@ graph LR
     </div>
   </div>
 
-  <!-- ==================== الأنشطة الستة لوظيفة الإنتاج ==================== -->
+  <!-- ==================== الأنشطة الستة ==================== -->
   <div class="glassy-card" data-aos="fade-up">
     <div class="section-title">
       <span class="icon">⚙️</span>
@@ -464,16 +460,16 @@ graph LR
       وظيفة الإنتاج بتشمل <strong>ستة أنشطة أساسية مترابطة</strong>، كل واحد منهم ضروري لنجاح العملية الإنتاجية:
     </div>
 
-    <!-- Swiper للأنشطة الستة -->
+    <!-- Swiper Slider -->
     <div class="swiper activitiesSwiper" style="margin: 2rem 0;">
       <div class="swiper-wrapper">
         
-        <!-- النشاط 1: التنبؤ -->
+        <!-- Activity 1 -->
         <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #ede9fe, #ddd6fe); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
+          <div style="background: linear-gradient(135deg, #ede9fe, #ddd6fe); padding: 2.5rem; border-radius: 16px; min-height: 400px;">
             <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">🔮</div>
             <h3 style="color: #7c3aed; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              التنبؤ<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Forecasting</span>
+              التنبؤ<br/><span style="font-family: Inter; font-size: 1.5rem;">Forecasting</span>
             </h3>
             <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
               تقدير الطلب المستقبلي على السلع والخدمات، وتقدير كمية الموارد اللازمة لإنتاج المستوى المطلوب من المخرجات
@@ -484,12 +480,12 @@ graph LR
           </div>
         </div>
 
-        <!-- النشاط 2: تخطيط الطاقة -->
+        <!-- Activity 2 -->
         <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
+          <div style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); padding: 2.5rem; border-radius: 16px; min-height: 400px;">
             <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">⚡</div>
             <h3 style="color: #2563eb; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              تخطيط الطاقة<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Capacity Planning</span>
+              تخطيط الطاقة<br/><span style="font-family: Inter; font-size: 1.5rem;">Capacity Planning</span>
             </h3>
             <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
               تحديد الطاقة الإنتاجية اللي المنظمة محتاجاها عشان تلبي التغيرات في الطلب على منتجاتها
@@ -500,12 +496,12 @@ graph LR
           </div>
         </div>
 
-        <!-- النشاط 3: الجدولة -->
+        <!-- Activity 3 -->
         <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
+          <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 2.5rem; border-radius: 16px; min-height: 400px;">
             <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">📅</div>
             <h3 style="color: #d97706; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              الجدولة<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Scheduling</span>
+              الجدولة<br/><span style="font-family: Inter; font-size: 1.5rem;">Scheduling</span>
             </h3>
             <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
               ترتيب حمل العمل اللي هيتم تنفيذه بطريقة مثالية، وتخصيص موارد الإنتاج بكفاءة
@@ -516,28 +512,28 @@ graph LR
           </div>
         </div>
 
-        <!-- النشاط 4: إدارة المخزون -->
+        <!-- Activity 4 -->
         <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
+          <div style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); padding: 2.5rem; border-radius: 16px; min-height: 400px;">
             <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">📦</div>
             <h3 style="color: #059669; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              إدارة المخزون<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Managing Inventories</span>
+              إدارة المخزون<br/><span style="font-family: Inter; font-size: 1.5rem;">Managing Inventories</span>
             </h3>
             <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
               عملية الطلب والتخزين واستخدام المخزون (مواد خام، عمل تحت التشغيل، سلع تامة)
             </p>
             <div style="background: rgba(5, 150, 105, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
-              <strong style="color: #059669;">💡 مثال:</strong> نظام JIT (Just-in-Time) من تويوتا
+              <strong style="color: #059669;">💡 مثال:</strong> نظام JIT من تويوتا
             </div>
           </div>
         </div>
 
-        <!-- النشاط 5: ضمان الجودة -->
+        <!-- Activity 5 -->
         <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
+          <div style="background: linear-gradient(135deg, #fee2e2, #fecaca); padding: 2.5rem; border-radius: 16px; min-height: 400px;">
             <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">✅</div>
             <h3 style="color: #dc2626; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              ضمان الجودة<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Assuring Quality</span>
+              ضمان الجودة<br/><span style="font-family: Inter; font-size: 1.5rem;">Assuring Quality</span>
             </h3>
             <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
               منع حدوث العيوب في المنتجات المُصنَّعة من خلال التركيز على العملية نفسها
@@ -548,12 +544,12 @@ graph LR
           </div>
         </div>
 
-        <!-- النشاط 6: تحديد المواقع -->
+        <!-- Activity 6 -->
         <div class="swiper-slide">
-          <div style="background: linear-gradient(135deg, #fce7f3, #fbcfe8); padding: 2.5rem; border-radius: 16px; height: 100%; min-height: 400px;">
+          <div style="background: linear-gradient(135deg, #fce7f3, #fbcfe8); padding: 2.5rem; border-radius: 16px; min-height: 400px;">
             <div style="font-size: 4rem; text-align: center; margin-bottom: 1rem;">📍</div>
             <h3 style="color: #db2777; font-size: 2rem; text-align: center; margin-bottom: 1.5rem;">
-              تحديد مواقع المنشآت<br/><span style="font-family: var(--font-english); font-size: 1.5rem;">Locating Facilities</span>
+              تحديد مواقع المنشآت<br/><span style="font-family: Inter; font-size: 1.5rem;">Locating Facilities</span>
             </h3>
             <p style="font-size: 1.2rem; line-height: 1.9; text-align: center;">
               تحديد موقع المنشأة التجارية بناءً على القرب من العملاء، العمال، ووسائل النقل
@@ -566,13 +562,63 @@ graph LR
 
       </div>
       
-      <!-- Navigation -->
-      <div class="swiper-button-next" style="color: var(--color-management);"></div>
-      <div class="swiper-button-prev" style="color: var(--color-management);"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
       <div class="swiper-pagination"></div>
     </div>
 
   </div>
+
+</div>
+
+<!-- Initialize Swiper & AOS -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize AOS
+  AOS.init({
+    duration: 800,
+    easing: 'ease-in-out',
+    once: true
+  });
+
+  // Initialize Mermaid
+  mermaid.initialize({ 
+    startOnLoad: true,
+    theme: 'default'
+  });
+
+  // Initialize Swiper
+  new Swiper('.activitiesSwiper', {
+    slidesPerView: 1,
+    spaceBetween: 30,
+    loop: true,
+    autoplay: {
+      delay: 4000,
+      disableOnInteraction: false,
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    breakpoints: {
+      768: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 }
+    }
+  });
+
+  // Scroll Progress
+  window.addEventListener('scroll', function() {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById('scrollProgressBar').style.width = scrolled + '%';
+  });
+});
+</script>
 
     
     <!-- ==================== ENGLISH CONTENT ==================== -->
