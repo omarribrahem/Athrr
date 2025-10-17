@@ -5,24 +5,24 @@ function isIOSDevice() {
 
 function getDeviceType() {
   const ua = navigator.userAgent;
-  if (/iPad/.test(ua)) return 'iPad ðŸ“±';
-  if (/iPhone/.test(ua)) return 'iPhone ðŸ“±';
-  if (/iPod/.test(ua)) return 'iPod ðŸ“±';
-  if (/Android/.test(ua)) return 'Android ðŸ¤–';
-  if (/Windows/.test(ua)) return 'Windows ðŸ’»';
-  if (/Mac/.test(ua)) return 'Mac ðŸ’»';
-  return 'Unknown Device ðŸ–¥ï¸';
+  if (/iPad/.test(ua)) return 'iPad 📱';
+  if (/iPhone/.test(ua)) return 'iPhone 📱';
+  if (/iPod/.test(ua)) return 'iPod 📱';
+  if (/Android/.test(ua)) return 'Android 🤖';
+  if (/Windows/.test(ua)) return 'Windows 💻';
+  if (/Mac/.test(ua)) return 'Mac 💻';
+  return 'Unknown Device 🖥️';
 }
 
 const isIOS = isIOSDevice();
 const deviceType = getDeviceType();
 
-// Ø¥Ø¶Ø§ÙØ© class Ù„Ù„Ù€ body Ø¥Ø°Ø§ ÙƒØ§Ù† iOS
+// إضافة class للـ body إذا كان iOS
 if (isIOS) {
   document.body.classList.add('ios-device');
-  console.log('âœ… iOS Device Detected - Using Native Controls');
+  console.log('✅ iOS Device Detected - Using Native Controls');
 } else {
-  console.log('âœ… Non-iOS Device - Using Custom Player');
+  console.log('✅ Non-iOS Device - Using Custom Player');
 }
 
 // ==================== TOAST NOTIFICATION ====================
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // FastClick
   if (typeof FastClick !== 'undefined') {
     FastClick.attach(document.body);
-    console.log('âœ… FastClick enabled');
+    console.log('✅ FastClick enabled');
   }
   
   // Initialize AOS
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
       once: true,
       offset: 50
     });
-    console.log('âœ… AOS initialized');
+    console.log('✅ AOS initialized');
   }
   
   // Initialize Mermaid
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
         htmlLabels: true
       }
     });
-    console.log('âœ… Mermaid initialized');
+    console.log('✅ Mermaid initialized');
   }
   
   // Configure Marked.js
@@ -77,13 +77,13 @@ document.addEventListener('DOMContentLoaded', function() {
       gfm: true,
       sanitize: false
     });
-    console.log('âœ… Marked.js configured');
+    console.log('✅ Marked.js configured');
   }
   
   // Configure Moment.js for Arabic
   if (typeof moment !== 'undefined') {
     moment.locale('ar');
-    console.log('âœ… Moment.js configured');
+    console.log('✅ Moment.js configured');
   }
   
   // Configure Chart.js defaults for mobile
@@ -91,17 +91,17 @@ document.addEventListener('DOMContentLoaded', function() {
     Chart.defaults.responsive = true;
     Chart.defaults.maintainAspectRatio = false;
     Chart.defaults.devicePixelRatio = window.devicePixelRatio || 2;
-    console.log('âœ… Chart.js configured for mobile');
+    console.log('✅ Chart.js configured for mobile');
   }
   
   // Force MathJax to render
   function waitForMathJax() {
     if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
-      console.log('ðŸŽ¯ Rendering math expressions...');
+      console.log('🎯 Rendering math expressions...');
       MathJax.typesetPromise().then(() => {
-        console.log('âœ… All math rendered successfully!');
+        console.log('✅ All math rendered successfully!');
       }).catch((err) => {
-        console.error('âŒ MathJax rendering error:', err);
+        console.error('❌ MathJax rendering error:', err);
       });
     } else {
       setTimeout(waitForMathJax, 100);
@@ -116,13 +116,13 @@ document.addEventListener('DOMContentLoaded', function() {
   
   if (deviceBadge && playerInfo) {
     if (isIOS) {
-      deviceBadge.textContent = deviceType + ' - Native Player ðŸŽ';
-      playerInfo.textContent = 'Ù…Ø´ØºÙ„ iOS Ø§Ù„Ø£ØµÙ„ÙŠ - Ø§Ø¶ØºØ· Ø¹Ù„Ù‰ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ Ù„Ù„ØªØ´ØºÙŠÙ„';
-      showToast('ðŸŽ iOS Detected - Native Player');
+      deviceBadge.textContent = deviceType + ' - Native Player 🍎';
+      playerInfo.textContent = 'مشغل iOS الأصلي - اضغط على الفيديو للتشغيل';
+      showToast('🍎 iOS Detected - Native Player');
     } else {
-      deviceBadge.textContent = deviceType + ' - Custom Player ðŸŽ®';
-      playerInfo.textContent = 'Ù…Ø´ØºÙ„ Ù…Ø®ØµØµ Ù…ØªÙ‚Ø¯Ù… - ØªØ­ÙƒÙ… ÙƒØ§Ù…Ù„ Ø¨Ø§Ù„Ø¥ÙŠÙ…Ø§Ø¡Ø§Øª';
-      showToast('ðŸŽ® Custom Player Loaded');
+      deviceBadge.textContent = deviceType + ' - Custom Player 🎮';
+      playerInfo.textContent = 'مشغل مخصص متقدم - تحكم كامل بالإيماءات';
+      showToast('🎮 Custom Player Loaded');
     }
   }
   
@@ -134,14 +134,14 @@ document.addEventListener('DOMContentLoaded', function() {
       hammer.on('swipeleft swiperight', function(ev) {
         console.log('Gesture detected:', ev.type);
       });
-      console.log('âœ… Hammer.js gestures enabled');
+      console.log('✅ Hammer.js gestures enabled');
     }
   }
 
-  console.log('ðŸš€ Ù…Ù†ØµØ© Ø£Ø«Ø± - Ø¬Ø§Ù‡Ø²Ø© Ø¨Ø§Ù„ÙƒØ§Ù…Ù„!');
-  console.log('ðŸ“š Ø¬Ù…ÙŠØ¹ Ø§Ù„Ù…ÙƒØªØ¨Ø§Øª Ù…Ø­Ù…Ù„Ø© Ø¨Ù†Ø¬Ø§Ø­');
-  console.log('ðŸ“± Device:', deviceType);
-  console.log('ðŸŽ¬ Player Mode:', isIOS ? 'Native iOS' : 'Custom');
+  console.log('🚀 منصة أثر - جاهزة بالكامل!');
+  console.log('📚 جميع المكتبات محملة بنجاح');
+  console.log('📱 Device:', deviceType);
+  console.log('🎬 Player Mode:', isIOS ? 'Native iOS' : 'Custom');
 });
 
 // ==================== MAIN APPLICATION SCRIPT ====================
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (show) {
       const indicatorElement = document.createElement('div');
       indicatorElement.classList.add('chat-message', 'ai-message', 'typing-indicator');
-      indicatorElement.innerHTML = '<span>Ø£Ø«Ø± AI ÙŠÙƒØªØ¨ Ø§Ù„Ø¢Ù†</span><span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>';
+      indicatorElement.innerHTML = '<span>أثر AI يكتب الآن</span><span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>';
       aiChatMessages.appendChild(indicatorElement);
       aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
     }
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
     html.setAttribute('dir', dir);
     body.setAttribute('dir', dir);
     
-    // Ø¥Ø®ÙØ§Ø¡/Ø¥Ø¸Ù‡Ø§Ø± Ø§Ù„Ù…Ø­ØªÙˆÙ‰ Ø­Ø³Ø¨ Ø§Ù„Ù„ØºØ©
+    // إخفاء/إظهار المحتوى حسب اللغة
     document.querySelectorAll('.ar-content').forEach(el => {
       el.style.display = arabic ? 'block' : 'none';
     });
@@ -210,13 +210,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     if (translationText) {
-      translationText.textContent = isArabic ? 'English' : 'Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©';
+      translationText.textContent = isArabic ? 'English' : 'العربية';
     }
-    document.title = isArabic ? 'Ù…Ù†ØµØ© Ø£Ø«Ø± - Ø§Ù„ØªØ¹Ù„ÙŠÙ… Ø§Ù„ØªÙØ§Ø¹Ù„ÙŠ' : 'Athr Platform - Interactive Learning';
+    document.title = isArabic ? 'منصة أثر - التعليم التفاعلي' : 'Athr Platform - Interactive Learning';
     
-    if (aiChatTitle) aiChatTitle.textContent = isArabic ? 'Ø§Ø³Ø£Ù„ Ø£Ø«Ø± AI' : 'Ask Athr AI';
-    if (aiChatInput) aiChatInput.placeholder = isArabic ? 'Ø§ÙƒØªØ¨ Ø³Ø¤Ø§Ù„Ùƒ Ù‡Ù†Ø§...' : 'Type your question here...';
-    if (aiChatButtonText) aiChatButtonText.textContent = isArabic ? 'Ø£Ø«Ø± AI' : 'Athr AI';
+    if (aiChatTitle) aiChatTitle.textContent = isArabic ? 'اسأل أثر AI' : 'Ask Athr AI';
+    if (aiChatInput) aiChatInput.placeholder = isArabic ? 'اكتب سؤالك هنا...' : 'Type your question here...';
+    if (aiChatButtonText) aiChatButtonText.textContent = isArabic ? 'أثر AI' : 'Athr AI';
     
     // Update moment.js locale
     if (typeof moment !== 'undefined') {
@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (translationButton) {
     translationButton.addEventListener('click', function() {
       applyLanguage(!isArabic);
-      showToast(isArabic ? 'ðŸŒ ØªÙ… Ø§Ù„ØªØ¨Ø¯ÙŠÙ„ Ù„Ù„Ø¹Ø±Ø¨ÙŠØ©' : 'ðŸŒ Switched to English');
+      showToast(isArabic ? '🌍 تم التبديل للعربية' : '🌍 Switched to English');
       
       // Re-render MathJax after language switch
       setTimeout(function() {
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       if (isFirstMessage) {
         const welcomeMsg = isArabic 
-          ? "Ù…Ø±Ø­Ø¨Ø§Ù‹! Ø£Ù†Ø§ **Ø£Ø«Ø± AI**ØŒ Ù…Ø³Ø§Ø¹Ø¯Ùƒ Ø§Ù„Ø£ÙƒØ§Ø¯ÙŠÙ…ÙŠ Ø§Ù„Ù…ØªØ®ØµØµ. ÙŠÙ…ÙƒÙ†Ù†ÙŠ Ù…Ø³Ø§Ø¹Ø¯ØªÙƒ ÙÙŠ:\n\n- **Ø´Ø±Ø­ Ø§Ù„Ù…Ø¹Ø§Ø¯Ù„Ø§Øª ÙˆØ§Ù„Ù…ÙØ§Ù‡ÙŠÙ…**\n- **Ø­Ù„ Ø§Ù„Ù…Ø³Ø§Ø¦Ù„ Ø®Ø·ÙˆØ© Ø¨Ø®Ø·ÙˆØ©**\n- **ØªÙˆØ¶ÙŠØ­ Ø§Ù„ÙØ±Ù‚ Ø¨ÙŠÙ† Ø§Ù„Ø·Ø±Ù‚ Ø§Ù„Ù…Ø®ØªÙ„ÙØ©**\n- **Ø§Ù„Ø¥Ø¬Ø§Ø¨Ø© Ø¹Ù„Ù‰ Ø£ÙŠ Ø³Ø¤Ø§Ù„ Ø¹Ù† Ø§Ù„Ù…Ø­ØªÙˆÙ‰**\n\nØ§Ø³Ø£Ù„Ù†ÙŠ Ø£ÙŠ Ø´ÙŠØ¡!"
+          ? "مرحباً! أنا **أثر AI**، مساعدك الأكاديمي المتخصص. يمكنني مساعدتك في:\n\n- **شرح المعادلات والمفاهيم**\n- **حل المسائل خطوة بخطوة**\n- **توضيح الفرق بين الطرق المختلفة**\n- **الإجابة على أي سؤال عن المحتوى**\n\nاسألني أي شيء!"
           : "Hello! I'm **Athr AI**, your academic assistant. I can help you with:\n\n- **Explaining equations and concepts**\n- **Solving problems step-by-step**\n- **Clarifying differences between methods**\n- **Answering any content questions**\n\nAsk me anything!";
         addMessage(welcomeMsg, 'ai');
         isFirstMessage = false;
@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
       showTypingIndicator(false);
       
       const aiResponse = isArabic
-        ? "Ø´ÙƒØ±Ø§Ù‹ Ù„Ø³Ø¤Ø§Ù„Ùƒ! Ù‡Ø°Ù‡ Ø¥Ø¬Ø§Ø¨Ø© ØªØ¬Ø±ÙŠØ¨ÙŠØ© Ù…Ù† **Ø£Ø«Ø± AI**. ÙÙŠ Ø§Ù„Ù†Ø³Ø®Ø© Ø§Ù„ÙƒØ§Ù…Ù„Ø©ØŒ Ø³ÙŠØªÙ… Ø§Ù„Ø±Ø¨Ø· Ø¨Ù€ API Ø­Ù‚ÙŠÙ‚ÙŠ Ù„Ù„Ø°ÙƒØ§Ø¡ Ø§Ù„Ø§ØµØ·Ù†Ø§Ø¹ÙŠ Ù„Ù„Ø¥Ø¬Ø§Ø¨Ø© Ø¹Ù„Ù‰ Ø£Ø³Ø¦Ù„ØªÙƒ Ø¨Ø¯Ù‚Ø©.\n\nÙŠÙ…ÙƒÙ†Ùƒ Ø§Ø³ØªØ®Ø¯Ø§Ù… Ù‡Ø°Ø§ Ø§Ù„Ù‚Ø§Ù„Ø¨ Ù…Ø¹ Ø£ÙŠ AI API Ù…Ø«Ù„ OpenAI Ø£Ùˆ Google Gemini."
+        ? "شكراً لسؤالك! هذه إجابة تجريبية من **أثر AI**. في النسخة الكاملة، سيتم الربط بـ API حقيقي للذكاء الاصطناعي للإجابة على أسئلتك بدقة.\n\nيمكنك استخدام هذا القالب مع أي AI API مثل OpenAI أو Google Gemini."
         : "Thanks for your question! This is a demo response from **Athr AI**. In the full version, it will be connected to a real AI API to answer your questions accurately.\n\nYou can use this template with any AI API like OpenAI or Google Gemini.";
       
       addMessage(aiResponse, 'ai');
@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', function() {
       showTypingIndicator(false);
       
       const errorMsg = isArabic
-        ? "Ø¹Ø°Ø±Ø§Ù‹ØŒ Ø­Ø¯Ø« Ø®Ø·Ø£ ÙÙŠ Ø§Ù„Ø§ØªØµØ§Ù„. ÙŠØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø±Ø© Ø£Ø®Ø±Ù‰."
+        ? "عذراً، حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى."
         : "Sorry, a connection error occurred. Please try again.";
       addMessage(errorMsg, 'ai');
     } finally {
@@ -370,7 +370,7 @@ document.addEventListener('DOMContentLoaded', function() {
       setTimeout(() => {
         if (isCorrect) {
           this.classList.add('correct');
-          this.innerHTML += ' âœ“';
+          this.innerHTML += ' ✓';
           
           if (typeof confetti !== 'undefined') {
             confetti({
@@ -379,7 +379,7 @@ document.addEventListener('DOMContentLoaded', function() {
               origin: { y: 0.6 }
             });
           }
-          showToast('âœ… Ø¥Ø¬Ø§Ø¨Ø© ØµØ­ÙŠØ­Ø©!');
+          showToast('✅ إجابة صحيحة!');
           
           const solutionContent = this.closest('.question-content').querySelector('.solution-content');
           if (solutionContent) {
@@ -392,13 +392,13 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         } else {
           this.classList.add('incorrect');
-          this.innerHTML += ' âœ—';
-          showToast('âŒ Ø¥Ø¬Ø§Ø¨Ø© Ø®Ø§Ø·Ø¦Ø©');
+          this.innerHTML += ' ✗';
+          showToast('❌ إجابة خاطئة');
           
           allOptions.forEach(opt => {
             if (opt.getAttribute('data-answer') === 'correct') {
               opt.classList.add('correct');
-              opt.innerHTML += ' âœ“ (Ø§Ù„Ø¥Ø¬Ø§Ø¨Ø© Ø§Ù„ØµØ­ÙŠØ­Ø©)';
+              opt.innerHTML += ' ✓ (الإجابة الصحيحة)';
             }
           });
           
@@ -416,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  console.log('âœ… Ù…Ù†ØµØ© Ø£Ø«Ø± - Ø¬Ø§Ù‡Ø²Ø© Ø¨Ø§Ù„ÙƒØ§Ù…Ù„!');
+  console.log('✅ منصة أثر - جاهزة بالكامل!');
 });
 
 // ==================== VIDEO PLAYER SCRIPT ====================
@@ -474,12 +474,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Setup video controls based on device
     if (isIOS) {
       video.controls = true;
-      console.log('âœ… iOS: Native controls enabled');
+      console.log('✅ iOS: Native controls enabled');
     } else {
       video.controls = false;
       setupCustomControls();
       setupHammerGestures();
-      console.log('âœ… Non-iOS: Custom controls enabled');
+      console.log('✅ Non-iOS: Custom controls enabled');
     }
     
     setupEventListeners();
@@ -553,13 +553,13 @@ document.addEventListener('DOMContentLoaded', function() {
   function skipBackward() {
     video.currentTime = Math.max(0, video.currentTime - 10);
     if (tapLeft) showTapIndicator('left');
-    showToast('âª -10 Ø«ÙˆØ§Ù†ÙŠ');
+    showToast('⏪ -10 ثواني');
   }
 
   function skipForwardFunc() {
     video.currentTime = Math.min(video.duration, video.currentTime + 10);
     if (tapRight) showTapIndicator('right');
-    showToast('â© +10 Ø«ÙˆØ§Ù†ÙŠ');
+    showToast('⏩ +10 ثواني');
   }
 
   function showTapIndicator(side) {
@@ -752,7 +752,7 @@ document.addEventListener('DOMContentLoaded', function() {
       skipBackward();
     });
     
-    console.log('âœ… Hammer.js video gestures enabled');
+    console.log('✅ Hammer.js video gestures enabled');
   }
 
   function setupEventListeners() {
@@ -770,9 +770,9 @@ document.addEventListener('DOMContentLoaded', function() {
         currentSourceIndex++;
         console.log('Trying next source:', VIDEO_SOURCES[currentSourceIndex]);
         loadVideo();
-        showToast('âš ï¸ Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ù…ØµØ¯Ø± Ø¨Ø¯ÙŠÙ„...');
+        showToast('⚠️ جاري تحميل مصدر بديل...');
       } else {
-        showToast('âŒ ÙØ´Ù„ ØªØ­Ù…ÙŠÙ„ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ');
+        showToast('❌ فشل تحميل الفيديو');
       }
     });
 
@@ -864,24 +864,24 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ==================== FINAL CONSOLE MESSAGES ====================
-  console.log('â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”');
-  console.log('ðŸŽ‰ Ù…Ù†ØµØ© Ø£Ø«Ø± - ØªÙ… Ø§Ù„ØªØ­Ù…ÙŠÙ„ Ø¨Ù†Ø¬Ø§Ø­!');
-  console.log('â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”');
-  console.log('ðŸ“š Ø¹Ø¯Ø¯ Ø§Ù„Ù…ÙƒØªØ¨Ø§Øª Ø§Ù„Ù…Ø­Ù…Ù„Ø©: 50+');
-  console.log('ðŸ“± Ø§Ù„Ø¬Ù‡Ø§Ø²:', deviceType);
-  console.log('ðŸŽ¬ Ø§Ù„Ù…Ø´ØºÙ„:', isIOS ? 'Native iOS Player' : 'Custom Player');
-  console.log('âœ¨ Ø§Ù„Ø¥Ø¶Ø§ÙØ§Øª:');
-  console.log('   âœ… iOS Detection');
-  console.log('   âœ… Shimmer Effect');
-  console.log('   âœ… Toast Notifications');
-  console.log('   âœ… Hammer.js Gestures');
-  console.log('   âœ… Scroll Progress');
-  console.log('â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”');
-  console.log('ðŸš€ Ø¬Ø§Ù‡Ø² Ù„Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù…!');
-  console.log('â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('🎉 منصة أثر - تم التحميل بنجاح!');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('📚 عدد المكتبات المحملة: 50+');
+  console.log('📱 الجهاز:', deviceType);
+  console.log('🎬 المشغل:', isIOS ? 'Native iOS Player' : 'Custom Player');
+  console.log('✨ الإضافات:');
+  console.log('   ✅ iOS Detection');
+  console.log('   ✅ Shimmer Effect');
+  console.log('   ✅ Toast Notifications');
+  console.log('   ✅ Hammer.js Gestures');
+  console.log('   ✅ Scroll Progress');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('🚀 جاهز للاستخدام!');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   
   // Show welcome toast after 1 second
   setTimeout(() => {
-    showToast('ðŸŽ‰ Ù…Ø±Ø­Ø¨Ø§Ù‹ ÙÙŠ Ù…Ù†ØµØ© Ø£Ø«Ø±!', 3000);
+    showToast('🎉 مرحباً في منصة أثر!', 3000);
   }, 1000);
 });
