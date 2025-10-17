@@ -5,90 +5,119 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="منصة أثر التعليمية - محتوى متخصص لكلية التجارة" />
-  <meta name="keywords" content="اقتصاد، محاسبة، إدارة، تجارة" />
- 
-  <title>عنوان المحاضرة - منصة أثر</title>
+  <meta name="description" content="منصة أثر التعليمية - محتوى تفاعلي متخصص" />
+  
+  <title>منصة أثر التعليمية</title>
   
   <!-- ==================== FONTS ==================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
   
- 
+  <!-- خطوط عربية احترافية -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Almarai:wght@300;400;700;800&family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&family=Noto+Kufi+Arabic:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- خطوط إنجليزية احترافية -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- خط Monospace للكود -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- ==================== ICONS ==================== -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <!-- ==================== CHARTS & DIAGRAMS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+  
   <!-- ==================== MATH ==================== -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
   
-  <!-- ==================== BUSINESS CALCULATIONS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/financejs@4.1.0/finance.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/accounting@0.4.1/accounting.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/decimal.js@10.4.3/decimal.min.js"></script>
-  
-  <!-- ==================== STATISTICS ==================== -->
-  <script src="https://unpkg.com/simple-statistics@7.8.3/dist/simple-statistics.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/regression@2.0.1/dist/regression.min.js"></script>
-  
-  <!-- ==================== CHARTS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  
-  <!-- ==================== DIAGRAMS & MIND MAPS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.0"></script>
-  
-  <!-- ==================== TABLES ==================== -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-  <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-  
-  <!-- ==================== QUIZZES ==================== -->
-  <link href="https://unpkg.com/survey-core/defaultV2.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/survey-core/survey.core.min.js"></script>
-  
-  <!-- ==================== ANIMATIONS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <!-- ==================== ANIMATION LIBRARIES ==================== -->
+  <!-- AOS - Animate On Scroll -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   
-  <!-- ==================== UI COMPONENTS ==================== -->
+  <!-- Anime.js -->
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+  
+  <!-- Splitting.js - Text Animation -->
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css" />
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  
+  <!-- ==================== 3D LIBRARIES ==================== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.waves.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.birds.min.js"></script>
+  
+  <!-- ==================== STORYTELLING ==================== -->
+  <!-- Locomotive Scroll -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+  
+  <!-- ScrollMagic -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js"></script>
+  
+  <!-- ScrollReveal -->
+  <script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
+  
+  <!-- ==================== UI ENHANCEMENTS ==================== -->
+  <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <!-- Toastify -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   
-  <!-- ==================== ICONS ==================== -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Tippy.js Tooltips -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  
+  <!-- Vanilla Tilt - 3D Cards -->
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+  
+  <!-- Medium Zoom - Image Zoom -->
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+  
+  <!-- Rellax.js - Parallax -->
+  <script src="https://cdn.jsdelivr.net/gh/dixonandmoe/rellax@master/rellax.min.js"></script>
+  
+  <!-- ==================== UTILITIES ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+  
+  <!-- LazyLoad Images -->
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.5/dist/lazyload.min.js"></script>
   
   <!-- ==================== VIDEO PLAYER ==================== -->
   <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
   <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
   
-  <!-- ==================== CODE HIGHLIGHTING ==================== -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  
-  <!-- ==================== PDF & EXPORT ==================== -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  
-  <!-- ==================== MARKDOWN ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
-  
-  <!-- ==================== UTILITIES ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
-  
-  <!-- ==================== ENHANCEMENTS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-  
-  <!-- ==================== CUSTOM STYLES ==================== -->
-  <link rel="stylesheet" href="../css/style.css">
+  <!-- ==================== YOUR CUSTOM STYLES ==================== -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-  <!-- Background -->
+  
+  <!-- 3D Background Container -->
+  <div id="vanta-bg"></div>
+  
+  <!-- Background Waves -->
   <div class="background-waves">
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
@@ -105,12 +134,11 @@
 
   <!-- AI FAB Button -->
   <button class="ai-fab-button" id="aiChatButton" aria-label="مساعد أثر الذكي">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f59e0b;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 8V4H8"></path>
       <rect x="4" y="12" width="16" height="8" rx="2"></rect>
       <path d="M2 14h2"></path>
       <path d="M20 14h2"></path>
-      <path d="M15 13v-2a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v2"></path>
     </svg>
     <span class="ai-fab-text" id="aiFabText">أثر AI</span>
   </button>
@@ -124,7 +152,7 @@
       <div class="ai-chat-header">
         <h3 id="ai-chat-title">اسأل أثر AI</h3>
         <button class="ai-chat-close-btn" id="aiChatCloseBtn" aria-label="إغلاق">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
@@ -134,7 +162,7 @@
       <div class="ai-chat-input-area">
         <input type="text" id="ai-chat-input" placeholder="اكتب سؤالك هنا...">
         <button id="ai-chat-send-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="22" y1="2" x2="11" y2="13"></line>
             <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
           </svg>
@@ -144,13 +172,13 @@
   </div>
 
   <!-- Main Content -->
-  <main class="main-content">
+  <main class="main-content" data-scroll-container>
 
     <!-- ==================== VIDEO PLAYER SECTION ==================== -->
     <section class="video-section">
       <div class="video-card-player" data-aos="fade-down">
         <div class="video-info">
-          <h2>🎬 فيديو شرح: مقدمة في المحاسبة</h2>
+          <h2>🎬 فيديو شرح المحاضرة</h2>
           <p id="playerInfo">مشغل فيديو ذكي - يكتشف جهازك تلقائياً</p>
           <span class="device-badge" id="deviceBadge">جاري التحميل...</span>
         </div>
@@ -161,7 +189,7 @@
 
             <div class="loading-spinner" id="loadingSpinner"></div>
 
-            <!-- Simple Controls -->
+            <!-- Simple Controls (للأجهزة العادية) -->
             <div class="simple-controls">
               <div class="simple-progress" id="simpleProgress">
                 <div class="simple-progress-filled" id="simpleProgressFilled"></div>
@@ -179,7 +207,7 @@
               </div>
             </div>
 
-            <!-- iOS Controls -->
+            <!-- iOS Controls (للآيفون/آيباد) -->
             <div class="ios-controls">
               <div class="video-bars" id="videoBars">
                 <div class="top-bar-bg"></div>
@@ -197,9 +225,6 @@
                 <div class="top-left-group">
                   <button class="control-bubble glass-bubble" id="closeBtn">
                     <i class="fas fa-times"></i>
-                  </button>
-                  <button class="control-bubble glass-bubble" id="pipBtn" style="display:none;">
-                    <i class="fas fa-clone"></i>
                   </button>
                 </div>
                 
@@ -248,92 +273,145 @@
       </div>
     </section>
 
-    <!-- ==================== ARABIC CONTENT ==================== -->
-    <div class="ar-content">
-  
-  <!-- Intro -->
-  <section class="glassy-card" data-aos="fade-up" style="margin-top: 20px;">
+    <!-- ==================== المحتوى العربي ==================== -->
+    
+      
+<!-- ==================== المحتوى التجريبي ==================== -->
+<div class="ar-content">
+
+  <!-- Section 1: المقدمة مع Animations -->
+  <section class="glassy-card observe" data-aos="fade-up" data-animate="fadeIn">
     <div class="lecture-intro">
-      <h1>وظيفة الإنتاج</h1>
-      <h3>The Production Function</h3>
-      <p class="subtitle">مقدمة في إدارة العمليات</p>
+      <h1 data-scroll data-scroll-speed="1">وظيفة الإنتاج في المؤسسات</h1>
+      <h3>Production Function in Organizations</h3>
+      <p class="subtitle">مقدمة شاملة في إدارة العمليات</p>
       <div class="lecture-meta">
         <span><i class="fas fa-user"></i> د. محمد أحمد</span>
-        <span><i class="fas fa-clock"></i> 45 دقيقة</span>
+        <span><i class="fas fa-clock"></i> 15 دقيقة قراءة</span>
         <span><i class="fas fa-book"></i> الفصل الأول</span>
+        <span><i class="fas fa-calendar"></i> أكتوبر 2025</span>
       </div>
     </div>
   </section>
 
-  <!-- المقدمة -->
+  <!-- Section 2: Narrative Content -->
   <section class="glassy-card" data-aos="fade-up">
-    <h2>المقدمة: الوظائف الأساسية في الأعمال</h2>
+    <h2>المقدمة: ما هي وظيفة الإنتاج؟</h2>
     <div class="narrative-content">
-      <p>أي مؤسسة تجارية في العالم بتشتغل من خلال **أربع وظائف أساسية** مترابطة ومتداخلة...</p>
-      <p>كل وظيفة من دول ليها دور محدد، لكن النهاردة هنركز على الوظيفة اللي بتخلق **القيمة الفعلية** للمنتج أو الخدمة.</p>
-      <p>الوظيفة دي هي **وظيفة الإنتاج** (Production Function) - القلب النابض لأي شركة!</p>
+      <p>تخيل معي مصنع شوكولاتة كبير... كل يوم، يدخل للمصنع <mark class="highlight-business">مواد خام</mark> مثل الكاكاو والسكر والحليب، ويخرج منتجات جاهزة مثل <mark class="highlight-orange">ألواح الشوكولاتة</mark> اللذيذة. هذه العملية السحرية هي ما نسميه **وظيفة الإنتاج**.</p>
+      
+      <p>وظيفة الإنتاج ليست مقتصرة على المصانع فقط! فالمستشفيات تحول <mark class="highlight-green">المرضى</mark> إلى <mark class="highlight-green">أشخاص أصحاء</mark>، والجامعات تحول <mark class="highlight-blue">الطلاب</mark> إلى <mark class="highlight-blue">خريجين متخصصين</mark>، والمطاعم تحول <mark class="highlight-yellow">المكونات</mark> إلى <mark class="highlight-yellow">وجبات شهية</mark>.</p>
+      
+      <p>في هذه المحاضرة، سنتعلم كيف تدير المؤسسات الناجحة عمليات الإنتاج لديها، وكيف تحقق التوازن بين <strong>الجودة</strong> و <strong>التكلفة</strong> و <strong>السرعة</strong>.</p>
     </div>
   </section>
 
-  <!-- الوظائف الأربعة -->
+  <!-- Section 3: Comparison Cards مع 3D Tilt -->
   <section class="glassy-card" data-aos="fade-up">
-    <h2>الوظائف الأربعة الأساسية</h2>
+    <h2>الوظائف الأربعة الأساسية في المؤسسات</h2>
+    <p style="margin-bottom: 25px; color: #64748b;">جرب تمرير الماوس فوق البطاقات 🎨</p>
+    
     <div class="comparison-cards">
-      <div class="card" data-aos="flip-left">
+      <div class="card tilt-card" data-aos="flip-left">
         <h4>📊 التسويق</h4>
-        <p>فهم احتياجات العملاء وترويج المنتجات</p>
+        <p>فهم احتياجات السوق وترويج المنتجات للعملاء المستهدفين</p>
+        <div style="margin-top: 15px; font-size: 0.9rem; color: #64748b;">
+          <i class="fas fa-check-circle" style="color: var(--color-success);"></i> أبحاث السوق
+        </div>
       </div>
-      <div class="card" data-aos="flip-left" data-aos-delay="100">
+      
+      <div class="card tilt-card" data-aos="flip-left" data-aos-delay="100">
         <h4>💰 التمويل</h4>
-        <p>إدارة الموارد المالية والاستثمارات</p>
+        <p>إدارة الموارد المالية والاستثمارات وتحليل الربحية</p>
+        <div style="margin-top: 15px; font-size: 0.9rem; color: #64748b;">
+          <i class="fas fa-check-circle" style="color: var(--color-success);"></i> التخطيط المالي
+        </div>
       </div>
-      <div class="card" data-aos="flip-left" data-aos-delay="200">
+      
+      <div class="card tilt-card" data-aos="flip-left" data-aos-delay="200">
         <h4>👥 الموارد البشرية</h4>
-        <p>إدارة وتطوير الكوادر البشرية</p>
+        <p>إدارة وتطوير الكوادر البشرية وتحفيز الموظفين</p>
+        <div style="margin-top: 15px; font-size: 0.9rem; color: #64748b;">
+          <i class="fas fa-check-circle" style="color: var(--color-success);"></i> التدريب والتطوير
+        </div>
       </div>
-      <div class="card" data-aos="flip-left" data-aos-delay="300">
+      
+      <div class="card tilt-card" data-aos="flip-left" data-aos-delay="300">
         <h4>🏭 الإنتاج</h4>
-        <p>تحويل المدخلات لمخرجات ذات قيمة</p>
+        <p>تحويل المدخلات إلى مخرجات ذات قيمة مضافة عالية</p>
+        <div style="margin-top: 15px; font-size: 0.9rem; color: #64748b;">
+          <i class="fas fa-check-circle" style="color: var(--color-success);"></i> إدارة العمليات
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- مثال عملي -->
+  <!-- Section 4: Example Box -->
   <section class="glassy-card" data-aos="fade-up">
-    <h2>💡 مثال عملي</h2>
+    <h2>💡 مثال عملي: مصنع العصائر</h2>
+    
     <div class="example-box">
-      <h3>مصنع العصائر 🧃</h3>
-      <p>تخيل إنك صاحب مصنع عصاير طبيعية:</p>
-      <ul style="text-align: right; margin-top: 15px;">
-        <li><strong>المدخلات:</strong> برتقال، سكر، ماء، عمال، آلات</li>
-        <li><strong>العملية:</strong> عصر، تصفية، تعبئة، تغليف</li>
-        <li><strong>المخرجات:</strong> زجاجات عصير جاهزة للبيع</li>
-      </ul>
+      <h3>رحلة تحويل البرتقال إلى عصير 🧃</h3>
+      <p style="font-weight: 500; margin-bottom: 20px;">دعنا نتتبع رحلة إنتاج زجاجة عصير برتقال طبيعي:</p>
+      
+      <div style="display: grid; gap: 15px; margin-top: 20px;">
+        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 12px;">
+          <strong style="color: var(--color-business);">1. المدخلات (Inputs):</strong>
+          <ul style="margin-top: 10px; color: #475569;">
+            <li>برتقال طازج (10 كيلو)</li>
+            <li>سكر طبيعي (500 جرام)</li>
+            <li>ماء معدني (2 لتر)</li>
+            <li>زجاجات تعبئة (20 زجاجة)</li>
+            <li>عمال مدربون (5 أشخاص)</li>
+            <li>آلات عصر وتعبئة</li>
+          </ul>
+        </div>
+        
+        <div style="text-align: center; font-size: 2rem;">⬇️</div>
+        
+        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 12px;">
+          <strong style="color: var(--color-finance);">2. العملية (Process):</strong>
+          <ul style="margin-top: 10px; color: #475569;">
+            <li>غسيل وتنظيف البرتقال</li>
+            <li>عصر البرتقال آلياً</li>
+            <li>تصفية العصير</li>
+            <li>إضافة السكر والماء</li>
+            <li>التعبئة والتغليف</li>
+            <li>الفحص والجودة</li>
+          </ul>
+        </div>
+        
+        <div style="text-align: center; font-size: 2rem;">⬇️</div>
+        
+        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 12px;">
+          <strong style="color: var(--color-success);">3. المخرجات (Outputs):</strong>
+          <ul style="margin-top: 10px; color: #475569;">
+            <li>20 زجاجة عصير برتقال (500 مل لكل زجاجة)</li>
+            <li>جودة عالية ومذاق طبيعي</li>
+            <li>معبأ وجاهز للبيع</li>
+            <li>صلاحية 7 أيام</li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <div class="key-concept">
-      <strong>المفهوم الأساسي:</strong> وظيفة الإنتاج هي عملية تحويل منهجية تضيف قيمة للمواد الخام
+    
+    <div class="key-concept" style="margin-top: 25px;">
+      <strong>💎 المفهوم الأساسي:</strong> وظيفة الإنتاج هي عملية منهجية تضيف <mark class="highlight-green">قيمة حقيقية</mark> للمواد الخام من خلال التحويل الذكي.
     </div>
   </section>
 
-  <!-- التنبؤ -->
+  <!-- Section 5: Table with Data -->
   <section class="glassy-card" data-aos="fade-up">
-    <h2>التنبؤ: قراءة المستقبل بعيون الحاضر 🔮</h2>
-    <div class="narrative-content">
-      <p>**التنبؤ (Forecasting)** هو عملية تقدير الطلب المستقبلي على السلع والخدمات بناءً على البيانات التاريخية.</p>
-      <p>تخيل إنك صاحب مصنع عصاير، ومحتاج تعرف هتبيع كام زجاجة عصير في الصيف الجاي عشان تجهز المخزون والإنتاج!</p>
-    </div>
-  </section>
-
-  <!-- الـ 6Ms -->
-  <section class="glassy-card" data-aos="fade-up">
-    <h3>الـ 6Ms للإدارة</h3>
+    <h3>🔤 المصطلحات الأساسية (6Ms)</h3>
+    
     <div class="table-container">
       <table class="concepts-table">
         <thead>
           <tr>
-            <th>الـ M</th>
-            <th>المعنى</th>
-            <th>الشرح</th>
+            <th>المصطلح</th>
+            <th>الاسم</th>
+            <th>الوصف</th>
+            <th>مثال</th>
           </tr>
         </thead>
         <tbody>
@@ -341,141 +419,227 @@
             <td><mark class="highlight-business">Market</mark></td>
             <td>السوق</td>
             <td>الطلب المتوقع على المنتج</td>
+            <td>توقع بيع 10,000 وحدة شهرياً</td>
           </tr>
           <tr>
             <td><mark class="highlight-finance">Materials</mark></td>
             <td>المواد</td>
-            <td>المواد الخام والأجزاء اللازمة</td>
+            <td>المواد الخام والأجزاء</td>
+            <td>خشب، معادن، بلاستيك</td>
           </tr>
           <tr>
             <td><mark class="highlight-accounting">Manpower</mark></td>
             <td>القوى العاملة</td>
-            <td>العمال والمهارات المطلوبة</td>
+            <td>العمال والمهارات</td>
+            <td>50 عامل مدرب</td>
           </tr>
           <tr>
             <td><mark class="highlight-economics">Machines</mark></td>
             <td>الآلات</td>
             <td>المعدات والتكنولوجيا</td>
+            <td>خط إنتاج أوتوماتيكي</td>
           </tr>
           <tr>
             <td><mark class="highlight-green">Methods</mark></td>
             <td>الطرق</td>
             <td>أساليب وإجراءات العمل</td>
+            <td>نظام Lean Manufacturing</td>
           </tr>
           <tr>
             <td><mark class="highlight-orange">Money</mark></td>
             <td>المال</td>
             <td>رأس المال المطلوب</td>
+            <td>استثمار 5 مليون جنيه</td>
           </tr>
         </tbody>
       </table>
     </div>
   </section>
 
-  <!-- Quiz -->
+  <!-- Section 6: Quiz Interactive -->
   <section class="glassy-card" data-aos="fade-up">
-    <h2>🤔 اختبر نفسك!</h2>
+    <h2>🤔 اختبر معلوماتك!</h2>
+    <p style="color: #64748b; margin-bottom: 25px;">جرب الإجابة على الأسئلة (هتطلع كونفيتي لو صح! 🎉)</p>
+    
     <div class="quiz-box">
-      <h3>سؤال 1</h3>
+      <h3>سؤال 1: أساسيات الإنتاج</h3>
       <p class="quiz-question">ما هو المصطلح المستخدم لوصف تقدير الطلب على منتج جديد ليس له تاريخ مبيعات؟</p>
+      
       <div class="quiz-options">
-        <div class="quiz-option" data-answer="wrong">أ) Forecasting (التنبؤ)</div>
+        <div class="quiz-option" data-answer="wrong">أ) Forecasting (التنبؤ التاريخي)</div>
         <div class="quiz-option" data-answer="correct">ب) Predictions (التوقعات)</div>
         <div class="quiz-option" data-answer="wrong">ج) Capacity Planning (تخطيط الطاقة)</div>
-        <div class="quiz-option" data-answer="wrong">د) Scheduling (الجدولة)</div>
+        <div class="quiz-option" data-answer="wrong">د) Scheduling (الجدولة الزمنية)</div>
+      </div>
+    </div>
+    
+    <div class="quiz-box" style="margin-top: 20px;">
+      <h3>سؤال 2: الطاقة الإنتاجية</h3>
+      <p class="quiz-question">إذا كانت طاقة التصميم لمصنع 1000 وحدة/يوم، والإنتاج الفعلي 850 وحدة/يوم، فما هي نسبة الكفاءة؟</p>
+      
+      <div class="quiz-options">
+        <div class="quiz-option" data-answer="wrong">أ) 75%</div>
+        <div class="quiz-option" data-answer="correct">ب) 85%</div>
+        <div class="quiz-option" data-answer="wrong">ج) 90%</div>
+        <div class="quiz-option" data-answer="wrong">د) 95%</div>
       </div>
     </div>
   </section>
 
-  <!-- الطاقة الإنتاجية -->
+  <!-- Section 7: Stats Grid مع Animated Numbers -->
   <section class="glassy-card" data-aos="fade-up">
-    <h2>تخطيط الطاقة الإنتاجية 🏭</h2>
-    <div class="narrative-content">
-      <p>**الطاقة الإنتاجية (Capacity)** تشير إلى الحد الأقصى من المخرجات التي يمكن إنتاجها في فترة زمنية معينة.</p>
-      <p>يعني لو عندك مصنع بسكويت، الطاقة الإنتاجية هي أقصى عدد من علب البسكويت اللي تقدر تنتجها في اليوم!</p>
-    </div>
+    <h2>📊 إحصائيات الأداء</h2>
+    <p style="color: #64748b; margin-bottom: 25px;">الأرقام هتتحرك لما تظهر! 🔢</p>
+    
     <div class="stats-grid">
       <div class="stat-card" data-aos="zoom-in">
         <div class="stat-value" data-value="1000">0</div>
         <div class="stat-label">طاقة التصميم (وحدة/يوم)</div>
       </div>
+      
       <div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
         <div class="stat-value" data-value="850">0</div>
         <div class="stat-label">الطاقة الفعلية (وحدة/يوم)</div>
       </div>
+      
       <div class="stat-card" data-aos="zoom-in" data-aos-delay="200">
         <div class="stat-value" data-value="85">0</div>
         <div class="stat-label">الكفاءة (%)</div>
       </div>
+      
+      <div class="stat-card" data-aos="zoom-in" data-aos-delay="300">
+        <div class="stat-value" data-value="92">0</div>
+        <div class="stat-label">رضا العملاء (%)</div>
+      </div>
     </div>
   </section>
 
-  <!-- Chart -->
+  <!-- Section 8: Chart -->
   <section class="glassy-card" data-aos="fade-up">
-    <h2>📊 مقارنة الأداء</h2>
+    <h2>📈 الرسم البياني: مقارنة الأداء</h2>
+    <p style="color: #64748b; margin-bottom: 25px;">شارت تفاعلي - مرر عليه بالماوس! 📊</p>
+    
     <div class="chart-container">
       <canvas id="productionChart"></canvas>
     </div>
   </section>
 
-  <!-- Flashcard -->
+  <!-- Section 9: Flashcard -->
   <section class="glassy-card" data-aos="fade-up">
-    <h2>بطاقة تعليمية 🎴</h2>
-    <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 30px;">اضغط على البطاقة للقلب</p>
+    <h2>🎴 بطاقة تعليمية تفاعلية</h2>
+    <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 30px; text-align: center;">
+      <i class="fas fa-hand-pointer"></i> اضغط على البطاقة لقلبها!
+    </p>
+    
     <div class="flashcard-container">
       <div class="flashcard">
         <div class="flashcard-face flashcard-front">
           <div class="flashcard-content">
             <h3>ما هي الطاقة الفعلية؟</h3>
-            <p class="flashcard-hint">(اضغط لرؤية الإجابة)</p>
+            <p>Effective Capacity</p>
+            <p class="flashcard-hint">(اضغط للكشف عن الإجابة)</p>
           </div>
         </div>
         <div class="flashcard-face flashcard-back">
           <div class="flashcard-content">
             <h3>الطاقة الفعلية</h3>
-            <p>هي الحد الأقصى من الإنتاج الذي يمكن تحقيقه تحت الظروف التشغيلية الحالية.</p>
+            <p style="line-height: 1.8;">هي الحد الأقصى من الإنتاج الذي يمكن تحقيقه في ظل الظروف التشغيلية الطبيعية، مع الأخذ في الاعتبار فترات الصيانة والراحة.</p>
+            <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.2); border-radius: 12px;">
+              <strong>مثال:</strong> إذا كانت طاقة التصميم 1000 وحدة/يوم، فقد تكون الطاقة الفعلية 900 وحدة/يوم.
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- الخلاصة -->
+  <!-- Section 10: Key Concepts Grid -->
   <section class="glassy-card" data-aos="fade-up">
-    <h2>📝 الخلاصة</h2>
+    <h2>💡 المفاهيم الأساسية</h2>
+    
     <div class="key-concepts">
       <div class="concept-card">
         <h3>🏭 وظيفة الإنتاج</h3>
-        <p>تحويل المدخلات لمخرجات بقيمة مضافة</p>
+        <p>تحويل المدخلات إلى مخرجات ذات قيمة مضافة من خلال عمليات منظمة</p>
       </div>
+      
       <div class="concept-card">
         <h3>🔮 التنبؤ</h3>
-        <p>تقدير الطلب والموارد المستقبلية</p>
+        <p>تقدير الطلب والاحتياجات المستقبلية بناءً على البيانات والتحليلات</p>
       </div>
+      
       <div class="concept-card">
         <h3>⚡ الطاقة الإنتاجية</h3>
-        <p>الموازنة بين القدرة والطلب</p>
-      </div>
-    </div>
-    <div class="alert-box alert-success" style="margin-top: 40px;">
-      <i class="fas fa-check-circle" style="font-size: 1.5rem;"></i>
-      <div>
-        <strong>تهانينا! 🎉</strong>
-        <p style="margin: 0;">أنت الآن تفهم أساسيات وظيفة الإنتاج!</p>
+        <p>الموازنة بين القدرة الإنتاجية والطلب الفعلي لتحقيق الكفاءة</p>
       </div>
     </div>
   </section>
 
-  <!-- Navigation -->
+  <!-- Section 11: Alert Boxes -->
+  <section class="glassy-card" data-aos="fade-up">
+    <h2>📢 ملاحظات مهمة</h2>
+    
+    <div class="alert-box alert-success">
+      <i class="fas fa-check-circle" style="font-size: 1.5rem;"></i>
+      <div>
+        <strong>نصيحة للنجاح:</strong>
+        <p style="margin: 5px 0 0 0;">التخطيط السليم لوظيفة الإنتاج يمكن أن يوفر حتى 30% من التكاليف!</p>
+      </div>
+    </div>
+    
+    <div class="alert-box alert-info">
+      <i class="fas fa-info-circle" style="font-size: 1.5rem;"></i>
+      <div>
+        <strong>معلومة إضافية:</strong>
+        <p style="margin: 5px 0 0 0;">شركات مثل Toyota و Amazon تعتمد على أنظمة إنتاج متقدمة لتحقيق الكفاءة العالية.</p>
+      </div>
+    </div>
+    
+    <div class="alert-box alert-warning">
+      <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem;"></i>
+      <div>
+        <strong>تحذير مهم:</strong>
+        <p style="margin: 5px 0 0 0;">الإنتاج الزائد بدون طلب يؤدي إلى زيادة المخزون وارتفاع التكاليف!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 12: Final Summary -->
+  <section class="glassy-card" data-aos="fade-up">
+    <h2>📝 الخلاصة</h2>
+    
+    <div class="alert-box alert-success" style="margin-top: 20px;">
+      <i class="fas fa-trophy" style="font-size: 2rem;"></i>
+      <div>
+        <strong>تهانينا! 🎉</strong>
+        <p style="margin: 5px 0 0 0;">الآن أنت تفهم أساسيات وظيفة الإنتاج وكيفية إدارة العمليات بكفاءة!</p>
+      </div>
+    </div>
+    
+    <div style="margin-top: 30px; padding: 25px; background: rgba(255,255,255,0.2); border-radius: 16px;">
+      <h3 style="margin-bottom: 20px; color: var(--color-primary);">🎯 ما تعلمناه اليوم:</h3>
+      <ul style="line-height: 2; color: #475569;">
+        <li>✅ مفهوم وظيفة الإنتاج والتحويل</li>
+        <li>✅ الوظائف الأربعة الأساسية في المؤسسات</li>
+        <li>✅ الـ 6Ms في إدارة الإنتاج</li>
+        <li>✅ كيفية حساب الكفاءة والطاقة الإنتاجية</li>
+        <li>✅ أهمية التنبؤ والتخطيط</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Navigation Buttons -->
   <div class="lecture-navigation">
     <a href="#" class="nav-btn prev-btn">
       <i class="fas fa-arrow-right"></i>
       <span>المحاضرة السابقة</span>
     </a>
+    
     <a href="index.html" class="nav-btn home-btn">
       <i class="fas fa-home"></i>
       <span>الصفحة الرئيسية</span>
     </a>
+    
     <a href="#" class="nav-btn next-btn">
       <span>المحاضرة التالية</span>
       <i class="fas fa-arrow-left"></i>
@@ -490,25 +654,25 @@
     </div>
     <div class="footer-divider"></div>
     <p class="footer-disclaimer">
-      جميع الحقوق محفوظة © 2024
+      محتوى تعليمي تفاعلي متطور | جميع الحقوق محفوظة © 2025
     </p>
   </div>
 
 </div>
-
-
+      
+ 
     
-    <!-- ==================== ENGLISH CONTENT ==================== -->
+    <!-- ==================== المحتوى الإنجليزي ==================== -->
     <div class="en-content" style="display:none;">
       
-      <!-- هنا المحتوى الإنجليزي بتاعك -->
+      <!-- 👇 حط المحتوى الإنجليزي بتاعك هنا -->
       
     </div>
 
   </main>
 
-<!-- 3. Custom Script -->
-<script src="../js/script.js"></script>
-
+  <!-- ==================== SCRIPTS ==================== -->
+  <script src="js/script.js"></script>
+  
 </body>
 </html>
