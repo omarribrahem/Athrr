@@ -5,90 +5,119 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="منصة أثر التعليمية - محتوى متخصص لكلية التجارة" />
-  <meta name="keywords" content="اقتصاد، محاسبة، إدارة، تجارة" />
- 
-  <title>عنوان المحاضرة - منصة أثر</title>
+  <meta name="description" content="منصة أثر التعليمية - محتوى تفاعلي متخصص" />
+  
+  <title>منصة أثر التعليمية</title>
   
   <!-- ==================== FONTS ==================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
   
+  <!-- خطوط عربية احترافية -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Almarai:wght@300;400;700;800&family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&family=Noto+Kufi+Arabic:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- خطوط إنجليزية احترافية -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- خط Monospace للكود -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- ==================== ICONS ==================== -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <!-- ==================== CHARTS & DIAGRAMS ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
   
   <!-- ==================== MATH ==================== -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
   
-  <!-- ==================== BUSINESS CALCULATIONS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/financejs@4.1.0/finance.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/accounting@0.4.1/accounting.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/decimal.js@10.4.3/decimal.min.js"></script>
-  
-  <!-- ==================== STATISTICS ==================== -->
-  <script src="https://unpkg.com/simple-statistics@7.8.3/dist/simple-statistics.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/regression@2.0.1/dist/regression.min.js"></script>
-  
-  <!-- ==================== CHARTS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  
-  <!-- ==================== DIAGRAMS & MIND MAPS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16.0"></script>
-  
-  <!-- ==================== TABLES ==================== -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-  <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-  
-  <!-- ==================== QUIZZES ==================== -->
-  <link href="https://unpkg.com/survey-core/defaultV2.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/survey-core/survey.core.min.js"></script>
-  
-  <!-- ==================== ANIMATIONS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <!-- ==================== ANIMATION LIBRARIES ==================== -->
+  <!-- AOS - Animate On Scroll -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   
-  <!-- ==================== UI COMPONENTS ==================== -->
+  <!-- Anime.js -->
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+  
+  <!-- Splitting.js - Text Animation -->
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css" />
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  
+  <!-- ==================== 3D LIBRARIES ==================== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.waves.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.birds.min.js"></script>
+  
+  <!-- ==================== STORYTELLING ==================== -->
+  <!-- Locomotive Scroll -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+  
+  <!-- ScrollMagic -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js"></script>
+  
+  <!-- ScrollReveal -->
+  <script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
+  
+  <!-- ==================== UI ENHANCEMENTS ==================== -->
+  <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <!-- Toastify -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   
-  <!-- ==================== ICONS ==================== -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Tippy.js Tooltips -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  
+  <!-- Vanilla Tilt - 3D Cards -->
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+  
+  <!-- Medium Zoom - Image Zoom -->
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+  
+  <!-- Rellax.js - Parallax -->
+  <script src="https://cdn.jsdelivr.net/gh/dixonandmoe/rellax@master/rellax.min.js"></script>
+  
+  <!-- ==================== UTILITIES ==================== -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+  
+  <!-- LazyLoad Images -->
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.5/dist/lazyload.min.js"></script>
   
   <!-- ==================== VIDEO PLAYER ==================== -->
   <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
   <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
   
-  <!-- ==================== CODE HIGHLIGHTING ==================== -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  
-  <!-- ==================== PDF & EXPORT ==================== -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  
-  <!-- ==================== MARKDOWN ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
-  
-  <!-- ==================== UTILITIES ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
-  
-  <!-- ==================== ENHANCEMENTS ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-  
-  <!-- ==================== CUSTOM STYLES ==================== -->
-  <link rel="stylesheet" href="../css/style.css">
+  <!-- ==================== YOUR CUSTOM STYLES ==================== -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-  <!-- Background -->
+  
+  <!-- 3D Background Container -->
+  <div id="vanta-bg"></div>
+  
+  <!-- Background Waves -->
   <div class="background-waves">
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
@@ -105,12 +134,11 @@
 
   <!-- AI FAB Button -->
   <button class="ai-fab-button" id="aiChatButton" aria-label="مساعد أثر الذكي">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f59e0b;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 8V4H8"></path>
       <rect x="4" y="12" width="16" height="8" rx="2"></rect>
       <path d="M2 14h2"></path>
       <path d="M20 14h2"></path>
-      <path d="M15 13v-2a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v2"></path>
     </svg>
     <span class="ai-fab-text" id="aiFabText">أثر AI</span>
   </button>
@@ -124,7 +152,7 @@
       <div class="ai-chat-header">
         <h3 id="ai-chat-title">اسأل أثر AI</h3>
         <button class="ai-chat-close-btn" id="aiChatCloseBtn" aria-label="إغلاق">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
@@ -134,7 +162,7 @@
       <div class="ai-chat-input-area">
         <input type="text" id="ai-chat-input" placeholder="اكتب سؤالك هنا...">
         <button id="ai-chat-send-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="22" y1="2" x2="11" y2="13"></line>
             <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
           </svg>
@@ -144,13 +172,13 @@
   </div>
 
   <!-- Main Content -->
-  <main class="main-content">
+  <main class="main-content" data-scroll-container>
 
     <!-- ==================== VIDEO PLAYER SECTION ==================== -->
     <section class="video-section">
       <div class="video-card-player" data-aos="fade-down">
         <div class="video-info">
-          <h2>🎬 فيديو شرح: مقدمة في المحاسبة</h2>
+          <h2>🎬 فيديو شرح المحاضرة</h2>
           <p id="playerInfo">مشغل فيديو ذكي - يكتشف جهازك تلقائياً</p>
           <span class="device-badge" id="deviceBadge">جاري التحميل...</span>
         </div>
@@ -161,7 +189,7 @@
 
             <div class="loading-spinner" id="loadingSpinner"></div>
 
-            <!-- Simple Controls -->
+            <!-- Simple Controls (للأجهزة العادية) -->
             <div class="simple-controls">
               <div class="simple-progress" id="simpleProgress">
                 <div class="simple-progress-filled" id="simpleProgressFilled"></div>
@@ -179,7 +207,7 @@
               </div>
             </div>
 
-            <!-- iOS Controls -->
+            <!-- iOS Controls (للآيفون/آيباد) -->
             <div class="ios-controls">
               <div class="video-bars" id="videoBars">
                 <div class="top-bar-bg"></div>
@@ -197,9 +225,6 @@
                 <div class="top-left-group">
                   <button class="control-bubble glass-bubble" id="closeBtn">
                     <i class="fas fa-times"></i>
-                  </button>
-                  <button class="control-bubble glass-bubble" id="pipBtn" style="display:none;">
-                    <i class="fas fa-clone"></i>
                   </button>
                 </div>
                 
@@ -248,27 +273,24 @@
       </div>
     </section>
 
-    <!-- ==================== ARABIC CONTENT ==================== -->
+    <!-- ==================== المحتوى العربي ==================== -->
     <div class="ar-content">
       
-      <!-- هنا المحتوى العربي بتاعك -->
+      <!-- 👇 حط المحتوى العربي بتاعك هنا -->
       
     </div>
     
-    <!-- ==================== ENGLISH CONTENT ==================== -->
+    <!-- ==================== المحتوى الإنجليزي ==================== -->
     <div class="en-content" style="display:none;">
       
-      <!-- هنا المحتوى الإنجليزي بتاعك -->
+      <!-- 👇 حط المحتوى الإنجليزي بتاعك هنا -->
       
     </div>
 
   </main>
 
-  <!-- ==================== SCRIPTS - ترتيب مهم! ==================== -->
+  <!-- ==================== SCRIPTS ==================== -->
+  <script src="js/script.js"></script>
   
-
-<!-- 3. Custom Script -->
-<script src="../js/script.js"></script>
-
 </body>
 </html>
