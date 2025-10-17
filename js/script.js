@@ -39,18 +39,23 @@ window.showToast = function(message, duration = 2000) {
 // ==================== LIBRARIES INITIALIZATION ====================
 document.addEventListener('DOMContentLoaded', function() {
   
-  // Initialize AOS
+  console.log('🚀 Starting initialization...');
+  
+  // 1. AOS - Animate On Scroll
   if (typeof AOS !== 'undefined') {
     AOS.init({
-      duration: 800,
-      easing: 'ease-in-out',
-      once: true,
-      offset: 50
+      duration: 1000,
+      easing: 'ease-out-cubic',
+      once: false,
+      mirror: true,
+      offset: 100,
+      delay: 0,
+      anchorPlacement: 'top-bottom'
     });
     console.log('✅ AOS initialized');
   }
   
-  // Initialize Mermaid
+  // 2. Mermaid Diagrams
   if (typeof mermaid !== 'undefined') {
     mermaid.initialize({
       startOnLoad: true,
@@ -63,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ Mermaid initialized');
   }
   
-  // Configure Marked.js
+  // 3. Marked.js - Markdown
   if (typeof marked !== 'undefined') {
     marked.setOptions({
       breaks: true,
@@ -73,18 +78,31 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ Marked.js configured');
   }
   
-  // Configure Moment.js for Arabic
+  // 4. Moment.js - Arabic
   if (typeof moment !== 'undefined') {
     moment.locale('ar');
     console.log('✅ Moment.js configured');
   }
   
-  // Configure Chart.js defaults
+  // 5. Chart.js Defaults
   if (typeof Chart !== 'undefined') {
     Chart.defaults.responsive = true;
     Chart.defaults.maintainAspectRatio = false;
     Chart.defaults.devicePixelRatio = window.devicePixelRatio || 2;
     console.log('✅ Chart.js configured');
+  }
+  
+  // 6. KaTeX - Auto-render Math
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });
+    console.log('✅ KaTeX auto-render initialized');
   }
   
   // Update Device Badge
@@ -155,9 +173,9 @@ document.addEventListener('DOMContentLoaded', function() {
       moment.locale(isArabic ? 'ar' : 'en');
     }
     
-    // Re-initialize Reveal.js with new direction
-    if (typeof Reveal !== 'undefined') {
-      Reveal.configure({ rtl: isArabic });
+    // Re-initialize AOS
+    if (typeof AOS !== 'undefined') {
+      AOS.refresh();
     }
   }
 
@@ -248,12 +266,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // ==================== MCQ SELECTION ====================
-  const mcqOptions = document.querySelectorAll('.mcq-option');
-  mcqOptions.forEach(option => {
+  // ==================== MCQ/QUIZ SELECTION ====================
+  const quizOptions = document.querySelectorAll('.quiz-option');
+  quizOptions.forEach(option => {
     option.addEventListener('click', function() {
       const isCorrect = this.getAttribute('data-answer') === 'correct';
-      const allOptions = this.parentNode.querySelectorAll('.mcq-option');
+      const allOptions = this.parentNode.querySelectorAll('.quiz-option');
       
       allOptions.forEach(opt => {
         opt.style.pointerEvents = 'none';
@@ -302,7 +320,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const videoPlayer = document.getElementById('videoPlayer');
   const video = document.getElementById('video');
-  const videoBars = document.getElementById('videoBars');
   
   const simplePlayBtn = document.getElementById('simplePlayBtn');
   const simpleFullscreenBtn = document.getElementById('simpleFullscreenBtn');
@@ -310,19 +327,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const simpleProgressFilled = document.getElementById('simpleProgressFilled');
   const simpleCurrentTime = document.getElementById('simpleCurrentTime');
   const simpleDuration = document.getElementById('simpleDuration');
-  
-  const playBtn = document.getElementById('playBtn');
-  const skipBack = document.getElementById('skipBack');
-  const skipForward = document.getElementById('skipForward');
-  const progressWrapper = document.getElementById('progressWrapper');
-  const progressFilled = document.getElementById('progressFilled');
-  const progressBuffered = document.getElementById('progressBuffered');
-  const currentTimeEl = document.getElementById('currentTime');
-  const remainingTimeEl = document.getElementById('remainingTime');
-  const volumeBtn = document.getElementById('volumeBtn');
-  const volumeSlider = document.getElementById('volumeSlider');
-  const closeBtn = document.getElementById('closeBtn');
-  const pipBtn = document.getElementById('pipBtn');
   const loadingSpinner = document.getElementById('loadingSpinner');
 
   if (!videoPlayer || !video) {
@@ -331,8 +335,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   let currentSourceIndex = 0;
-  let isFullscreen = false;
-  let isDragging = false;
 
   function init() {
     loadVideo();
@@ -370,22 +372,35 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function updateProgress() {
-    if (!isDragging && video.duration) {
+    if (video.duration) {
       const progress = (video.currentTime / video.duration) * 100;
       if (simpleProgressFilled) simpleProgressFilled.style.width = `${progress}%`;
-      if (progressFilled) progressFilled.style.width = `${progress}%`;
       const timeStr = formatTime(video.currentTime);
       if (simpleCurrentTime) simpleCurrentTime.textContent = timeStr;
-      if (currentTimeEl) currentTimeEl.textContent = timeStr;
-      if (remainingTimeEl) remainingTimeEl.textContent = '-' + formatTime(video.duration - video.currentTime);
     }
   }
 
   function setupCustomControls() {
     if (simplePlayBtn) simplePlayBtn.addEventListener('click', togglePlay);
-    if (playBtn) playBtn.addEventListener('click', togglePlay);
-    
     video.addEventListener('click', togglePlay);
+    
+    if (simpleFullscreenBtn) {
+      simpleFullscreenBtn.addEventListener('click', () => {
+        if (videoPlayer.requestFullscreen) {
+          videoPlayer.requestFullscreen();
+        } else if (videoPlayer.webkitRequestFullscreen) {
+          videoPlayer.webkitRequestFullscreen();
+        }
+      });
+    }
+    
+    if (simpleProgress) {
+      simpleProgress.addEventListener('click', (e) => {
+        const rect = simpleProgress.getBoundingClientRect();
+        const pos = (e.clientX - rect.left) / rect.width;
+        video.currentTime = pos * video.duration;
+      });
+    }
   }
 
   function setupEventListeners() {
@@ -404,19 +419,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     video.addEventListener('loadedmetadata', () => {
       if (simpleDuration) simpleDuration.textContent = formatTime(video.duration);
-      if (remainingTimeEl) remainingTimeEl.textContent = '-' + formatTime(video.duration);
     });
 
     video.addEventListener('play', () => {
       videoPlayer.classList.remove('paused');
       if (simplePlayBtn) simplePlayBtn.innerHTML = '<i class="fas fa-pause"></i>';
-      if (playBtn) playBtn.innerHTML = '<i class="fas fa-pause"></i>';
     });
 
     video.addEventListener('pause', () => {
       videoPlayer.classList.add('paused');
       if (simplePlayBtn) simplePlayBtn.innerHTML = '<i class="fas fa-play"></i>';
-      if (playBtn) playBtn.innerHTML = '<i class="fas fa-play"></i>';
     });
 
     video.addEventListener('timeupdate', updateProgress);
@@ -424,102 +436,492 @@ document.addEventListener('DOMContentLoaded', function() {
 
   init();
 })();
-
-// ==================== REVEAL.JS INTEGRATION ====================
+// ==================== ADVANCED ANIMATIONS SETUP ====================
 document.addEventListener('DOMContentLoaded', function() {
   
-  if (typeof Reveal !== 'undefined') {
+  // 1. GSAP ScrollTrigger
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger, TextPlugin);
     
-    Reveal.initialize({
-      hash: true,
-      rtl: document.dir === 'rtl',
-      center: true,
-      slideNumber: 'c/t',
-      transition: 'slide',
-      backgroundTransition: 'fade',
-      
-      plugins: [ 
-        RevealMarkdown, 
-        RevealHighlight, 
-        RevealNotes, 
-        RevealMath.KaTeX 
-      ],
-      
-      touch: true,
-      loop: false,
-      mouseWheel: false
+    // Parallax Effect
+    gsap.utils.toArray('.parallax').forEach(element => {
+      gsap.to(element, {
+        y: -100,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: element,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true
+        }
+      });
     });
     
-    console.log('✅ Reveal.js initialized');
+    console.log('✅ GSAP ScrollTrigger initialized');
+  }
+  
+  // 2. Splitting.js for Text Animation
+  if (typeof Splitting !== 'undefined') {
+    Splitting();
+    console.log('✅ Splitting.js initialized');
+  }
+  
+  // 3. ScrollReveal
+  if (typeof ScrollReveal !== 'undefined') {
+    ScrollReveal().reveal('.reveal-left', {
+      origin: 'left',
+      distance: '50px',
+      duration: 1000,
+      delay: 200,
+      easing: 'cubic-bezier(0.5, 0, 0, 1)'
+    });
     
-    Reveal.on('slidechanged', event => {
-      const currentSlide = event.currentSlide;
-      
-      if (typeof anime !== 'undefined') {
-        animateSlideContent(currentSlide);
-      }
-      
-      if (typeof AOS !== 'undefined') {
-        AOS.refresh();
-      }
-      
-      if (typeof mermaid !== 'undefined') {
-        const mermaidElements = currentSlide.querySelectorAll('.mermaid');
-        if (mermaidElements.length > 0) {
-          mermaid.init(undefined, mermaidElements);
+    ScrollReveal().reveal('.reveal-right', {
+      origin: 'right',
+      distance: '50px',
+      duration: 1000,
+      delay: 200
+    });
+    
+    ScrollReveal().reveal('.reveal-up', {
+      origin: 'bottom',
+      distance: '50px',
+      duration: 1000,
+      delay: 200
+    });
+    
+    console.log('✅ ScrollReveal initialized');
+  }
+  
+  // 4. Vanilla Tilt for Cards
+  if (typeof VanillaTilt !== 'undefined') {
+    VanillaTilt.init(document.querySelectorAll('.tilt-card'), {
+      max: 15,
+      speed: 400,
+      glare: true,
+      'max-glare': 0.3
+    });
+    console.log('✅ VanillaTilt initialized');
+  }
+  
+  // 5. Rellax Parallax
+  if (typeof Rellax !== 'undefined' && document.querySelector('.rellax')) {
+    const rellax = new Rellax('.rellax', {
+      speed: -2,
+      center: false,
+      wrapper: null,
+      round: true,
+      vertical: true,
+      horizontal: false
+    });
+    console.log('✅ Rellax initialized');
+  }
+  
+  // 6. Tippy.js Tooltips
+  if (typeof tippy !== 'undefined') {
+    tippy('[data-tippy-content]', {
+      animation: 'scale',
+      theme: 'athr',
+      placement: 'top',
+      arrow: true
+    });
+    console.log('✅ Tippy.js initialized');
+  }
+  
+  // 7. Medium Zoom - Image Zooming
+  if (typeof mediumZoom !== 'undefined') {
+    mediumZoom('.zoomable', {
+      margin: 24,
+      background: 'rgba(0, 0, 0, 0.9)',
+      scrollOffset: 0
+    });
+    console.log('✅ Medium Zoom initialized');
+  }
+  
+  // 8. LazyLoad - Optimize Image Loading
+  if (typeof LazyLoad !== 'undefined') {
+    const lazyLoadInstance = new LazyLoad({
+      elements_selector: ".lazy",
+      threshold: 0
+    });
+    console.log('✅ LazyLoad initialized');
+  }
+  
+  console.log('🎨 All animation libraries loaded!');
+});
+
+// ==================== 3D BACKGROUND SETUP ====================
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Vanta.js 3D Background
+  if (typeof VANTA !== 'undefined' && typeof THREE !== 'undefined' && document.getElementById('vanta-bg')) {
+    
+    // Option A: Animated Waves (الافتراضي)
+    try {
+      VANTA.WAVES({
+        el: "#vanta-bg",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: 0x16a34a,
+        shininess: 40.00,
+        waveHeight: 15.00,
+        waveSpeed: 0.75,
+        zoom: 0.80
+      });
+      console.log('✅ Vanta.js 3D Waves background initialized');
+    } catch (e) {
+      console.log('⚠️ Vanta.js not available');
+    }
+    
+    // لو عايز تغير للـ Network بدل Waves، استبدل الكود فوق بده:
+    /*
+    VANTA.NET({
+      el: "#vanta-bg",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x16a34a,
+      backgroundColor: 0xf0fdf4,
+      points: 8.00,
+      maxDistance: 20.00,
+      spacing: 15.00
+    });
+    */
+  }
+});
+
+// ==================== LOCOMOTIVE SCROLL ====================
+document.addEventListener('DOMContentLoaded', function() {
+  
+  if (typeof LocomotiveScroll !== 'undefined' && document.querySelector('[data-scroll-container]')) {
+    const scroll = new LocomotiveScroll({
+      el: document.querySelector('[data-scroll-container]'),
+      smooth: true,
+      smartphone: {
+        smooth: true
+      },
+      tablet: {
+        smooth: true
+      },
+      multiplier: 1.0,
+      lerp: 0.05,
+      class: 'is-inview'
+    });
+    
+    // Update on window resize
+    window.addEventListener('resize', () => {
+      scroll.update();
+    });
+    
+    console.log('✅ Locomotive Scroll initialized');
+  }
+});
+
+// ==================== SCROLLMAGIC ====================
+document.addEventListener('DOMContentLoaded', function() {
+  
+  if (typeof ScrollMagic !== 'undefined') {
+    const controller = new ScrollMagic.Controller();
+    
+    // Pin sections while scrolling
+    document.querySelectorAll('.pin-section').forEach(section => {
+      new ScrollMagic.Scene({
+        triggerElement: section,
+        triggerHook: 0,
+        duration: '100%'
+      })
+      .setPin(section)
+      .addTo(controller);
+    });
+    
+    // Fade in elements
+    document.querySelectorAll('.fade-in-scroll').forEach(element => {
+      new ScrollMagic.Scene({
+        triggerElement: element,
+        triggerHook: 0.8,
+        reverse: false
+      })
+      .setClassToggle(element, 'visible')
+      .addTo(controller);
+    });
+    
+    console.log('✅ ScrollMagic initialized');
+  }
+});
+
+// ==================== INTERSECTION OBSERVER ====================
+document.addEventListener('DOMContentLoaded', function() {
+  
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        
+        // Trigger custom animations
+        if (entry.target.hasAttribute('data-animate')) {
+          const animationType = entry.target.getAttribute('data-animate');
+          triggerAnimation(entry.target, animationType);
         }
       }
     });
-    
-    Reveal.on('ready', () => {
-      console.log('✅ Reveal.js ready');
-      const firstSlide = Reveal.getCurrentSlide();
-      if (firstSlide && typeof anime !== 'undefined') {
-        animateSlideContent(firstSlide);
-      }
+  }, observerOptions);
+  
+  document.querySelectorAll('.observe').forEach(element => {
+    observer.observe(element);
+  });
+  
+  console.log('✅ Intersection Observer initialized');
+});
+
+// ==================== CUSTOM ANIMATION FUNCTIONS ====================
+
+// Stagger Animation
+function staggerAnimation(selector, delay = 100) {
+  if (typeof anime !== 'undefined') {
+    anime({
+      targets: selector,
+      opacity: [0, 1],
+      translateY: [30, 0],
+      delay: anime.stagger(delay),
+      duration: 800,
+      easing: 'easeOutExpo'
     });
   }
+}
+
+// Fade In Up
+function fadeInUp(element) {
+  if (typeof gsap !== 'undefined') {
+    gsap.from(element, {
+      opacity: 0,
+      y: 50,
+      duration: 1,
+      ease: 'power3.out'
+    });
+  }
+}
+
+// Scale In
+function scaleIn(element) {
+  if (typeof anime !== 'undefined') {
+    anime({
+      targets: element,
+      scale: [0.8, 1],
+      opacity: [0, 1],
+      duration: 600,
+      easing: 'easeOutBack'
+    });
+  }
+}
+
+// Rotate In
+function rotateIn(element) {
+  if (typeof gsap !== 'undefined') {
+    gsap.from(element, {
+      rotation: -180,
+      opacity: 0,
+      duration: 1,
+      ease: 'back.out(1.7)'
+    });
+  }
+}
+
+// Bounce In
+function bounceIn(element) {
+  if (typeof anime !== 'undefined') {
+    anime({
+      targets: element,
+      translateY: [-50, 0],
+      opacity: [0, 1],
+      duration: 800,
+      easing: 'easeOutBounce'
+    });
+  }
+}
+
+// Shake Animation
+function shake(element) {
+  if (typeof anime !== 'undefined') {
+    anime({
+      targets: element,
+      translateX: [
+        { value: -10, duration: 50 },
+        { value: 10, duration: 50 },
+        { value: -10, duration: 50 },
+        { value: 10, duration: 50 },
+        { value: 0, duration: 50 }
+      ],
+      easing: 'easeInOutSine'
+    });
+  }
+}
+
+// Pulse Animation
+function pulse(element) {
+  if (typeof anime !== 'undefined') {
+    anime({
+      targets: element,
+      scale: [1, 1.1, 1],
+      duration: 500,
+      easing: 'easeInOutQuad'
+    });
+  }
+}
+
+// Trigger Animation
+function triggerAnimation(element, type) {
+  switch(type) {
+    case 'fadeIn':
+      fadeInUp(element);
+      break;
+    case 'scale':
+      scaleIn(element);
+      break;
+    case 'rotate':
+      rotateIn(element);
+      break;
+    case 'bounce':
+      bounceIn(element);
+      break;
+    default:
+      fadeInUp(element);
+  }
+}
+
+// Export for global use
+window.staggerAnimation = staggerAnimation;
+window.fadeInUp = fadeInUp;
+window.scaleIn = scaleIn;
+window.rotateIn = rotateIn;
+window.bounceIn = bounceIn;
+window.shake = shake;
+window.pulse = pulse;
+window.triggerAnimation = triggerAnimation;
+
+// ==================== SCROLL PROGRESS INDICATOR ====================
+(function() {
+  const progressBar = document.createElement('div');
+  progressBar.id = 'scroll-progress';
+  progressBar.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-medium));
+    z-index: 10000;
+    transition: width 0.1s ease;
+    box-shadow: var(--shadow-glow);
+  `;
+  document.body.appendChild(progressBar);
   
-  // ==================== SLIDE ANIMATIONS ====================
-  window.animateSlideContent = function(slide) {
-    if (!slide || typeof anime === 'undefined') return;
-    
-    const titles = slide.querySelectorAll('h1, h2, h3');
-    if (titles.length > 0) {
-      anime({
-        targets: titles,
-        opacity: [0, 1],
-        translateY: [-30, 0],
-        duration: 800,
-        delay: anime.stagger(100),
-        easing: 'easeOutQuad'
-      });
-    }
-    
-    const paragraphs = slide.querySelectorAll('.narrative-content p');
-    if (paragraphs.length > 0) {
-      anime({
-        targets: paragraphs,
-        opacity: [0, 1],
-        translateX: [document.dir === 'rtl' ? 20 : -20, 0],
-        duration: 600,
-        delay: anime.stagger(80, {start: 300}),
-        easing: 'easeOutQuad'
-      });
-    }
-  };
+  window.addEventListener('scroll', () => {
+    const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+    progressBar.style.width = Math.min(scrolled, 100) + '%';
+  });
+})();
+
+// ==================== SECTION PROGRESS INDICATORS ====================
+function createSectionProgress() {
+  const sections = document.querySelectorAll('section.glassy-card');
+  if (sections.length === 0) return;
   
-  // ==================== FLASHCARDS ====================
+  const nav = document.createElement('nav');
+  nav.className = 'section-progress';
+  nav.style.cssText = `
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  `;
+  
+  sections.forEach((section, index) => {
+    const dot = document.createElement('div');
+    dot.className = 'progress-dot';
+    dot.style.cssText = `
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(22, 163, 74, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    `;
+    
+    dot.addEventListener('click', () => {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    
+    dot.addEventListener('mouseenter', () => {
+      dot.style.transform = 'scale(1.5)';
+      dot.style.background = 'var(--color-primary)';
+    });
+    
+    dot.addEventListener('mouseleave', () => {
+      dot.style.transform = 'scale(1)';
+      if (!section.classList.contains('in-view')) {
+        dot.style.background = 'rgba(22, 163, 74, 0.3)';
+      }
+    });
+    
+    // Observe section visibility
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          dot.style.background = 'var(--color-primary)';
+          dot.style.transform = 'scale(1.3)';
+        } else {
+          dot.style.background = 'rgba(22, 163, 74, 0.3)';
+          dot.style.transform = 'scale(1)';
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    observer.observe(section);
+    nav.appendChild(dot);
+  });
+  
+  document.body.appendChild(nav);
+}
+
+// Initialize section progress on load
+document.addEventListener('DOMContentLoaded', createSectionProgress);
+
+// ==================== FLASHCARDS ====================
+document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.flashcard').forEach(card => {
     card.addEventListener('click', function() {
       this.classList.toggle('flipped');
     });
   });
-  
-  // ==================== STAT COUNTER ====================
+  console.log('✅ Flashcards initialized');
+});
+
+// ==================== STAT COUNTER ====================
+document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.stat-value').forEach(el => {
     const target = parseInt(el.getAttribute('data-value'));
     if (!target) return;
+    
     let current = 0;
     const increment = target / 50;
     const timer = setInterval(() => {
@@ -532,25 +934,818 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }, 30);
   });
+  console.log('✅ Stat counters initialized');
+});
+// ==================== CHARTS INITIALIZATION ====================
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Initialize Chart.js Charts
+  const chartElements = document.querySelectorAll('canvas[id*="Chart"]');
+  
+  chartElements.forEach(canvas => {
+    const ctx = canvas.getContext('2d');
+    
+    // Example: Production Chart
+    if (canvas.id === 'productionChart') {
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو'],
+          datasets: [{
+            label: 'الإنتاج الفعلي',
+            data: [850, 920, 880, 950, 890],
+            backgroundColor: 'rgba(22, 163, 74, 0.8)',
+            borderColor: 'rgba(22, 163, 74, 1)',
+            borderWidth: 2
+          }, {
+            label: 'الطاقة المخططة',
+            data: [1000, 1000, 1000, 1000, 1000],
+            backgroundColor: 'rgba(245, 158, 11, 0.5)',
+            borderColor: 'rgba(245, 158, 11, 1)',
+            borderWidth: 2,
+            borderDash: [5, 5]
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              rtl: true,
+              labels: {
+                font: { family: 'Cairo, sans-serif', size: 14 },
+                padding: 15
+              }
+            },
+            title: {
+              display: true,
+              text: 'الإنتاج الشهري مقارنة بالطاقة المخططة',
+              font: { family: 'Cairo, sans-serif', size: 16, weight: 'bold' }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { font: { family: 'Cairo, sans-serif' } }
+            },
+            x: {
+              ticks: { font: { family: 'Cairo, sans-serif' } }
+            }
+          }
+        }
+      });
+      console.log('✅ Production Chart initialized');
+    }
+  });
 });
 
-// ==================== SCROLL PROGRESS ====================
-(function() {
-  const progressBar = document.createElement('div');
-  progressBar.style.cssText = `
-    position: fixed; top: 0; left: 0; width: 0%; height: 4px;
-    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-medium));
-    z-index: 10000; transition: width 0.1s;
+// ==================== READING TIME ESTIMATOR ====================
+document.addEventListener('DOMContentLoaded', function() {
+  const content = document.querySelector('.main-content');
+  if (!content) return;
+  
+  // Calculate reading time (200 words per minute average)
+  const text = content.innerText || content.textContent;
+  const wordCount = text.trim().split(/\s+/).length;
+  const readingTime = Math.ceil(wordCount / 200);
+  
+  // Create reading time badge
+  const badge = document.createElement('div');
+  badge.className = 'reading-time-badge';
+  badge.innerHTML = `
+    <i class="fas fa-clock"></i>
+    <span>${readingTime} دقائق قراءة</span>
   `;
-  document.body.appendChild(progressBar);
+  badge.style.cssText = `
+    position: fixed;
+    top: 80px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    z-index: 1000;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  `;
+  
+  document.body.appendChild(badge);
+  console.log(`✅ Reading time badge added: ${readingTime} minutes`);
+});
+
+// ==================== KEYBOARD SHORTCUTS ====================
+document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('keydown', function(e) {
+    
+    // Ctrl/Cmd + K: Open AI Chat
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      const aiChatModal = document.getElementById('aiChatModal');
+      if (aiChatModal) {
+        aiChatModal.classList.add('visible');
+        document.getElementById('ai-chat-input')?.focus();
+      }
+    }
+    
+    // Escape: Close AI Chat
+    if (e.key === 'Escape') {
+      const aiChatModal = document.getElementById('aiChatModal');
+      if (aiChatModal && aiChatModal.classList.contains('visible')) {
+        aiChatModal.classList.remove('visible');
+      }
+    }
+    
+    // Ctrl/Cmd + L: Toggle Language
+    if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+      e.preventDefault();
+      document.getElementById('translationButton')?.click();
+    }
+  });
+  
+  console.log('✅ Keyboard shortcuts initialized (Ctrl+K, Ctrl+L, Esc)');
+});
+
+// ==================== COPY CODE BLOCKS ====================
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('pre code').forEach(block => {
+    const button = document.createElement('button');
+    button.className = 'copy-code-btn';
+    button.innerHTML = '<i class="fas fa-copy"></i>';
+    button.style.cssText = `
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    `;
+    
+    button.addEventListener('click', () => {
+      navigator.clipboard.writeText(block.textContent).then(() => {
+        button.innerHTML = '<i class="fas fa-check"></i>';
+        showToast('✅ تم النسخ!');
+        setTimeout(() => {
+          button.innerHTML = '<i class="fas fa-copy"></i>';
+        }, 2000);
+      });
+    });
+    
+    const pre = block.parentElement;
+    pre.style.position = 'relative';
+    pre.appendChild(button);
+  });
+  
+  console.log('✅ Copy code buttons initialized');
+});
+
+// ==================== SMOOTH SCROLL TO ANCHOR ====================
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+  
+  console.log('✅ Smooth scroll to anchors initialized');
+});
+
+// ==================== TABLE OF CONTENTS GENERATOR ====================
+function generateTableOfContents() {
+  const headings = document.querySelectorAll('h2, h3');
+  if (headings.length === 0) return;
+  
+  const toc = document.createElement('div');
+  toc.className = 'table-of-contents';
+  toc.style.cssText = `
+    position: sticky;
+    top: 100px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(25px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 30px;
+    max-width: 300px;
+  `;
+  
+  const title = document.createElement('h3');
+  title.textContent = 'المحتويات';
+  title.style.cssText = 'margin-bottom: 15px; color: var(--color-primary);';
+  toc.appendChild(title);
+  
+  const list = document.createElement('ul');
+  list.style.cssText = 'list-style: none; padding: 0;';
+  
+  headings.forEach((heading, index) => {
+    heading.id = heading.id || `section-${index}`;
+    
+    const li = document.createElement('li');
+    li.style.cssText = `
+      margin-bottom: 10px;
+      padding-right: ${heading.tagName === 'H3' ? '20px' : '0'};
+    `;
+    
+    const link = document.createElement('a');
+    link.href = `#${heading.id}`;
+    link.textContent = heading.textContent;
+    link.style.cssText = `
+      color: #475569;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      font-size: ${heading.tagName === 'H2' ? '1rem' : '0.9rem'};
+    `;
+    
+    link.addEventListener('mouseenter', () => {
+      link.style.color = 'var(--color-primary)';
+    });
+    
+    link.addEventListener('mouseleave', () => {
+      link.style.color = '#475569';
+    });
+    
+    li.appendChild(link);
+    list.appendChild(li);
+  });
+  
+  toc.appendChild(list);
+  
+  const firstCard = document.querySelector('.glassy-card');
+  if (firstCard) {
+    firstCard.insertAdjacentElement('beforebegin', toc);
+    console.log('✅ Table of contents generated');
+  }
+}
+
+// Uncomment to enable TOC
+// document.addEventListener('DOMContentLoaded', generateTableOfContents);
+
+// ==================== BACK TO TOP BUTTON ====================
+(function() {
+  const backToTop = document.createElement('button');
+  backToTop.className = 'back-to-top';
+  backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
+  backToTop.style.cssText = `
+    position: fixed;
+    bottom: 100px;
+    left: 20px;
+    background: rgba(22, 163, 74, 0.9);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.3);
+  `;
+  
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
   
   window.addEventListener('scroll', () => {
-    const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-    progressBar.style.width = Math.min(scrolled, 100) + '%';
+    if (window.scrollY > 500) {
+      backToTop.style.display = 'flex';
+    } else {
+      backToTop.style.display = 'none';
+    }
   });
+  
+  document.body.appendChild(backToTop);
+  console.log('✅ Back to top button initialized');
 })();
 
-console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-console.log('🎉 منصة أثر جاهزة!');
-console.log('📱 الجهاز:', deviceType);
-console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+// ==================== PERFORMANCE MONITORING ====================
+window.addEventListener('load', function() {
+  if (window.performance && window.performance.timing) {
+    const timing = window.performance.timing;
+    const loadTime = timing.loadEventEnd - timing.navigationStart;
+    const domReady = timing.domContentLoadedEventEnd - timing.navigationStart;
+    
+    console.log('⚡ Performance Metrics:');
+    console.log(`   - Page Load Time: ${(loadTime / 1000).toFixed(2)}s`);
+    console.log(`   - DOM Ready Time: ${(domReady / 1000).toFixed(2)}s`);
+  }
+});
+
+// ==================== ERROR HANDLER ====================
+window.addEventListener('error', function(e) {
+  console.error('❌ Error detected:', e.message);
+  
+  // Optional: Send to analytics or logging service
+  // sendErrorToAnalytics(e);
+});
+
+// ==================== SERVICE WORKER (Optional) ====================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    // Uncomment to enable service worker
+    /*
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('✅ Service Worker registered:', registration);
+      })
+      .catch(error => {
+        console.log('❌ Service Worker registration failed:', error);
+      });
+    */
+  });
+}
+
+// ==================== NETWORK STATUS ====================
+window.addEventListener('online', () => {
+  showToast('✅ اتصال الإنترنت عاد');
+  console.log('✅ Online');
+});
+
+window.addEventListener('offline', () => {
+  showToast('⚠️ لا يوجد اتصال بالإنترنت');
+  console.log('⚠️ Offline');
+});
+
+// ==================== PRINT STYLES ====================
+window.addEventListener('beforeprint', () => {
+  console.log('🖨️ Preparing to print...');
+  // Hide interactive elements before printing
+  document.querySelectorAll('.translation-button, .ai-fab-button, .video-section').forEach(el => {
+    el.style.display = 'none';
+  });
+});
+
+window.addEventListener('afterprint', () => {
+  console.log('✅ Print completed');
+  // Restore interactive elements after printing
+  document.querySelectorAll('.translation-button, .ai-fab-button, .video-section').forEach(el => {
+    el.style.display = '';
+  });
+});
+
+// ==================== DARK MODE TOGGLE (Optional) ====================
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+  const isDark = document.body.classList.contains('dark-mode');
+  localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+  console.log(isDark ? '🌙 Dark mode enabled' : '☀️ Light mode enabled');
+}
+
+// Load dark mode preference
+document.addEventListener('DOMContentLoaded', () => {
+  const darkMode = localStorage.getItem('darkMode');
+  if (darkMode === 'enabled') {
+    document.body.classList.add('dark-mode');
+  }
+});
+
+// Export for global use
+window.toggleDarkMode = toggleDarkMode;
+
+// ==================== CONSOLE BRANDING ====================
+console.log('%c🎓 منصة أثر التعليمية', 'color: #16a34a; font-size: 24px; font-weight: bold;');
+console.log('%cAthr Educational Platform', 'color: #475569; font-size: 14px;');
+console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #94a3b8;');
+console.log('%cVersion: 2.0.0', 'color: #64748b;');
+console.log('%cAll systems ready! 🚀', 'color: #22c55e; font-weight: bold;');
+console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #94a3b8;');
+// ==================== SWEETALERT2 UTILITIES ====================
+window.showAlert = function(options) {
+  if (typeof Swal === 'undefined') {
+    alert(options.text);
+    return;
+  }
+  
+  const defaults = {
+    icon: 'info',
+    showConfirmButton: true,
+    confirmButtonColor: '#16a34a',
+    background: 'rgba(255, 255, 255, 0.95)',
+    backdrop: 'rgba(0, 0, 0, 0.4)',
+    customClass: {
+      popup: 'custom-swal-popup',
+      title: 'custom-swal-title',
+      confirmButton: 'custom-swal-button'
+    }
+  };
+  
+  Swal.fire({...defaults, ...options});
+};
+
+window.showSuccessAlert = function(title, text) {
+  showAlert({
+    icon: 'success',
+    title: title,
+    text: text,
+    timer: 3000,
+    showConfirmButton: false
+  });
+};
+
+window.showErrorAlert = function(title, text) {
+  showAlert({
+    icon: 'error',
+    title: title,
+    text: text
+  });
+};
+
+// ==================== TOASTIFY UTILITIES ====================
+window.showToastify = function(message, type = 'info') {
+  if (typeof Toastify === 'undefined') {
+    showToast(message);
+    return;
+  }
+  
+  const colors = {
+    success: '#16a34a',
+    error: '#dc2626',
+    warning: '#f59e0b',
+    info: '#3b82f6'
+  };
+  
+  Toastify({
+    text: message,
+    duration: 3000,
+    gravity: 'bottom',
+    position: 'center',
+    stopOnFocus: true,
+    style: {
+      background: colors[type] || colors.info,
+      borderRadius: '50px',
+      padding: '12px 24px',
+      fontWeight: '600'
+    }
+  }).showToast();
+};
+
+// ==================== LOCAL STORAGE UTILITIES ====================
+window.storageManager = {
+  set: function(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+      return true;
+    } catch (e) {
+      console.error('Storage error:', e);
+      return false;
+    }
+  },
+  
+  get: function(key, defaultValue = null) {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : defaultValue;
+    } catch (e) {
+      console.error('Storage error:', e);
+      return defaultValue;
+    }
+  },
+  
+  remove: function(key) {
+    try {
+      localStorage.removeItem(key);
+      return true;
+    } catch (e) {
+      console.error('Storage error:', e);
+      return false;
+    }
+  },
+  
+  clear: function() {
+    try {
+      localStorage.clear();
+      return true;
+    } catch (e) {
+      console.error('Storage error:', e);
+      return false;
+    }
+  }
+};
+
+// ==================== DEBOUNCE & THROTTLE UTILITIES ====================
+window.debounce = function(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};
+
+window.throttle = function(func, limit) {
+  let inThrottle;
+  return function(...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+};
+
+// ==================== RESPONSIVE UTILITIES ====================
+window.isMobile = function() {
+  return window.innerWidth <= 768;
+};
+
+window.isTablet = function() {
+  return window.innerWidth > 768 && window.innerWidth <= 1024;
+};
+
+window.isDesktop = function() {
+  return window.innerWidth > 1024;
+};
+
+// Responsive event listener
+window.addEventListener('resize', debounce(() => {
+  console.log('Window resized:', {
+    width: window.innerWidth,
+    height: window.innerHeight,
+    device: isMobile() ? 'Mobile' : isTablet() ? 'Tablet' : 'Desktop'
+  });
+  
+  // Refresh AOS on resize
+  if (typeof AOS !== 'undefined') {
+    AOS.refresh();
+  }
+}, 250));
+
+// ==================== CLIPBOARD UTILITIES ====================
+window.copyToClipboard = function(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('✅ تم النسخ!');
+    }).catch(err => {
+      console.error('Copy failed:', err);
+      showToast('❌ فشل النسخ');
+    });
+  } else {
+    // Fallback for older browsers
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      showToast('✅ تم النسخ!');
+    } catch (err) {
+      console.error('Copy failed:', err);
+      showToast('❌ فشل النسخ');
+    }
+    document.body.removeChild(textarea);
+  }
+};
+
+// ==================== URL UTILITIES ====================
+window.urlUtils = {
+  getParams: function() {
+    const params = new URLSearchParams(window.location.search);
+    const result = {};
+    for (const [key, value] of params) {
+      result[key] = value;
+    }
+    return result;
+  },
+  
+  getParam: function(name) {
+    const params = new URLSearchParams(window.location.search);
+    return params.get(name);
+  },
+  
+  setParam: function(name, value) {
+    const url = new URL(window.location);
+    url.searchParams.set(name, value);
+    window.history.pushState({}, '', url);
+  },
+  
+  removeParam: function(name) {
+    const url = new URL(window.location);
+    url.searchParams.delete(name);
+    window.history.pushState({}, '', url);
+  }
+};
+
+// ==================== DATE UTILITIES ====================
+window.dateUtils = {
+  formatArabic: function(date) {
+    if (typeof moment !== 'undefined') {
+      return moment(date).locale('ar').format('LLLL');
+    }
+    return new Date(date).toLocaleDateString('ar-EG');
+  },
+  
+  formatEnglish: function(date) {
+    if (typeof moment !== 'undefined') {
+      return moment(date).locale('en').format('LLLL');
+    }
+    return new Date(date).toLocaleDateString('en-US');
+  },
+  
+  timeAgo: function(date) {
+    if (typeof moment !== 'undefined') {
+      return moment(date).fromNow();
+    }
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    const intervals = {
+      year: 31536000,
+      month: 2592000,
+      week: 604800,
+      day: 86400,
+      hour: 3600,
+      minute: 60
+    };
+    
+    for (const [name, seconds_in_interval] of Object.entries(intervals)) {
+      const interval = Math.floor(seconds / seconds_in_interval);
+      if (interval >= 1) {
+        return `منذ ${interval} ${name}`;
+      }
+    }
+    return 'الآن';
+  }
+};
+
+// ==================== VALIDATION UTILITIES ====================
+window.validate = {
+  email: function(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  },
+  
+  phone: function(phone) {
+    return /^[\d\s\-\+\(\)]+$/.test(phone);
+  },
+  
+  url: function(url) {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  },
+  
+  required: function(value) {
+    return value !== null && value !== undefined && value.toString().trim() !== '';
+  },
+  
+  minLength: function(value, min) {
+    return value && value.length >= min;
+  },
+  
+  maxLength: function(value, max) {
+    return value && value.length <= max;
+  }
+};
+
+// ==================== ANALYTICS (Optional) ====================
+window.trackEvent = function(category, action, label) {
+  // Google Analytics
+  if (typeof gtag !== 'undefined') {
+    gtag('event', action, {
+      'event_category': category,
+      'event_label': label
+    });
+  }
+  
+  // Console log for development
+  console.log('📊 Event:', { category, action, label });
+};
+
+window.trackPageView = function(path) {
+  // Google Analytics
+  if (typeof gtag !== 'undefined') {
+    gtag('config', 'GA_MEASUREMENT_ID', {
+      'page_path': path
+    });
+  }
+  
+  console.log('📄 Page View:', path);
+};
+
+// ==================== EXPORT ALL UTILITIES ====================
+window.Athr = {
+  // Animation functions
+  fadeInUp,
+  scaleIn,
+  rotateIn,
+  bounceIn,
+  shake,
+  pulse,
+  staggerAnimation,
+  triggerAnimation,
+  
+  // UI functions
+  showToast,
+  showAlert,
+  showSuccessAlert,
+  showErrorAlert,
+  showToastify,
+  copyToClipboard,
+  
+  // Storage
+  storage: storageManager,
+  
+  // Utilities
+  debounce,
+  throttle,
+  isMobile,
+  isTablet,
+  isDesktop,
+  
+  // URL & Date
+  url: urlUtils,
+  date: dateUtils,
+  
+  // Validation
+  validate,
+  
+  // Analytics
+  trackEvent,
+  trackPageView,
+  
+  // Device info
+  isIOS,
+  deviceType
+};
+
+// ==================== INITIALIZATION COMPLETE ====================
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('✅ All libraries initialized');
+  console.log('✅ All utilities loaded');
+  console.log('✅ All event listeners attached');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('🎉 منصة أثر جاهزة للاستخدام!');
+  console.log('🎉 Athr Platform Ready!');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  
+  // Log available features
+  console.log('Available features:');
+  console.log('  - AOS Animations ✅');
+  console.log('  - GSAP Animations ✅');
+  console.log('  - 3D Background ✅');
+  console.log('  - Video Player ✅');
+  console.log('  - AI Chat ✅');
+  console.log('  - Translation ✅');
+  console.log('  - Charts ✅');
+  console.log('  - Quiz System ✅');
+  console.log('  - Flashcards ✅');
+  console.log('  - Toast Notifications ✅');
+  console.log('  - Keyboard Shortcuts ✅');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+});
+
+// ==================== FINAL LOG ====================
+console.log('%c▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓', 'color: #16a34a;');
+console.log('%c█  Athr Platform v2.0.0   █', 'color: #16a34a; font-weight: bold;');
+console.log('%c█  Built with ❤️ in Egypt  █', 'color: #16a34a;');
+console.log('%c▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓', 'color: #16a34a;');
+
+// Export to window for console access
+window.AthrPlatform = {
+  version: '2.0.0',
+  initialized: true,
+  features: [
+    'AOS Animations',
+    'GSAP Animations',
+    '3D Background',
+    'Video Player',
+    'AI Chat',
+    'Translation System',
+    'Charts & Diagrams',
+    'Quiz System',
+    'Flashcards',
+    'Responsive Design',
+    'Accessibility',
+    'Performance Optimized'
+  ]
+};
