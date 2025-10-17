@@ -813,6 +813,479 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ==================== ADDITIONAL UTILITIES & SCROLL PROGRESS ====================
 document.addEventListener('DOMContentLoaded', function() {
+  // تأكد إن Reveal.js موجود وفعّله
+  if (typeof Reveal !== 'undefined') {
+    
+    // Initialize Reveal.js
+    Reveal.initialize({
+      hash: true,
+      rtl: document.dir === 'rtl',
+      center: true,
+      slideNumber: 'c/t',
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      autoPlayMedia: true,
+      
+      // Plugins
+      plugins: [ 
+        RevealMarkdown, 
+        RevealHighlight, 
+        RevealNotes, 
+        RevealMath.KaTeX 
+      ],
+      
+      // Mobile optimizations
+      touch: true,
+      loop: false,
+      mouseWheel: false,
+      hideAddressBar: true
+    });
+    
+    console.log('✅ Reveal.js initialized');
+    
+    // ==================== REVEAL.JS EVENTS ====================
+    
+    // عند تغيير الـ slide
+    Reveal.on('slidechanged', event => {
+      const currentSlide = event.currentSlide;
+      console.log('📄 Slide changed:', event.indexh);
+      
+      // Animate slide content
+      animateSlideContent(currentSlide);
+      
+      // Refresh AOS
+      if (typeof AOS !== 'undefined') {
+        AOS.refresh();
+      }
+      
+      // Re-render Mermaid diagrams
+      if (typeof mermaid !== 'undefined') {
+        const mermaidElements = currentSlide.querySelectorAll('.mermaid');
+        if (mermaidElements.length > 0) {
+          mermaid.init(undefined, mermaidElements);
+        }
+      }
+      
+      // Initialize DataTables if present
+      if (typeof $ !== 'undefined' && $.fn.DataTable) {
+        const tables = currentSlide.querySelectorAll('.interactive-table');
+        tables.forEach(table => {
+          if (!$.fn.DataTable.isDataTable(table)) {
+            $(table).DataTable({
+              responsive: true,
+              paging: false,
+              searching: false,
+              info: false
+            });
+          }
+        });
+      }
+      
+      // Re-render math
+      if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+        MathJax.typesetPromise([currentSlide]).catch(err => console.log('MathJax:', err));
+      }
+    });
+    
+    // عند ظهور fragment
+    Reveal.on('fragmentshown', event => {
+      const fragment = event.fragment;
+      
+      if (typeof anime !== 'undefined') {
+        anime({
+          targets: fragment,
+          opacity: [0, 1],
+          translateY: [20, 0],
+          duration: 600,
+          easing: 'easeOutQuad'
+        });
+      }
+    });
+    
+    // عند إخفاء fragment
+    Reveal.on('fragmenthidden', event => {
+      const fragment = event.fragment;
+      
+      if (typeof anime !== 'undefined') {
+        anime({
+          targets: fragment,
+          opacity: [1, 0],
+          translateY: [0, -20],
+          duration: 400,
+          easing: 'easeInQuad'
+        });
+      }
+    });
+    
+    // Ready event
+    Reveal.on('ready', () => {
+      console.log('✅ Reveal.js ready');
+      const firstSlide = Reveal.getCurrentSlide();
+      if (firstSlide) {
+        animateSlideContent(firstSlide);
+      }
+    });
+  }
+  
+  // ==================== SLIDE ANIMATIONS FUNCTION (جديدة) ====================
+  window.animateSlideContent = function(slide) {
+    if (!slide || typeof anime === 'undefined') return;
+    
+    // Animate titles
+    const titles = slide.querySelectorAll('h1, h2, h3');
+    if (titles.length > 0) {
+      anime({
+        targets: titles,
+        opacity: [0, 1],
+        translateY: [-30, 0],
+        duration: 800,
+        delay: anime.stagger(100),
+        easing: 'easeOutQuad'
+      });
+    }
+    
+    // Animate narrative paragraphs
+    const paragraphs = slide.querySelectorAll('.narrative-content p');
+    if (paragraphs.length > 0) {
+      anime({
+        targets: paragraphs,
+        opacity: [0, 1],
+        translateX: [document.dir === 'rtl' ? 20 : -20, 0],
+        duration: 600,
+        delay: anime.stagger(80, {start: 300}),
+        easing: 'easeOutQuad'
+      });
+    }
+    
+    // Animate table rows
+    const tableRows = slide.querySelectorAll('table tbody tr');
+    if (tableRows.length > 0) {
+      anime({
+        targets: tableRows,
+        opacity: [0, 1],
+        translateX: [document.dir === 'rtl' ? 30 : -30, 0],
+        duration: 500,
+        delay: anime.stagger(60, {start: 400}),
+        easing: 'easeOutQuad'
+      });
+    }
+    
+    // Animate example boxes
+    const exampleBoxes = slide.querySelectorAll('.example-box');
+    if (exampleBoxes.length > 0) {
+      anime({
+        targets: exampleBoxes,
+        opacity: [0, 1],
+        scale: [0.95, 1],
+        duration: 700,
+        delay: 500,
+        easing: 'easeOutBack'
+      });
+    }
+    
+    // Animate quiz boxes
+    const quizBoxes = slide.querySelectorAll('.quiz-box');
+    if (quizBoxes.length > 0) {
+      anime({
+        targets: quizBoxes,
+        opacity: [0, 1],
+        scale: [0.9, 1],
+        duration: 600,
+        delay: 400,
+        easing: 'easeOutBack'
+      });
+    }
+    
+    // Animate cards
+    const cards = slide.querySelectorAll('.card, .concept-card, .comparison-card');
+    if (cards.length > 0) {
+      anime({
+        targets: cards,
+        opacity: [0, 1],
+        scale: [0.9, 1],
+        duration: 600,
+        delay: anime.stagger(100, {start: 200}),
+        easing: 'easeOutBack'
+      });
+    }
+    
+    // Animate quiz options
+    const quizOptions = slide.querySelectorAll('.quiz-option');
+    if (quizOptions.length > 0) {
+      anime({
+        targets: quizOptions,
+        opacity: [0, 1],
+        translateX: [document.dir === 'rtl' ? 30 : -30, 0],
+        duration: 500,
+        delay: anime.stagger(80, {start: 600}),
+        easing: 'easeOutQuad'
+      });
+    }
+    
+    // Animate comparison cards grid
+    const comparisonCards = slide.querySelectorAll('.comparison-cards .card');
+    if (comparisonCards.length > 0) {
+      anime({
+        targets: comparisonCards,
+        opacity: [0, 1],
+        scale: [0.8, 1],
+        duration: 600,
+        delay: anime.stagger(150, {start: 300}),
+        easing: 'easeOutBack'
+      });
+    }
+  };
+  
+  // ==================== ENHANCED QUIZ ANIMATIONS (إضافة) ====================
+  
+  // تحسين الـ quiz options الموجودة
+  document.querySelectorAll('.quiz-option').forEach(option => {
+    // إضافة hover animation
+    option.addEventListener('mouseenter', function() {
+      if (this.style.pointerEvents !== 'none' && typeof anime !== 'undefined') {
+        anime({
+          targets: this,
+          translateX: document.dir === 'rtl' ? -5 : 5,
+          duration: 200,
+          easing: 'easeOutQuad'
+        });
+      }
+    });
+    
+    option.addEventListener('mouseleave', function() {
+      if (this.style.pointerEvents !== 'none' && typeof anime !== 'undefined') {
+        anime({
+          targets: this,
+          translateX: 0,
+          duration: 200,
+          easing: 'easeOutQuad'
+        });
+      }
+    });
+  });
+  
+  // ==================== CHART ANIMATIONS (إضافة جديدة) ====================
+  
+  // Animate charts عند ظهورها
+  if (typeof Chart !== 'undefined') {
+    const chartObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const canvas = entry.target;
+          if (canvas.chart) {
+            // Re-animate chart
+            canvas.chart.update('active');
+          }
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    document.querySelectorAll('canvas').forEach(canvas => {
+      chartObserver.observe(canvas);
+    });
+  }
+  
+  // ==================== MIND MAP ANIMATIONS (إضافة) ====================
+  
+  // Animate mind map nodes when visible
+  const mindMapObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && typeof anime !== 'undefined') {
+        const nodes = entry.target.querySelectorAll('.jsmind-node, [data-markmap-id]');
+        if (nodes.length > 0) {
+          anime({
+            targets: nodes,
+            opacity: [0, 1],
+            scale: [0, 1],
+            duration: 600,
+            delay: anime.stagger(80, {from: 'center'}),
+            easing: 'easeOutBack'
+          });
+        }
+      }
+    });
+  }, { threshold: 0.3 });
+  
+  document.querySelectorAll('.mindmap-container, .markmap-container').forEach(container => {
+    mindMapObserver.observe(container);
+  });
+  
+  // ==================== FLASHCARD FLIP ANIMATION (إضافة) ====================
+  
+  document.querySelectorAll('.flashcard').forEach(card => {
+    card.addEventListener('click', function() {
+      this.classList.toggle('flipped');
+      
+      // Sound effect (optional)
+      if (typeof Howler !== 'undefined') {
+        // يمكنك إضافة sound effect هنا
+      }
+      
+      // Haptic feedback للموبايل
+      if (navigator.vibrate) {
+        navigator.vibrate(50);
+      }
+    });
+  });
+  
+  // ==================== TIMELINE ANIMATIONS (إضافة) ====================
+  
+  const timelineObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && typeof anime !== 'undefined') {
+        const items = entry.target.querySelectorAll('.timeline-item');
+        if (items.length > 0) {
+          anime({
+            targets: items,
+            opacity: [0, 1],
+            translateY: [30, 0],
+            duration: 600,
+            delay: anime.stagger(150),
+            easing: 'easeOutQuad'
+          });
+          
+          // Animate dots
+          const dots = entry.target.querySelectorAll('.timeline-dot');
+          anime({
+            targets: dots,
+            scale: [0, 1],
+            duration: 400,
+            delay: anime.stagger(150),
+            easing: 'easeOutBack'
+          });
+        }
+      }
+    });
+  }, { threshold: 0.2 });
+  
+  document.querySelectorAll('.timeline').forEach(timeline => {
+    timelineObserver.observe(timeline);
+  });
+  
+  // ==================== KEYBOARD SHORTCUTS لـ REVEAL.JS (إضافة) ====================
+  
+  if (typeof Reveal !== 'undefined') {
+    document.addEventListener('keydown', function(e) {
+      // تجاهل إذا كان المستخدم بيكتب
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+      }
+      
+      switch(e.key) {
+        case 'Home':
+          e.preventDefault();
+          Reveal.slide(0);
+          showToast('🏠 الشريحة الأولى');
+          break;
+        case 'End':
+          e.preventDefault();
+          const lastSlide = Reveal.getTotalSlides() - 1;
+          Reveal.slide(lastSlide);
+          showToast('🏁 الشريحة الأخيرة');
+          break;
+        case 'o':
+        case 'O':
+          e.preventDefault();
+          Reveal.toggleOverview();
+          showToast(Reveal.isOverview() ? '📊 عرض شامل' : '📄 عرض عادي');
+          break;
+        case 'p':
+        case 'P':
+          e.preventDefault();
+          Reveal.togglePause();
+          showToast(Reveal.isPaused() ? '⏸️ متوقف' : '▶️ مستأنف');
+          break;
+      }
+    });
+  }
+  
+  // ==================== AUTO-SCROLL TO ACTIVE ELEMENT (إضافة) ====================
+  
+  // عند الضغط على أي عنصر quiz أو interactive
+  document.addEventListener('click', function(e) {
+    const interactive = e.target.closest('.quiz-option, .flashcard, .interactive-element');
+    if (interactive) {
+      setTimeout(() => {
+        interactive.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }, 300);
+    }
+  });
+  
+  // ==================== PRINT/EXPORT SUPPORT (إضافة) ====================
+  
+  // إضافة زر print (اختياري)
+  window.printPresentation = function() {
+    if (typeof Reveal !== 'undefined') {
+      // تفعيل print mode
+      window.print();
+    }
+  };
+  
+  // ==================== PROGRESS STATS (إضافة) ====================
+  
+  if (typeof Reveal !== 'undefined') {
+    Reveal.on('slidechanged', event => {
+      const progress = Reveal.getProgress();
+      const currentSlide = event.indexh + 1;
+      const totalSlides = Reveal.getTotalSlides();
+      
+      console.log(`📊 التقدم: ${Math.round(progress * 100)}% (${currentSlide}/${totalSlides})`);
+      
+      // حفظ التقدم في localStorage
+      if (typeof localforage !== 'undefined') {
+        localforage.setItem('lecture-progress', {
+          slide: currentSlide,
+          progress: progress,
+          timestamp: Date.now()
+        });
+      }
+    });
+  }
+  
+  console.log('✅ تم إضافة Reveal.js Integration + Animations');
+});
+
+// ==================== UTILITY: CELEBRATE SUCCESS (إضافة) ====================
+window.celebrateSuccess = function(element) {
+  if (typeof anime !== 'undefined') {
+    anime({
+      targets: element,
+      scale: [1, 1.1, 1],
+      rotate: [0, -5, 5, 0],
+      duration: 600,
+      easing: 'easeInOutQuad'
+    });
+  }
+  
+  if (typeof confetti !== 'undefined') {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  }
+  
+  showToast('🎉 رائع!');
+};
+
+// ==================== UTILITY: LOAD SLIDE FROM URL (إضافة) ====================
+// لو عايز تشارك رابط لشريحة معينة
+if (typeof Reveal !== 'undefined') {
+  window.addEventListener('load', function() {
+    const hash = window.location.hash;
+    if (hash) {
+      const slideMatch = hash.match(/#\/(\d+)/);
+      if (slideMatch) {
+        const slideNumber = parseInt(slideMatch[1]);
+        Reveal.slide(slideNumber);
+        console.log('🔗 تم الانتقال للشريحة:', slideNumber);
+      }
+    }
+  });
+}
   
   // ==================== SCROLL PROGRESS TRACKER ====================
   const createScrollProgress = () => {
