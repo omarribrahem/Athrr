@@ -15,11 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
   
-  <!-- ==================== REVEAL.JS ==================== -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/theme/white.css" id="theme">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/plugin/highlight/monokai.css">
-  
+ 
   <!-- ==================== MATH ==================== -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -255,80 +251,218 @@
     <!-- ==================== ARABIC CONTENT ==================== -->
     <div class="ar-content">
   
-  <!-- Section 1: Intro -->
-  <section class="glassy-card" data-aos="fade-up">
+  <!-- Intro -->
+  <section class="glassy-card" data-aos="fade-up" style="margin-top: 20px;">
     <div class="lecture-intro">
       <h1>وظيفة الإنتاج</h1>
       <h3>The Production Function</h3>
       <p class="subtitle">مقدمة في إدارة العمليات</p>
+      <div class="lecture-meta">
+        <span><i class="fas fa-user"></i> د. محمد أحمد</span>
+        <span><i class="fas fa-clock"></i> 45 دقيقة</span>
+        <span><i class="fas fa-book"></i> الفصل الأول</span>
+      </div>
     </div>
   </section>
 
-  <!-- Section 2: المقدمة -->
+  <!-- المقدمة -->
   <section class="glassy-card" data-aos="fade-up">
     <h2>المقدمة: الوظائف الأساسية في الأعمال</h2>
     <div class="narrative-content">
-      <p>أي مؤسسة تجارية بتشتغل من خلال أربع وظائف أساسية...</p>
+      <p>أي مؤسسة تجارية في العالم بتشتغل من خلال **أربع وظائف أساسية** مترابطة ومتداخلة...</p>
+      <p>كل وظيفة من دول ليها دور محدد، لكن النهاردة هنركز على الوظيفة اللي بتخلق **القيمة الفعلية** للمنتج أو الخدمة.</p>
+      <p>الوظيفة دي هي **وظيفة الإنتاج** (Production Function) - القلب النابض لأي شركة!</p>
     </div>
   </section>
 
-  <!-- Section 3: الوظائف الأربعة -->
+  <!-- الوظائف الأربعة -->
   <section class="glassy-card" data-aos="fade-up">
     <h2>الوظائف الأربعة الأساسية</h2>
     <div class="comparison-cards">
       <div class="card" data-aos="flip-left">
         <h4>📊 التسويق</h4>
-        <p>فهم احتياجات العملاء</p>
+        <p>فهم احتياجات العملاء وترويج المنتجات</p>
       </div>
       <div class="card" data-aos="flip-left" data-aos-delay="100">
         <h4>💰 التمويل</h4>
-        <p>إدارة الموارد المالية</p>
+        <p>إدارة الموارد المالية والاستثمارات</p>
       </div>
       <div class="card" data-aos="flip-left" data-aos-delay="200">
         <h4>👥 الموارد البشرية</h4>
-        <p>إدارة الكوادر البشرية</p>
+        <p>إدارة وتطوير الكوادر البشرية</p>
       </div>
       <div class="card" data-aos="flip-left" data-aos-delay="300">
         <h4>🏭 الإنتاج</h4>
-        <p>تحويل المدخلات لمخرجات</p>
+        <p>تحويل المدخلات لمخرجات ذات قيمة</p>
       </div>
     </div>
   </section>
 
-  <!-- Section 4: مثال عملي -->
+  <!-- مثال عملي -->
   <section class="glassy-card" data-aos="fade-up">
     <h2>💡 مثال عملي</h2>
     <div class="example-box">
       <h3>مصنع العصائر 🧃</h3>
-      <p>تخيل إنك صاحب مصنع عصاير:</p>
+      <p>تخيل إنك صاحب مصنع عصاير طبيعية:</p>
       <ul style="text-align: right; margin-top: 15px;">
-        <li><strong>المدخلات:</strong> برتقال، سكر، ماء</li>
-        <li><strong>العملية:</strong> عصر، تصفية، تعبئة</li>
-        <li><strong>المخرجات:</strong> زجاجات عصير جاهزة</li>
+        <li><strong>المدخلات:</strong> برتقال، سكر، ماء، عمال، آلات</li>
+        <li><strong>العملية:</strong> عصر، تصفية، تعبئة، تغليف</li>
+        <li><strong>المخرجات:</strong> زجاجات عصير جاهزة للبيع</li>
       </ul>
+    </div>
+    <div class="key-concept">
+      <strong>المفهوم الأساسي:</strong> وظيفة الإنتاج هي عملية تحويل منهجية تضيف قيمة للمواد الخام
     </div>
   </section>
 
-  <!-- Section 5: Quiz -->
+  <!-- التنبؤ -->
+  <section class="glassy-card" data-aos="fade-up">
+    <h2>التنبؤ: قراءة المستقبل بعيون الحاضر 🔮</h2>
+    <div class="narrative-content">
+      <p>**التنبؤ (Forecasting)** هو عملية تقدير الطلب المستقبلي على السلع والخدمات بناءً على البيانات التاريخية.</p>
+      <p>تخيل إنك صاحب مصنع عصاير، ومحتاج تعرف هتبيع كام زجاجة عصير في الصيف الجاي عشان تجهز المخزون والإنتاج!</p>
+    </div>
+  </section>
+
+  <!-- الـ 6Ms -->
+  <section class="glassy-card" data-aos="fade-up">
+    <h3>الـ 6Ms للإدارة</h3>
+    <div class="table-container">
+      <table class="concepts-table">
+        <thead>
+          <tr>
+            <th>الـ M</th>
+            <th>المعنى</th>
+            <th>الشرح</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><mark class="highlight-business">Market</mark></td>
+            <td>السوق</td>
+            <td>الطلب المتوقع على المنتج</td>
+          </tr>
+          <tr>
+            <td><mark class="highlight-finance">Materials</mark></td>
+            <td>المواد</td>
+            <td>المواد الخام والأجزاء اللازمة</td>
+          </tr>
+          <tr>
+            <td><mark class="highlight-accounting">Manpower</mark></td>
+            <td>القوى العاملة</td>
+            <td>العمال والمهارات المطلوبة</td>
+          </tr>
+          <tr>
+            <td><mark class="highlight-economics">Machines</mark></td>
+            <td>الآلات</td>
+            <td>المعدات والتكنولوجيا</td>
+          </tr>
+          <tr>
+            <td><mark class="highlight-green">Methods</mark></td>
+            <td>الطرق</td>
+            <td>أساليب وإجراءات العمل</td>
+          </tr>
+          <tr>
+            <td><mark class="highlight-orange">Money</mark></td>
+            <td>المال</td>
+            <td>رأس المال المطلوب</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Quiz -->
   <section class="glassy-card" data-aos="fade-up">
     <h2>🤔 اختبر نفسك!</h2>
     <div class="quiz-box">
       <h3>سؤال 1</h3>
-      <p class="quiz-question">ما هو المصطلح المستخدم لوصف تقدير الطلب؟</p>
+      <p class="quiz-question">ما هو المصطلح المستخدم لوصف تقدير الطلب على منتج جديد ليس له تاريخ مبيعات؟</p>
       <div class="quiz-options">
-        <div class="quiz-option" data-answer="wrong">أ) Forecasting</div>
-        <div class="quiz-option" data-answer="correct">ب) Predictions</div>
-        <div class="quiz-option" data-answer="wrong">ج) Capacity Planning</div>
-        <div class="quiz-option" data-answer="wrong">د) Scheduling</div>
+        <div class="quiz-option" data-answer="wrong">أ) Forecasting (التنبؤ)</div>
+        <div class="quiz-option" data-answer="correct">ب) Predictions (التوقعات)</div>
+        <div class="quiz-option" data-answer="wrong">ج) Capacity Planning (تخطيط الطاقة)</div>
+        <div class="quiz-option" data-answer="wrong">د) Scheduling (الجدولة)</div>
       </div>
     </div>
   </section>
 
-  <!-- Section 6: Chart -->
+  <!-- الطاقة الإنتاجية -->
+  <section class="glassy-card" data-aos="fade-up">
+    <h2>تخطيط الطاقة الإنتاجية 🏭</h2>
+    <div class="narrative-content">
+      <p>**الطاقة الإنتاجية (Capacity)** تشير إلى الحد الأقصى من المخرجات التي يمكن إنتاجها في فترة زمنية معينة.</p>
+      <p>يعني لو عندك مصنع بسكويت، الطاقة الإنتاجية هي أقصى عدد من علب البسكويت اللي تقدر تنتجها في اليوم!</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card" data-aos="zoom-in">
+        <div class="stat-value" data-value="1000">0</div>
+        <div class="stat-label">طاقة التصميم (وحدة/يوم)</div>
+      </div>
+      <div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
+        <div class="stat-value" data-value="850">0</div>
+        <div class="stat-label">الطاقة الفعلية (وحدة/يوم)</div>
+      </div>
+      <div class="stat-card" data-aos="zoom-in" data-aos-delay="200">
+        <div class="stat-value" data-value="85">0</div>
+        <div class="stat-label">الكفاءة (%)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chart -->
   <section class="glassy-card" data-aos="fade-up">
     <h2>📊 مقارنة الأداء</h2>
     <div class="chart-container">
       <canvas id="productionChart"></canvas>
+    </div>
+  </section>
+
+  <!-- Flashcard -->
+  <section class="glassy-card" data-aos="fade-up">
+    <h2>بطاقة تعليمية 🎴</h2>
+    <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 30px;">اضغط على البطاقة للقلب</p>
+    <div class="flashcard-container">
+      <div class="flashcard">
+        <div class="flashcard-face flashcard-front">
+          <div class="flashcard-content">
+            <h3>ما هي الطاقة الفعلية؟</h3>
+            <p class="flashcard-hint">(اضغط لرؤية الإجابة)</p>
+          </div>
+        </div>
+        <div class="flashcard-face flashcard-back">
+          <div class="flashcard-content">
+            <h3>الطاقة الفعلية</h3>
+            <p>هي الحد الأقصى من الإنتاج الذي يمكن تحقيقه تحت الظروف التشغيلية الحالية.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- الخلاصة -->
+  <section class="glassy-card" data-aos="fade-up">
+    <h2>📝 الخلاصة</h2>
+    <div class="key-concepts">
+      <div class="concept-card">
+        <h3>🏭 وظيفة الإنتاج</h3>
+        <p>تحويل المدخلات لمخرجات بقيمة مضافة</p>
+      </div>
+      <div class="concept-card">
+        <h3>🔮 التنبؤ</h3>
+        <p>تقدير الطلب والموارد المستقبلية</p>
+      </div>
+      <div class="concept-card">
+        <h3>⚡ الطاقة الإنتاجية</h3>
+        <p>الموازنة بين القدرة والطلب</p>
+      </div>
+    </div>
+    <div class="alert-box alert-success" style="margin-top: 40px;">
+      <i class="fas fa-check-circle" style="font-size: 1.5rem;"></i>
+      <div>
+        <strong>تهانينا! 🎉</strong>
+        <p style="margin: 0;">أنت الآن تفهم أساسيات وظيفة الإنتاج!</p>
+      </div>
     </div>
   </section>
 
@@ -348,7 +482,20 @@
     </a>
   </div>
 
+  <!-- Footer -->
+  <div class="footer-info">
+    <div class="footer-brand">
+      <i class="fas fa-graduation-cap"></i>
+      <span>منصة أثر التعليمية</span>
+    </div>
+    <div class="footer-divider"></div>
+    <p class="footer-disclaimer">
+      جميع الحقوق محفوظة © 2024
+    </p>
+  </div>
+
 </div>
+
 
     
     <!-- ==================== ENGLISH CONTENT ==================== -->
@@ -359,22 +506,6 @@
     </div>
 
   </main>
-
-  <!-- ==================== SCRIPTS - ترتيب مهم! ==================== -->
-  
-  <!-- 1. Reveal.js Core -->
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.js"></script>
-  
-  <!-- 2. Reveal.js Plugins -->
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/plugin/notes/notes.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/plugin/markdown/markdown.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/plugin/highlight/highlight.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/plugin/math/math.js"></script>
-<!-- ==================== SCRIPTS - ترتيب مهم! ==================== -->
-
-<!-- 1. Reveal.js Core -->
-<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.js"></script>
-
 
 <!-- 3. Custom Script -->
 <script src="../js/script.js"></script>
