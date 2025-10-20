@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="منصة أثر التعليمية - محتوى متخصص لكلية التجارة مع فيديو تفاعلي" />
-  <meta name="keywords" content="اقتصاد، محاسبة، إدارة، تجارة، تنبؤ، business, economics, accounting, finance, forecasting" />
+  <meta name="description" content="منصة أثر التعليمية - محتوى متخصص لكلية التجارة - التحليل المالي المتقدم" />
+  <meta name="keywords" content="اقتصاد، محاسبة، إدارة، تجارة، تحليل مالي، نسب مالية، business, economics, accounting, finance, financial analysis" />
   <meta name="theme-color" content="#16a34a" />
   
-  <title>منصة أثر - المحاضرة 1</title>
+  <title>منصة أثر - التحليل المالي المتقدم</title>
   
   <!-- ==================== FONTS ==================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -96,7 +96,7 @@
   <script src="https://s3.tradingview.com/tv.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js"></script>
-
+  
   <!-- ==================== TABLES & DATA GRIDS ==================== -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
@@ -201,7 +201,6 @@
   <!-- ==================== CUSTOM STYLES ==================== -->
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/features.css">
-  <link rel="stylesheet" href="lecture1.css">
 </head>
 
 <body>
@@ -234,45 +233,44 @@
   </button>
 
   <!-- ==================== TIMER WIDGET ==================== -->
-<div class="timer-widget" id="timerWidget">
-  <!-- Reading Mode -->
-  <div class="timer-reading-mode" id="readingMode">
-    <svg class="timer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
-    </svg>
-    <span class="timer-value" id="timerValue">0</span>
-    <span class="timer-unit">د</span>
-  </div>
-  
-  <!-- Pomodoro Mode -->
-  <div class="timer-pomodoro-mode" id="pomodoroMode">
-    <span class="pomodoro-time" id="pomodoroTime">25:00</span>
-    <div class="pomodoro-controls">
-      <button class="pomodoro-btn" id="startPomodoroBtn">
-        <i class="fas fa-play"></i>
+  <div class="timer-widget" id="timerWidget">
+    <!-- Reading Mode -->
+    <div class="timer-reading-mode" id="readingMode">
+      <svg class="timer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
+      </svg>
+      <span class="timer-value" id="timerValue">0</span>
+      <span class="timer-unit">د</span>
+    </div>
+    
+    <!-- Pomodoro Mode -->
+    <div class="timer-pomodoro-mode" id="pomodoroMode">
+      <span class="pomodoro-time" id="pomodoroTime">25:00</span>
+      <div class="pomodoro-controls">
+        <button class="pomodoro-btn" id="startPomodoroBtn">
+          <i class="fas fa-play"></i>
+        </button>
+        <button class="pomodoro-btn" id="pausePomodoroBtn" style="display:none;">
+          <i class="fas fa-pause"></i>
+        </button>
+        <button class="pomodoro-btn" id="resetPomodoroBtn">
+          <i class="fas fa-rotate-right"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Menu -->
+    <div class="timer-menu" id="timerMenu">
+      <button class="timer-menu-btn" id="switchToPomodoroBtn">
+        <i class="fas fa-stopwatch"></i>
+        <span>بومودورو</span>
       </button>
-      <button class="pomodoro-btn" id="pausePomodoroBtn" style="display:none;">
-        <i class="fas fa-pause"></i>
-      </button>
-      <button class="pomodoro-btn" id="resetPomodoroBtn">
-        <i class="fas fa-rotate-right"></i>
+      <button class="timer-menu-btn" id="switchToReadingBtn" style="display:none;">
+        <i class="fas fa-clock"></i>
+        <span>وقت القراءة</span>
       </button>
     </div>
   </div>
-  
-  <!-- Menu -->
-  <div class="timer-menu" id="timerMenu">
-    <button class="timer-menu-btn" id="switchToPomodoroBtn">
-      <i class="fas fa-stopwatch"></i>
-      <span>بومودورو</span>
-    </button>
-    <button class="timer-menu-btn" id="switchToReadingBtn" style="display:none;">
-      <i class="fas fa-clock"></i>
-      <span>وقت القراءة</span>
-    </button>
-  </div>
-</div>
-
 
   <!-- ==================== TOAST NOTIFICATION ==================== -->
   <div class="toast-notification" id="toastNotification"></div>
@@ -304,118 +302,920 @@
 
   <!-- ==================== MAIN CONTENT ==================== -->
   <main class="main-content">
-      <!-- محتوى المحاضرة هنا -->
-      
-      <!-- Video Section -->
-      <section class="video-section" data-aos="fade-up">
-        <div class="video-card-player">
-          <div class="video-info">
-            <h2>🎬 فيديو شرح: مقدمة عن التنبؤ</h2>
-            <p>شاهد الشرح التفصيلي للمفاهيم الأساسية - اضغط ملء الشاشة للتجربة الكاملة</p>
-          </div>
 
-          <div class="video-player-wrapper">
-            <div class="video-player" id="videoPlayer">
-              <video id="video" playsinline preload="metadata" poster="https://via.placeholder.com/1280x720/4ade80/ffffff?text=أثر+Platform">
-                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
-              </video>
+<div class="ar-content">
 
-              <div class="loading-spinner" id="loadingSpinner"></div>
+  <!-- Hero Section -->
+  <div class="glassy-card" data-aos="fade-down">
+    <h1>📦 الفصل الرابع: تصميم المنتج</h1>
+    <h2 style="color: var(--color-business); margin-top: 10px;">Product Design</h2>
+    <p>رحلة شاملة في عالم تصميم المنتجات - من الفكرة إلى التنفيذ</p>
+  </div>
 
-              <!-- Simple Controls (Normal View) -->
-              <div class="simple-controls">
-                <div class="simple-progress" id="simpleProgress">
-                  <div class="simple-progress-filled" id="simpleProgressFilled"></div>
-                </div>
-                <div class="simple-controls-row">
-                  <button class="simple-btn" id="simplePlayBtn">
-                    <i class="fas fa-play"></i>
-                  </button>
-                  <span class="simple-time">
-                    <span id="simpleCurrentTime">0:00</span> / <span id="simpleDuration">0:00</span>
-                  </span>
-                  <button class="simple-btn" id="simpleFullscreenBtn">
-                    <i class="fas fa-expand"></i>
-                  </button>
-                </div>
-              </div>
-
-              <!-- iOS 26 Style Controls (Fullscreen) -->
-              <div class="ios-controls">
-                <div class="video-bars" id="videoBars">
-                  <div class="top-bar-bg"></div>
-                  <div class="bottom-bar-bg"></div>
-                </div>
-
-                <div class="tap-indicator left" id="tapLeft">
-                  <i class="fas fa-backward"></i>
-                </div>
-                <div class="tap-indicator right" id="tapRight">
-                  <i class="fas fa-forward"></i>
-                </div>
-
-                <div class="top-controls">
-                  <div class="top-left-group">
-                    <button class="control-bubble glass-bubble" id="closeBtn">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                  
-                  <div class="volume-control">
-                    <div class="volume-slider-container">
-                      <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1" />
-                    </div>
-                    <button class="control-bubble glass-bubble" id="volumeBtn">
-                      <i class="fas fa-volume-up"></i>
-                    </button>
-                  </div>
-                </div>
-
-                <div class="center-play-controls">
-                  <button class="skip-bubble glass-bubble" id="skipBack">
-                    <i class="fas fa-rotate-left"></i>
-                    <span class="skip-number">10</span>
-                  </button>
-
-                  <button class="play-bubble glass-bubble" id="playBtn">
-                    <i class="fas fa-play"></i>
-                  </button>
-
-                  <button class="skip-bubble glass-bubble" id="skipForward">
-                    <i class="fas fa-rotate-right"></i>
-                    <span class="skip-number">10</span>
-                  </button>
-                </div>
-
-                <div class="bottom-timeline">
-                  <div class="progress-wrapper" id="progressWrapper">
-                    <div class="progress-track">
-                      <div class="progress-buffered" id="progressBuffered"></div>
-                      <div class="progress-filled" id="progressFilled"></div>
-                    </div>
-                  </div>
-
-                  <div class="time-row">
-                    <span class="time-text" id="currentTime">0:00</span>
-                    <span class="time-text" id="remainingTime">-0:00</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    <!-- ==================== ARABIC CONTENT ==================== -->
-    <div class="ar-content">
-
-      <!-- Hero -->
-      <div class="glassy-card" data-aos="fade-down">
-        <h1>🎓 مرحباً بك في منصة أثر التعليمية</h1>
-        <p>تجربة تعليمية تفاعلية متطورة مصممة خصيصاً لطلاب كلية التجارة</p>
+  <!-- Section 1: Introduction -->
+  <div class="glassy-card" data-aos="fade-up">
+    <h2>🎯 ما هو تصميم المنتج؟</h2>
+    
+    <div class="alert-box alert-info">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+      <div>
+        <strong>📚 التعريف الرسمي</strong>
+        <p><strong>تصميم المنتج (Product Design)</strong> هو <mark class="highlight-business">عملية إنشاء منتجات جديدة تمزج بين احتياجات العملاء وأهداف العمل التجاري</mark>. بمعنى آخر، المنتجات يتم تصميمها لتلبي احتياجات العملاء وتساعد الشركة على تحقيق أقصى قدر من الأرباح.</p>
       </div>
+    </div>
 
-      <!-- محتوى المحاضرة هنا -->
+    <p>تخيل معايا إنك صاحب مصنع عصير، مش هتصمم العصير بطريقة تعجبك أنت بس، لازم تفكر: العميل عايز إيه؟ طعم معين؟ سعر معقول؟ عبوة سهلة الاستخدام؟ وفي نفس الوقت، تصميمك لازم يكون مربح ليك كصاحب شغل. ده بالظبط <strong>جوهر تصميم المنتج</strong>.</p>
+
+    <h3>🎯 أسباب تصميم المنتجات</h3>
+    
+    <!-- Mermaid Diagram -->
+    <div class="chart-container" data-aos="fade-up">
+      <h4 style="text-align: center; margin-bottom: 20px; color: var(--color-business);">مخطط أسباب تصميم المنتجات</h4>
+      <div class="mermaid">
+        graph LR
+          A[تصميم المنتج] --> B[تلبية احتياجات العملاء]
+          A --> C[التوافق مع قدرات الإنتاج]
+          A --> D[الحفاظ على العمالة]
+          
+          B --> B1[رضا العميل]
+          B1 --> B2[أرباح أعلى]
+          B2 --> B3[ميزة تنافسية]
+          
+          C --> C1[كفاءة الإنتاج]
+          C1 --> C2[تقليل التكاليف]
+          
+          D --> D1[تجنب التقليص]
+          D1 --> D2[استقرار العمالة]
+          
+          style A fill:#3b82f6,stroke:#1e40af,stroke-width:3px,color:#fff
+          style B fill:#16a34a,stroke:#15803d,stroke-width:2px
+          style C fill:#f59e0b,stroke:#d97706,stroke-width:2px
+          style D fill:#dc2626,stroke:#991b1b,stroke-width:2px,color:#fff
+      </div>
+    </div>
+  </div>
+
+  <!-- MCQ Question 1 -->
+  <div class="question-container" onclick="toggleQuestion(this)" data-aos="fade-up">
+    <div class="question-header">
+      <svg class="question-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+      <span>سؤال 1: ما هو الهدف الرئيسي من تصميم المنتج؟</span>
+      <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </div>
+
+    <div class="question-content">
+      <ul class="mcq-options">
+        <li class="mcq-option" data-answer="wrong">
+          <strong>أ)</strong> زيادة تكلفة الإنتاج
+        </li>
+        <li class="mcq-option" data-answer="correct">
+          <strong>ب)</strong> مزج احتياجات العملاء مع أهداف العمل
+        </li>
+        <li class="mcq-option" data-answer="wrong">
+          <strong>ج)</strong> تقليل عدد العاملين
+        </li>
+        <li class="mcq-option" data-answer="wrong">
+          <strong>د)</strong> تجاهل قدرات الإنتاج
+        </li>
+      </ul>
+
+      <div class="solution-content">
+        <h4>✅ الحل التفصيلي</h4>
+        <p><strong>الإجابة الصحيحة:</strong> ب) مزج احتياجات العملاء مع أهداف العمل</p>
+        <p><strong>التفسير:</strong> تصميم المنتج يهدف بشكل أساسي إلى تحقيق التوازن بين ما يحتاجه العميل وما تهدف الشركة لتحقيقه من أرباح ونمو.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Product Redesign -->
+  <div class="glassy-card" data-aos="fade-up">
+    <h2>🔄 إعادة تصميم المنتج</h2>
+    
+    <div class="alert-box alert-info">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+      <div>
+        <strong>📚 التعريف الرسمي</strong>
+        <p><strong>إعادة تصميم المنتج (Product Redesign)</strong> هي <mark class="highlight-business">عملية إجراء تغييرات جوهرية على منتج موجود بالفعل لجذب العملاء</mark>.</p>
+      </div>
+    </div>
+
+    <p>فكر معايا في موبايلات أبل مثلاً—كل سنة بيطلعوا موديل جديد، أحياناً بيغيروا الكاميرا، أحياناً الشاشة، أحياناً الشكل الخارجي. ده كله <strong>إعادة تصميم</strong> عشان يحافظوا على اهتمام العملاء ويواكبوا التطورات.</p>
+
+    <h3>💡 أسباب إعادة التصميم</h3>
+    
+    <!-- Chart: Redesign Reasons -->
+    <div class="chart-container" data-aos="fade-up">
+      <canvas id="redesignReasonsChart"></canvas>
+    </div>
+
+    <div class="alert-box alert-warning">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+        <line x1="12" y1="9" x2="12" y2="13"></line>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+      <div>
+        <strong>⚠️ ملاحظة مهمة</strong>
+        <p>لاحظ إن الأسباب دي كلها مرتبطة بـ <mark class="highlight-business">البقاء في السوق والتفوق على المنافسين</mark>. مفيش شركة بتقدر تقعد مكانها من غير تطوير.</p>
+      </div>
+    </div>
+
+    <h3>🔧 مجالات إعادة التصميم</h3>
+    
+    <!-- Mermaid Diagram -->
+    <div class="chart-container" data-aos="fade-up">
+      <div class="mermaid">
+        graph TD
+          A[مجالات إعادة التصميم] --> B[إعادة تصميم الشعار Logo]
+          A --> C[إعادة تصميم العبوة Package]
+          A --> D[تغيير المواد الخام]
+          A --> E[تغيير طريقة العمل]
+          
+          B --> B1[تحديث الهوية البصرية]
+          C --> C1[تحسين الجذب البصري]
+          D --> D1[تقليل التكلفة]
+          D --> D2[تحسين الجودة]
+          E --> E1[زيادة الكفاءة]
+          
+          style A fill:#3b82f6,stroke:#1e40af,stroke-width:3px,color:#fff
+          style B fill:#16a34a,stroke:#15803d,stroke-width:2px
+          style C fill:#f59e0b,stroke:#d97706,stroke-width:2px
+          style D fill:#dc2626,stroke:#991b1b,stroke-width:2px,color:#fff
+          style E fill:#7c3aed,stroke:#5b21b6,stroke-width:2px,color:#fff
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Product Life Cycle with Chart -->
+  <div class="glassy-card" data-aos="fade-up">
+    <h2>🔄 دورة حياة المنتج</h2>
+    
+    <div class="alert-box alert-info">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+      <div>
+        <strong>📚 التعريف الرسمي</strong>
+        <p><strong>دورة حياة المنتج (Product Life Cycle)</strong> تشير إلى <mark class="highlight-business">المراحل التي يمر بها المنتج خلال حياته (التقديم، النمو، النضج، والانحدار)</mark>.</p>
+      </div>
+    </div>
+
+    <!-- Product Life Cycle Chart -->
+    <div class="chart-container" data-aos="fade-up">
+      <canvas id="productLifeCycleChart"></canvas>
+    </div>
+
+    <h3>المراحل الأربعة</h3>
+
+    <div class="table-container">
+      <table class="concepts-table">
+        <thead>
+          <tr>
+            <th>المرحلة</th>
+            <th>الخصائص</th>
+            <th>مستوى الطلب</th>
+            <th>التغييرات في التصميم</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1️⃣ التقديم</strong><br><small>Introduction</small></td>
+            <td>طلب قليل، مشاكل تظهر، سعر عالي</td>
+            <td><span class="percentage">15%</span></td>
+            <td>تغييرات كثيرة لحل المشاكل</td>
+          </tr>
+          <tr>
+            <td><strong>2️⃣ النمو</strong><br><small>Growth</small></td>
+            <td>تحسين التصميم، زيادة الموثوقية، انخفاض السعر</td>
+            <td><span class="percentage">60%</span></td>
+            <td>تحسينات مستمرة</td>
+          </tr>
+          <tr>
+            <td><strong>3️⃣ النضج</strong><br><small>Maturity</small></td>
+            <td>سوق مشبع، منافسة شديدة</td>
+            <td><span class="percentage">95%</span></td>
+            <td>قليل جداً أو معدوم</td>
+          </tr>
+          <tr>
+            <td><strong>4️⃣ الانحدار</strong><br><small>Decline</small></td>
+            <td>انخفاض الطلب، ظهور بدائل</td>
+            <td><span class="percentage">30%</span></td>
+            <td>تغييرات لتقليل التكلفة</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert-box alert-warning">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+        <line x1="12" y1="9" x2="12" y2="13"></line>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+      <div>
+        <strong>⚠️ ملاحظات مهمة</strong>
+        <p>• <strong>مش كل المنتجات</strong> بتقضي نفس الوقت في كل مرحلة<br>
+        • كل ما كانت <strong>الحاجة للمنتج أعلى</strong>، كل ما كانت دورة حياته أطول (مثل الثلاجات)<br>
+        • كل ما كان <strong>التغيير التكنولوجي أسرع</strong>، كل ما كانت دورة الحياة أقصر (مثل الموبايلات)<br>
+        • بعض المنتجات <strong>ما عندهاش دورة حياة</strong> (مثل الأقلام الرصاص، الملاعق)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: Standardization vs Customization -->
+  <div class="glassy-card" data-aos="fade-up">
+    <h2>📏 التوحيد القياسي مقابل التخصيص</h2>
+    
+    <!-- Comparison Chart -->
+    <div class="chart-container" data-aos="fade-up">
+      <canvas id="standardizationComparisonChart"></canvas>
+    </div>
+
+    <div class="table-container">
+      <table class="concepts-table">
+        <thead>
+          <tr>
+            <th>المزايا ✅</th>
+            <th>العيوب ❌</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>انخفاض تكاليف الإنتاج</td>
+            <td>مقاومة التغيير من جانب العمال</td>
+          </tr>
+          <tr>
+            <td>تقليل الوقت والتكلفة لتدريب الموظفين</td>
+            <td>تصميمات جامدة لا تجذب العملاء</td>
+          </tr>
+          <tr>
+            <td>جودة متسقة</td>
+            <td>عدم مواكبة تغير أذواق العملاء</td>
+          </tr>
+          <tr>
+            <td>القدرة على استخدام قطع قابلة للتبديل</td>
+            <td>-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>🎯 التخصيص الشامل | Mass Customization</h3>
+    
+    <!-- Mermaid Flowchart -->
+    <div class="chart-container" data-aos="fade-up">
+      <h4 style="text-align: center; margin-bottom: 20px;">طرق تحقيق التخصيص الشامل</h4>
+      <div class="mermaid">
+        graph TD
+          A[التخصيص الشامل<br/>Mass Customization] --> B[التمييز المتأخر<br/>Delayed Differentiation]
+          A --> C[التصميم المعياري<br/>Modular Design]
+          
+          B --> B1[إنتاج جزئي]
+          B1 --> B2[انتظار طلب العميل]
+          B2 --> B3[إكمال التصنيع حسب الطلب]
+          B3 --> B4[مثال: الأثاث، البدل]
+          
+          C --> C1[وحدات منفصلة Modules]
+          C1 --> C2[سهولة الاستبدال]
+          C2 --> C3[مرونة عالية]
+          C3 --> C4[مثال: الكمبيوتر، الموبايل]
+          
+          style A fill:#3b82f6,stroke:#1e40af,stroke-width:3px,color:#fff
+          style B fill:#f59e0b,stroke:#d97706,stroke-width:2px
+          style C fill:#7c3aed,stroke:#5b21b6,stroke-width:2px,color:#fff
+          style B4 fill:#16a34a,stroke:#15803d,stroke-width:1px
+          style C4 fill:#16a34a,stroke:#15803d,stroke-width:1px
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: Design Characteristics with Radar Chart -->
+  <div class="glassy-card" data-aos="fade-up">
+    <h2>⭐ خصائص التصميم الجيد</h2>
+    
+    <!-- Radar Chart -->
+    <div class="chart-container" data-aos="fade-up">
+      <canvas id="designCharacteristicsChart"></canvas>
+    </div>
+
+    <h3>1️⃣ القابلية للتصنيع | Manufacturability</h3>
+    
+    <div style="margin: 20px 0; padding: 20px; background: rgba(5,150,105,0.1); border-radius: 12px; border: 2px solid rgba(5,150,105,0.3);">
+      <p><strong>القابلية للتصنيع (Manufacturability)</strong> تشير إلى:</p>
+      <ul>
+        <li><strong>أ) سهولة تصنيع المنتج</strong> (التصميم للتصنيع - DFM)</li>
+        <li><strong>ب) سهولة تجميع المنتج</strong> (التصميم للتجميع - DFA)</li>
+      </ul>
+    </div>
+
+    <h3>2️⃣ إعادة التدوير | Recycling</h3>
+    
+    <!-- Recycling Process Diagram -->
+    <div class="chart-container" data-aos="fade-up">
+      <div class="mermaid">
+        graph LR
+          A[المنتج القديم] --> B[جمع المواد]
+          B --> C[إعادة التدوير<br/>Recycling]
+          C --> D[مواد مسترجعة]
+          D --> E[إعادة التصنيع<br/>Remanufacturing]
+          E --> F[منتج جديد/محدّث]
+          
+          C --> C1[توفير التكاليف 💰]
+          C --> C2[المسؤولية البيئية 🌍]
+          
+          style A fill:#dc2626,stroke:#991b1b,stroke-width:2px,color:#fff
+          style C fill:#16a34a,stroke:#15803d,stroke-width:3px
+          style E fill:#3b82f6,stroke:#1e40af,stroke-width:2px,color:#fff
+          style F fill:#7c3aed,stroke:#5b21b6,stroke-width:2px,color:#fff
+          style C1 fill:#fbbf24,stroke:#f59e0b,stroke-width:1px
+          style C2 fill:#fbbf24,stroke:#f59e0b,stroke-width:1px
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 6: Idea Generation Sources -->
+  <div class="glassy-card" data-aos="fade-up">
+    <h2>💡 مصادر توليد الأفكار</h2>
+    
+    <!-- Doughnut Chart -->
+    <div class="chart-container" data-aos="fade-up">
+      <canvas id="ideaSourcesChart"></canvas>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">🤝 سلسلة التوريد</div>
+        <p style="font-size: 0.85rem; margin-top: 10px;">الموردين، الموزعين، العملاء</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">🔍 الهندسة العكسية</div>
+        <p style="font-size: 0.85rem; margin-top: 10px;">تحليل منتجات المنافسين</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">🔬 البحث والتطوير</div>
+        <p style="font-size: 0.85rem; margin-top: 10px;">قسم R&D المتخصص</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">💻 CAD</div>
+        <p style="font-size: 0.85rem; margin-top: 10px;">التصميم بمساعدة الحاسوب</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 7: Key Concepts Table -->
+  <div class="glassy-card" data-aos="fade-up">
+    <h2>📋 جدول المفاهيم الأساسية</h2>
+    
+    <div class="table-container">
+      <table class="concepts-table">
+        <thead>
+          <tr>
+            <th>المفهوم (العربي)</th>
+            <th>المفهوم (English)</th>
+            <th>التعريف الرسمي</th>
+            <th>الخلاصة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>تصميم المنتج</strong></td>
+            <td>Product Design</td>
+            <td>عملية إنشاء منتجات جديدة تمزج بين احتياجات العملاء وأهداف العمل</td>
+            <td>إبداع ورضا</td>
+          </tr>
+          <tr>
+            <td><strong>إعادة تصميم المنتج</strong></td>
+            <td>Product Redesign</td>
+            <td>إجراء تغييرات جوهرية على منتج موجود لجذب العملاء</td>
+            <td>تحديث وجذب</td>
+          </tr>
+          <tr>
+            <td><strong>الهندسة المتزامنة</strong></td>
+            <td>Concurrent Engineering</td>
+            <td>جمع مهندسي التصميم والتصنيع للعمل معاً</td>
+            <td>تعاون وكفاءة</td>
+          </tr>
+          <tr>
+            <td><strong>دورة حياة المنتج</strong></td>
+            <td>Product Life Cycle</td>
+            <td>المراحل (التقديم، النمو، النضج، الانحدار)</td>
+            <td>مراحل وتطور</td>
+          </tr>
+          <tr>
+            <td><strong>مسؤولية المنتج</strong></td>
+            <td>Product Liability</td>
+            <td>المسؤولية القانونية عن الأضرار الناتجة عن منتج معيب</td>
+            <td>حماية ومسؤولية</td>
+          </tr>
+          <tr>
+            <td><strong>التوحيد القياسي</strong></td>
+            <td>Standardization</td>
+            <td>مدى غياب التنوع في المنتجات</td>
+            <td>توحيد وكفاءة</td>
+          </tr>
+          <tr>
+            <td><strong>التخصيص الشامل</strong></td>
+            <td>Mass Customization</td>
+            <td>إنتاج منتجات مخصصة مع درجات من التوحيد القياسي</td>
+            <td>تخصيص ومرونة</td>
+          </tr>
+          <tr>
+            <td><strong>التمييز المتأخر</strong></td>
+            <td>Delayed Differentiation</td>
+            <td>إنتاج جزئي حتى تُعرف تفضيلات العميل</td>
+            <td>انتظار واستجابة</td>
+          </tr>
+          <tr>
+            <td><strong>التصميم المعياري</strong></td>
+            <td>Modular Design</td>
+            <td>تصميم في شكل وحدات قابلة للاستبدال</td>
+            <td>وحدات ومرونة</td>
+          </tr>
+          <tr>
+            <td><strong>موثوقية المنتج</strong></td>
+            <td>Product Reliability</td>
+            <td>قدرة المنتج على أداء وظائفه تحت ظروف محددة</td>
+            <td>ثبات وأداء</td>
+          </tr>
+          <tr>
+            <td><strong>التصميم المتين</strong></td>
+            <td>Robust Design</td>
+            <td>تصميم يعمل تحت مجموعة واسعة من الظروف</td>
+            <td>متانة وتحمّل</td>
+          </tr>
+          <tr>
+            <td><strong>الهندسة العكسية</strong></td>
+            <td>Reverse Engineering</td>
+            <td>تفكيك وفحص منتج المنافس</td>
+            <td>تحليل وتعلم</td>
+          </tr>
+          <tr>
+            <td><strong>التصميم بمساعدة الحاسوب</strong></td>
+            <td>CAD</td>
+            <td>تصميم بالاعتماد على رسومات الحاسوب</td>
+            <td>رقمنة ودقة</td>
+          </tr>
+          <tr>
+            <td><strong>القابلية للتصنيع</strong></td>
+            <td>Manufacturability</td>
+            <td>سهولة تصنيع وتجميع المنتج</td>
+            <td>سهولة وكفاءة</td>
+          </tr>
+          <tr>
+            <td><strong>إعادة التدوير</strong></td>
+            <td>Recycling</td>
+            <td>استرجاع المواد للاستخدام المستقبلي</td>
+            <td>استرجاع وحفاظ</td>
+          </tr>
+          <tr>
+            <td><strong>إعادة التصنيع</strong></td>
+            <td>Remanufacturing</td>
+            <td>استخدام المواد المسترجعة في استبدال المكونات</td>
+            <td>تجديد واستدامة</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Final Summary -->
+  <div class="glassy-card" data-aos="fade-up">
+    <h2>📝 ملخص الفصل</h2>
+    
+    <div class="alert-box alert-success">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      <div>
+        <strong>📚 ما تعلمناه في هذا الفصل</strong>
+        <p><strong>1. تصميم المنتج:</strong> مزج احتياجات العملاء مع أهداف العمل</p>
+        <p><strong>2. إعادة التصميم:</strong> تطوير مستمر لمواكبة السوق</p>
+        <p><strong>3. الهندسة المتزامنة:</strong> تعاون بين التصميم والإنتاج</p>
+        <p><strong>4. دورة الحياة:</strong> من التقديم إلى الانحدار</p>
+        <p><strong>5. التوحيد والتخصيص:</strong> التوازن بين الكفاءة والمرونة</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-info" data-aos="fade-up">
+    <div class="footer-brand">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+      </svg>
+      منصة أثر التعليمية
+    </div>
+    <div class="footer-divider"></div>
+    <p class="footer-disclaimer">جميع الحقوق محفوظة © 2025 | كلية التجارة - إدارة الإنتاج والعمليات</p>
+  </div>
+
+</div>
+
+<!-- ==================== ENGLISH CONTENT ==================== -->
+<div class="en-content" style="display: none;">
+  
+  <div class="glassy-card" data-aos="fade-down">
+    <h1>📦 Chapter 4: Product Design</h1>
+    <p>A comprehensive journey into the world of product design - from idea to implementation</p>
+  </div>
+
+</div>
+
+<!-- ==================== CHARTS JAVASCRIPT ==================== -->
+<script>
+  // Wait for page load
+  setTimeout(function() {
+    console.log('🎨 Initializing Product Design Charts...');
+    
+    // Check if Chart.js is loaded
+    if (typeof Chart === 'undefined') {
+      console.error('❌ Chart.js is not loaded!');
+      return;
+    }
+    
+    // Chart 1: Redesign Reasons (Horizontal Bar)
+    const redesignCtx = document.getElementById('redesignReasonsChart');
+    if (redesignCtx) {
+      new Chart(redesignCtx, {
+        type: 'bar',
+        data: {
+          labels: ['تخفيض التكاليف', 'تحفيز الطلب', 'حل الشكاوى', 'تغير الأذواق', 'تحسين الجودة', 'البيئة'],
+          datasets: [{
+            label: 'الأهمية النسبية (%)',
+            data: [85, 78, 72, 88, 92, 65],
+            backgroundColor: [
+              'rgba(22, 163, 74, 0.8)',
+              'rgba(59, 130, 246, 0.8)',
+              'rgba(245, 158, 11, 0.8)',
+              'rgba(124, 58, 237, 0.8)',
+              'rgba(220, 38, 38, 0.8)',
+              'rgba(5, 150, 105, 0.8)'
+            ],
+            borderColor: [
+              '#16a34a',
+              '#3b82f6',
+              '#f59e0b',
+              '#7c3aed',
+              '#dc2626',
+              '#059669'
+            ],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            title: {
+              display: true,
+              text: 'أهمية أسباب إعادة تصميم المنتج',
+              font: {
+                family: "'IBM Plex Sans Arabic', 'Cairo', sans-serif",
+                size: 16,
+                weight: '700'
+              }
+            }
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              max: 100,
+              ticks: {
+                font: {
+                  family: "'IBM Plex Sans Arabic', sans-serif",
+                  size: 12
+                },
+                callback: function(value) {
+                  return value + '%';
+                }
+              }
+            },
+            y: {
+              ticks: {
+                font: {
+                  family: "'IBM Plex Sans Arabic', sans-serif",
+                  size: 13,
+                  weight: '600'
+                }
+              }
+            }
+          }
+        }
+      });
+      console.log('✅ Redesign Reasons Chart created');
+    }
+    
+    // Chart 2: Product Life Cycle (Line Chart)
+    const plcCtx = document.getElementById('productLifeCycleChart');
+    if (plcCtx) {
+      new Chart(plcCtx, {
+        type: 'line',
+        data: {
+          labels: ['البداية', 'شهر 3', 'شهر 6', 'سنة 1', 'سنة 2', 'سنة 3', 'سنة 4', 'سنة 5', 'سنة 6'],
+          datasets: [{
+            label: 'المبيعات (ألف وحدة)',
+            data: [5, 12, 25, 50, 85, 95, 92, 75, 40],
+            borderColor: '#16a34a',
+            backgroundColor: 'rgba(22, 163, 74, 0.1)',
+            tension: 0.4,
+            borderWidth: 3,
+            fill: true,
+            pointRadius: 6,
+            pointHoverRadius: 8,
+            pointBackgroundColor: '#16a34a',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            segment: {
+              borderColor: ctx => {
+                const index = ctx.p0DataIndex;
+                if (index < 2) return '#dc2626'; // تقديم
+                if (index < 5) return '#f59e0b'; // نمو
+                if (index < 7) return '#16a34a'; // نضج
+                return '#7c3aed'; // انحدار
+              }
+            }
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                font: {
+                  family: "'IBM Plex Sans Arabic', sans-serif",
+                  size: 13
+                }
+              }
+            },
+            title: {
+              display: true,
+              text: 'دورة حياة المنتج - المبيعات عبر الزمن',
+              font: {
+                family: "'IBM Plex Sans Arabic', 'Cairo', sans-serif",
+                size: 16,
+                weight: '700'
+              }
+            },
+            annotation: {
+              annotations: {
+                line1: {
+                  type: 'line',
+                  xMin: 2,
+                  xMax: 2,
+                  borderColor: 'rgba(220, 38, 38, 0.5)',
+                  borderWidth: 2,
+                  borderDash: [5, 5],
+                  label: {
+                    content: 'نهاية التقديم',
+                    enabled: true
+                  }
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                font: {
+                  family: "'IBM Plex Sans Arabic', sans-serif"
+                }
+              }
+            },
+            x: {
+              ticks: {
+                font: {
+                  family: "'IBM Plex Sans Arabic', sans-serif",
+                  size: 11
+                }
+              }
+            }
+          }
+        }
+      });
+      console.log('✅ Product Life Cycle Chart created');
+    }
+    
+    // Chart 3: Standardization Comparison (Radar)
+    const standardCtx = document.getElementById('standardizationComparisonChart');
+    if (standardCtx) {
+      new Chart(standardCtx, {
+        type: 'radar',
+        data: {
+          labels: ['التكلفة', 'الجودة', 'المرونة', 'رضا العميل', 'سرعة الإنتاج', 'الابتكار'],
+          datasets: [{
+            label: 'التوحيد القياسي',
+            data: [95, 85, 40, 60, 90, 45],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+            borderWidth: 2
+          }, {
+            label: 'التخصيص الشامل',
+            data: [70, 90, 85, 95, 70, 88],
+            borderColor: '#16a34a',
+            backgroundColor: 'rgba(22, 163, 74, 0.2)',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                font: {
+                  family: "'IBM Plex Sans Arabic', sans-serif",
+                  size: 13,
+                  weight: '600'
+                }
+              }
+            },
+            title: {
+              display: true,
+              text: 'مقارنة بين التوحيد القياسي والتخصيص الشامل',
+              font: {
+                family: "'IBM Plex Sans Arabic', 'Cairo', sans-serif",
+                size: 16,
+                weight: '700'
+              }
+            }
+          },
+          scales: {
+            r: {
+              beginAtZero: true,
+              max: 100,
+              ticks: {
+                stepSize: 20,
+                font: {
+                  family: "'IBM Plex Sans Arabic', sans-serif"
+                }
+              },
+              pointLabels: {
+                font: {
+                  family: "'IBM Plex Sans Arabic', sans-serif",
+                  size: 12,
+                  weight: '600'
+                }
+              }
+            }
+          }
+        }
+      });
+      console.log('✅ Standardization Comparison Chart created');
+    }
+    
+    // Chart 4: Design Characteristics (Radar)
+    const designCtx = document.getElementById('designCharacteristicsChart');
+    if (designCtx) {
+      new Chart(designCtx, {
+        type: 'radar',
+        data: {
+          labels: ['سهولة التصنيع', 'سهولة التجميع', 'الموثوقية', 'المتانة', 'إعادة التدوير', 'الأمان'],
+          datasets: [{
+            label: 'التصميم المثالي',
+            data: [92, 88, 95, 90, 85, 98],
+            borderColor: '#16a34a',
+            backgroundColor: 'rgba(22, 163, 74, 0.2)',
+            borderWidth: 3,
+            pointRadius: 5,
+            pointHoverRadius: 7
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            title: {
+              display: true,
+              text: 'خصائص التصميم الجيد للمنتج',
+              font: {
+                family: "'IBM Plex Sans Arabic', 'Cairo', sans-serif",
+                size: 16,
+                weight: '700'
+              }
+            }
+          },
+          scales: {
+            r: {
+              beginAtZero: true,
+              max: 100,
+              ticks: {
+                stepSize: 20,
+                font: {
+                  family: "'IBM Plex Sans Arabic', sans-serif"
+                }
+              },
+              pointLabels: {
+                font: {
+                  family: "'IBM Plex Sans Arabic', sans-serif",
+                  size: 12,
+                  weight: '600'
+                }
+              }
+            }
+          }
+        }
+      });
+      console.log('✅ Design Characteristics Chart created');
+    }
+    
+    // Chart 5: Idea Sources (Doughnut)
+    const ideaCtx = document.getElementById('ideaSourcesChart');
+    if (ideaCtx) {
+      new Chart(ideaCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['سلسلة التوريد', 'الهندسة العكسية', 'البحث والتطوير', 'CAD والتكنولوجيا'],
+          datasets: [{
+            data: [30, 25, 35, 10],
+            backgroundColor: [
+              'rgba(22, 163, 74, 0.8)',
+              'rgba(59, 130, 246, 0.8)',
+              'rgba(245, 158, 11, 0.8)',
+              'rgba(124, 58, 237, 0.8)'
+            ],
+            borderColor: [
+              '#16a34a',
+              '#3b82f6',
+              '#f59e0b',
+              '#7c3aed'
+            ],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                font: {
+                  family: "'IBM Plex Sans Arabic', sans-serif",
+                  size: 13,
+                  weight: '600'
+                },
+                padding: 15
+              }
+            },
+            title: {
+              display: true,
+              text: 'مصادر توليد أفكار المنتجات الجديدة',
+              font: {
+                family: "'IBM Plex Sans Arabic', 'Cairo', sans-serif",
+                size: 16,
+                weight: '700'
+              }
+            }
+          }
+        }
+      });
+      console.log('✅ Idea Sources Chart created');
+    }
+    
+    // Initialize Mermaid
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ 
+        startOnLoad: true,
+        theme: 'default',
+        themeVariables: {
+          fontSize: '16px',
+          fontFamily: 'IBM Plex Sans Arabic, Cairo, sans-serif'
+        }
+      });
+      console.log('✅ Mermaid initialized');
+    }
+    
+    console.log('✅ All Product Design Charts initialized successfully!');
+  }, 2000);
+</script>
 
       <!-- Footer -->
       <div class="footer-info" data-aos="fade-up">
@@ -427,17 +1227,36 @@
           منصة أثر التعليمية
         </div>
         <div class="footer-divider"></div>
-        <p class="footer-disclaimer">جميع الحقوق محفوظة © 2025</p>
+        <p class="footer-disclaimer">جميع الحقوق محفوظة © 2025 | كلية التجارة - محتوى تعليمي متخصص</p>
       </div>
 
     </div>
 
     <!-- ==================== ENGLISH CONTENT ==================== -->
     <div class="en-content" style="display: none;">
+      
       <div class="glassy-card" data-aos="fade-down">
-        <h1>🎓 Welcome to Athr Platform</h1>
-        <p>Advanced interactive educational experience</p>
+        <h1>🎓 Demo Lecture: Advanced Financial Analysis</h1>
+        <p>Comprehensive lecture covering financial analysis fundamentals for companies using financial ratios and economic indicators</p>
       </div>
+      
+      <div class="glassy-card" data-aos="fade-up">
+        <h2>📊 Introduction to Financial Analysis</h2>
+        <p>Financial analysis is a <strong>systematic process</strong> for evaluating the financial performance of companies by studying <mark class="highlight-finance">financial statements</mark> and using various ratios and indicators.</p>
+        
+        <div class="alert-box alert-info">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <div>
+            <strong>💡 Important Note</strong>
+            <p>Financial analysis helps investors and managers make informed investment and management decisions based on real data.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </main>
@@ -445,7 +1264,6 @@
   <!-- ==================== SCRIPTS ==================== -->
   <script src="../js/script.js"></script>
   <script src="../js/features.js"></script>
-  <script src="lecture1.js"></script>
   
 </body>
 </html>

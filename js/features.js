@@ -1,4 +1,6 @@
 /* ==================== ATHR PLATFORM - FEATURES SCRIPT ==================== */
+/* Version: 2.0 | Updated: 2025-10-20 | Optimized & Clean */
+
 
 // ==================== GLOBAL VARIABLES ====================
 let isArabic = true;
@@ -12,7 +14,14 @@ let pomodoroSeconds = 0;
 let pomodoroInterval = null;
 let pomodoroRunning = false;
 
-// ==================== TOAST NOTIFICATION ====================
+
+// ==================== UTILITY FUNCTIONS ====================
+
+/**
+ * Show toast notification
+ * @param {string} message - Message to display
+ * @param {number} duration - Duration in milliseconds
+ */
 window.showToast = function(message, duration = 2000) {
   const toast = document.querySelector('.toast-notification');
   if (toast) {
@@ -24,18 +33,26 @@ window.showToast = function(message, duration = 2000) {
   }
 };
 
-// ==================== AI MESSAGE PARSER ====================
+
+/**
+ * Parse AI message with markdown-like syntax
+ * @param {string} text - Raw text to parse
+ * @returns {string} - Formatted HTML
+ */
 function parseAIMessage(text) {
   if (!text) return '';
   
+  // Escape HTML
   text = text.replace(/&/g, '&amp;')
              .replace(/</g, '&lt;')
              .replace(/>/g, '&gt;');
   
+  // Format markdown
   text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
   text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
   
+  // Process lists and paragraphs
   const lines = text.split('\n');
   let inList = false;
   let result = [];
@@ -76,7 +93,14 @@ function parseAIMessage(text) {
   return result.join('\n');
 }
 
-// ==================== ADD MESSAGE ====================
+
+// ==================== AI CHAT FUNCTIONS ====================
+
+/**
+ * Add message to chat
+ * @param {string} text - Message text
+ * @param {string} sender - 'user' or 'ai'
+ */
 window.addMessage = function(text, sender = 'ai') {
   const messagesContainer = document.getElementById('aiChatMessages');
   if (!messagesContainer) return;
@@ -94,6 +118,7 @@ window.addMessage = function(text, sender = 'ai') {
   messagesContainer.appendChild(messageElement);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
   
+  // Render math if available
   if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
     MathJax.typesetPromise([messageElement]).catch((err) => {
       console.error('MathJax render error:', err);
@@ -101,7 +126,10 @@ window.addMessage = function(text, sender = 'ai') {
   }
 };
 
-// ==================== TYPING INDICATOR ====================
+
+/**
+ * Show typing indicator
+ */
 window.showTypingIndicator = function() {
   const messagesContainer = document.getElementById('aiChatMessages');
   if (!messagesContainer) return;
@@ -122,14 +150,114 @@ window.showTypingIndicator = function() {
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 };
 
+
+/**
+ * Hide typing indicator
+ */
 window.hideTypingIndicator = function() {
   const indicator = document.querySelector('.typing-indicator');
   if (indicator) indicator.remove();
 };
 
+
+// ==================== CALCULATORS ====================
+
+/**
+ * Calculate Exponential Smoothing
+ */
+window.calculateExponentialSmoothing = function() {
+  const prevForecast = parseFloat(document.getElementById('prevForecast')?.value);
+  const actualDemand = parseFloat(document.getElementById('actualDemand')?.value);
+  const alpha = parseFloat(document.getElementById('alphaValue')?.value);
+  
+  if (isNaN(prevForecast) || isNaN(actualDemand) || isNaN(alpha)) {
+    alert(isArabic ? 'الرجاء إدخال قيم صحيحة!' : 'Please enter valid values!');
+    return;
+  }
+  
+  if (alpha < 0 || alpha > 1) {
+    alert(isArabic ? 'قيمة α يجب أن تكون بين 0 و 1!' : 'α value must be between 0 and 1!');
+    return;
+  }
+  
+  const error = actualDemand - prevForecast;
+  const adjustment = alpha * error;
+  const newForecast = prevForecast + adjustment;
+  
+  const resultDiv = document.getElementById('calculatorResult');
+  const resultValue = document.getElementById('resultValue');
+  const resultSteps = document.getElementById('resultSteps');
+  
+  if (!resultDiv || !resultValue || !resultSteps) return;
+  
+  resultValue.innerHTML = `${newForecast.toFixed(2)} ${isArabic ? 'وحدة' : 'units'}`;
+  
+  resultSteps.innerHTML = `
+    <strong>${isArabic ? 'خطوات الحل:' : 'Solution Steps:'}</strong><br>
+    1️⃣ ${isArabic ? 'خطأ التنبؤ' : 'Forecast Error'} = ${actualDemand} - ${prevForecast} = <strong>${error.toFixed(2)}</strong><br>
+    2️⃣ ${isArabic ? 'التعديل' : 'Adjustment'} = ${alpha} × ${error.toFixed(2)} = <strong>${adjustment.toFixed(2)}</strong><br>
+    3️⃣ ${isArabic ? 'التنبؤ الجديد' : 'New Forecast'} = ${prevForecast} + ${adjustment.toFixed(2)} = <strong>${newForecast.toFixed(2)}</strong>
+  `;
+  
+  resultDiv.style.display = 'block';
+  resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  
+  // Celebration effect
+  if (typeof confetti !== 'undefined') {
+    confetti({
+      particleCount: 50,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0, y: 0.8 }
+    });
+    confetti({
+      particleCount: 50,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1, y: 0.8 }
+    });
+  }
+};
+
+
+// ==================== SCROLL PROGRESS TRACKER ====================
+
+/**
+ * Create and initialize scroll progress bar
+ */
+function createScrollProgress() {
+  // Check if already created
+  if (document.querySelector('.scroll-progress-bar')) return;
+  
+  const progressBar = document.createElement('div');
+  progressBar.className = 'scroll-progress-bar';
+  progressBar.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-medium));
+    z-index: 10000;
+    transition: width 0.1s ease;
+    pointer-events: none;
+  `;
+  document.body.appendChild(progressBar);
+  
+  window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    progressBar.style.width = scrolled + '%';
+  });
+  
+  console.log('✅ Scroll progress bar initialized');
+}
+
+
 // ==================== MAIN INITIALIZATION ====================
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('🎨 Initializing features...');
+  console.log('🎨 Initializing Athr Platform Features...');
   
   const translationButton = document.getElementById('translationButton');
   const translationText = document.querySelector('.translation-text');
@@ -142,7 +270,13 @@ document.addEventListener('DOMContentLoaded', function() {
   const aiChatInput = document.getElementById('ai-chat-input');
   const aiChatSendBtn = document.getElementById('ai-chat-send-btn');
 
-  // ==================== APPLY LANGUAGE ====================
+
+  // ==================== LANGUAGE TOGGLE ====================
+  
+  /**
+   * Apply language settings
+   * @param {boolean} arabic - True for Arabic, false for English
+   */
   function applyLanguage(arabic) {
     isArabic = arabic;
     const lang = isArabic ? 'ar' : 'en';
@@ -152,6 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
     html.setAttribute('dir', dir);
     body.setAttribute('dir', dir);
     
+    // Show/hide language-specific content
     document.querySelectorAll('.ar-content').forEach(el => {
       el.style.display = arabic ? 'block' : 'none';
     });
@@ -159,31 +294,37 @@ document.addEventListener('DOMContentLoaded', function() {
       el.style.display = arabic ? 'none' : 'block';
     });
     
+    // Update UI text
     if (translationText) {
       translationText.textContent = isArabic ? 'English' : 'العربية';
     }
     
     document.title = isArabic ? 'منصة أثر - التعليم التفاعلي' : 'Athr Platform - Interactive Learning';
     
+    // Update moment.js locale
     if (typeof moment !== 'undefined') {
       moment.locale(isArabic ? 'ar' : 'en');
     }
     
+    // Re-render math
     setTimeout(function() {
       if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
         MathJax.typesetPromise().catch((err) => console.error('MathJax error:', err));
       }
     }, 300);
     
-    console.log(`🌍 Language switched to: ${lang}`);
+    console.log(`🌍 Language: ${lang.toUpperCase()}`);
   }
 
+
+  // Load saved language
   const savedLang = localStorage.getItem('athr_language') || 'ar';
   if (savedLang === 'en') {
     applyLanguage(false);
   }
 
-  // ==================== TRANSLATION BUTTON ====================
+
+  // Translation button click
   if (translationButton) {
     translationButton.addEventListener('click', function() {
       applyLanguage(!isArabic);
@@ -193,7 +334,9 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ Translation button initialized');
   }
 
-  // ==================== AI CHAT BUTTON ====================
+
+  // ==================== AI CHAT SYSTEM ====================
+  
   if (aiChatButton) {
     aiChatButton.addEventListener('click', function() {
       if (aiChatModal) {
@@ -229,14 +372,16 @@ Ask me anything! 🎓`;
         if (aiChatInput) aiChatInput.focus();
       }
     });
-    console.log('✅ AI Chat button initialized');
+    console.log('✅ AI Chat initialized');
   }
+
 
   if (aiChatCloseBtn) {
     aiChatCloseBtn.addEventListener('click', function() {
       if (aiChatModal) aiChatModal.classList.remove('visible');
     });
   }
+
 
   if (aiChatModal) {
     aiChatModal.addEventListener('click', function(e) {
@@ -246,12 +391,16 @@ Ask me anything! 🎓`;
     });
   }
 
-  // ==================== SEND MESSAGE ====================
+
+  /**
+   * Send message to AI
+   */
   async function sendMessage() {
     if (!aiChatInput) return;
     
     const userMessage = aiChatInput.value.trim();
     if (!userMessage) return;
+
 
     addMessage(userMessage, 'user');
     conversationHistory.push({ role: 'user', content: userMessage });
@@ -261,6 +410,7 @@ Ask me anything! 🎓`;
     if (aiChatSendBtn) aiChatSendBtn.disabled = true;
     
     showTypingIndicator();
+
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
@@ -298,6 +448,7 @@ Do you need additional help?`;
         }
       }, 100);
 
+
     } catch (error) {
       console.error('AI Chat error:', error);
       hideTypingIndicator();
@@ -318,6 +469,7 @@ Please try again.`;
     }
   }
 
+
   if (aiChatSendBtn) {
     aiChatSendBtn.addEventListener('click', sendMessage);
   }
@@ -330,6 +482,7 @@ Please try again.`;
       }
     });
   }
+
 
   // ==================== TIMER WIDGET ====================
   const timerWidget = document.querySelector('.timer-widget');
@@ -439,20 +592,8 @@ Please try again.`;
       });
     }
     
-    if (startPomodoroBtn) {
-      startPomodoroBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        startPomodoro();
-      });
-    }
-    
-    if (pausePomodoroBtn) {
-      pausePomodoroBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        pausePomodoro();
-      });
-    }
-    
+    if (startPomodoroBtn) startPomodoroBtn.addEventListener('click', (e) => { e.stopPropagation(); startPomodoro(); });
+    if (pausePomodoroBtn) pausePomodoroBtn.addEventListener('click', (e) => { e.stopPropagation(); pausePomodoro(); });
     if (resetPomodoroBtn) {
       resetPomodoroBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -464,6 +605,7 @@ Please try again.`;
     updatePomodoroDisplay();
     console.log('✅ Timer widget initialized');
   }
+
 
   // ==================== QUESTION TOGGLE ====================
   window.toggleQuestion = function(element) {
@@ -477,6 +619,7 @@ Please try again.`;
       }, 300);
     }
   };
+
 
   // ==================== MCQ SELECTION ====================
   const mcqOptions = document.querySelectorAll('.mcq-option');
@@ -553,12 +696,168 @@ Please try again.`;
     console.log(`✅ ${mcqOptions.length} MCQ options initialized`);
   }
 
-  console.log('✅ Features initialized completely');
+
+  // ==================== INITIALIZE SCROLL PROGRESS ====================
+  createScrollProgress();
+
+
+  console.log('✅ All features initialized successfully');
 });
+
+// ==================== ADVANCED CHART FUNCTIONS ====================
+
+/**
+ * Create responsive chart optimized for mobile
+ * @param {string} canvasId - Canvas element ID
+ * @param {object} config - Chart.js configuration
+ * @returns {Chart|null} - Chart instance or null
+ */
+window.createResponsiveChart = function(canvasId, config) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || typeof Chart === 'undefined') {
+    console.warn(`Canvas "${canvasId}" or Chart.js not found`);
+    return null;
+  }
+  
+  const isMobile = window.innerWidth <= 768;
+  const isSmallMobile = window.innerWidth <= 480;
+  
+  const mobileConfig = {
+    ...config,
+    options: {
+      ...config.options,
+      responsive: true,
+      maintainAspectRatio: false,
+      devicePixelRatio: 2,
+      plugins: {
+        ...config.options?.plugins,
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            boxWidth: isMobile ? 8 : 12,
+            font: {
+              size: isMobile ? (isSmallMobile ? 9 : 10) : 12
+            },
+            padding: isMobile ? 6 : 10
+          }
+        }
+      },
+      scales: config.options?.scales ? {
+        x: {
+          ...config.options.scales.x,
+          ticks: {
+            ...config.options.scales.x?.ticks,
+            font: {
+              size: isMobile ? (isSmallMobile ? 8 : 9) : 11
+            },
+            maxRotation: isMobile ? 45 : 0,
+            minRotation: isMobile ? 45 : 0
+          }
+        },
+        y: {
+          ...config.options.scales.y,
+          ticks: {
+            ...config.options.scales.y?.ticks,
+            font: {
+              size: isMobile ? (isSmallMobile ? 8 : 9) : 11
+            }
+          }
+        }
+      } : undefined
+    }
+  };
+  
+  try {
+    const chart = new Chart(canvas, mobileConfig);
+    console.log(`✅ Responsive chart "${canvasId}" created`);
+    return chart;
+  } catch (error) {
+    console.error(`❌ Error creating chart "${canvasId}":`, error);
+    return null;
+  }
+};
+
+
+/**
+ * Handle chart resize on window resize
+ */
+(function initChartResizeHandler() {
+  let resizeTimeout;
+  
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function() {
+      if (typeof Chart !== 'undefined' && Chart.instances) {
+        Chart.instances.forEach(chart => {
+          if (chart && chart.resize) {
+            chart.resize();
+          }
+        });
+      }
+    }, 250);
+  });
+  
+  console.log('✅ Chart resize handler initialized');
+})();
+
+
+/**
+ * Enhanced MCQ selection with onclick support
+ * @param {HTMLElement} element - Clicked option element
+ * @param {boolean} isCorrect - Whether the answer is correct
+ */
+window.selectMCQ = function(element, isCorrect) {
+  const options = element.parentNode.querySelectorAll('.mcq-option');
+  
+  // Disable all options
+  options.forEach(option => {
+    option.style.pointerEvents = 'none';
+    option.classList.remove('selected', 'correct', 'incorrect');
+  });
+  
+  element.classList.add('selected');
+  
+  setTimeout(() => {
+    if (isCorrect) {
+      element.classList.add('correct');
+      element.innerHTML += ' ✓';
+      
+      // Celebration
+      if (typeof confetti !== 'undefined') {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#16a34a', '#22c55e', '#4ade80']
+        });
+      }
+      
+      showToast(isArabic ? '✅ إجابة صحيحة!' : '✅ Correct!');
+    } else {
+      element.classList.add('incorrect');
+      element.innerHTML += ' ✗';
+      
+      showToast(isArabic ? '❌ إجابة خاطئة' : '❌ Incorrect');
+      
+      // Show correct answer
+      options.forEach(option => {
+        const onclick = option.getAttribute('onclick');
+        if (onclick && onclick.includes('true')) {
+          setTimeout(() => {
+            option.classList.add('correct');
+            option.innerHTML += isArabic ? ' ✓ (الإجابة الصحيحة)' : ' ✓ (Correct)';
+          }, 800);
+        }
+      });
+    }
+  }, 300);
+};
 
 // ==================== VIDEO PLAYER (iOS 26 STYLE) ====================
 (function() {
   'use strict';
+
 
   const videoPlayer = document.getElementById('videoPlayer');
   const video = document.getElementById('video');
@@ -568,7 +867,9 @@ Please try again.`;
     return;
   }
 
+
   console.log('🎬 Initializing video player...');
+
 
   const videoBars = document.getElementById('videoBars');
   const simplePlayBtn = document.getElementById('simplePlayBtn');
@@ -592,9 +893,11 @@ Please try again.`;
   const tapLeft = document.getElementById('tapLeft');
   const tapRight = document.getElementById('tapRight');
 
+
   let controlsTimeout;
   let isDragging = false;
   let isFullscreen = false;
+
 
   function formatTime(seconds) {
     if (isNaN(seconds) || !isFinite(seconds)) return '0:00';
@@ -606,6 +909,7 @@ Please try again.`;
       : `${mins}:${secs.toString().padStart(2,'0')}`;
   }
 
+
   function togglePlay() {
     if (video.paused) {
       video.play();
@@ -613,6 +917,7 @@ Please try again.`;
       video.pause();
     }
   }
+
 
   function toggleFullscreen() {
     if (!isFullscreen) {
@@ -629,6 +934,7 @@ Please try again.`;
     }
   }
 
+
   function exitFullscreen() {
     videoPlayer.classList.remove('fullscreen-mode');
     if (document.exitFullscreen) {
@@ -639,6 +945,7 @@ Please try again.`;
     isFullscreen = false;
     if (videoBars) videoBars.classList.remove('hidden');
   }
+
 
   function showControls() {
     if (!isFullscreen) return;
@@ -654,15 +961,18 @@ Please try again.`;
     }, 3000);
   }
 
+
   function skipBackward() {
     video.currentTime = Math.max(0, video.currentTime - 10);
     showTapIndicator('left');
   }
 
+
   function skipForwardFunc() {
     video.currentTime = Math.min(video.duration, video.currentTime + 10);
     showTapIndicator('right');
   }
+
 
   function showTapIndicator(side) {
     const indicator = side === 'left' ? tapLeft : tapRight;
@@ -671,6 +981,7 @@ Please try again.`;
       setTimeout(() => indicator.classList.remove('active'), 500);
     }
   }
+
 
   function updateProgress() {
     if (!isDragging && video.duration) {
@@ -685,6 +996,7 @@ Please try again.`;
     }
   }
 
+
   function handleSeek(e, el) {
     const rect = el.getBoundingClientRect();
     const clientX = e.clientX || (e.touches && e.touches[0].clientX);
@@ -698,6 +1010,7 @@ Please try again.`;
     }
   }
 
+
   function updateVolumeIcon() {
     if (!volumeBtn) return;
     const vol = video.volume;
@@ -705,55 +1018,49 @@ Please try again.`;
     volumeBtn.innerHTML = `<i class="fas ${icon}"></i>`;
   }
 
+
   function updateVolumeSliderBg() {
     if (!volumeSlider) return;
     const percent = video.volume * 100;
     volumeSlider.style.background = `linear-gradient(to right, #fff ${percent}%, rgba(255, 255, 255, 0.3) ${percent}%)`;
   }
 
-  video.addEventListener('loadstart', () => {
-    if (loadingSpinner) loadingSpinner.classList.add('active');
-  });
-  
-  video.addEventListener('canplay', () => {
-    if (loadingSpinner) loadingSpinner.classList.remove('active');
-  });
 
+  // Event Listeners
+  video.addEventListener('loadstart', () => { if (loadingSpinner) loadingSpinner.classList.add('active'); });
+  video.addEventListener('canplay', () => { if (loadingSpinner) loadingSpinner.classList.remove('active'); });
   video.addEventListener('loadedmetadata', () => {
     if (simpleDuration) simpleDuration.textContent = formatTime(video.duration);
     if (remainingTimeEl) remainingTimeEl.textContent = '-' + formatTime(video.duration);
     if (isFullscreen) showControls();
   });
-
   video.addEventListener('play', () => {
     videoPlayer.classList.remove('paused');
     if (simplePlayBtn) simplePlayBtn.innerHTML = '<i class="fas fa-pause"></i>';
     if (playBtn) playBtn.innerHTML = '<i class="fas fa-pause"></i>';
   });
-
   video.addEventListener('pause', () => {
     videoPlayer.classList.add('paused');
     if (simplePlayBtn) simplePlayBtn.innerHTML = '<i class="fas fa-play"></i>';
     if (playBtn) playBtn.innerHTML = '<i class="fas fa-play"></i>';
     showControls();
   });
-
   video.addEventListener('timeupdate', updateProgress);
-  
   video.addEventListener('progress', () => {
     if (video.buffered.length > 0 && progressBuffered) {
       progressBuffered.style.width = `${(video.buffered.end(0) / video.duration) * 100}%`;
     }
   });
 
+
   if (simplePlayBtn) simplePlayBtn.addEventListener('click', togglePlay);
   if (simpleFullscreenBtn) simpleFullscreenBtn.addEventListener('click', toggleFullscreen);
   if (simpleProgress) simpleProgress.addEventListener('click', (e) => handleSeek(e, simpleProgress));
-
   if (playBtn) playBtn.addEventListener('click', togglePlay);
   if (skipBack) skipBack.addEventListener('click', skipBackward);
   if (skipForward) skipForward.addEventListener('click', skipForwardFunc);
   if (closeBtn) closeBtn.addEventListener('click', exitFullscreen);
+
 
   if (volumeBtn) {
     volumeBtn.addEventListener('click', () => {
@@ -761,6 +1068,7 @@ Please try again.`;
       updateVolumeIcon();
     });
   }
+
 
   if (volumeSlider) {
     volumeSlider.addEventListener('input', () => {
@@ -771,47 +1079,32 @@ Please try again.`;
     });
   }
 
+
   if (progressWrapper) {
     progressWrapper.addEventListener('mousedown', (e) => {
       isDragging = true;
       videoPlayer.classList.add('dragging');
       handleSeek(e, progressWrapper);
     });
-
     progressWrapper.addEventListener('touchstart', (e) => {
       isDragging = true;
       videoPlayer.classList.add('dragging');
       handleSeek(e, progressWrapper);
     }, { passive: true });
-
     progressWrapper.addEventListener('click', (e) => handleSeek(e, progressWrapper));
   }
 
-  document.addEventListener('mousemove', (e) => {
-    if (isDragging && progressWrapper) handleSeek(e, progressWrapper);
-  });
 
-  document.addEventListener('touchmove', (e) => {
-    if (isDragging && progressWrapper) handleSeek(e, progressWrapper);
-  }, { passive: true });
+  document.addEventListener('mousemove', (e) => { if (isDragging && progressWrapper) handleSeek(e, progressWrapper); });
+  document.addEventListener('touchmove', (e) => { if (isDragging && progressWrapper) handleSeek(e, progressWrapper); }, { passive: true });
+  document.addEventListener('mouseup', () => { if (isDragging) { isDragging = false; videoPlayer.classList.remove('dragging'); } });
+  document.addEventListener('touchend', () => { if (isDragging) { isDragging = false; videoPlayer.classList.remove('dragging'); } });
 
-  document.addEventListener('mouseup', () => {
-    if (isDragging) {
-      isDragging = false;
-      videoPlayer.classList.remove('dragging');
-    }
-  });
-
-  document.addEventListener('touchend', () => {
-    if (isDragging) {
-      isDragging = false;
-      videoPlayer.classList.remove('dragging');
-    }
-  });
 
   let tapCount = 0;
   let tapTimeout;
   let lastTapX = 0;
+
 
   video.addEventListener('click', (e) => {
     if (!isFullscreen) {
@@ -819,9 +1112,11 @@ Please try again.`;
       return;
     }
 
+
     tapCount++;
     lastTapX = e.clientX || (e.touches && e.touches[0].clientX);
     clearTimeout(tapTimeout);
+
 
     if (tapCount === 1) {
       tapTimeout = setTimeout(() => {
@@ -835,12 +1130,11 @@ Please try again.`;
     }
   });
 
+
   videoPlayer.addEventListener('mousemove', showControls);
   videoPlayer.addEventListener('touchstart', showControls);
+  document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) exitFullscreen(); });
 
-  document.addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement) exitFullscreen();
-  });
 
   document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -871,21 +1165,49 @@ Please try again.`;
     }
   });
 
+
   updateVolumeIcon();
   updateVolumeSliderBg();
+
 
   console.log('✅ Video player initialized');
   console.log('⌨️ Shortcuts: Space/K=Play, ←/→=Skip, M=Mute, F=Fullscreen');
 })();
 
-// ==================== CLEANUP ====================
+
+// ==================== CLEANUP ON PAGE UNLOAD ====================
 window.addEventListener('beforeunload', function() {
-  if (timerInterval) {
-    clearInterval(timerInterval);
-  }
-  if (pomodoroInterval) {
-    clearInterval(pomodoroInterval);
-  }
+  if (timerInterval) clearInterval(timerInterval);
+  if (pomodoroInterval) clearInterval(pomodoroInterval);
 });
 
-console.log('✅ Features script loaded completely');
+
+console.log('✅ Athr Platform Features - Fully Loaded');
+console.log('📌 Version: 2.0 | Optimized & Clean');
+// ==================== FLASHCARD FLIP FUNCTION ====================
+function flipCard(card) {
+  card.classList.toggle('flipped');
+  
+  // Optional: Add sound effect or haptic feedback
+  if (typeof confetti !== 'undefined' && card.classList.contains('flipped')) {
+    // Small celebration when flipping
+    confetti({
+      particleCount: 20,
+      spread: 30,
+      origin: { 
+        x: card.getBoundingClientRect().left / window.innerWidth,
+        y: card.getBoundingClientRect().top / window.innerHeight
+      }
+    });
+  }
+}
+
+// Optional: Reset all flashcards
+function resetAllFlashcards() {
+  const flashcards = document.querySelectorAll('.flashcard');
+  flashcards.forEach(card => {
+    card.classList.remove('flipped');
+  });
+}
+
+console.log('✅ Flashcards & Mind Map loaded');
