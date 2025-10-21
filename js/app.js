@@ -1,6 +1,8 @@
+ 
 // ==========================================
-// ✅ ATHR PLATFORM CORE - FINAL V4.0 (MIXED AVATARS)
+// ✅ ATHR PLATFORM CORE - FINAL V3.0 (ADVENTURER AVATARS)
 // ==========================================
+
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { 
@@ -20,6 +22,7 @@ import {
   serverTimestamp 
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
+
 // ==========================================
 // 🔥 FIREBASE CONFIG
 // ==========================================
@@ -32,150 +35,110 @@ const firebaseConfig = {
   appId: "1:895928710949:web:a738b5c2f0d367543f4ccc"
 };
 
+
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
+
 // ==========================================
-// 🎨 AVATAR CONFIGURATION - MIXED STYLES
+// 🎨 AVATAR CONFIGURATION - ADVENTURER STYLE
 // ==========================================
+const AVATAR_STYLE = 'adventurer';
 const AVATAR_API_VERSION = '9.x';
 
-// ✅ Avatar Configs مع Adventurer + Lorelei
+
+// ✅ Avatar Configs مع Customizations محترمة
 const AVATAR_CONFIGS = [
-  // 🧑 Adventurer - ذكور
+  // 🧑 ذكور - محترم
   {
     seed: 'Ahmad',
-    style: 'adventurer',
     params: 'eyebrows=variant02&eyes=variant01&hair=short16&hairColor=6a4e35&mouth=variant25&skinColor=f2d3b1&glasses=variant02'
   },
   {
     seed: 'Omar',
-    style: 'adventurer',
     params: 'eyebrows=variant01&eyes=variant22&hair=short01&hairColor=4a312c&mouth=variant26&skinColor=d4a574'
   },
   {
     seed: 'Ali',
-    style: 'adventurer',
     params: 'eyebrows=variant03&eyes=variant01&hair=short16&hairColor=6a4e35&mouth=variant23&skinColor=f2d3b1'
   },
   {
     seed: 'Youssef',
-    style: 'adventurer',
     params: 'eyebrows=variant02&eyes=variant22&hair=short01&hairColor=4a312c&mouth=variant16&skinColor=d4a574'
   },
+  
   {
     seed: 'Mohamed',
-    style: 'adventurer',
     params: 'eyebrows=variant02&eyes=variant22&hair=short01&hairColor=4a312c&mouth=variant26&skinColor=d4a574'
   },
   {
     seed: 'Ibrahim',
-    style: 'adventurer',
     params: 'eyebrows=variant03&eyes=variant01&hair=short16&hairColor=6a4e35&mouth=variant23&skinColor=f2d3b1'
   },
   
-  // 👩 Adventurer - إناث
+  
+  // 👩 إناث - محترمة ومحتشمة
   {
     seed: 'Sara',
-    style: 'adventurer',
     params: 'eyebrows=variant01&eyes=variant22&hair=long03&hairColor=4a312c&mouth=variant16&skinColor=f2d3b1'
   },
   {
     seed: 'Nour',
-    style: 'adventurer',
     params: 'eyebrows=variant02&eyes=variant01&hair=long06&hairColor=6a4e35&mouth=variant23&skinColor=d4a574'
   },
   {
     seed: 'Maryam',
-    style: 'adventurer',
     params: 'eyebrows=variant01&eyes=variant22&hair=long08&hairColor=4a312c&mouth=variant26&skinColor=f2d3b1'
   },
   {
     seed: 'Huda',
-    style: 'adventurer',
     params: 'eyebrows=variant03&eyes=variant01&hair=long04&hairColor=6a4e35&mouth=variant25&skinColor=d4a574'
   },
   {
     seed: 'Amira',
-    style: 'adventurer',
     params: 'eyebrows=variant02&eyes=variant22&hair=long09&hairColor=4a312c&mouth=variant16&skinColor=f2d3b1'
   },
   {
     seed: 'Fatima',
-    style: 'adventurer',
     params: 'eyebrows=variant01&eyes=variant01&hair=long20&hairColor=6a4e35&mouth=variant23&skinColor=d4a574&glasses=variant02'
   },
   
-  // 💫 Adventurer - كلمات محايدة
+  // 💫 كلمات محايدة - إيجابية
   {
     seed: 'Success',
-    style: 'adventurer',
     params: 'eyebrows=variant02&eyes=variant22&hair=short16&hairColor=6a4e35&mouth=variant25&skinColor=f2d3b1'
   },
   {
     seed: 'Victory',
-    style: 'adventurer',
     params: 'eyebrows=variant01&eyes=variant01&hair=short01&hairColor=4a312c&mouth=variant26&skinColor=d4a574'
   },
   {
     seed: 'Hope',
-    style: 'adventurer',
     params: 'eyebrows=variant03&eyes=variant22&hair=long06&hairColor=6a4e35&mouth=variant16&skinColor=f2d3b1'
   },
   {
     seed: 'Dream',
-    style: 'adventurer',
     params: 'eyebrows=variant02&eyes=variant01&hair=long03&hairColor=4a312c&mouth=variant23&skinColor=d4a574'
   },
   {
     seed: 'Scholar',
-    style: 'adventurer',
     params: 'eyebrows=variant01&eyes=variant22&hair=short16&hairColor=6a4e35&mouth=variant25&skinColor=f2d3b1&glasses=variant02'
   },
   {
     seed: 'Wisdom',
-    style: 'adventurer',
     params: 'eyebrows=variant02&eyes=variant01&hair=short01&hairColor=4a312c&mouth=variant26&skinColor=d4a574&glasses=variant02'
   },
   {
     seed: 'Knowledge',
-    style: 'adventurer',
     params: 'eyebrows=variant03&eyes=variant22&hair=long08&hairColor=6a4e35&mouth=variant16&skinColor=f2d3b1'
   },
   {
     seed: 'Future',
-    style: 'adventurer',
     params: 'eyebrows=variant01&eyes=variant01&hair=long04&hairColor=4a312c&mouth=variant23&skinColor=d4a574'
-  },
-  
-  // ✨ Lorelei Avatars (جديد!)
-  {
-    seed: 'Luis',
-    style: 'lorelei',
-    params: 'eyebrows=variant13&eyes=variant21&glasses=variant04&glassesProbability=30&hair=variant18,variant45,variant21,variant16&mouth=happy18&nose=variant01'
-  },
-  {
-    seed: 'Luna',
-    style: 'lorelei',
-    params: 'eyebrows=variant02&eyes=variant12&hair=variant08,variant20&mouth=happy01&nose=variant02'
-  },
-  {
-    seed: 'Alex',
-    style: 'lorelei',
-    params: 'eyebrows=variant05&eyes=variant15&glasses=variant02&hair=variant12,variant25&mouth=happy10&nose=variant03'
-  },
-  {
-    seed: 'Sofia',
-    style: 'lorelei',
-    params: 'eyebrows=variant08&eyes=variant18&hair=variant22,variant30&mouth=happy15&nose=variant01'
-  },
-  {
-    seed: 'Zain',
-    style: 'lorelei',
-    params: 'eyebrows=variant10&eyes=variant20&glasses=variant03&hair=variant15,variant28&mouth=happy05&nose=variant02'
   }
 ];
+
 
 // ==========================================
 // 🎯 AVATAR HELPERS
@@ -184,9 +147,11 @@ function getRandomAvatarConfig() {
   return AVATAR_CONFIGS[Math.floor(Math.random() * AVATAR_CONFIGS.length)];
 }
 
-function generateAvatarUrl(seed, params, style = 'adventurer') {
-  return `https://api.dicebear.com/${AVATAR_API_VERSION}/${style}/svg?seed=${encodeURIComponent(seed)}&${params}`;
+
+function generateAvatarUrl(seed, params) {
+  return `https://api.dicebear.com/${AVATAR_API_VERSION}/${AVATAR_STYLE}/svg?seed=${encodeURIComponent(seed)}&${params}`;
 }
+
 
 // ==========================================
 // 💾 CACHING
@@ -194,6 +159,7 @@ function generateAvatarUrl(seed, params, style = 'adventurer') {
 let cachedUser = null;
 let cacheTimestamp = null;
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 
 // ==========================================
 // ⚠️ ERROR MESSAGES
@@ -214,11 +180,13 @@ function getErrorMessage(errorCode) {
   return errors[errorCode] || 'حدث خطأ غير متوقع';
 }
 
+
 // ==========================================
 // ✅ LOGIN
 // ==========================================
 export async function login(email, password) {
   try {
+    // Validation
     if (!email || !password) {
       return {
         success: false,
@@ -227,14 +195,18 @@ export async function login(email, password) {
       };
     }
 
+
+    // Firebase Auth
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const userDoc = await getDoc(doc(db, 'users', userCredential.user.uid));
     
     if (userDoc.exists()) {
+      // Update last login
       await updateDoc(doc(db, 'users', userCredential.user.uid), {
         lastLogin: serverTimestamp()
       });
       
+      // Cache user data
       cachedUser = userDoc.data();
       cacheTimestamp = Date.now();
       
@@ -259,11 +231,13 @@ export async function login(email, password) {
   }
 }
 
+
 // ==========================================
-// ✅ SIGNUP (مع Mixed Avatars: Adventurer + Lorelei)
+// ✅ SIGNUP (مع Custom Adventurer Avatars)
 // ==========================================
 export async function signup(email, password, name, university) {
   try {
+    // Validation
     if (!email || !password || !name || !university) {
       return {
         success: false,
@@ -280,25 +254,23 @@ export async function signup(email, password, name, university) {
       };
     }
     
+    // Create Firebase Auth user
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     
+    // Send verification email (optional)
     try {
       await sendEmailVerification(userCredential.user);
     } catch (emailError) {
       console.warn('⚠️ Email verification failed:', emailError);
     }
     
-    // ✅ اختيار Avatar عشوائي (Adventurer أو Lorelei)
+    // ✅ اختيار Avatar عشوائي مع customizations
     const randomConfig = getRandomAvatarConfig();
-    const avatarUrl = generateAvatarUrl(
-      randomConfig.seed, 
-      randomConfig.params,
-      randomConfig.style
-    );
+    const avatarUrl = generateAvatarUrl(randomConfig.seed, randomConfig.params);
     
-    console.log('🎨 Selected avatar:', randomConfig.seed, 'Style:', randomConfig.style, 'URL:', avatarUrl);
+    console.log('🎨 Selected avatar:', randomConfig.seed, 'URL:', avatarUrl);
     
-    // Create user document
+    // Create user document in Firestore
     await setDoc(doc(db, 'users', userCredential.user.uid), {
       uid: userCredential.user.uid,
       email: email,
@@ -307,14 +279,14 @@ export async function signup(email, password, name, university) {
       avatar: avatarUrl,
       avatarSeed: randomConfig.seed,
       avatarParams: randomConfig.params,
-      avatarStyle: randomConfig.style, // ← حفظ النوع
+      avatarStyle: AVATAR_STYLE,
       role: 'student',
       emailVerified: false,
       createdAt: serverTimestamp(),
       lastLogin: serverTimestamp()
     });
     
-    // Create empty userLibrary
+    // Create empty userLibrary document
     await setDoc(doc(db, 'userLibrary', userCredential.user.uid), {
       uid: userCredential.user.uid,
       lectures: [],
@@ -322,7 +294,7 @@ export async function signup(email, password, name, university) {
       createdAt: serverTimestamp()
     });
     
-    console.log('✅ User registered successfully with', randomConfig.style, 'avatar');
+    console.log('✅ User registered successfully with custom avatar');
     
     return { 
       success: true,
@@ -338,6 +310,7 @@ export async function signup(email, password, name, university) {
     };
   }
 }
+
 
 // ==========================================
 // ✅ LOGOUT
@@ -360,6 +333,7 @@ export async function logout() {
   }
 }
 
+
 // ==========================================
 // ✅ GET CURRENT USER (with caching)
 // ==========================================
@@ -372,10 +346,12 @@ export async function getCurrentUser(forceRefresh = false) {
   
   const now = Date.now();
   
+  // Use cache if valid
   if (!forceRefresh && cachedUser && cacheTimestamp && (now - cacheTimestamp < CACHE_DURATION)) {
     return cachedUser;
   }
   
+  // Fetch fresh data
   try {
     const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
     if (userDoc.exists()) {
@@ -386,9 +362,10 @@ export async function getCurrentUser(forceRefresh = false) {
     return null;
   } catch (error) {
     console.error('❌ Error fetching user:', error);
-    return cachedUser;
+    return cachedUser; // Return cached data on error
   }
 }
+
 
 // ==========================================
 // ✅ CHECK ADMIN
@@ -406,6 +383,7 @@ export async function isAdmin(userId) {
   }
 }
 
+
 // ==========================================
 // ✅ AUTH STATE LISTENER
 // ==========================================
@@ -413,11 +391,13 @@ export function onAuthChange(callback) {
   return onAuthStateChanged(auth, callback);
 }
 
+
 // ==========================================
 // 🎯 EXPORT AVATAR CONFIGS & HELPERS
 // ==========================================
 export { 
   AVATAR_CONFIGS, 
+  AVATAR_STYLE, 
   AVATAR_API_VERSION,
   getRandomAvatarConfig, 
   generateAvatarUrl 
