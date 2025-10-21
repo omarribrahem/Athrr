@@ -61,7 +61,11 @@ const AVATAR_CONFIGS = [
     seed: 'Youssef',
     params: 'eyebrows=variant02&eyes=variant22&hair=short01&hairColor=4a312c&mouth=variant16&skinColor=d4a574'
   },
-  
+ {
+    seed: 'Luis',
+    style: 'lorelei',
+    params: 'eyebrows=variant13&eyes=variant21&glasses=variant04&glassesProbability=30&hair=variant18,variant45,variant21,variant16&mouth=happy18&nose=variant01'
+  }, 
   {
     seed: 'Mohamed',
     params: 'eyebrows=variant02&eyes=variant22&hair=short01&hairColor=4a312c&mouth=variant26&skinColor=d4a574'
