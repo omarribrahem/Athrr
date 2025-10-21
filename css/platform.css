@@ -228,7 +228,265 @@
   color: #b91c1c;
 }
 
-/* === PROFILE MODAL === */
+/* [يكمل في Part 2...] */
+/* ============================================
+   CUSTOM DIALOG MODAL
+   ============================================ */
+
+.custom-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.custom-dialog {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(25px);
+  border: 2px solid rgba(203, 213, 225, 0.4);
+  border-radius: 24px;
+  padding: 35px 30px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  animation: slideUpDialog 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: center;
+}
+
+.dialog-header {
+  margin-bottom: 25px;
+}
+
+.dialog-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.dialog-icon i {
+  font-size: 2rem;
+  color: white;
+}
+
+.dialog-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 12px;
+  font-family: 'Cairo', sans-serif;
+}
+
+.dialog-message {
+  font-size: 1.05rem;
+  color: #64748b;
+  font-weight: 500;
+  line-height: 1.6;
+  margin: 0;
+  font-family: 'Cairo', sans-serif;
+}
+
+.dialog-input {
+  width: 100%;
+  padding: 16px 20px;
+  background: rgba(248, 250, 252, 0.8);
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #0f172a;
+  font-family: 'Cairo', sans-serif;
+  text-align: center;
+  transition: all 0.3s;
+  margin: 20px 0;
+  outline: none;
+}
+
+.dialog-input:focus {
+  background: white;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.dialog-input::placeholder {
+  color: #94a3b8;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.dialog-btn {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  border-radius: 16px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dialog-btn-primary {
+  background: linear-gradient(135deg, #16a34a, #10b981);
+  color: white;
+  box-shadow: 0 4px 15px rgba(22, 163, 74, 0.35);
+}
+
+.dialog-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(22, 163, 74, 0.45);
+}
+
+.dialog-btn-secondary {
+  background: rgba(148, 163, 184, 0.15);
+  color: #64748b;
+  border: 2px solid rgba(148, 163, 184, 0.3);
+}
+
+.dialog-btn-secondary:hover {
+  background: rgba(148, 163, 184, 0.25);
+  border-color: rgba(148, 163, 184, 0.5);
+}
+
+.dialog-btn-danger {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: white;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.35);
+}
+
+.dialog-btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(220, 38, 38, 0.45);
+}
+
+/* ============================================
+   CAPSULE DIALOG STYLE
+   ============================================ */
+
+.custom-dialog-overlay.capsule-style {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.capsule-dialog {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 28px;
+  max-width: 460px;
+  width: 100%;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  transform: scale(0.9) translateY(20px);
+  animation: slideUpDialog 0.4s ease forwards;
+}
+
+.capsule-dialog .dialog-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.dialog-icon-mini {
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.capsule-dialog:hover .dialog-icon-mini {
+  transform: scale(1.05);
+}
+
+.dialog-icon-mini i {
+  font-size: 1.5rem;
+  color: white;
+}
+
+.capsule-dialog .dialog-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+
+.capsule-dialog .dialog-message {
+  font-size: 0.95rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+  font-weight: 500;
+}
+
+.capsule-dialog .dialog-input {
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 600;
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.8);
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.capsule-dialog .dialog-input:focus {
+  border-color: #16a34a;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+}
+
+.capsule-dialog .dialog-input::placeholder {
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+.capsule-dialog .dialog-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+/* ============================================
+   PROFILE MODAL
+   ============================================ */
+
 .profile-modal {
   display: none;
   position: fixed;
@@ -324,7 +582,6 @@
   transform: rotate(90deg);
 }
 
-/* === AVATAR WITH OVERLAY === */
 .profile-avatar-wrapper {
   position: absolute;
   bottom: -60px;
@@ -385,7 +642,6 @@
   filter: brightness(0.7);
 }
 
-/* === BODY === */
 .profile-body {
   padding: 75px 30px 30px;
   overflow-y: auto;
@@ -417,7 +673,6 @@
   color: var(--color-primary);
 }
 
-/* === AVATAR SELECTOR === */
 .avatar-selector {
   animation: slideIn 0.3s ease;
 }
@@ -521,7 +776,7 @@
   box-shadow: 0 6px 20px rgba(22, 163, 74, 0.4);
 }
 
-/* === CAPSULE FIELDS === */
+/* Capsule Fields */
 .profile-capsule-field {
   background: rgba(248, 250, 252, 0.8);
   border: 2px solid #e2e8f0;
@@ -606,7 +861,7 @@
   font-weight: 500;
 }
 
-/* === CUSTOM SELECT === */
+/* Custom Select */
 .custom-select-wrapper {
   position: relative;
 }
@@ -688,7 +943,7 @@
   color: var(--color-primary);
 }
 
-/* === ACTIONS === */
+/* Actions */
 .profile-actions {
   display: flex;
   flex-direction: column;
@@ -743,7 +998,10 @@
   transform: translateY(-2px);
 }
 
-/* === MAIN CONTENT === */
+/* ============================================
+   MAIN CONTENT
+   ============================================ */
+
 .platform-container {
   max-width: 1200px;
   margin: 40px auto;
@@ -766,11 +1024,12 @@
   color: #14532d;
   margin-bottom: 15px;
 }
-/* ==================== SUBJECTS GRID (قابل للتخصيص بالكامل) ==================== */
 
-/* CSS Variables للتحكم من Admin */
+/* ============================================
+   SUBJECTS GRID
+   ============================================ */
+
 :root {
-  /* Subject Container */
   --subject-bg: rgba(255, 255, 255, 0.4);
   --subject-border: rgba(255, 255, 255, 0.5);
   --subject-border-hover: rgba(22, 163, 74, 0.4);
@@ -779,13 +1038,11 @@
   --subject-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   --subject-shadow-hover: 0 20px 50px rgba(0, 0, 0, 0.15);
   
-  /* Icon Container */
   --icon-size: 90px;
   --icon-radius: 22px;
   --icon-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   --icon-shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.25);
   
-  /* Text */
   --title-size: 1.5rem;
   --title-color: #14532d;
   --title-color-hover: #16a34a;
@@ -794,7 +1051,6 @@
   --count-color: #475569;
   --count-color-hover: #16a34a;
   
-  /* Animations */
   --animation-duration: 0.4s;
   --hover-lift: -12px;
   --hover-scale: 1.02;
@@ -809,7 +1065,6 @@
   margin-bottom: 40px;
 }
 
-/* ==================== SUBJECT CARD BASE ==================== */
 .subject-capsule {
   background: var(--subject-bg);
   backdrop-filter: blur(20px);
@@ -830,7 +1085,6 @@
   border-color: var(--subject-border-hover);
 }
 
-/* Shine effect (optional) */
 .subject-capsule::before {
   content: '';
   position: absolute;
@@ -849,7 +1103,6 @@
   opacity: 1;
 }
 
-/* ==================== ICON CONTAINER ==================== */
 .subject-icon-container {
   width: var(--icon-size);
   height: var(--icon-size);
@@ -863,39 +1116,9 @@
   box-shadow: var(--icon-shadow);
 }
 
-/* Pulse animation (optional - can be disabled) */
-.subject-icon-container.with-pulse::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  background: inherit;
-  opacity: 0.4;
-  animation: iconPulse 2.5s ease-in-out infinite;
-  z-index: 1;
-}
-
-@keyframes iconPulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.4;
-  }
-  50% {
-    transform: scale(1.25);
-    opacity: 0.6;
-  }
-}
-
-/* Hover effects */
 .subject-capsule:hover .subject-icon-container {
   transform: rotate(var(--icon-rotation)) scale(var(--icon-scale));
   box-shadow: var(--icon-shadow-hover);
-}
-
-/* Icon floating animation (optional) */
-.subject-icon-container.with-float i {
-  animation: iconFloat 3.5s ease-in-out infinite;
 }
 
 .subject-icon-container i {
@@ -905,22 +1128,6 @@
   filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
 }
 
-@keyframes iconFloat {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-10px) rotate(-6deg);
-  }
-  50% {
-    transform: translateY(0) rotate(0deg);
-  }
-  75% {
-    transform: translateY(-10px) rotate(6deg);
-  }
-}
-
-/* ==================== TEXT STYLING ==================== */
 .subject-title {
   font-size: var(--title-size);
   font-weight: 800;
@@ -954,106 +1161,7 @@
   transform: scale(1.05);
 }
 
-/* ==================== MODIFIER CLASSES (للتحكم من Admin) ==================== */
-
-/* Size variants */
-.subject-capsule.compact {
-  padding: 25px 20px;
-}
-
-.subject-capsule.large {
-  padding: 45px 35px;
-}
-
-/* Icon size variants */
-.subject-capsule.icon-small .subject-icon-container {
-  width: 70px;
-  height: 70px;
-}
-
-.subject-capsule.icon-large .subject-icon-container {
-  width: 110px;
-  height: 110px;
-}
-
-/* Border styles */
-.subject-capsule.border-solid {
-  border-style: solid;
-  border-width: 3px;
-}
-
-.subject-capsule.border-dashed {
-  border-style: dashed;
-}
-
-.subject-capsule.no-border {
-  border: none;
-}
-
-/* Shadow variants */
-.subject-capsule.shadow-light {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.subject-capsule.shadow-heavy {
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-}
-
-.subject-capsule.no-shadow {
-  box-shadow: none;
-}
-
-/* Animation variants */
-.subject-capsule.no-animation {
-  transition: none;
-}
-
-.subject-capsule.no-animation:hover {
-  transform: none;
-}
-
-.subject-capsule.slow-animation {
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Layout variants */
-.subject-capsule.horizontal {
-  display: flex;
-  text-align: right;
-  gap: 20px;
-  padding: 25px;
-}
-
-.subject-capsule.horizontal .subject-icon-container {
-  margin: 0;
-  flex-shrink: 0;
-}
-
-.subject-capsule.horizontal .subject-title {
-  text-align: right;
-}
-
-/* === BUTTONS === */
-.capsule-btn {
-  padding: 12px 28px;
-  background: rgba(255, 255, 255, 0.4);
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-radius: 50px;
-  cursor: pointer;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: inherit;
-  transition: all 0.3s;
-  color: inherit;
-}
-
-.capsule-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-}
-
+/* [جزء 3 هيكمل في الرسالة الجاية...] */
 /* ============================================
    MY LIBRARY VIEW
    ============================================ */
@@ -1193,19 +1301,9 @@
   box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
 }
 
-.browse-btn i {
-  font-size: 1.2rem;
-  line-height: 1;
-}
-
 .browse-btn:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 35px rgba(59, 130, 246, 0.45);
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-}
-
-.browse-btn:active {
-  transform: translateY(-2px);
 }
 
 /* ============================================
@@ -1304,6 +1402,29 @@
    ACTION BUTTONS
    ============================================ */
 
+.capsule-btn {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 16px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.35);
+}
+
+.capsule-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.45);
+}
+
 .get-lecture-btn {
   background: linear-gradient(135deg, #10b981, #059669);
   color: white;
@@ -1325,7 +1446,6 @@
 .get-lecture-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(16, 185, 129, 0.45);
-  background: linear-gradient(135deg, #059669, #047857);
 }
 
 .get-lecture-btn:disabled {
@@ -1355,7 +1475,81 @@
 .activate-lecture-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(245, 158, 11, 0.45);
-  background: linear-gradient(135deg, #d97706, #b45309);
+}
+
+/* ============================================
+   ✨ SKELETON LOADING - USER SECTION ONLY
+   ============================================ */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.user-section.loading {
+  pointer-events: none;
+  opacity: 0.8;
+  position: relative;
+}
+
+.user-section.loading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 50px;
+  z-index: 1;
+}
+
+.user-section.loading .user-avatar-header {
+  background: linear-gradient(
+    90deg,
+    rgba(22, 163, 74, 0.2) 0%,
+    rgba(22, 163, 74, 0.4) 50%,
+    rgba(22, 163, 74, 0.2) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 50%;
+}
+
+.user-section.loading .user-avatar-header img {
+  opacity: 0.3;
+}
+
+.user-section.loading .user-info h3,
+.user-section.loading .user-info p {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  color: transparent !important;
+  border-radius: 8px;
+  user-select: none;
+  position: relative;
+  z-index: 2;
+}
+
+.user-section.loading #userMenuIcon {
+  opacity: 0.3;
 }
 
 /* ============================================
@@ -1384,13 +1578,81 @@
   }
 }
 
+@keyframes slideUpDialog {
+  from {
+    transform: scale(0.9) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
 /* ============================================
    RESPONSIVE DESIGN
    ============================================ */
 
 @media (max-width: 768px) {
+  .platform-header {
+    padding: 10px 0;
+  }
+  
+  .user-section {
+    padding: 6px 14px;
+    gap: 10px;
+  }
+  
+  .user-avatar-header {
+    width: 38px;
+    height: 38px;
+  }
+  
+  .user-info h3 {
+    font-size: 0.9rem;
+  }
+  
+  .user-info p {
+    font-size: 0.75rem;
+  }
+  
+  .platform-logo {
+    width: 42px;
+    height: 42px;
+  }
+  
+  .platform-logo i {
+    font-size: 1.3rem;
+  }
+  
+  .welcome-section {
+    padding: 30px 20px;
+  }
+  
+  .welcome-section h1 {
+    font-size: 1.8rem;
+  }
+  
   .subjects-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .subject-capsule {
+    padding: 25px 20px;
+  }
+  
+  .subject-icon-container {
+    width: 75px;
+    height: 75px;
+  }
+  
+  .subject-icon-container i {
+    font-size: 2.2rem;
+  }
+  
+  .subject-title {
+    font-size: 1.3rem;
   }
   
   .avatars-grid {
@@ -1413,18 +1675,10 @@
     padding: 25px;
   }
   
-  .library-icon-box {
-    width: 65px;
-    height: 65px;
-  }
-  
-  .library-header-card h2 {
-    font-size: 1.6rem;
-  }
-  
   .lecture-capsule {
     flex-direction: column;
     text-align: center;
+    padding: 20px;
   }
   
   .lecture-status-active,
@@ -1438,20 +1692,61 @@
     padding: 50px 20px;
   }
   
-  .empty-state i {
-    font-size: 4rem;
+  .custom-dialog,
+  .capsule-dialog {
+    padding: 28px 20px;
   }
   
-  :root {
-    --icon-size: 80px;
+  .dialog-title {
+    font-size: 1.3rem;
   }
   
-  .subject-icon-container i {
-    font-size: 2.3rem;
+  .dialog-message {
+    font-size: 1rem;
   }
   
-  .subject-capsule {
-    padding: 30px 20px;
+  .dialog-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .capsule-dialog {
+    padding: 24px 20px;
+    max-width: 100%;
+    border-radius: 20px;
+  }
+
+  .capsule-dialog .dialog-header {
+    gap: 12px;
+  }
+
+  .dialog-icon-mini {
+    width: 45px;
+    height: 45px;
+    border-radius: 14px;
+  }
+
+  .dialog-icon-mini i {
+    font-size: 1.3rem;
+  }
+
+  .capsule-dialog .dialog-title {
+    font-size: 1.15rem;
+  }
+
+  .capsule-dialog .dialog-message {
+    font-size: 0.9rem;
+  }
+
+  .capsule-dialog .dialog-actions {
+    flex-direction: column-reverse;
+  }
+
+  .dialog-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
   }
 }
 
@@ -1463,10 +1758,6 @@
   
   .library-header-card h2 {
     font-size: 1.4rem;
-  }
-  
-  .library-header-card p {
-    font-size: 1rem;
   }
   
   .lecture-info h3 {

@@ -37,7 +37,8 @@
         <!-- Avatar مع Overlay -->
         <div class="profile-avatar-wrapper">
           <div class="profile-avatar-large" id="avatarContainer">
-            <img id="profileAvatarImg" src="https://api.dicebear.com/7.x/avataaars/svg?seed=User" alt="Profile">
+            <!-- ✅ Avatar يتحمّل من Firestore -->
+            <img id="profileAvatarImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%2316a34a' width='100' height='100'/%3E%3C/svg%3E" alt="Profile">
             <div class="avatar-edit-overlay">
               <i class="fas fa-camera"></i>
               <span>تغيير</span>
@@ -171,15 +172,17 @@
   <header class="platform-header">
     <div class="header-content">
       
-      <!-- Right: User Profile with Dropdown -->
-      <div class="user-section" onclick="toggleUserMenu()">
+      <!-- ✅ Right: User Profile with Loading Class -->
+      <div class="user-section loading" onclick="toggleUserMenu()">
         <div class="user-avatar-header">
-          <img id="headerUserAvatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=User" alt="Profile">
+          <!-- ✅ Placeholder Avatar -->
+          <img id="headerUserAvatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%2316a34a' width='100' height='100'/%3E%3C/svg%3E" alt="Profile">
           <div class="user-avatar-status"></div>
         </div>
         <div class="user-info">
-          <h3 id="headerUserName">أحمد محمد</h3>
-          <p id="headerUserUniversity">🎓 جامعة دمنهور</p>
+          <!-- ✅ Placeholder Text (يتبدل بالبيانات الحقيقية) -->
+          <h3 id="headerUserName">●●●●●●●●</h3>
+          <p id="headerUserUniversity">●●●●●●●●●</p>
         </div>
         <i class="fas fa-chevron-down" style="font-size: 0.9rem; color: #64748b; margin-right: 10px; transition: transform 0.3s ease;" id="userMenuIcon"></i>
         
@@ -236,7 +239,7 @@
           </div>
           <div>
             <h2>مكتبتي الخاصة</h2>
-            <p>المحاضرات التي حصلت عليها</p>
+            <p>المحاضرات التي حصلت عليها (<span id="myLibraryCount">0</span>)</p>
           </div>
         </div>
       </div>
@@ -244,25 +247,13 @@
       <!-- Lectures List -->
       <div id="myLecturesList" data-aos="fade-up" data-aos-delay="100">
         <!-- JavaScript will fill this -->
-        <div class="empty-state">
-          <i class="fas fa-inbox"></i>
-          <h3>لا توجد محاضرات بعد</h3>
-          <p>ابدأ بإضافة محاضرات من المواد المتاحة</p>
-          <button onclick="showAllSubjects()" class="browse-btn">
-            <i class="fas fa-plus-circle"></i> تصفح المواد
-          </button>
-        </div>
       </div>
       
     </div>
     
     <!-- ✅ Subjects Grid - فاضي - JavaScript هيملاه -->
     <div class="subjects-grid" id="subjectsGrid">
-      <!-- ✅ Loading Placeholder -->
-      <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #64748b;">
-        <i class="fas fa-spinner fa-spin" style="font-size: 3rem; margin-bottom: 15px; color: #16a34a;"></i>
-        <p style="font-size: 1.1rem; font-weight: 600;">جاري تحميل المواد...</p>
-      </div>
+      <!-- JavaScript will populate this -->
     </div>
     
     <!-- Lectures View -->
@@ -284,7 +275,13 @@
   </main>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>AOS.init({ duration: 800, once: true, easing: 'ease-in-out' });</script>
+  <script>
+    AOS.init({ 
+      duration: 800, 
+      once: true, 
+      easing: 'ease-in-out' 
+    });
+  </script>
   <script type="module" src="js/library.js"></script>
   
 </body>

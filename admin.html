@@ -3,24 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>لوحة التحكم المتقدمة - منصة أثر</title>
+  <title>لوحة التحكم - منصة أثر</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
   
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body { 
-      font-family: 'Cairo', sans-serif; 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
       min-height: 100vh;
       background: #f8fafc;
     }
 
-    /* ==================== HEADER ==================== */
+    /* HEADER */
     .admin-header {
       background: white;
       padding: 20px 0;
@@ -49,79 +54,124 @@
       color: #0f172a;
     }
 
-    .admin-logo i { 
-      font-size: 2rem; 
+    .admin-logo i {
+      font-size: 2rem;
       color: #16a34a;
     }
 
     .back-btn {
-      background: #f1f5f9;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
       border: none;
       padding: 12px 24px;
-      border-radius: 10px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-weight: 700;
       cursor: pointer;
-      font-family: 'Cairo', sans-serif;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: all 0.2s;
+      transition: all 0.3s;
       display: flex;
       align-items: center;
       gap: 10px;
-      color: #334155;
     }
 
     .back-btn:hover {
-      background: #e2e8f0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    /* CONTAINER */
+    .admin-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 30px 50px;
+    }
+
+    .admin-tabs {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 40px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 15px 30px;
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .tab-btn.active {
       color: #16a34a;
     }
 
-    /* ==================== CONTAINER ==================== */
-    .admin-container { 
-      max-width: 1400px;
-      margin: 0 auto; 
-      padding: 0 30px 60px; 
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(135deg, #16a34a, #10b981);
+      border-radius: 3px 3px 0 0;
     }
 
-    /* ==================== SECTIONS ==================== */
-    .section {
+    .tab-btn:hover {
+      color: #16a34a;
+    }
+
+    /* TAB CONTENT */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* FORM CARD */
+    .form-card {
       background: white;
-      border-radius: 16px;
-      padding: 30px;
+      border-radius: 20px;
+      padding: 35px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
       margin-bottom: 30px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
-    .section-header {
+    .form-card h2 {
+      font-size: 1.6rem;
+      color: #0f172a;
+      margin-bottom: 25px;
       display: flex;
       align-items: center;
-      gap: 15px;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 2px solid #f1f5f9;
+      gap: 12px;
     }
 
-    .section-header i {
-      font-size: 1.8rem;
+    .form-card h2 i {
       color: #16a34a;
     }
 
-    .section-header h2 {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: #0f172a;
-      margin: 0;
-    }
-
-    /* ==================== FORMS ==================== */
     .form-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr);
       gap: 25px;
-      margin-bottom: 25px;
     }
 
     .form-group {
-      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .form-group.full-width {
@@ -129,39 +179,36 @@
     }
 
     .form-label {
+      font-weight: 700;
+      color: #334155;
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 10px;
-      color: #334155;
-      font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 1rem;
     }
 
     .form-label i {
       color: #16a34a;
-      font-size: 1rem;
-    }
-
-    .form-input, 
-    .form-select, 
-    .form-textarea {
-      width: 100%;
-      padding: 12px 16px;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      font-family: 'Cairo', sans-serif;
       font-size: 0.95rem;
-      transition: all 0.2s;
-      background: white;
     }
 
-    .form-input:focus, 
-    .form-select:focus, 
-    .form-textarea:focus {
+    .form-input, .form-select, .form-textarea {
+      padding: 14px 18px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0f172a;
+      transition: all 0.3s;
+      background: #f8fafc;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
       outline: none;
       border-color: #16a34a;
-      box-shadow: 0 0 0 3px rgba(22,163,74,0.1);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
     }
 
     .form-textarea {
@@ -169,225 +216,76 @@
       resize: vertical;
     }
 
-    .form-hint {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 8px;
-      color: #64748b;
-      font-size: 0.85rem;
-    }
-
-    /* Range Input Styling */
-    input[type="range"] {
-      padding: 8px 0;
-      cursor: pointer;
-      accent-color: #16a34a;
-    }
-
-    /* ==================== CONTAINER PREVIEW ==================== */
-    .container-preview {
-      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-      border: 2px dashed #cbd5e1;
-      border-radius: 12px;
-      padding: 40px 25px;
-      margin-top: 20px;
-      text-align: center;
-      min-height: 280px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .preview-card {
-      display: inline-block;
-      background: white;
-      border-radius: 20px;
-      padding: 35px 45px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.12);
-      transition: all 0.4s ease;
-      max-width: 340px;
-      width: 100%;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .preview-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 15px 50px rgba(0,0,0,0.18);
-    }
-
-    .preview-card::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
-      transform: rotate(45deg);
-      transition: all 0.8s;
-      opacity: 0;
-    }
-
-    .preview-card:hover::before {
-      left: 100%;
-      opacity: 1;
-    }
-
-    .preview-icon-container {
-      width: 100px;
-      height: 100px;
-      border-radius: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 25px;
-      transition: all 0.4s ease;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    }
-
-    .preview-icon-container::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: inherit;
-      opacity: 0.3;
-      animation: pulse 2s ease-in-out infinite;
-      border-radius: inherit;
-    }
-
-    @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
-        opacity: 0.3;
-      }
-      50% {
-        transform: scale(1.15);
-        opacity: 0.5;
-      }
-    }
-
-    .preview-card:hover .preview-icon-container {
-      transform: rotate(-5deg) scale(1.08);
-      box-shadow: 0 12px 35px rgba(0,0,0,0.2);
-    }
-
-    .preview-icon-container i {
-      font-size: 3rem;
-      color: white;
-      position: relative;
-      z-index: 2;
-      animation: iconFloat 3s ease-in-out infinite;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
-    }
-
-    @keyframes iconFloat {
-      0%, 100% {
-        transform: translateY(0) rotate(0deg);
-      }
-      25% {
-        transform: translateY(-8px) rotate(-3deg);
-      }
-      50% {
-        transform: translateY(0) rotate(0deg);
-      }
-      75% {
-        transform: translateY(-8px) rotate(3deg);
-      }
-    }
-
-    .preview-title {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #0f172a;
-      margin-bottom: 10px;
-      transition: color 0.3s;
-    }
-
-    .preview-card:hover .preview-title {
-      color: #16a34a;
-    }
-
-    .preview-subtitle {
-      font-size: 1.05rem;
-      color: #64748b;
-      font-weight: 600;
-      transition: color 0.3s;
-    }
-
-    .preview-card:hover .preview-subtitle {
-      color: #475569;
-    }
-
-    /* ==================== ICON & COLOR PICKERS ==================== */
-    .picker-grid {
+    /* ICON PICKER */
+    .icon-picker-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-      gap: 10px;
-      padding: 20px;
-      background: #f8fafc;
-      border-radius: 10px;
-      margin-top: 12px;
-      max-height: 250px;
+      gap: 12px;
+      max-height: 300px;
       overflow-y: auto;
+      padding: 15px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
     }
 
     .icon-option {
-      aspect-ratio: 1;
+      width: 60px;
+      height: 60px;
+      background: white;
       border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      cursor: pointer;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: white;
-      transition: all 0.2s;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1.5rem;
+      color: #64748b;
     }
 
     .icon-option:hover {
       border-color: #16a34a;
       transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
     }
 
     .icon-option.selected {
       border-color: #16a34a;
-      background: #f0fdf4;
+      background: rgba(22, 163, 74, 0.1);
+      color: #16a34a;
+      border-width: 3px;
     }
 
-    .icon-option i {
-      font-size: 1.5rem;
-      color: #475569;
-    }
-
+    /* COLOR PICKER */
     .color-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
       gap: 12px;
-      margin-top: 12px;
+      padding: 15px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
     }
 
     .color-option {
-      aspect-ratio: 1;
-      border-radius: 10px;
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
       cursor: pointer;
+      transition: all 0.3s;
       border: 3px solid transparent;
-      transition: all 0.2s;
       position: relative;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .color-option:hover {
       transform: scale(1.1);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
     .color-option.selected {
       border-color: #0f172a;
-      transform: scale(1.15);
+      box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.2);
     }
 
     .color-option.selected::after {
@@ -403,1146 +301,1129 @@
       text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
 
-    /* ==================== DIVIDER ==================== */
-    .form-divider {
-      margin: 30px 0;
-      padding-top: 25px;
-      border-top: 2px solid #f1f5f9;
+    /* PREVIEW */
+    .preview-section {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
     }
 
-    .form-divider-title {
+    .preview-title {
       font-size: 1.2rem;
       font-weight: 700;
       color: #0f172a;
-      display: flex;
-      align-items: center;
-      gap: 10px;
       margin-bottom: 20px;
     }
 
-    .form-divider-title i {
-      color: #16a34a;
+    .subject-preview {
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 24px;
+      padding: 35px 25px;
+      display: inline-block;
+      min-width: 280px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
-    /* ==================== BUTTONS ==================== */
-    .btn-primary {
-      background: #16a34a;
+
+    .preview-icon-container {
+      width: 90px;
+      height: 90px;
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 25px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      transition: all 0.3s;
+    }
+
+    .preview-icon-container i {
+      font-size: 2.8rem;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
+    }
+
+    .preview-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #14532d;
+      margin-bottom: 5px;
+    }
+
+    .preview-name-en {
+      color: #64748b;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* SUBMIT BUTTON */
+    .submit-btn {
+      background: linear-gradient(135deg, #16a34a, #10b981);
       color: white;
       border: none;
-      padding: 14px 32px;
-      border-radius: 10px;
-      font-family: 'Cairo', sans-serif;
+      padding: 16px 32px;
+      border-radius: 14px;
+      font-family: inherit;
+      font-size: 1.1rem;
       font-weight: 700;
-      font-size: 1rem;
       cursor: pointer;
-      transition: all 0.2s;
-      display: inline-flex;
+      transition: all 0.3s;
+      display: flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
+      width: 100%;
+      box-shadow: 0 6px 20px rgba(22, 163, 74, 0.3);
     }
 
-    .btn-primary:hover {
-      background: #15803d;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(22,163,74,0.3);
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(22, 163, 74, 0.4);
     }
 
-    .btn-primary:disabled {
-      opacity: 0.5;
+    .submit-btn:disabled {
+      opacity: 0.6;
       cursor: not-allowed;
       transform: none;
     }
 
-    .btn-danger {
-      background: #ef4444;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-family: 'Cairo', sans-serif;
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: inline-flex;
+    /* SUBJECTS LIST */
+    .subjects-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .subject-item {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      transition: all 0.3s;
+      border: 2px solid transparent;
+    }
+
+    .subject-item:hover {
+      border-color: #16a34a;
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(22, 163, 74, 0.15);
+    }
+
+    .subject-item-header {
+      display: flex;
       align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .subject-item-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+    }
+
+    .subject-item-info h3 {
+      font-size: 1.2rem;
+      color: #0f172a;
+      margin-bottom: 5px;
+    }
+
+    .subject-item-info p {
+      color: #64748b;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .subject-item-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       gap: 8px;
     }
 
-    .btn-danger:hover {
-      background: #dc2626;
-      transform: translateY(-2px);
+    .edit-btn {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+      border: 2px solid rgba(59, 130, 246, 0.3);
     }
 
-    /* ==================== ALERTS ==================== */
-    .alert {
-      padding: 16px 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      font-weight: 600;
-      display: none;
-      align-items: center;
-      gap: 12px;
+    .edit-btn:hover {
+      background: rgba(59, 130, 246, 0.2);
     }
 
-    .alert.show {
-      display: flex;
-      animation: slideIn 0.3s ease;
+    .delete-btn {
+      background: rgba(220, 38, 38, 0.1);
+      color: #dc2626;
+      border: 2px solid rgba(220, 38, 38, 0.3);
     }
 
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .delete-btn:hover {
+      background: rgba(220, 38, 38, 0.2);
     }
 
-    .alert-success {
-      background: #f0fdf4;
-      color: #166534;
-      border: 2px solid #bbf7d0;
+    /* LECTURES TABLE */
+    .lectures-table {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
 
-    .alert-error {
-      background: #fef2f2;
-      color: #991b1b;
-      border: 2px solid #fecaca;
-    }
-
-    /* ==================== TABLES ==================== */
-    .data-table {
+    .lectures-table table {
       width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      margin-top: 20px;
+      border-collapse: collapse;
     }
 
-    .data-table thead {
-      background: #f8fafc;
-    }
-
-    .data-table th {
-      padding: 14px 16px;
+    .lectures-table th {
+      background: linear-gradient(135deg, #16a34a, #10b981);
+      color: white;
+      padding: 18px;
       text-align: right;
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: #475569;
-      border-bottom: 2px solid #e2e8f0;
+      font-weight: 800;
+      font-size: 1rem;
     }
 
-    .data-table td {
-      padding: 14px 16px;
-      border-bottom: 1px solid #f1f5f9;
+    .lectures-table td {
+      padding: 18px;
+      border-bottom: 1px solid #e2e8f0;
       color: #334155;
+      font-weight: 600;
     }
 
-    .data-table tbody tr {
-      transition: background 0.2s;
+    .lectures-table tr:last-child td {
+      border-bottom: none;
     }
 
-    .data-table tbody tr:hover {
+    .lectures-table tr:hover {
       background: #f8fafc;
     }
 
-    .badge {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: 6px;
+    .status-badge {
+      padding: 6px 14px;
+      border-radius: 8px;
       font-size: 0.85rem;
       font-weight: 700;
+      display: inline-block;
     }
 
-    .badge-success {
-      background: #d1fae5;
-      color: #065f46;
+    .status-active {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
     }
 
-    .badge-warning {
-      background: #fef3c7;
-      color: #92400e;
+    .status-inactive {
+      background: rgba(100, 116, 139, 0.15);
+      color: #64748b;
     }
 
-    /* ==================== RESPONSIVE ==================== */
+    /* RESPONSIVE */
     @media (max-width: 768px) {
       .form-grid {
         grid-template-columns: 1fr;
       }
       
-      .admin-container {
-        padding: 0 20px 40px;
+      .admin-tabs {
+        overflow-x: auto;
       }
-
-      .admin-header-content {
-        padding: 0 20px;
+      
+      .subjects-list {
+        grid-template-columns: 1fr;
       }
-
-      .color-grid {
-        grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+      
+      .lectures-table {
+        overflow-x: auto;
       }
     }
 
-    /* ==================== ANIMATIONS ==================== */
-    .animate-in {
-      animation: fadeIn 0.5s ease;
+    /* TOAST */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      padding: 18px 24px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      z-index: 9999;
+      animation: slideIn 0.3s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .toast.success {
+      border-right: 4px solid #10b981;
+      color: #10b981;
+    }
+
+    .toast.error {
+      border-right: 4px solid #ef4444;
+      color: #ef4444;
     }
   </style>
 </head>
 
 <body>
-
-  <div class="background-waves">
-    <div class="wave-layer"></div>
-    <div class="wave-layer"></div>
-  </div>
-
-  <!-- HEADER -->
+  
+  <!-- Header -->
   <header class="admin-header">
     <div class="admin-header-content">
       <div class="admin-logo">
-        <i class="fas fa-crown"></i>
-        <span>لوحة التحكم المتقدمة</span>
+        <i class="fas fa-user-shield"></i>
+        <span>لوحة التحكم</span>
       </div>
       <button class="back-btn" onclick="window.location.href='library.html'">
-        <i class="fas fa-arrow-right"></i>
-        <span>العودة للمكتبة</span>
+        <i class="fas fa-arrow-left"></i>
+        العودة للمكتبة
       </button>
     </div>
   </header>
 
-  <main class="admin-container">
+  <!-- Main Container -->
+  <div class="admin-container">
+    
+    <!-- Tabs -->
+    <div class="admin-tabs">
+      <button class="tab-btn active" onclick="switchTab('subjects')">
+        <i class="fas fa-book"></i> إدارة المواد
+      </button>
+      <button class="tab-btn" onclick="switchTab('lectures')">
+        <i class="fas fa-video"></i> إدارة المحاضرات
+      </button>
+    </div>
 
-    <!-- ==================== إدارة المواد ==================== -->
-    <div class="section animate-in">
-      <div class="section-header">
-        <i class="fas fa-layer-group"></i>
-        <h2>إدارة المواد (Containers)</h2>
-      </div>
-
-      <div id="subjectAlert" class="alert"></div>
-
-      <form id="addSubjectForm">
+    <!-- ==========================================
+         SUBJECTS TAB
+         ========================================== -->
+    <div id="subjectsTab" class="tab-content active">
+      
+      <!-- Add Subject Form -->
+      <div class="form-card">
+        <h2>
+          <i class="fas fa-plus-circle"></i>
+          إضافة مادة جديدة
+        </h2>
         
-        <!-- Basic Info -->
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-tag"></i>
-              معرّف المادة (ID)
-            </label>
-            <input type="text" id="subjectId" class="form-input" placeholder="marketing" required>
-            <small class="form-hint">
-              <i class="fas fa-info-circle"></i>
-              أحرف إنجليزية صغيرة فقط
-            </small>
-          </div>
+        <form id="addSubjectForm">
+          <div class="form-grid">
+            
+            <!-- Arabic Name -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-font"></i>
+                اسم المادة بالعربي
+              </label>
+              <input type="text" class="form-input" id="subjectNameAr" placeholder="مثال: إحصاء" required>
+            </div>
 
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-sort-numeric-up"></i>
-              الترتيب
-            </label>
-            <input type="number" id="subjectOrder" class="form-input" value="1" min="1" required>
-          </div>
-        </div>
+            <!-- English Name -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-language"></i>
+                اسم المادة بالإنجليزي
+              </label>
+              <input type="text" class="form-input" id="subjectNameEn" placeholder="Example: Statistics" required>
+            </div>
 
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-font"></i>
-              الاسم بالعربي
-            </label>
-            <input type="text" id="subjectNameAr" class="form-input" placeholder="التسويق" required>
-          </div>
+            <!-- Subject ID -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-hashtag"></i>
+                معرف المادة (ID)
+              </label>
+              <input type="text" class="form-input" id="subjectId" placeholder="مثال: statistics" required>
+            </div>
 
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-language"></i>
-              الاسم بالإنجليزي
-            </label>
-            <input type="text" id="subjectNameEn" class="form-input" placeholder="Marketing" required>
-          </div>
-        </div>
+            <!-- Order -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-sort-numeric-down"></i>
+                ترتيب العرض
+              </label>
+              <input type="number" class="form-input" id="subjectOrder" value="1" min="1">
+            </div>
 
-        <div class="form-group full-width">
-          <label class="form-label">
-            <i class="fas fa-align-right"></i>
-            وصف المادة (اختياري)
-          </label>
-          <textarea id="subjectDescription" class="form-textarea" placeholder="وصف مختصر للمادة..."></textarea>
-        </div>
+            <!-- Description -->
+            <div class="form-group full-width">
+              <label class="form-label">
+                <i class="fas fa-align-right"></i>
+                وصف المادة (اختياري)
+              </label>
+              <textarea class="form-textarea" id="subjectDescription" placeholder="وصف مختصر عن المادة"></textarea>
+            </div>
 
-        <!-- Icon Selection -->
-        <div class="form-group full-width">
-          <label class="form-label">
-            <i class="fas fa-icons"></i>
-            اختر الأيقونة
-          </label>
-          <button type="button" class="form-input" style="cursor: pointer; text-align: right; display: flex; align-items: center; gap: 10px;" onclick="toggleIconPicker()">
-            <span id="selectedIconPreview" style="display: flex; align-items: center; gap: 10px;">
-              <i class="fas fa-book" style="font-size: 1.2rem;"></i>
-              <span>fa-book</span>
-            </span>
-          </button>
-          <div id="iconPickerGroup" class="picker-grid" style="display: none;">
-            <!-- Icons populated by JS -->
-          </div>
-          <input type="hidden" id="subjectIcon" value="fa-book">
-        </div>
-
-        <!-- Color Selection -->
-        <div class="form-group full-width">
-          <label class="form-label">
-            <i class="fas fa-palette"></i>
-            اختر اللون
-          </label>
-          <div class="color-grid" id="colorGrid">
-            <!-- Colors populated by JS -->
-          </div>
-          <input type="hidden" id="subjectColor" value="#16a34a">
-        </div>
-
-        <!-- ==================== تخصيصات متقدمة ==================== -->
-        <div class="form-divider">
-          <div class="form-divider-title">
-            <i class="fas fa-sliders-h"></i>
-            تخصيصات متقدمة
-          </div>
-        </div>
-
-        <!-- Container Styling -->
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-border-style"></i>
-              نوع الحدود
-            </label>
-            <select id="containerBorder" class="form-select">
-              <option value="normal">عادية (Solid)</option>
-              <option value="dashed">متقطعة (Dashed)</option>
-              <option value="none">بدون حدود</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-sun"></i>
-              مستوى الظل
-            </label>
-            <select id="containerShadow" class="form-select">
-              <option value="light">خفيف</option>
-              <option value="normal" selected>عادي</option>
-              <option value="heavy">قوي</option>
-              <option value="none">بدون ظل</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-ruler-combined"></i>
-              حجم الـ Container
-            </label>
-            <select id="containerSize" class="form-select">
-              <option value="compact">صغير (Compact)</option>
-              <option value="normal" selected>عادي</option>
-              <option value="large">كبير (Large)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-expand"></i>
-              حجم الأيقونة
-            </label>
-            <select id="iconSize" class="form-select">
-              <option value="small">صغيرة (70px)</option>
-              <option value="normal" selected>عادية (90px)</option>
-              <option value="large">كبيرة (110px)</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Animation Settings -->
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-magic"></i>
-              حركة الأيقونة
-            </label>
-            <select id="iconAnimation" class="form-select">
-              <option value="float" selected>طائرة (Float)</option>
-              <option value="pulse">نبضة (Pulse)</option>
-              <option value="both">الاثنين معاً</option>
-              <option value="none">بدون حركة</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-tachometer-alt"></i>
-              سرعة الحركة
-            </label>
-            <select id="animationSpeed" class="form-select">
-              <option value="slow">بطيء (0.8s)</option>
-              <option value="normal" selected>عادي (0.4s)</option>
-              <option value="fast">سريع (0.2s)</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Layout & Effects -->
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-align-center"></i>
-              تخطيط الـ Container
-            </label>
-            <select id="containerLayout" class="form-select">
-              <option value="vertical" selected>رأسي (Vertical)</option>
-              <option value="horizontal">أفقي (Horizontal)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-drafting-compass"></i>
-              درجة التدوير عند Hover
-            </label>
-            <input type="number" id="hoverRotation" class="form-input" value="-8" min="-45" max="45" step="1">
-            <small class="form-hint">
-              <i class="fas fa-info-circle"></i>
-              من -45 إلى 45 درجة
-            </small>
-          </div>
-        </div>
-
-        <!-- Hover Effects -->
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-arrows-alt-v"></i>
-              مسافة الرفع عند Hover (px)
-            </label>
-            <input type="number" id="hoverLift" class="form-input" value="12" min="0" max="30" step="2">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-search-plus"></i>
-              نسبة التكبير عند Hover
-            </label>
-            <input type="number" id="hoverScale" class="form-input" value="1.02" min="1" max="1.2" step="0.01">
-          </div>
-        </div>
-
-        <!-- Border Radius -->
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-square"></i>
-              تدوير الزوايا (Container)
-            </label>
-            <input type="number" id="containerRadius" class="form-input" value="24" min="0" max="50" step="2">
-            <small class="form-hint">
-              <i class="fas fa-info-circle"></i>
-              0 = مربع، 50 = دائري
-            </small>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-circle"></i>
-              تدوير الزوايا (Icon Box)
-            </label>
-            <input type="number" id="iconRadius" class="form-input" value="22" min="0" max="50" step="2">
-          </div>
-        </div>
-
-        <!-- Background & Effects -->
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-adjust"></i>
-              شفافية الخلفية
-            </label>
-            <input type="range" id="bgOpacity" class="form-input" value="0.4" min="0" max="1" step="0.1" oninput="updateOpacityValue(this.value)">
-            <small class="form-hint">
-              <i class="fas fa-eye"></i>
-              <span id="opacityValue">40%</span>
-            </small>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-sparkles"></i>
-              تأثير اللمعان (Shine)
-            </label>
-            <select id="shineEffect" class="form-select">
-              <option value="true" selected>مفعّل</option>
-              <option value="false">معطّل</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Custom CSS Classes -->
-        <div class="form-group full-width">
-          <label class="form-label">
-            <i class="fas fa-code"></i>
-            CSS Classes إضافية (اختياري)
-          </label>
-          <input type="text" id="customClasses" class="form-input" placeholder="custom-style premium-card">
-          <small class="form-hint">
-            <i class="fas fa-info-circle"></i>
-            فصل بينهم بمسافة
-          </small>
-        </div>
-        <!-- Preview -->
-        <div class="form-group full-width">
-          <label class="form-label">
-            <i class="fas fa-eye"></i>
-            معاينة الشكل النهائي
-          </label>
-          <div class="container-preview">
-            <div class="preview-card">
-              <div class="preview-icon-container" id="previewIconContainer" style="background: linear-gradient(135deg, #16a34a, #10b981);">
-                <i id="previewIcon" class="fas fa-book"></i>
+            <!-- Icon Selection -->
+            <div class="form-group full-width">
+              <label class="form-label">
+                <i class="fas fa-icons"></i>
+                اختر الأيقونة
+              </label>
+              <div class="icon-picker-grid" id="iconPicker">
+                <!-- Icons populated by JS -->
               </div>
-              <div class="preview-title" id="previewTitle">عنوان المادة</div>
-              <div class="preview-subtitle" id="previewSubtitle">Subject Name</div>
-              <div style="margin-top: 15px; padding-top: 15px; border-top: 2px solid #f1f5f9;">
-                <small style="color: #94a3b8; font-weight: 600;">
-                  <i class="fas fa-book"></i> 0 محاضرة
-                </small>
+              <input type="hidden" id="subjectIcon" value="fa-book" required>
+            </div>
+
+            <!-- Color Selection -->
+            <div class="form-group full-width">
+              <label class="form-label">
+                <i class="fas fa-palette"></i>
+                اختر اللون
+              </label>
+              <div class="color-grid" id="colorGrid">
+                <!-- Colors populated by JS -->
+              </div>
+              <input type="hidden" id="subjectColor" value="16a34a" required>
+            </div>
+
+            <!-- ✅ Icon Color Selection (NEW) -->
+            <div class="form-group full-width">
+              <label class="form-label">
+                <i class="fas fa-paint-brush"></i>
+                لون الآيكون
+              </label>
+              <div class="color-grid" id="iconColorGrid">
+                <!-- Icon Colors populated by JS -->
+              </div>
+              <input type="hidden" id="iconColor" value="ffffff">
+            </div>
+
+            <!-- Preview -->
+            <div class="form-group full-width">
+              <div class="preview-section">
+                <div class="preview-title">
+                  <i class="fas fa-eye"></i> معاينة
+                </div>
+                <div class="subject-preview">
+                  <div class="preview-icon-container" id="previewIconContainer">
+                    <i class="fas fa-book" id="previewIcon"></i>
+                  </div>
+                  <div class="preview-name" id="previewNameAr">اسم المادة</div>
+                  <div class="preview-name-en" id="previewNameEn">Subject Name</div>
+                </div>
               </div>
             </div>
+
+            <!-- Submit Button -->
+            <div class="form-group full-width">
+              <button type="submit" class="submit-btn" id="submitSubjectBtn">
+                <i class="fas fa-check-circle"></i>
+                إضافة المادة
+              </button>
+            </div>
+
           </div>
-        </div>
-
-        <!-- Visibility -->
-        <div class="form-group">
-          <label class="form-label">
-            <i class="fas fa-eye"></i>
-            حالة الظهور
-          </label>
-          <select id="subjectVisibility" class="form-select" required>
-            <option value="true">ظاهرة للطلاب</option>
-            <option value="false">مخفية</option>
-          </select>
-        </div>
-
-        <button type="submit" class="btn-primary" id="submitSubjectBtn">
-          <i class="fas fa-plus-circle"></i>
-          إضافة المادة
-        </button>
-      </form>
-
-      <!-- Subjects Table -->
-      <div style="margin-top: 40px;">
-        <h3 style="font-size: 1.3rem; font-weight: 700; color: #0f172a; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-          <i class="fas fa-list"></i>
-          المواد الموجودة
-        </h3>
-
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>الاسم (عربي)</th>
-              <th>الاسم (English)</th>
-              <th>الأيقونة</th>
-              <th>الترتيب</th>
-              <th>إجراءات</th>
-            </tr>
-          </thead>
-          <tbody id="subjectsTableBody">
-            <tr>
-              <td colspan="6" style="text-align: center; padding: 30px; color: #94a3b8;">
-                <i class="fas fa-spinner fa-spin"></i> جاري التحميل...
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        </form>
       </div>
+
+      <!-- Subjects List -->
+      <div class="form-card">
+        <h2>
+          <i class="fas fa-list"></i>
+          المواد المتاحة
+        </h2>
+        <div class="subjects-list" id="subjectsList">
+          <!-- Subjects populated by JS -->
+        </div>
+      </div>
+
     </div>
 
-    <!-- ==================== إدارة المحاضرات ==================== -->
-    <div class="section animate-in" style="animation-delay: 0.1s;">
-      <div class="section-header">
-        <i class="fas fa-video"></i>
-        <h2>إدارة المحاضرات</h2>
-      </div>
+    <!-- ... Lectures Tab (يكمل في Part 2) ... -->
 
-      <div id="addAlert" class="alert"></div>
-
-      <form id="addLectureForm">
+    <!-- ==========================================
+         LECTURES TAB
+         ========================================== -->
+    <div id="lecturesTab" class="tab-content">
+      
+      <!-- Add Lecture Form -->
+      <div class="form-card">
+        <h2>
+          <i class="fas fa-plus-circle"></i>
+          إضافة محاضرة جديدة
+        </h2>
         
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-hashtag"></i>
-              معرّف المحاضرة
-            </label>
-            <input type="text" id="lectureId" class="form-input" placeholder="stat_l1" required>
+        <form id="addLectureForm">
+          <div class="form-grid">
+            
+            <!-- Lecture Title -->
+            <div class="form-group full-width">
+              <label class="form-label">
+                <i class="fas fa-heading"></i>
+                عنوان المحاضرة
+              </label>
+              <input type="text" class="form-input" id="lectureTitle" placeholder="مثال: المحاضرة الأولى" required>
+            </div>
+
+            <!-- Subject -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-book"></i>
+                المادة
+              </label>
+              <select class="form-select" id="lectureSubject" required>
+                <option value="">اختر المادة</option>
+                <!-- Options populated by JS -->
+              </select>
+            </div>
+
+            <!-- Lecture ID -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-hashtag"></i>
+                معرف المحاضرة (ID)
+              </label>
+              <input type="text" class="form-input" id="lectureId" placeholder="مثال: stats_lecture_1" required>
+            </div>
+
+            <!-- URL -->
+            <div class="form-group full-width">
+              <label class="form-label">
+                <i class="fas fa-link"></i>
+                رابط المحاضرة
+              </label>
+              <input type="url" class="form-input" id="lectureUrl" placeholder="https://example.com/lecture.html" required>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group full-width">
+              <label class="form-label">
+                <i class="fas fa-align-right"></i>
+                وصف المحاضرة (اختياري)
+              </label>
+              <textarea class="form-textarea" id="lectureDescription" placeholder="وصف مختصر"></textarea>
+            </div>
+
+            <!-- Price Type -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-tag"></i>
+                نوع المحاضرة
+              </label>
+              <select class="form-select" id="lecturePrice" onchange="toggleActivationCode()">
+                <option value="free">مجانية</option>
+                <option value="paid">مدفوعة</option>
+              </select>
+            </div>
+
+            <!-- Activation Code -->
+            <div class="form-group" id="activationCodeGroup" style="display: none;">
+              <label class="form-label">
+                <i class="fas fa-key"></i>
+                كود التفعيل
+              </label>
+              <input type="text" class="form-input" id="activationCode" placeholder="كود التفعيل للمحاضرة المدفوعة">
+            </div>
+
+            <!-- Order -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-sort-numeric-down"></i>
+                ترتيب العرض
+              </label>
+              <input type="number" class="form-input" id="lectureOrder" value="1" min="1">
+            </div>
+
+            <!-- Status -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-toggle-on"></i>
+                الحالة
+              </label>
+              <select class="form-select" id="lectureStatus">
+                <option value="active">نشطة</option>
+                <option value="inactive">معطلة</option>
+              </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group full-width">
+              <button type="submit" class="submit-btn" id="submitLectureBtn">
+                <i class="fas fa-check-circle"></i>
+                إضافة المحاضرة
+              </button>
+            </div>
+
           </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-heading"></i>
-              عنوان المحاضرة
-            </label>
-            <input type="text" id="lectureTitle" class="form-input" placeholder="مقدمة في الإحصاء" required>
-          </div>
-        </div>
-
-        <div class="form-group full-width">
-          <label class="form-label">
-            <i class="fas fa-align-right"></i>
-            وصف المحاضرة (اختياري)
-          </label>
-          <textarea id="lectureDescription" class="form-textarea" placeholder="وصف مختصر..."></textarea>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-book-open"></i>
-              المادة
-            </label>
-            <select id="lectureSubject" class="form-select" required>
-              <option value="">-- اختر المادة --</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-link"></i>
-              رابط المحاضرة
-            </label>
-            <input type="text" id="lectureUrl" class="form-input" placeholder="lectures/stat/l1.html" required>
-          </div>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">
-              <i class="fas fa-money-bill-wave"></i>
-              نوع المحاضرة
-            </label>
-            <select id="lecturePrice" class="form-select" onchange="toggleActivationCode()" required>
-              <option value="free">مجانية</option>
-              <option value="paid">مدفوعة</option>
-            </select>
-          </div>
-
-          <div class="form-group" id="activationCodeGroup" style="display: none;">
-            <label class="form-label">
-              <i class="fas fa-key"></i>
-              كود التفعيل
-            </label>
-            <input type="text" id="activationCode" class="form-input" placeholder="STAT2025">
-          </div>
-        </div>
-
-        <button type="submit" class="btn-primary" id="submitBtn">
-          <i class="fas fa-plus-circle"></i>
-          إضافة المحاضرة
-        </button>
-      </form>
-
-      <!-- Lectures Table -->
-      <div style="margin-top: 40px;">
-        <h3 style="font-size: 1.3rem; font-weight: 700; color: #0f172a; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-          <i class="fas fa-list"></i>
-          المحاضرات الموجودة
-        </h3>
-
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>العنوان</th>
-              <th>المادة</th>
-              <th>النوع</th>
-              <th>إجراءات</th>
-            </tr>
-          </thead>
-          <tbody id="lecturesTableBody">
-            <tr>
-              <td colspan="5" style="text-align: center; padding: 30px; color: #94a3b8;">
-                <i class="fas fa-spinner fa-spin"></i> جاري التحميل...
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        </form>
       </div>
+
+      <!-- Lectures List -->
+      <div class="form-card">
+        <h2>
+          <i class="fas fa-list"></i>
+          المحاضرات المتاحة
+        </h2>
+        <div class="lectures-table">
+          <table>
+            <thead>
+              <tr>
+                <th>العنوان</th>
+                <th>المادة</th>
+                <th>النوع</th>
+                <th>الحالة</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="lecturesTableBody">
+              <!-- Lectures populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
 
-  </main>
+  </div>
 
-   <script type="module">
+  <!-- Firebase & Script -->
+  <script type="module">
     import { auth, db } from './js/app.js';
     import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
     import { 
       collection, 
       addDoc, 
       getDocs, 
-      deleteDoc, 
       doc, 
-      query, 
-      orderBy,
-      serverTimestamp
+      updateDoc, 
+      deleteDoc,
+      getDoc,
+      serverTimestamp 
     } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-    let currentUser = null;
-
-    // ==================== ICONS & COLORS ====================
-    const popularIcons = [
-      'fa-book', 'fa-graduation-cap', 'fa-chart-bar', 'fa-chart-line', 
-      'fa-chart-pie', 'fa-calculator', 'fa-coins', 'fa-dollar-sign', 
-      'fa-money-bill-wave', 'fa-building', 'fa-industry', 'fa-landmark', 
-      'fa-university', 'fa-briefcase', 'fa-handshake', 'fa-bullhorn', 
-      'fa-shopping-cart', 'fa-lightbulb', 'fa-brain', 'fa-atom', 
-      'fa-flask', 'fa-microscope', 'fa-dna', 'fa-heartbeat', 
-      'fa-balance-scale', 'fa-gavel', 'fa-globe', 'fa-language',
-      'fa-laptop-code', 'fa-code', 'fa-paint-brush', 'fa-music'
+    // ==========================================
+    // ICONS & COLORS
+    // ==========================================
+    const iconOptions = [
+      'fa-book', 'fa-chart-line', 'fa-calculator', 'fa-microscope',
+      'fa-flask', 'fa-dna', 'fa-atom', 'fa-brain',
+      'fa-code', 'fa-laptop-code', 'fa-database', 'fa-network-wired',
+      'fa-globe', 'fa-language', 'fa-graduation-cap', 'fa-user-graduate',
+      'fa-briefcase', 'fa-balance-scale', 'fa-gavel', 'fa-landmark',
+      'fa-paint-brush', 'fa-music', 'fa-theater-masks', 'fa-palette',
+      'fa-heartbeat', 'fa-stethoscope', 'fa-syringe', 'fa-pills',
+      'fa-leaf', 'fa-tree', 'fa-seedling', 'fa-water',
+      'fa-sun', 'fa-moon', 'fa-star', 'fa-rocket'
     ];
 
     const colorPresets = [
-      '#16a34a', '#10b981', '#059669', '#047857',
-      '#3b82f6', '#2563eb', '#1d4ed8', '#1e40af',
-      '#8b5cf6', '#7c3aed', '#6d28d9', '#5b21b6',
-      '#f59e0b', '#d97706', '#b45309', '#92400e',
-      '#ef4444', '#dc2626', '#b91c1c', '#991b1b',
-      '#ec4899', '#db2777', '#be185d', '#9f1239'
+      '16a34a', '10b981', '059669', '047857',
+      '3b82f6', '2563eb', '1d4ed8', '1e40af',
+      'f59e0b', 'd97706', 'b45309', '92400e',
+      'ef4444', 'dc2626', 'b91c1c', '991b1b',
+      '8b5cf6', '7c3aed', '6d28d9', '5b21b6',
+      'ec4899', 'd946ef', 'c026d3', 'a21caf',
+      '06b6d4', '0891b2', '0e7490', '155e75',
+      '84cc16', '65a30d', '4d7c0f', '3f6212'
     ];
 
-    // ==================== AUTH CHECK ====================
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        alert('يجب تسجيل الدخول');
-        window.location.href = 'login.html';
-        return;
-      }
-      
-      currentUser = user;
-      initializeApp();
-    });
+    // ✅ Icon Color Presets (NEW)
+    const iconColorPresets = [
+      'ffffff', // أبيض
+      'f0fdf4', // أخضر فاتح جداً
+      'dcfce7', // أخضر فاتح
+      '000000', // أسود
+      '1e293b', // رمادي غامق
+      '475569', // رمادي متوسط
+      'fef3c7', // أصفر فاتح
+      'fde68a', // أصفر
+      'fca5a5', // أحمر فاتح
+      'f87171', // أحمر
+      'bfdbfe', // أزرق فاتح
+      '60a5fa', // أزرق
+      'c7d2fe', // بنفسجي فاتح
+      'a78bfa'  // بنفسجي
+    ];
 
-    // ==================== INITIALIZE ====================
-    async function initializeApp() {
-      populateIconPicker();
-      populateColorGrid();
-      setupPreviewListeners();
-      await loadSubjects();
-      await loadLectures();
-    }
-
-    // ==================== ICON PICKER ====================
+    // ==========================================
+    // POPULATE UI
+    // ==========================================
     function populateIconPicker() {
-      const picker = document.getElementById('iconPickerGroup');
-      picker.innerHTML = popularIcons.map(icon => `
-        <div class="icon-option" onclick="selectIcon('${icon}')">
+      const grid = document.getElementById('iconPicker');
+      grid.innerHTML = iconOptions.map((icon, index) => `
+        <div class="icon-option ${index === 0 ? 'selected' : ''}" 
+             data-icon="${icon}" 
+             onclick="selectIcon('${icon}')">
           <i class="fas ${icon}"></i>
         </div>
       `).join('');
     }
 
-    window.toggleIconPicker = function() {
-      const picker = document.getElementById('iconPickerGroup');
-      picker.style.display = picker.style.display === 'none' ? 'grid' : 'none';
-    };
-
-    window.selectIcon = function(icon) {
-      document.getElementById('subjectIcon').value = icon;
-      document.getElementById('selectedIconPreview').innerHTML = `
-        <i class="fas ${icon}" style="font-size: 1.2rem;"></i>
-        <span>${icon}</span>
-      `;
-      
-      document.getElementById('previewIcon').className = `fas ${icon}`;
-      
-      document.querySelectorAll('.icon-option').forEach(opt => opt.classList.remove('selected'));
-      event.target.closest('.icon-option').classList.add('selected');
-    };
-
-    // ==================== COLOR GRID ====================
     function populateColorGrid() {
       const grid = document.getElementById('colorGrid');
       grid.innerHTML = colorPresets.map((color, index) => `
         <div class="color-option ${index === 0 ? 'selected' : ''}" 
-             style="background: ${color};" 
-             onclick="selectColor('${color}')"></div>
+             style="background: #${color}" 
+             onclick="selectColor('${color}')">
+        </div>
       `).join('');
     }
 
+    // ✅ Populate Icon Color Grid (NEW)
+    function populateIconColorGrid() {
+      const grid = document.getElementById('iconColorGrid');
+      grid.innerHTML = iconColorPresets.map((color, index) => `
+        <div class="color-option ${index === 0 ? 'selected' : ''}" 
+             style="background: #${color}" 
+             onclick="selectIconColor('${color}')">
+        </div>
+      `).join('');
+    }
+
+    // ==========================================
+    // SELECTION HANDLERS
+    // ==========================================
+    window.selectIcon = function(icon) {
+      document.getElementById('subjectIcon').value = icon;
+      document.getElementById('previewIcon').className = `fas ${icon}`;
+      
+      document.querySelectorAll('#iconPicker .icon-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      event.target.closest('.icon-option').classList.add('selected');
+    };
+
     window.selectColor = function(color) {
       document.getElementById('subjectColor').value = color;
+      const container = document.getElementById('previewIconContainer');
+      container.style.background = `linear-gradient(135deg, #${color}, #${adjustColor(color, 20)})`;
       
-      const lighter = adjustColor(color, 20);
-      document.getElementById('previewIconContainer').style.background = 
-        `linear-gradient(135deg, ${color}, ${lighter})`;
+      document.querySelectorAll('#colorGrid .color-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      event.target.classList.add('selected');
+    };
+
+    // ✅ Select Icon Color (NEW)
+    window.selectIconColor = function(color) {
+      document.getElementById('iconColor').value = color;
       
-      document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+      // Update preview icon color
+      document.getElementById('previewIcon').style.color = `#${color}`;
+      
+      // Update selected state
+      document.querySelectorAll('#iconColorGrid .color-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
       event.target.classList.add('selected');
     };
 
     function adjustColor(color, percent) {
-      const num = parseInt(color.replace('#', ''), 16);
+      const num = parseInt(color, 16);
       const amt = Math.round(2.55 * percent);
-      const R = (num >> 16) + amt;
-      const G = (num >> 8 & 0x00FF) + amt;
-      const B = (num & 0x0000FF) + amt;
-      return '#' + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
-        (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
-        (B < 255 ? B < 1 ? 0 : B : 255))
-        .toString(16).slice(1);
+      const R = Math.min(255, Math.max(0, (num >> 16) + amt));
+      const G = Math.min(255, Math.max(0, (num >> 8 & 0x00FF) + amt));
+      const B = Math.min(255, Math.max(0, (num & 0x0000FF) + amt));
+      return (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
     }
 
-    // ==================== LIVE PREVIEW ====================
+    // ==========================================
+    // PREVIEW LISTENERS
+    // ==========================================
     function setupPreviewListeners() {
       document.getElementById('subjectNameAr').addEventListener('input', (e) => {
-        const val = e.target.value.trim();
-        document.getElementById('previewTitle').textContent = val || 'عنوان المادة';
+        document.getElementById('previewNameAr').textContent = e.target.value || 'اسم المادة';
       });
-      
+
       document.getElementById('subjectNameEn').addEventListener('input', (e) => {
-        const val = e.target.value.trim();
-        document.getElementById('previewSubtitle').textContent = val || 'Subject Name';
+        document.getElementById('previewNameEn').textContent = e.target.value || 'Subject Name';
       });
     }
 
-    // ==================== OPACITY VALUE ====================
-    window.updateOpacityValue = function(value) {
-      const percentage = Math.round(value * 100);
-      document.getElementById('opacityValue').textContent = `${percentage}%`;
+    // ==========================================
+    // TAB SWITCHING
+    // ==========================================
+    window.switchTab = function(tab) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById(tab + 'Tab').classList.add('active');
     };
 
-    // ==================== ADD SUBJECT ====================
+    // ==========================================
+    // TOAST
+    // ==========================================
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+        <span>${message}</span>
+      `;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // ==========================================
+    // ADD SUBJECT
+    // ==========================================
     document.getElementById('addSubjectForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const btn = document.getElementById('submitSubjectBtn');
-      const alert = document.getElementById('subjectAlert');
-      
-      const subjectId = document.getElementById('subjectId').value.trim().toLowerCase();
-      const nameAr = document.getElementById('subjectNameAr').value.trim();
-      const nameEn = document.getElementById('subjectNameEn').value.trim();
-      const description = document.getElementById('subjectDescription').value.trim();
-      const icon = document.getElementById('subjectIcon').value.trim();
-      const color = document.getElementById('subjectColor').value;
-      const order = parseInt(document.getElementById('subjectOrder').value);
-      const isVisible = document.getElementById('subjectVisibility').value === 'true';
-      
-      // Advanced customizations
-      const customizations = {
-        border: document.getElementById('containerBorder').value,
-        shadow: document.getElementById('containerShadow').value,
-        size: document.getElementById('containerSize').value,
-        iconSize: document.getElementById('iconSize').value,
-        animation: document.getElementById('iconAnimation').value,
-        animationSpeed: document.getElementById('animationSpeed').value,
-        layout: document.getElementById('containerLayout').value,
-        hoverRotation: parseInt(document.getElementById('hoverRotation').value),
-        hoverLift: parseInt(document.getElementById('hoverLift').value),
-        hoverScale: parseFloat(document.getElementById('hoverScale').value),
-        containerRadius: parseInt(document.getElementById('containerRadius').value),
-        iconRadius: parseInt(document.getElementById('iconRadius').value),
-        bgOpacity: parseFloat(document.getElementById('bgOpacity').value),
-        shineEffect: document.getElementById('shineEffect').value === 'true',
-        customClasses: document.getElementById('customClasses').value.trim()
-      };
-      
-      if (!/^[a-z]+$/.test(subjectId)) {
-        showAlert(alert, 'error', 'معرّف المادة يجب أن يكون أحرف إنجليزية صغيرة فقط');
-        return;
-      }
-      
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإضافة...';
       
       try {
-        const existingSubjects = await getDocs(collection(db, 'subjects'));
-        const exists = existingSubjects.docs.some(docSnap => docSnap.data().id === subjectId);
-        
-        if (exists) {
-          showAlert(alert, 'error', 'المعرّف موجود بالفعل!');
-          btn.disabled = false;
-          btn.innerHTML = '<i class="fas fa-plus-circle"></i> إضافة المادة';
-          return;
-        }
+        const nameAr = document.getElementById('subjectNameAr').value;
+        const nameEn = document.getElementById('subjectNameEn').value;
+        const id = document.getElementById('subjectId').value;
+        const icon = document.getElementById('subjectIcon').value;
+        const color = '#' + document.getElementById('subjectColor').value;
+        const iconColor = document.getElementById('iconColor').value; // ✅ NEW
+        const order = parseInt(document.getElementById('subjectOrder').value);
+        const description = document.getElementById('subjectDescription').value;
         
         await addDoc(collection(db, 'subjects'), {
-          id: subjectId,
+          id: id,
           nameAr: nameAr,
           nameEn: nameEn,
-          description: description,
           icon: icon,
           color: color,
           order: order,
-          isVisible: isVisible,
-          customizations: customizations,
-          lectureCount: 0,
-          createdAt: serverTimestamp()
+          description: description,
+          isVisible: true,
+          createdAt: serverTimestamp(),
+          customizations: {
+            iconColor: iconColor, // ✅ Save Icon Color
+            border: '2px',
+            shadow: 'medium'
+          }
         });
         
-        showAlert(alert, 'success', 'تم إضافة المادة بنجاح!');
-        resetSubjectForm();
-        loadSubjects();
+        showToast('تم إضافة المادة بنجاح!', 'success');
+        document.getElementById('addSubjectForm').reset();
+        document.getElementById('subjectIcon').value = 'fa-book';
+        document.getElementById('subjectColor').value = '16a34a';
+        document.getElementById('iconColor').value = 'ffffff'; // ✅ Reset
+        
+        populateIconPicker();
+        populateColorGrid();
+        populateIconColorGrid(); // ✅ Reset Icon Color Grid
+        
+        document.getElementById('previewNameAr').textContent = 'اسم المادة';
+        document.getElementById('previewNameEn').textContent = 'Subject Name';
+        document.getElementById('previewIcon').className = 'fas fa-book';
+        document.getElementById('previewIcon').style.color = '#ffffff'; // ✅ Reset Preview
+        document.getElementById('previewIconContainer').style.background = 'linear-gradient(135deg, #16a34a, #10b981)';
+        
+        await loadSubjects();
         
       } catch (error) {
         console.error('Error:', error);
-        showAlert(alert, 'error', 'خطأ: ' + error.message);
+        showToast('حدث خطأ أثناء الإضافة', 'error');
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-plus-circle"></i> إضافة المادة';
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> إضافة المادة';
       }
     });
 
-    function resetSubjectForm() {
-      document.getElementById('addSubjectForm').reset();
-      document.getElementById('subjectIcon').value = 'fa-book';
-      document.getElementById('subjectColor').value = '#16a34a';
-      document.getElementById('selectedIconPreview').innerHTML = '<i class="fas fa-book" style="font-size: 1.2rem;"></i> <span>fa-book</span>';
-      document.getElementById('previewIcon').className = 'fas fa-book';
-      document.getElementById('previewIconContainer').style.background = 'linear-gradient(135deg, #16a34a, #10b981)';
-      document.getElementById('previewTitle').textContent = 'عنوان المادة';
-      document.getElementById('previewSubtitle').textContent = 'Subject Name';
-      document.getElementById('opacityValue').textContent = '40%';
-      populateColorGrid();
-      document.querySelectorAll('.icon-option').forEach(opt => opt.classList.remove('selected'));
-    }
-
-    // ==================== LOAD SUBJECTS ====================
+    // ==========================================
+    // LOAD SUBJECTS
+    // ==========================================
     async function loadSubjects() {
-      const tbody = document.getElementById('subjectsTableBody');
-      
       try {
-        const q = query(collection(db, 'subjects'), orderBy('order', 'asc'));
-        const snapshot = await getDocs(q);
+        const snapshot = await getDocs(collection(db, 'subjects'));
+        const list = document.getElementById('subjectsList');
+        const select = document.getElementById('lectureSubject');
         
-        if (snapshot.empty) {
-          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px; color: #94a3b8;">لا توجد مواد</td></tr>';
-          return;
-        }
+        list.innerHTML = '';
+        select.innerHTML = '<option value="">اختر المادة</option>';
         
-        const subjects = [];
-        snapshot.forEach(docSnap => {
-          subjects.push({ docId: docSnap.id, ...docSnap.data() });
-        });
-        
-        tbody.innerHTML = '';
-        
-        subjects.forEach(subject => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td style="font-weight: 700; color: #16a34a;">${subject.id}</td>
-            <td style="font-weight: 600;">${subject.nameAr}</td>
-            <td>${subject.nameEn}</td>
-            <td>
-              <div style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: ${subject.color}; border-radius: 12px;">
-                <i class="fas ${subject.icon}" style="color: white; font-size: 1.5rem;"></i>
+        snapshot.forEach((docSnap) => {
+          const subject = docSnap.data();
+          const docId = docSnap.id;
+          
+          // ✅ Get Icon Color
+          const iconColor = subject.customizations?.iconColor || 'ffffff';
+          
+          list.innerHTML += `
+            <div class="subject-item">
+              <div class="subject-item-header">
+                <div class="subject-item-icon" style="background: linear-gradient(135deg, ${subject.color}, ${adjustColor(subject.color.replace('#',''), 20)})">
+                  <i class="fas ${subject.icon}" style="color: #${iconColor};"></i>
+                </div>
+                <div class="subject-item-info">
+                  <h3>${subject.nameAr}</h3>
+                  <p>${subject.nameEn}</p>
+                </div>
               </div>
-            </td>
-            <td style="font-weight: 700;">${subject.order}</td>
-            <td>
-              <button class="btn-danger" onclick="deleteSubject('${subject.docId}', '${subject.nameAr}')">
-                <i class="fas fa-trash-alt"></i> حذف
-              </button>
-            </td>
+              <div class="subject-item-actions">
+                <button class="action-btn edit-btn" onclick="editSubject('${docId}')">
+                  <i class="fas fa-edit"></i> تعديل
+                </button>
+                <button class="action-btn delete-btn" onclick="deleteSubject('${docId}')">
+                  <i class="fas fa-trash"></i> حذف
+                </button>
+              </div>
+            </div>
           `;
-          tbody.appendChild(row);
+          
+          select.innerHTML += `<option value="${subject.id}">${subject.nameAr}</option>`;
         });
-        
-        updateSubjectSelect(subjects);
         
       } catch (error) {
-        console.error('Error:', error);
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px; color: #ef4444;">خطأ في التحميل</td></tr>';
+        console.error('Error loading subjects:', error);
       }
     }
 
-    function updateSubjectSelect(subjects) {
-      const select = document.getElementById('lectureSubject');
-      select.innerHTML = '<option value="">-- اختر المادة --</option>';
-      
-      subjects.forEach(subject => {
-        const option = document.createElement('option');
-        option.value = subject.id;
-        option.textContent = `${subject.nameAr} (${subject.nameEn})`;
-        select.appendChild(option);
-      });
-    }
-
-    window.deleteSubject = async function(docId, name) {
-      if (!confirm(`هل تريد حذف المادة: ${name}؟`)) return;
-      
-      const alert = document.getElementById('subjectAlert');
+    // ==========================================
+    // DELETE SUBJECT
+    // ==========================================
+    window.deleteSubject = async function(docId) {
+      if (!confirm('هل أنت متأكد من حذف هذه المادة؟')) return;
       
       try {
         await deleteDoc(doc(db, 'subjects', docId));
-        showAlert(alert, 'success', 'تم الحذف بنجاح');
-        loadSubjects();
+        showToast('تم حذف المادة بنجاح', 'success');
+        await loadSubjects();
       } catch (error) {
         console.error('Error:', error);
-        showAlert(alert, 'error', 'خطأ: ' + error.message);
+        showToast('حدث خطأ أثناء الحذف', 'error');
       }
     };
-    // ==================== ADD LECTURE ====================
+
+    // ... باقي الكود في Part 3 ...
+    // ==========================================
+    // TOGGLE ACTIVATION CODE
+    // ==========================================
     window.toggleActivationCode = function() {
-      const price = document.getElementById('lecturePrice').value;
-      document.getElementById('activationCodeGroup').style.display = price === 'paid' ? 'block' : 'none';
+      const priceType = document.getElementById('lecturePrice').value;
+      const codeGroup = document.getElementById('activationCodeGroup');
+      
+      if (priceType === 'paid') {
+        codeGroup.style.display = 'block';
+        document.getElementById('activationCode').required = true;
+      } else {
+        codeGroup.style.display = 'none';
+        document.getElementById('activationCode').required = false;
+      }
     };
 
+    // ==========================================
+    // ADD LECTURE
+    // ==========================================
     document.getElementById('addLectureForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      const btn = document.getElementById('submitBtn');
-      const alert = document.getElementById('addAlert');
-      
-      const lectureId = document.getElementById('lectureId').value.trim();
-      const title = document.getElementById('lectureTitle').value.trim();
-      const description = document.getElementById('lectureDescription').value.trim();
-      const subject = document.getElementById('lectureSubject').value;
-      const url = document.getElementById('lectureUrl').value.trim();
-      const price = document.getElementById('lecturePrice').value;
-      const activationCode = document.getElementById('activationCode').value.trim();
-      
-      if (!lectureId || !title || !subject || !url) {
-        showAlert(alert, 'error', 'يرجى ملء جميع الحقول المطلوبة');
-        return;
-      }
-      
-      if (price === 'paid' && !activationCode) {
-        showAlert(alert, 'error', 'يرجى إدخال كود التفعيل');
-        return;
-      }
-      
+      const btn = document.getElementById('submitLectureBtn');
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإضافة...';
       
       try {
-        const lectureData = {
-          lectureId,
-          title,
-          description,
-          subject,
-          url,
-          price,
-          status: 'active',
-          icon: 'fa-book-open',
-          order: 999,
-          createdAt: serverTimestamp()
-        };
+        const title = document.getElementById('lectureTitle').value;
+        const subject = document.getElementById('lectureSubject').value;
+        const lectureId = document.getElementById('lectureId').value;
+        const url = document.getElementById('lectureUrl').value;
+        const description = document.getElementById('lectureDescription').value;
+        const price = document.getElementById('lecturePrice').value;
+        const activationCode = document.getElementById('activationCode').value;
+        const order = parseInt(document.getElementById('lectureOrder').value);
+        const status = document.getElementById('lectureStatus').value;
         
-        if (price === 'paid') {
-          lectureData.activationCode = activationCode;
-        }
-        
-        await addDoc(collection(db, 'lectures'), lectureData);
-        
-        showAlert(alert, 'success', 'تم إضافة المحاضرة بنجاح!');
-        document.getElementById('addLectureForm').reset();
-        document.getElementById('activationCodeGroup').style.display = 'none';
-        loadLectures();
-        
-      } catch (error) {
-        console.error('Error:', error);
-        showAlert(alert, 'error', 'خطأ: ' + error.message);
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-plus-circle"></i> إضافة المحاضرة';
-      }
-    });
-
-    // ==================== LOAD LECTURES ====================
-    async function loadLectures() {
-      const tbody = document.getElementById('lecturesTableBody');
-      
-      try {
-        const q = query(collection(db, 'lectures'), orderBy('createdAt', 'desc'));
-        const snapshot = await getDocs(q);
-        
-        if (snapshot.empty) {
-          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 30px; color: #94a3b8;">لا توجد محاضرات</td></tr>';
+        if (!subject) {
+          showToast('يرجى اختيار المادة', 'error');
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-check-circle"></i> إضافة المحاضرة';
           return;
         }
         
+        await addDoc(collection(db, 'lectures'), {
+          lectureId: lectureId,
+          title: title,
+          subject: subject,
+          url: url,
+          description: description,
+          price: price,
+          activationCode: price === 'paid' ? activationCode : null,
+          order: order,
+          status: status,
+          createdAt: serverTimestamp()
+        });
+        
+        showToast('تم إضافة المحاضرة بنجاح!', 'success');
+        document.getElementById('addLectureForm').reset();
+        await loadLectures();
+        
+      } catch (error) {
+        console.error('Error:', error);
+        showToast('حدث خطأ أثناء الإضافة', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> إضافة المحاضرة';
+      }
+    });
+
+    // ==========================================
+    // LOAD LECTURES
+    // ==========================================
+    async function loadLectures() {
+      try {
+        const snapshot = await getDocs(collection(db, 'lectures'));
+        const tbody = document.getElementById('lecturesTableBody');
+        
         tbody.innerHTML = '';
         
-        snapshot.forEach(docSnap => {
-          const lec = docSnap.data();
-          
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td style="font-weight: 700; color: #16a34a;">${lec.lectureId}</td>
-            <td style="font-weight: 600;">${lec.title}</td>
-            <td>${getSubjectName(lec.subject)}</td>
-            <td>
-              <span class="badge badge-${lec.price === 'free' ? 'success' : 'warning'}">
-                ${lec.price === 'free' ? 'مجانية' : 'مدفوعة'}
-              </span>
-            </td>
-            <td>
-              <button class="btn-danger" onclick="deleteLecture('${docSnap.id}', '${lec.title}')">
-                <i class="fas fa-trash-alt"></i> حذف
-              </button>
-            </td>
+        if (snapshot.empty) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" style="text-align: center; color: #64748b; padding: 40px;">
+                <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 15px; display: block; opacity: 0.3;"></i>
+                لا توجد محاضرات بعد
+              </td>
+            </tr>
           `;
-          tbody.appendChild(row);
+          return;
+        }
+        
+        snapshot.forEach((docSnap) => {
+          const lecture = docSnap.data();
+          const docId = docSnap.id;
+          
+          tbody.innerHTML += `
+            <tr>
+              <td>${lecture.title}</td>
+              <td>${lecture.subject}</td>
+              <td>
+                <span style="color: ${lecture.price === 'free' ? '#10b981' : '#f59e0b'}; font-weight: 700;">
+                  <i class="fas ${lecture.price === 'free' ? 'fa-gift' : 'fa-crown'}"></i>
+                  ${lecture.price === 'free' ? 'مجانية' : 'مدفوعة'}
+                </span>
+              </td>
+              <td>
+                <span class="status-badge ${lecture.status === 'active' ? 'status-active' : 'status-inactive'}">
+                  ${lecture.status === 'active' ? 'نشطة' : 'معطلة'}
+                </span>
+              </td>
+              <td>
+                <div style="display: flex; gap: 8px;">
+                  <button class="action-btn edit-btn" onclick="editLecture('${docId}')" style="flex: none; padding: 8px 12px;">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="action-btn delete-btn" onclick="deleteLecture('${docId}')" style="flex: none; padding: 8px 12px;">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
         });
         
       } catch (error) {
-        console.error('Error:', error);
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 30px; color: #ef4444;">خطأ في التحميل</td></tr>';
+        console.error('Error loading lectures:', error);
       }
     }
 
-    window.deleteLecture = async function(docId, title) {
-      if (!confirm(`هل تريد حذف المحاضرة: ${title}؟`)) return;
-      
-      const alert = document.getElementById('addAlert');
+    // ==========================================
+    // DELETE LECTURE
+    // ==========================================
+    window.deleteLecture = async function(docId) {
+      if (!confirm('هل أنت متأكد من حذف هذه المحاضرة؟')) return;
       
       try {
         await deleteDoc(doc(db, 'lectures', docId));
-        showAlert(alert, 'success', 'تم الحذف بنجاح');
-        loadLectures();
+        showToast('تم حذف المحاضرة بنجاح', 'success');
+        await loadLectures();
       } catch (error) {
         console.error('Error:', error);
-        showAlert(alert, 'error', 'خطأ: ' + error.message);
+        showToast('حدث خطأ أثناء الحذف', 'error');
       }
     };
 
-    // ==================== HELPERS ====================
-    function getSubjectName(subjectId) {
-      const names = {
-        statistics: 'الإحصاء',
-        economics: 'الاقتصاد',
-        production: 'إدارة الإنتاج',
-        finance: 'المالية العامة',
-        marketing: 'التسويق',
-        accounting: 'المحاسبة',
-        management: 'إدارة الأعمال',
-        law: 'القانون',
-        hr: 'الموارد البشرية',
-        insurance: 'التأمين'
-      };
-      return names[subjectId] || subjectId;
+    // ==========================================
+    // EDIT SUBJECT (Placeholder)
+    // ==========================================
+    window.editSubject = async function(docId) {
+      showToast('ميزة التعديل قيد التطوير', 'error');
+    };
+
+    // ==========================================
+    // EDIT LECTURE (Placeholder)
+    // ==========================================
+    window.editLecture = async function(docId) {
+      showToast('ميزة التعديل قيد التطوير', 'error');
+    };
+
+    // ==========================================
+    // AUTH CHECK
+    // ==========================================
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      try {
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        
+        if (!userDoc.exists() || userDoc.data().role !== 'admin') {
+          showToast('ليس لديك صلاحية الوصول', 'error');
+          setTimeout(() => {
+            window.location.href = 'library.html';
+          }, 2000);
+          return;
+        }
+        
+        console.log('✅ Admin authenticated');
+        await initializeApp();
+        
+      } catch (error) {
+        console.error('Auth error:', error);
+        window.location.href = 'login.html';
+      }
+    });
+
+    // ==========================================
+    // INITIALIZE APP
+    // ==========================================
+    async function initializeApp() {
+      populateIconPicker();
+      populateColorGrid();
+      populateIconColorGrid(); // ✅ Initialize Icon Color Grid
+      setupPreviewListeners();
+      await loadSubjects();
+      await loadLectures();
+      
+      console.log('✅ Admin panel initialized');
     }
 
-    function showAlert(element, type, message) {
-      element.className = `alert alert-${type} show`;
-      element.innerHTML = `
-        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
-        ${message}
-      `;
-      
-      setTimeout(() => {
-        element.classList.remove('show');
-      }, 5000);
-    }
   </script>
 
 </body>

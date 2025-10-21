@@ -21,6 +21,7 @@
       padding: 20px;
     }
     
+    /* Toast Notifications */
     .toast-container {
       position: fixed;
       bottom: 20px;
@@ -94,6 +95,11 @@
       transition: color 0.3s;
     }
     
+    .toast-close:hover {
+      color: #64748b;
+    }
+    
+    /* Loading Overlay */
     .loading-overlay {
       position: fixed;
       top: 0;
@@ -128,26 +134,165 @@
       font-size: 1.2rem;
       font-weight: 600;
     }
+    
+    /* University Selector */
+    .university-selector {
+      display: grid;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    
+    .university-option {
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(203, 213, 225, 0.5);
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .university-option:hover {
+      background: rgba(255, 255, 255, 0.7);
+      border-color: var(--color-primary);
+      transform: translateX(-5px);
+      box-shadow: 0 4px 20px rgba(22, 163, 74, 0.15);
+    }
+    
+    .university-option.selected {
+      background: rgba(22, 163, 74, 0.1);
+      border-color: var(--color-primary);
+      border-width: 3px;
+    }
+    
+    .university-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--color-primary), #10b981);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+    }
+    
+    .university-icon i {
+      font-size: 1.8rem;
+      color: white;
+    }
+    
+    .university-info {
+      flex: 1;
+    }
+    
+    .university-info h4 {
+      margin: 0 0 5px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    
+    .university-info p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+    
+    .check-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(203, 213, 225, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    
+    .check-icon i {
+      font-size: 1.3rem;
+      color: #cbd5e1;
+      transition: all 0.3s;
+    }
+    
+    .university-option.selected .check-icon {
+      background: var(--color-primary);
+    }
+    
+    .university-option.selected .check-icon i {
+      color: white;
+    }
+    
+    @keyframes selectPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    .university-option.selected .check-icon {
+      animation: selectPulse 0.5s ease;
+    }
+    
+    /* Responsive */
+    @media (max-width: 480px) {
+      .toast {
+        min-width: 280px;
+      }
+      
+      .university-option {
+        padding: 15px;
+      }
+      
+      .university-icon {
+        width: 50px;
+        height: 50px;
+      }
+      
+      .university-icon i {
+        font-size: 1.5rem;
+      }
+      
+      .university-info h4 {
+        font-size: 1.1rem;
+      }
+      
+      .check-icon {
+        width: 35px;
+        height: 35px;
+      }
+    }
   </style>
 </head>
 
 <body>
   
+  <!-- Background Waves -->
   <div class="background-waves">
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
   </div>
 
+  <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>
+  
+  <!-- Loading Overlay -->
   <div class="loading-overlay" id="loadingOverlay">
     <div class="loader"></div>
     <div class="loading-text">جاري إنشاء الحساب...</div>
   </div>
 
+  <!-- Main Content -->
   <div class="auth-container">
     <div class="auth-glass-card">
       
+      <!-- Logo Section -->
       <div class="logo-container">
         <div class="glass-logo">
           <i class="fas fa-user-plus"></i>
@@ -156,7 +301,10 @@
         <p class="auth-subtitle">انضم إلى منصة أثر التعليمية</p>
       </div>
       
+      <!-- Signup Form -->
       <form id="signupForm">
+        
+        <!-- Name Input -->
         <div class="input-capsule">
           <div class="input-wrapper">
             <div class="input-icon">
@@ -172,6 +320,7 @@
           </div>
         </div>
         
+        <!-- Email Input -->
         <div class="input-capsule">
           <div class="input-wrapper">
             <div class="input-icon">
@@ -187,7 +336,8 @@
           </div>
         </div>
         
-       <div class="input-capsule">
+        <!-- Password Input -->
+        <div class="input-capsule">
           <div class="input-wrapper">
             <div class="input-icon">
               <i class="fas fa-lock"></i>
@@ -202,173 +352,51 @@
             >
           </div>
         </div>
-        <!-- ✅ حقل الجامعة المحسّن -->
-<div class="input-capsule">
-  <label style="display: block; margin-bottom: 12px; font-weight: 600; color: #1e293b; font-size: 0.95rem;">
-    <i class="fas fa-university"></i> اختر جامعتك
-  </label>
-  
-  <div class="university-selector">
-    <div class="university-option" data-value="دمنهور" onclick="selectUniversity(this)">
-      <div class="university-icon">
-        <i class="fas fa-graduation-cap"></i>
-      </div>
-      <div class="university-info">
-        <h4>جامعة دمنهور</h4>
-        <p>Damanhour University</p>
-      </div>
-      <div class="check-icon">
-        <i class="fas fa-check-circle"></i>
-      </div>
-    </div>
-    
-    <div class="university-option" data-value="الإسكندرية" onclick="selectUniversity(this)">
-      <div class="university-icon">
-        <i class="fas fa-graduation-cap"></i>
-      </div>
-      <div class="university-info">
-        <h4>جامعة الإسكندرية</h4>
-        <p>Alexandria University</p>
-      </div>
-      <div class="check-icon">
-        <i class="fas fa-check-circle"></i>
-      </div>
-    </div>
-  </div>
-  
-  <input type="hidden" id="university" required>
-</div>
-
-<style>
-  .university-selector {
-    display: grid;
-    gap: 15px;
-    margin-bottom: 25px;
-  }
-  
-  .university-option {
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(203, 213, 225, 0.5);
-    border-radius: 20px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-  }
-  
-  .university-option:hover {
-    background: rgba(255, 255, 255, 0.7);
-    border-color: var(--color-primary);
-    transform: translateX(-5px);
-    box-shadow: 0 4px 20px rgba(22, 163, 74, 0.15);
-  }
-  
-  .university-option.selected {
-    background: rgba(22, 163, 74, 0.1);
-    border-color: var(--color-primary);
-    border-width: 3px;
-  }
-  
-  .university-icon {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, var(--color-primary), #10b981);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
-  }
-  
-  .university-icon i {
-    font-size: 1.8rem;
-    color: white;
-  }
-  
-  .university-info {
-    flex: 1;
-  }
-  
-  .university-info h4 {
-    margin: 0 0 5px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #0f172a;
-  }
-  
-  .university-info p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: #64748b;
-    font-weight: 500;
-  }
-  
-  .check-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(203, 213, 225, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-    flex-shrink: 0;
-  }
-  
-  .check-icon i {
-    font-size: 1.3rem;
-    color: #cbd5e1;
-    transition: all 0.3s;
-  }
-  
-  .university-option.selected .check-icon {
-    background: var(--color-primary);
-  }
-  
-  .university-option.selected .check-icon i {
-    color: white;
-  }
-  
-  /* Animation */
-  @keyframes selectPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-  }
-  
-  .university-option.selected .check-icon {
-    animation: selectPulse 0.5s ease;
-  }
-</style>
-
-<script>
-  function selectUniversity(element) {
-    // إزالة selected من كل الخيارات
-    document.querySelectorAll('.university-option').forEach(opt => {
-      opt.classList.remove('selected');
-    });
-    
-    // إضافة selected للخيار المختار
-    element.classList.add('selected');
-    
-    // تحديث hidden input
-    const value = element.getAttribute('data-value');
-    document.getElementById('university').value = value;
-  }
-</script>
-
         
+        <!-- University Selector -->
+        <div class="input-capsule">
+          <label style="display: block; margin-bottom: 12px; font-weight: 600; color: #1e293b; font-size: 0.95rem;">
+            <i class="fas fa-university"></i> اختر جامعتك
+          </label>
+          
+          <div class="university-selector">
+            <div class="university-option" data-value="دمنهور" onclick="selectUniversity(this)">
+              <div class="university-icon">
+                <i class="fas fa-graduation-cap"></i>
+              </div>
+              <div class="university-info">
+                <h4>جامعة دمنهور</h4>
+                <p>Damanhour University</p>
+              </div>
+              <div class="check-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+            </div>
+            
+            <div class="university-option" data-value="الإسكندرية" onclick="selectUniversity(this)">
+              <div class="university-icon">
+                <i class="fas fa-graduation-cap"></i>
+              </div>
+              <div class="university-info">
+                <h4>جامعة الإسكندرية</h4>
+                <p>Alexandria University</p>
+              </div>
+              <div class="check-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+            </div>
+          </div>
+          
+          <input type="hidden" id="university" required>
+        </div>
         
-        
+        <!-- Submit Button -->
         <button type="submit" class="submit-btn" id="signupBtn">
           <i class="fas fa-user-plus"></i> إنشاء الحساب
         </button>
       </form>
       
+      <!-- Footer Links -->
       <div class="footer-links">
         <p>لديك حساب بالفعل؟ 
           <a href="login.html">سجّل دخولك</a>
@@ -381,6 +409,7 @@
     </div>
   </div>
 
+  <!-- Toast Function -->
   <script>
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
@@ -388,7 +417,10 @@
         success: '<i class="fas fa-check-circle"></i>',
         error: '<i class="fas fa-exclamation-circle"></i>'
       };
-      const titles = { success: 'نجح!', error: 'خطأ!' };
+      const titles = { 
+        success: 'نجح!', 
+        error: 'خطأ!' 
+      };
       
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
@@ -403,22 +435,47 @@
         </button>
       `;
       container.appendChild(toast);
-      setTimeout(() => toast.remove(), 3000);
+      
+      setTimeout(() => {
+        if (toast.parentElement) toast.remove();
+      }, 4000);
     }
     
     function showLoading(show) {
       document.getElementById('loadingOverlay').classList.toggle('active', show);
     }
+    
+    function selectUniversity(element) {
+      // إزالة selected من كل الخيارات
+      document.querySelectorAll('.university-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      
+      // إضافة selected للخيار المختار
+      element.classList.add('selected');
+      
+      // تحديث hidden input
+      const value = element.getAttribute('data-value');
+      document.getElementById('university').value = value;
+      
+      console.log('✅ University selected:', value);
+    }
   </script>
   
+  <!-- Firebase Integration -->
   <script type="module">
     import { signup, auth } from './js/app.js';
     import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
     
+    // ✅ التحقق من Auth State
     onAuthStateChanged(auth, (user) => {
-      if (user) window.location.href = 'library.html';
+      if (user) {
+        console.log('✅ User already logged in, redirecting to library...');
+        window.location.href = 'library.html';
+      }
     });
 
+    // ✅ Form Submit Handler (محسّن)
     document.getElementById('signupForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -428,38 +485,45 @@
       const password = document.getElementById('password').value;
       const btn = document.getElementById('signupBtn');
       
+      // Validation
+      if (!name) {
+        showToast('⚠️ يرجى إدخال الاسم الكامل', 'error');
+        return;
+      }
+      
       if (!university) {
-        showToast('يرجى اختيار الجامعة', 'error');
+        showToast('⚠️ يرجى اختيار الجامعة', 'error');
         return;
       }
       
       if (password.length < 6) {
-        showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+        showToast('⚠️ كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
         return;
       }
       
+      // Disable button & show loading
       btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...';
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإنشاء...';
       showLoading(true);
       
+      // Call signup
       const result = await signup(email, password, name, university);
       
       if (result.success) {
-        showToast('تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول', 'success');
-        setTimeout(() => window.location.href = 'login.html', 2000);
+        showToast('✅ تم إنشاء الحساب بنجاح! جارٍ التوجيه...', 'success');
+        
+        // ✅ التوجيه المباشر للمكتبة (المستخدم مسجل دخول بالفعل)
+        setTimeout(() => {
+          window.location.href = 'library.html';
+        }, 1500);
       } else {
+        // Error handling
         showLoading(false);
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-user-plus"></i> إنشاء الحساب';
         
-        const errors = {
-          'auth/email-already-in-use': 'البريد الإلكتروني مسجل بالفعل',
-          'auth/invalid-email': 'البريد الإلكتروني غير صحيح',
-          'auth/weak-password': 'كلمة المرور ضعيفة جداً',
-          'auth/operation-not-allowed': 'التسجيل معطل حالياً'
-        };
-        
-        showToast(errors[result.error] || 'حدث خطأ في إنشاء الحساب', 'error');
+        // Error messages
+        showToast(result.message || '❌ حدث خطأ في إنشاء الحساب', 'error');
       }
     });
   </script>
