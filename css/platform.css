@@ -766,50 +766,274 @@
   color: #14532d;
   margin-bottom: 15px;
 }
+/* ==================== SUBJECTS GRID (قابل للتخصيص بالكامل) ==================== */
+
+/* CSS Variables للتحكم من Admin */
+:root {
+  /* Subject Container */
+  --subject-bg: rgba(255, 255, 255, 0.4);
+  --subject-border: rgba(255, 255, 255, 0.5);
+  --subject-border-hover: rgba(22, 163, 74, 0.4);
+  --subject-radius: 24px;
+  --subject-padding: 35px 25px;
+  --subject-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  --subject-shadow-hover: 0 20px 50px rgba(0, 0, 0, 0.15);
+  
+  /* Icon Container */
+  --icon-size: 90px;
+  --icon-radius: 22px;
+  --icon-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  --icon-shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.25);
+  
+  /* Text */
+  --title-size: 1.5rem;
+  --title-color: #14532d;
+  --title-color-hover: #16a34a;
+  --count-bg: rgba(241, 245, 249, 0.6);
+  --count-bg-hover: rgba(22, 163, 74, 0.15);
+  --count-color: #475569;
+  --count-color-hover: #16a34a;
+  
+  /* Animations */
+  --animation-duration: 0.4s;
+  --hover-lift: -12px;
+  --hover-scale: 1.02;
+  --icon-rotation: -8deg;
+  --icon-scale: 1.1;
+}
 
 .subjects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
+  gap: 30px;
   margin-bottom: 40px;
 }
 
+/* ==================== SUBJECT CARD BASE ==================== */
 .subject-capsule {
-  background: rgba(255, 255, 255, 0.25);
+  background: var(--subject-bg);
   backdrop-filter: blur(20px);
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-radius: 30px;
-  padding: 35px 30px;
+  border: 2px solid var(--subject-border);
+  border-radius: var(--subject-radius);
+  padding: var(--subject-padding);
+  text-align: center;
+  transition: all var(--animation-duration) cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  transition: all 0.4s ease;
+  box-shadow: var(--subject-shadow);
+  position: relative;
+  overflow: hidden;
 }
 
 .subject-capsule:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(var(--hover-lift)) scale(var(--hover-scale));
+  box-shadow: var(--subject-shadow-hover);
+  border-color: var(--subject-border-hover);
 }
 
+/* Shine effect (optional) */
+.subject-capsule::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: rotate(45deg);
+  transition: all 0.8s;
+  opacity: 0;
+}
+
+.subject-capsule:hover::before {
+  left: 100%;
+  opacity: 1;
+}
+
+/* ==================== ICON CONTAINER ==================== */
 .subject-icon-container {
-  width: 90px;
-  height: 90px;
-  margin: 0 auto 25px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 22px;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  border-radius: var(--icon-radius);
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto 25px;
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--icon-shadow);
+}
+
+/* Pulse animation (optional - can be disabled) */
+.subject-icon-container.with-pulse::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: inherit;
+  opacity: 0.4;
+  animation: iconPulse 2.5s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 0.6;
+  }
+}
+
+/* Hover effects */
+.subject-capsule:hover .subject-icon-container {
+  transform: rotate(var(--icon-rotation)) scale(var(--icon-scale));
+  box-shadow: var(--icon-shadow-hover);
+}
+
+/* Icon floating animation (optional) */
+.subject-icon-container.with-float i {
+  animation: iconFloat 3.5s ease-in-out infinite;
 }
 
 .subject-icon-container i {
-  font-size: 2.5rem;
+  font-size: 2.8rem;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
 }
 
+@keyframes iconFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(-6deg);
+  }
+  50% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-10px) rotate(6deg);
+  }
+}
+
+/* ==================== TEXT STYLING ==================== */
 .subject-title {
-  font-size: 1.5rem;
+  font-size: var(--title-size);
   font-weight: 800;
+  color: var(--title-color);
+  margin: 0 0 10px;
+  transition: color 0.3s;
   text-align: center;
 }
 
+.subject-capsule:hover .subject-title {
+  color: var(--title-color-hover);
+}
+
+.lecture-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: var(--count-bg);
+  border-radius: 12px;
+  color: var(--count-color);
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-top: 15px;
+  transition: all 0.3s;
+}
+
+.subject-capsule:hover .lecture-count {
+  background: var(--count-bg-hover);
+  color: var(--count-color-hover);
+  transform: scale(1.05);
+}
+
+/* ==================== MODIFIER CLASSES (للتحكم من Admin) ==================== */
+
+/* Size variants */
+.subject-capsule.compact {
+  padding: 25px 20px;
+}
+
+.subject-capsule.large {
+  padding: 45px 35px;
+}
+
+/* Icon size variants */
+.subject-capsule.icon-small .subject-icon-container {
+  width: 70px;
+  height: 70px;
+}
+
+.subject-capsule.icon-large .subject-icon-container {
+  width: 110px;
+  height: 110px;
+}
+
+/* Border styles */
+.subject-capsule.border-solid {
+  border-style: solid;
+  border-width: 3px;
+}
+
+.subject-capsule.border-dashed {
+  border-style: dashed;
+}
+
+.subject-capsule.no-border {
+  border: none;
+}
+
+/* Shadow variants */
+.subject-capsule.shadow-light {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.subject-capsule.shadow-heavy {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.subject-capsule.no-shadow {
+  box-shadow: none;
+}
+
+/* Animation variants */
+.subject-capsule.no-animation {
+  transition: none;
+}
+
+.subject-capsule.no-animation:hover {
+  transform: none;
+}
+
+.subject-capsule.slow-animation {
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Layout variants */
+.subject-capsule.horizontal {
+  display: flex;
+  text-align: right;
+  gap: 20px;
+  padding: 25px;
+}
+
+.subject-capsule.horizontal .subject-icon-container {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.subject-capsule.horizontal .subject-title {
+  text-align: right;
+}
+
+/* === BUTTONS === */
 .capsule-btn {
   padding: 12px 28px;
   background: rgba(255, 255, 255, 0.4);
@@ -822,10 +1046,12 @@
   gap: 10px;
   font-family: inherit;
   transition: all 0.3s;
+  color: inherit;
 }
 
 .capsule-btn:hover {
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* ============================================
@@ -962,8 +1188,14 @@
   transition: all 0.35s ease;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+}
+
+.browse-btn i {
+  font-size: 1.2rem;
+  line-height: 1;
 }
 
 .browse-btn:hover {
@@ -976,12 +1208,8 @@
   transform: translateY(-2px);
 }
 
-.browse-btn i {
-  font-size: 1.3rem;
-}
-
 /* ============================================
-   LECTURE CAPSULE STATES
+   LECTURE CAPSULE
    ============================================ */
 
 .lecture-capsule {
@@ -1213,6 +1441,18 @@
   .empty-state i {
     font-size: 4rem;
   }
+  
+  :root {
+    --icon-size: 80px;
+  }
+  
+  .subject-icon-container i {
+    font-size: 2.3rem;
+  }
+  
+  .subject-capsule {
+    padding: 30px 20px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1232,37 +1472,4 @@
   .lecture-info h3 {
     font-size: 1.1rem;
   }
-}
-/* ============ Fix Browse Button Icon ============ */
-.browse-btn {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: white;
-  border: none;
-  padding: 16px 38px;
-  border-radius: 16px;
-  font-family: 'Cairo', sans-serif;
-  font-weight: 700;
-  font-size: 1.08rem;
-  cursor: pointer;
-  transition: all 0.35s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center; /* جديد */
-  gap: 12px;
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
-}
-
-.browse-btn i {
-  font-size: 1.2rem; /* حجم أكبر شوية */
-  line-height: 1; /* جديد */
-}
-
-.browse-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 35px rgba(59, 130, 246, 0.45);
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-}
-
-.browse-btn:active {
-  transform: translateY(-2px);
 }

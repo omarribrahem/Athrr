@@ -183,7 +183,7 @@
         </div>
         <i class="fas fa-chevron-down" style="font-size: 0.9rem; color: #64748b; margin-right: 10px; transition: transform 0.3s ease;" id="userMenuIcon"></i>
         
-        <!-- ============ جديد: User Dropdown Menu ============ -->
+        <!-- User Dropdown Menu -->
         <div class="user-dropdown-menu" id="userDropdownMenu">
           <div class="user-menu-item" onclick="event.stopPropagation(); openProfile();">
             <i class="fas fa-user-circle"></i>
@@ -219,7 +219,7 @@
       <p>اختر المادة للبدء في رحلتك التعليمية</p>
     </div>
 
-    <!-- ============ جديد: My Personal Library View ============ -->
+    <!-- My Personal Library View -->
     <div id="myLibraryView" style="display: none;">
       
       <!-- Back Button -->
@@ -256,64 +256,16 @@
       
     </div>
     
-    <!-- ============ Original: Subjects Grid ============ -->
+    <!-- ✅ Subjects Grid - فاضي - JavaScript هيملاه -->
     <div class="subjects-grid" id="subjectsGrid">
-      
-      <div class="subject-capsule" data-aos="fade-up" onclick="showLectures('statistics')">
-        <div class="subject-icon-container">
-          <i class="fas fa-chart-bar" style="color: #3b82f6;"></i>
-        </div>
-        <h3 class="subject-title">الإحصاء</h3>
-        <p style="text-align: center; color: #64748b; margin-bottom: 20px; font-weight: 500;">Statistics</p>
-        <div style="padding-top: 15px; border-top: 2px solid rgba(203, 213, 225, 0.3); text-align: center;">
-          <span style="color: #475569; font-weight: 600;">
-            <i class="fas fa-book"></i> <span id="stat-count">0</span> محاضرة
-          </span>
-        </div>
+      <!-- ✅ Loading Placeholder -->
+      <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #64748b;">
+        <i class="fas fa-spinner fa-spin" style="font-size: 3rem; margin-bottom: 15px; color: #16a34a;"></i>
+        <p style="font-size: 1.1rem; font-weight: 600;">جاري تحميل المواد...</p>
       </div>
-      
-      <div class="subject-capsule" data-aos="fade-up" data-aos-delay="100" onclick="showLectures('economics')">
-        <div class="subject-icon-container">
-          <i class="fas fa-chart-line" style="color: #7c3aed;"></i>
-        </div>
-        <h3 class="subject-title">الاقتصاد</h3>
-        <p style="text-align: center; color: #64748b; margin-bottom: 20px; font-weight: 500;">Economics</p>
-        <div style="padding-top: 15px; border-top: 2px solid rgba(203, 213, 225, 0.3); text-align: center;">
-          <span style="color: #475569; font-weight: 600;">
-            <i class="fas fa-book"></i> <span id="econ-count">0</span> محاضرة
-          </span>
-        </div>
-      </div>
-      
-      <div class="subject-capsule" data-aos="fade-up" data-aos-delay="200" onclick="showLectures('production')">
-        <div class="subject-icon-container">
-          <i class="fas fa-industry" style="color: #f59e0b;"></i>
-        </div>
-        <h3 class="subject-title">إدارة الإنتاج</h3>
-        <p style="text-align: center; color: #64748b; margin-bottom: 20px; font-weight: 500;">Production Management</p>
-        <div style="padding-top: 15px; border-top: 2px solid rgba(203, 213, 225, 0.3); text-align: center;">
-          <span style="color: #475569; font-weight: 600;">
-            <i class="fas fa-book"></i> <span id="prod-count">0</span> محاضرة
-          </span>
-        </div>
-      </div>
-      
-      <div class="subject-capsule" data-aos="fade-up" data-aos-delay="300" onclick="showLectures('finance')">
-        <div class="subject-icon-container">
-          <i class="fas fa-landmark" style="color: #16a34a;"></i>
-        </div>
-        <h3 class="subject-title">المالية العامة</h3>
-        <p style="text-align: center; color: #64748b; margin-bottom: 20px; font-weight: 500;">Public Finance</p>
-        <div style="padding-top: 15px; border-top: 2px solid rgba(203, 213, 225, 0.3); text-align: center;">
-          <span style="color: #475569; font-weight: 600;">
-            <i class="fas fa-book"></i> <span id="fin-count">0</span> محاضرة
-          </span>
-        </div>
-      </div>
-      
     </div>
     
-    <!-- ============ Original: Lectures View ============ -->
+    <!-- Lectures View -->
     <div id="lecturesView" style="display: none;">
       
       <button onclick="backToSubjects()" class="capsule-btn" style="margin-bottom: 25px;">

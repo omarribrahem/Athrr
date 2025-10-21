@@ -1108,24 +1108,141 @@
 <body>
 
 
-  <!-- ==================== ACCESS CHECK SCREEN ==================== -->
-  <div id="accessCheckScreen" style="
-    position: fixed;
+ <!-- ==================== ACCESS CHECK SCREEN ==================== -->
+<div id="accessCheckScreen" style="
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #bbf7d0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  font-family: 'Cairo', sans-serif;
+  transition: opacity 0.3s ease;
+">
+  <!-- Animated Background -->
+  <div style="
+    position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 99999;
-    font-family: 'Cairo', sans-serif;
-    transition: opacity 0.3s ease;
+    overflow: hidden;
+    opacity: 0.3;
   ">
-    <div style="text-align: center; color: white;">
-      <i class="fas fa-spinner fa-spin" style="font-size: 3.5rem; margin-bottom: 25px;"></i>
-      <h2 style="font-size: 2rem; margin-bottom: 15px;">جاري التحقق من الصلاحية...</h2>
-      <p style="font-size: 1.1rem; opacity: 0.9;">يرجى الانتظار</p>
+    <div style="
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(22, 163, 74, 0.3), transparent);
+      border-radius: 50%;
+      top: -10%;
+      right: -10%;
+      animation: float 6s ease-in-out infinite;
+    "></div>
+    <div style="
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.25), transparent);
+      border-radius: 50%;
+      bottom: -15%;
+      left: -15%;
+      animation: float 8s ease-in-out infinite reverse;
+    "></div>
+  </div>
+
+  <!-- Content -->
+  <div style="
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    padding: 60px 50px;
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    position: relative;
+    z-index: 1;
+    max-width: 450px;
+  ">
+    <div style="
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #16a34a, #10b981);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 25px;
+      box-shadow: 0 10px 30px rgba(22, 163, 74, 0.3);
+    ">
+      <i class="fas fa-shield-alt" style="
+        font-size: 2.5rem;
+        color: white;
+        animation: pulse 2s ease-in-out infinite;
+      "></i>
+    </div>
+    
+    <h2 style="
+      color: #14532d;
+      font-size: 1.8rem;
+      margin: 0 0 15px;
+      font-weight: 800;
+    ">جاري التحقق من الصلاحية</h2>
+    
+    <p style="
+      color: #15803d;
+      font-size: 1.1rem;
+      margin: 0 0 30px;
+      opacity: 0.9;
+    ">يرجى الانتظار قليلاً...</p>
+    
+    <div style="
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    ">
+      <div style="
+        width: 12px;
+        height: 12px;
+        background: #16a34a;
+        border-radius: 50%;
+        animation: bounce 1.4s infinite ease-in-out both;
+        animation-delay: -0.32s;
+      "></div>
+      <div style="
+        width: 12px;
+        height: 12px;
+        background: #16a34a;
+        border-radius: 50%;
+        animation: bounce 1.4s infinite ease-in-out both;
+        animation-delay: -0.16s;
+      "></div>
+      <div style="
+        width: 12px;
+        height: 12px;
+        background: #16a34a;
+        border-radius: 50%;
+        animation: bounce 1.4s infinite ease-in-out both;
+      "></div>
     </div>
   </div>
+
+  <style>
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-30px) scale(1.05); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1); }
+    }
+  </style>
+</div>
+
 
   <!-- ==================== ACCESS CHECK SCRIPT ==================== -->
   <script type="module">

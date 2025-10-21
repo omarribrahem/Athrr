@@ -3,38 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>لوحة التحكم - منصة أثر</title>
+  <title>لوحة التحكم المتقدمة - منصة أثر</title>
   
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
-  <!-- Your existing CSS -->
   <link rel="stylesheet" href="css/style.css">
   
-  <!-- Additional Admin Styles -->
   <style>
-    /* Admin-specific styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+      font-family: 'Cairo', sans-serif; 
+      min-height: 100vh;
+      background: #f8fafc;
+    }
+
+    /* ==================== HEADER ==================== */
     .admin-header {
-      background: rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(25px);
+      background: white;
       padding: 20px 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin-bottom: 40px;
       position: sticky;
       top: 0;
       z-index: 100;
-      border-bottom: 2px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-      margin-bottom: 40px;
     }
 
     .admin-header-content {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 0 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -46,393 +46,563 @@
       gap: 15px;
       font-size: 1.8rem;
       font-weight: 800;
-      color: #14532d;
+      color: #0f172a;
     }
 
-    .admin-logo i {
-      font-size: 2.2rem;
-      color: var(--color-primary);
+    .admin-logo i { 
+      font-size: 2rem; 
+      color: #16a34a;
     }
 
     .back-btn {
-      background: rgba(255, 255, 255, 0.5);
-      border: 2px solid rgba(255, 255, 255, 0.6);
+      background: #f1f5f9;
+      border: none;
       padding: 12px 24px;
-      border-radius: 50px;
+      border-radius: 10px;
       cursor: pointer;
       font-family: 'Cairo', sans-serif;
-      font-weight: 700;
+      font-weight: 600;
       font-size: 1rem;
-      transition: all 0.3s ease;
+      transition: all 0.2s;
       display: flex;
       align-items: center;
       gap: 10px;
-      color: #14532d;
+      color: #334155;
     }
 
     .back-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      background: #e2e8f0;
+      color: #16a34a;
+    }
+
+    /* ==================== CONTAINER ==================== */
+    .admin-container { 
+      max-width: 1400px;
+      margin: 0 auto; 
+      padding: 0 30px 60px; 
+    }
+
+    /* ==================== SECTIONS ==================== */
+    .section {
       background: white;
-    }
-
-    .admin-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px 40px;
-    }
-
-    /* Instructions Card */
-    .instructions-card {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(37, 99, 235, 0.06));
-      backdrop-filter: blur(25px);
-      border: 2px solid rgba(59, 130, 246, 0.3);
-      border-radius: 25px;
-      padding: 35px;
+      border-radius: 16px;
+      padding: 30px;
       margin-bottom: 30px;
-      box-shadow: 0 10px 40px rgba(59, 130, 246, 0.15);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
-    .instructions-card h2 {
-      color: #1e3a8a;
-      font-size: 2rem;
-      font-weight: 800;
-      margin: 0 0 20px;
+    .section-header {
       display: flex;
       align-items: center;
       gap: 15px;
-    }
-
-    .instructions-card h2 i {
-      font-size: 2.5rem;
-      color: #3b82f6;
-    }
-
-    .instructions-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-top: 25px;
-    }
-
-    .instruction-step {
-      background: rgba(255, 255, 255, 0.6);
-      padding: 20px;
-      border-radius: 18px;
-      border: 2px solid rgba(59, 130, 246, 0.2);
-      transition: all 0.3s ease;
-    }
-
-    .instruction-step:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
-      border-color: rgba(59, 130, 246, 0.4);
-    }
-
-    .instruction-step .step-number {
-      width: 45px;
-      height: 45px;
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 800;
-      font-size: 1.3rem;
-      margin-bottom: 15px;
-      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-    }
-
-    .instruction-step h3 {
-      color: #1e3a8a;
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin: 0 0 10px;
-    }
-
-    .instruction-step p {
-      color: #475569;
-      font-size: 0.95rem;
-      margin: 0;
-      line-height: 1.6;
-    }
-
-    .instruction-step code {
-      background: rgba(59, 130, 246, 0.1);
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      color: #2563eb;
-      font-family: 'Courier New', monospace;
-    }
-
-    /* Form Card */
-    .form-card {
-      background: rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(25px);
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      border-radius: 25px;
-      padding: 35px;
       margin-bottom: 30px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      padding-bottom: 20px;
+      border-bottom: 2px solid #f1f5f9;
     }
 
-    .form-card h2 {
-      color: #14532d;
+    .section-header i {
       font-size: 1.8rem;
+      color: #16a34a;
+    }
+
+    .section-header h2 {
+      font-size: 1.6rem;
       font-weight: 800;
-      margin: 0 0 30px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      color: #0f172a;
+      margin: 0;
     }
 
-    .form-card h2 i {
-      color: var(--color-primary);
-      font-size: 2rem;
-    }
-
-    .form-row {
+    /* ==================== FORMS ==================== */
+    .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin-bottom: 20px;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      margin-bottom: 25px;
     }
 
     .form-group {
       margin-bottom: 20px;
     }
 
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
     .form-label {
-      display: block;
-      margin-bottom: 10px;
-      color: #475569;
-      font-weight: 700;
-      font-size: 1.05rem;
       display: flex;
       align-items: center;
       gap: 8px;
+      margin-bottom: 10px;
+      color: #334155;
+      font-weight: 700;
+      font-size: 0.95rem;
     }
 
     .form-label i {
-      color: var(--color-primary);
-    }
-
-    .form-input, .form-select {
-      width: 100%;
-      padding: 15px;
-      border: 2px solid #e2e8f0;
-      border-radius: 15px;
-      font-family: 'Cairo', sans-serif;
+      color: #16a34a;
       font-size: 1rem;
-      transition: all 0.3s ease;
-      background: rgba(255, 255, 255, 0.8);
     }
 
-    .form-input:focus, .form-select:focus {
-      outline: none;
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+    .form-input, 
+    .form-select, 
+    .form-textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.95rem;
+      transition: all 0.2s;
       background: white;
     }
 
+    .form-input:focus, 
+    .form-select:focus, 
+    .form-textarea:focus {
+      outline: none;
+      border-color: #16a34a;
+      box-shadow: 0 0 0 3px rgba(22,163,74,0.1);
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
     .form-hint {
-      display: block;
-      margin-top: 8px;
-      color: #64748b;
-      font-size: 0.9rem;
       display: flex;
       align-items: center;
       gap: 6px;
-    }
-
-    .form-hint i {
+      margin-top: 8px;
+      color: #64748b;
       font-size: 0.85rem;
     }
 
-    .submit-btn {
-      background: linear-gradient(135deg, #16a34a, #10b981);
+    /* Range Input Styling */
+    input[type="range"] {
+      padding: 8px 0;
+      cursor: pointer;
+      accent-color: #16a34a;
+    }
+
+    /* ==================== CONTAINER PREVIEW ==================== */
+    .container-preview {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 40px 25px;
+      margin-top: 20px;
+      text-align: center;
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-card {
+      display: inline-block;
+      background: white;
+      border-radius: 20px;
+      padding: 35px 45px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+      transition: all 0.4s ease;
+      max-width: 340px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preview-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.18);
+    }
+
+    .preview-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
+      transform: rotate(45deg);
+      transition: all 0.8s;
+      opacity: 0;
+    }
+
+    .preview-card:hover::before {
+      left: 100%;
+      opacity: 1;
+    }
+
+    .preview-icon-container {
+      width: 100px;
+      height: 100px;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 25px;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .preview-icon-container::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: inherit;
+      opacity: 0.3;
+      animation: pulse 2s ease-in-out infinite;
+      border-radius: inherit;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.3;
+      }
+      50% {
+        transform: scale(1.15);
+        opacity: 0.5;
+      }
+    }
+
+    .preview-card:hover .preview-icon-container {
+      transform: rotate(-5deg) scale(1.08);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+    }
+
+    .preview-icon-container i {
+      font-size: 3rem;
+      color: white;
+      position: relative;
+      z-index: 2;
+      animation: iconFloat 3s ease-in-out infinite;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    }
+
+    @keyframes iconFloat {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      25% {
+        transform: translateY(-8px) rotate(-3deg);
+      }
+      50% {
+        transform: translateY(0) rotate(0deg);
+      }
+      75% {
+        transform: translateY(-8px) rotate(3deg);
+      }
+    }
+
+    .preview-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 10px;
+      transition: color 0.3s;
+    }
+
+    .preview-card:hover .preview-title {
+      color: #16a34a;
+    }
+
+    .preview-subtitle {
+      font-size: 1.05rem;
+      color: #64748b;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .preview-card:hover .preview-subtitle {
+      color: #475569;
+    }
+
+    /* ==================== ICON & COLOR PICKERS ==================== */
+    .picker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+      gap: 10px;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 10px;
+      margin-top: 12px;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    .icon-option {
+      aspect-ratio: 1;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      transition: all 0.2s;
+    }
+
+    .icon-option:hover {
+      border-color: #16a34a;
+      transform: scale(1.05);
+    }
+
+    .icon-option.selected {
+      border-color: #16a34a;
+      background: #f0fdf4;
+    }
+
+    .icon-option i {
+      font-size: 1.5rem;
+      color: #475569;
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .color-option {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: all 0.2s;
+      position: relative;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .color-option:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .color-option.selected {
+      border-color: #0f172a;
+      transform: scale(1.15);
+    }
+
+    .color-option.selected::after {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 1.2rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    /* ==================== DIVIDER ==================== */
+    .form-divider {
+      margin: 30px 0;
+      padding-top: 25px;
+      border-top: 2px solid #f1f5f9;
+    }
+
+    .form-divider-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .form-divider-title i {
+      color: #16a34a;
+    }
+    /* ==================== BUTTONS ==================== */
+    .btn-primary {
+      background: #16a34a;
       color: white;
       border: none;
-      padding: 18px 40px;
-      border-radius: 50px;
+      padding: 14px 32px;
+      border-radius: 10px;
       font-family: 'Cairo', sans-serif;
       font-weight: 700;
-      font-size: 1.15rem;
+      font-size: 1rem;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s;
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 6px 20px rgba(22, 163, 74, 0.3);
+      gap: 10px;
     }
 
-    .submit-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(22, 163, 74, 0.4);
+    .btn-primary:hover {
+      background: #15803d;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(22,163,74,0.3);
     }
 
-    .submit-btn:disabled {
-      opacity: 0.6;
+    .btn-primary:disabled {
+      opacity: 0.5;
       cursor: not-allowed;
       transform: none;
     }
 
-    .alert {
-      padding: 18px 25px;
-      border-radius: 15px;
-      margin-bottom: 25px;
-      font-weight: 600;
-      display: none;
-      align-items: center;
-      gap: 12px;
-      font-size: 1.05rem;
-    }
-
-    .alert.show {
-      display: flex;
-      animation: slideDown 0.4s ease;
-    }
-
-    .alert-success {
-      background: rgba(16, 185, 129, 0.15);
-      color: #059669;
-      border: 2px solid rgba(16, 185, 129, 0.3);
-    }
-
-    .alert-error {
-      background: rgba(239, 68, 68, 0.15);
-      color: #dc2626;
-      border: 2px solid rgba(239, 68, 68, 0.3);
-    }
-
-    /* Table */
-    .lectures-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 25px;
-      background: rgba(255, 255, 255, 0.5);
-      border-radius: 15px;
-      overflow: hidden;
-    }
-
-    .lectures-table th {
-      background: linear-gradient(135deg, #16a34a, #10b981);
+    .btn-danger {
+      background: #ef4444;
       color: white;
-      padding: 18px 15px;
-      text-align: right;
-      font-weight: 700;
-      font-size: 1.05rem;
-    }
-
-    .lectures-table td {
-      padding: 18px 15px;
-      border-bottom: 1px solid rgba(226, 232, 240, 0.5);
-      font-size: 1rem;
-      color: #475569;
-    }
-
-    .lectures-table tr:hover {
-      background: rgba(240, 253, 244, 0.5);
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 7px 14px;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
-
-    .badge-free {
-      background: rgba(16, 185, 129, 0.15);
-      color: #059669;
-    }
-
-    .badge-paid {
-      background: rgba(245, 158, 11, 0.15);
-      color: #d97706;
-    }
-
-    .action-btn {
-      padding: 10px 18px;
       border: none;
-      border-radius: 10px;
-      cursor: pointer;
+      padding: 10px 20px;
+      border-radius: 8px;
       font-family: 'Cairo', sans-serif;
       font-weight: 600;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      margin-left: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
       display: inline-flex;
       align-items: center;
       gap: 8px;
     }
 
-    .action-btn-delete {
-      background: rgba(239, 68, 68, 0.15);
-      color: #dc2626;
-    }
-
-    .action-btn-delete:hover {
-      background: rgba(239, 68, 68, 0.25);
+    .btn-danger:hover {
+      background: #dc2626;
       transform: translateY(-2px);
     }
 
-    #activationCodeGroup {
+    /* ==================== ALERTS ==================== */
+    .alert {
+      padding: 16px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-weight: 600;
       display: none;
+      align-items: center;
+      gap: 12px;
     }
 
-    /* Animations */
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .alert.show {
+      display: flex;
+      animation: slideIn 0.3s ease;
     }
 
-    /* Responsive */
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .alert-success {
+      background: #f0fdf4;
+      color: #166534;
+      border: 2px solid #bbf7d0;
+    }
+
+    .alert-error {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 2px solid #fecaca;
+    }
+
+    /* ==================== TABLES ==================== */
+    .data-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 20px;
+    }
+
+    .data-table thead {
+      background: #f8fafc;
+    }
+
+    .data-table th {
+      padding: 14px 16px;
+      text-align: right;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #475569;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .data-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+    }
+
+    .data-table tbody tr {
+      transition: background 0.2s;
+    }
+
+    .data-table tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .badge-success {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .badge-warning {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    /* ==================== RESPONSIVE ==================== */
     @media (max-width: 768px) {
-      .form-row {
+      .form-grid {
         grid-template-columns: 1fr;
       }
-
-      .instructions-grid {
-        grid-template-columns: 1fr;
+      
+      .admin-container {
+        padding: 0 20px 40px;
       }
 
-      .lectures-table {
-        font-size: 0.9rem;
+      .admin-header-content {
+        padding: 0 20px;
       }
 
-      .lectures-table th,
-      .lectures-table td {
-        padding: 12px 10px;
+      .color-grid {
+        grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
       }
+    }
+
+    /* ==================== ANIMATIONS ==================== */
+    .animate-in {
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Background Waves -->
   <div class="background-waves">
-    <div class="wave-layer"></div>
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
   </div>
 
-  <!-- Admin Header -->
+  <!-- HEADER -->
   <header class="admin-header">
     <div class="admin-header-content">
       <div class="admin-logo">
         <i class="fas fa-crown"></i>
-        <span>لوحة التحكم</span>
+        <span>لوحة التحكم المتقدمة</span>
       </div>
       <button class="back-btn" onclick="window.location.href='library.html'">
         <i class="fas fa-arrow-right"></i>
@@ -441,232 +611,791 @@
     </div>
   </header>
 
-  <!-- Main Content -->
   <main class="admin-container">
 
-    <!-- Instructions Card -->
-    <div class="instructions-card">
-      <h2>
-        <i class="fas fa-lightbulb"></i>
-        كيفية إضافة محاضرة جديدة
-      </h2>
-      <p style="color: #475569; font-size: 1.1rem; margin-bottom: 25px;">
-        اتبع الخطوات التالية لإضافة محاضرة جديدة بنجاح:
-      </p>
+    <!-- ==================== إدارة المواد ==================== -->
+    <div class="section animate-in">
+      <div class="section-header">
+        <i class="fas fa-layer-group"></i>
+        <h2>إدارة المواد (Containers)</h2>
+      </div>
 
-      <div class="instructions-grid">
+      <div id="subjectAlert" class="alert"></div>
+
+      <form id="addSubjectForm">
         
-        <!-- Step 1 -->
-        <div class="instruction-step">
-          <div class="step-number">1</div>
-          <h3>أنشئ الملف</h3>
-          <p>
-            أنشئ ملف المحاضرة في المسار الصحيح:<br>
-            <code>lectures/statistics/lecture1.html</code>
-          </p>
+        <!-- Basic Info -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-tag"></i>
+              معرّف المادة (ID)
+            </label>
+            <input type="text" id="subjectId" class="form-input" placeholder="marketing" required>
+            <small class="form-hint">
+              <i class="fas fa-info-circle"></i>
+              أحرف إنجليزية صغيرة فقط
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-sort-numeric-up"></i>
+              الترتيب
+            </label>
+            <input type="number" id="subjectOrder" class="form-input" value="1" min="1" required>
+          </div>
         </div>
 
-        <!-- Step 2 -->
-        <div class="instruction-step">
-          <div class="step-number">2</div>
-          <h3>ارفع على GitHub</h3>
-          <p>
-            ارفع الملف على GitHub في المجلد المناسب حسب المادة (statistics, economics, إلخ)
-          </p>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-font"></i>
+              الاسم بالعربي
+            </label>
+            <input type="text" id="subjectNameAr" class="form-input" placeholder="التسويق" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-language"></i>
+              الاسم بالإنجليزي
+            </label>
+            <input type="text" id="subjectNameEn" class="form-input" placeholder="Marketing" required>
+          </div>
         </div>
 
-        <!-- Step 3 -->
-        <div class="instruction-step">
-          <div class="step-number">3</div>
-          <h3>حدد معرّف فريد</h3>
-          <p>
-            اختر <code>Lecture ID</code> فريد مثل:<br>
-            <code>stat_l1</code> أو <code>econ_l2</code>
-          </p>
+        <div class="form-group full-width">
+          <label class="form-label">
+            <i class="fas fa-align-right"></i>
+            وصف المادة (اختياري)
+          </label>
+          <textarea id="subjectDescription" class="form-textarea" placeholder="وصف مختصر للمادة..."></textarea>
         </div>
 
-        <!-- Step 4 -->
-        <div class="instruction-step">
-          <div class="step-number">4</div>
-          <h3>املأ الفورم</h3>
-          <p>
-            أدخل جميع المعلومات المطلوبة في الفورم أدناه واضغط "إضافة المحاضرة"
-          </p>
+        <!-- Icon Selection -->
+        <div class="form-group full-width">
+          <label class="form-label">
+            <i class="fas fa-icons"></i>
+            اختر الأيقونة
+          </label>
+          <button type="button" class="form-input" style="cursor: pointer; text-align: right; display: flex; align-items: center; gap: 10px;" onclick="toggleIconPicker()">
+            <span id="selectedIconPreview" style="display: flex; align-items: center; gap: 10px;">
+              <i class="fas fa-book" style="font-size: 1.2rem;"></i>
+              <span>fa-book</span>
+            </span>
+          </button>
+          <div id="iconPickerGroup" class="picker-grid" style="display: none;">
+            <!-- Icons populated by JS -->
+          </div>
+          <input type="hidden" id="subjectIcon" value="fa-book">
         </div>
 
+        <!-- Color Selection -->
+        <div class="form-group full-width">
+          <label class="form-label">
+            <i class="fas fa-palette"></i>
+            اختر اللون
+          </label>
+          <div class="color-grid" id="colorGrid">
+            <!-- Colors populated by JS -->
+          </div>
+          <input type="hidden" id="subjectColor" value="#16a34a">
+        </div>
+
+        <!-- ==================== تخصيصات متقدمة ==================== -->
+        <div class="form-divider">
+          <div class="form-divider-title">
+            <i class="fas fa-sliders-h"></i>
+            تخصيصات متقدمة
+          </div>
+        </div>
+
+        <!-- Container Styling -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-border-style"></i>
+              نوع الحدود
+            </label>
+            <select id="containerBorder" class="form-select">
+              <option value="normal">عادية (Solid)</option>
+              <option value="dashed">متقطعة (Dashed)</option>
+              <option value="none">بدون حدود</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-sun"></i>
+              مستوى الظل
+            </label>
+            <select id="containerShadow" class="form-select">
+              <option value="light">خفيف</option>
+              <option value="normal" selected>عادي</option>
+              <option value="heavy">قوي</option>
+              <option value="none">بدون ظل</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-ruler-combined"></i>
+              حجم الـ Container
+            </label>
+            <select id="containerSize" class="form-select">
+              <option value="compact">صغير (Compact)</option>
+              <option value="normal" selected>عادي</option>
+              <option value="large">كبير (Large)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-expand"></i>
+              حجم الأيقونة
+            </label>
+            <select id="iconSize" class="form-select">
+              <option value="small">صغيرة (70px)</option>
+              <option value="normal" selected>عادية (90px)</option>
+              <option value="large">كبيرة (110px)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Animation Settings -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-magic"></i>
+              حركة الأيقونة
+            </label>
+            <select id="iconAnimation" class="form-select">
+              <option value="float" selected>طائرة (Float)</option>
+              <option value="pulse">نبضة (Pulse)</option>
+              <option value="both">الاثنين معاً</option>
+              <option value="none">بدون حركة</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-tachometer-alt"></i>
+              سرعة الحركة
+            </label>
+            <select id="animationSpeed" class="form-select">
+              <option value="slow">بطيء (0.8s)</option>
+              <option value="normal" selected>عادي (0.4s)</option>
+              <option value="fast">سريع (0.2s)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Layout & Effects -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-align-center"></i>
+              تخطيط الـ Container
+            </label>
+            <select id="containerLayout" class="form-select">
+              <option value="vertical" selected>رأسي (Vertical)</option>
+              <option value="horizontal">أفقي (Horizontal)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-drafting-compass"></i>
+              درجة التدوير عند Hover
+            </label>
+            <input type="number" id="hoverRotation" class="form-input" value="-8" min="-45" max="45" step="1">
+            <small class="form-hint">
+              <i class="fas fa-info-circle"></i>
+              من -45 إلى 45 درجة
+            </small>
+          </div>
+        </div>
+
+        <!-- Hover Effects -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-arrows-alt-v"></i>
+              مسافة الرفع عند Hover (px)
+            </label>
+            <input type="number" id="hoverLift" class="form-input" value="12" min="0" max="30" step="2">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-search-plus"></i>
+              نسبة التكبير عند Hover
+            </label>
+            <input type="number" id="hoverScale" class="form-input" value="1.02" min="1" max="1.2" step="0.01">
+          </div>
+        </div>
+
+        <!-- Border Radius -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-square"></i>
+              تدوير الزوايا (Container)
+            </label>
+            <input type="number" id="containerRadius" class="form-input" value="24" min="0" max="50" step="2">
+            <small class="form-hint">
+              <i class="fas fa-info-circle"></i>
+              0 = مربع، 50 = دائري
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-circle"></i>
+              تدوير الزوايا (Icon Box)
+            </label>
+            <input type="number" id="iconRadius" class="form-input" value="22" min="0" max="50" step="2">
+          </div>
+        </div>
+
+        <!-- Background & Effects -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-adjust"></i>
+              شفافية الخلفية
+            </label>
+            <input type="range" id="bgOpacity" class="form-input" value="0.4" min="0" max="1" step="0.1" oninput="updateOpacityValue(this.value)">
+            <small class="form-hint">
+              <i class="fas fa-eye"></i>
+              <span id="opacityValue">40%</span>
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-sparkles"></i>
+              تأثير اللمعان (Shine)
+            </label>
+            <select id="shineEffect" class="form-select">
+              <option value="true" selected>مفعّل</option>
+              <option value="false">معطّل</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Custom CSS Classes -->
+        <div class="form-group full-width">
+          <label class="form-label">
+            <i class="fas fa-code"></i>
+            CSS Classes إضافية (اختياري)
+          </label>
+          <input type="text" id="customClasses" class="form-input" placeholder="custom-style premium-card">
+          <small class="form-hint">
+            <i class="fas fa-info-circle"></i>
+            فصل بينهم بمسافة
+          </small>
+        </div>
+        <!-- Preview -->
+        <div class="form-group full-width">
+          <label class="form-label">
+            <i class="fas fa-eye"></i>
+            معاينة الشكل النهائي
+          </label>
+          <div class="container-preview">
+            <div class="preview-card">
+              <div class="preview-icon-container" id="previewIconContainer" style="background: linear-gradient(135deg, #16a34a, #10b981);">
+                <i id="previewIcon" class="fas fa-book"></i>
+              </div>
+              <div class="preview-title" id="previewTitle">عنوان المادة</div>
+              <div class="preview-subtitle" id="previewSubtitle">Subject Name</div>
+              <div style="margin-top: 15px; padding-top: 15px; border-top: 2px solid #f1f5f9;">
+                <small style="color: #94a3b8; font-weight: 600;">
+                  <i class="fas fa-book"></i> 0 محاضرة
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visibility -->
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-eye"></i>
+            حالة الظهور
+          </label>
+          <select id="subjectVisibility" class="form-select" required>
+            <option value="true">ظاهرة للطلاب</option>
+            <option value="false">مخفية</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-primary" id="submitSubjectBtn">
+          <i class="fas fa-plus-circle"></i>
+          إضافة المادة
+        </button>
+      </form>
+
+      <!-- Subjects Table -->
+      <div style="margin-top: 40px;">
+        <h3 style="font-size: 1.3rem; font-weight: 700; color: #0f172a; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+          <i class="fas fa-list"></i>
+          المواد الموجودة
+        </h3>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>الاسم (عربي)</th>
+              <th>الاسم (English)</th>
+              <th>الأيقونة</th>
+              <th>الترتيب</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="subjectsTableBody">
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 30px; color: #94a3b8;">
+                <i class="fas fa-spinner fa-spin"></i> جاري التحميل...
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <!-- Add Lecture Form -->
-    <div class="form-card">
-      <h2>
-        <i class="fas fa-plus-circle"></i>
-        إضافة محاضرة جديدة
-      </h2>
+    <!-- ==================== إدارة المحاضرات ==================== -->
+    <div class="section animate-in" style="animation-delay: 0.1s;">
+      <div class="section-header">
+        <i class="fas fa-video"></i>
+        <h2>إدارة المحاضرات</h2>
+      </div>
 
       <div id="addAlert" class="alert"></div>
 
       <form id="addLectureForm">
         
-        <!-- Row 1 -->
-        <div class="form-row">
-          
-          <!-- Lecture ID -->
+        <div class="form-grid">
           <div class="form-group">
-            <label class="form-label" for="lectureId">
-              <i class="fas fa-tag"></i>
-              معرّف المحاضرة (Lecture ID)
+            <label class="form-label">
+              <i class="fas fa-hashtag"></i>
+              معرّف المحاضرة
             </label>
-            <input type="text" id="lectureId" class="form-input" placeholder="مثال: stat_l1" required>
-            <small class="form-hint">
-              <i class="fas fa-info-circle"></i>
-              يجب أن يكون فريد (stat_l1, econ_l2, prod_l1)
-            </small>
+            <input type="text" id="lectureId" class="form-input" placeholder="stat_l1" required>
           </div>
 
-          <!-- Title -->
           <div class="form-group">
-            <label class="form-label" for="lectureTitle">
+            <label class="form-label">
               <i class="fas fa-heading"></i>
               عنوان المحاضرة
             </label>
-            <input type="text" id="lectureTitle" class="form-input" placeholder="مثال: مقدمة في الإحصاء" required>
+            <input type="text" id="lectureTitle" class="form-input" placeholder="مقدمة في الإحصاء" required>
           </div>
-
         </div>
 
-        <!-- Row 2 -->
-        <div class="form-row">
-          
-          <!-- Subject -->
+        <div class="form-group full-width">
+          <label class="form-label">
+            <i class="fas fa-align-right"></i>
+            وصف المحاضرة (اختياري)
+          </label>
+          <textarea id="lectureDescription" class="form-textarea" placeholder="وصف مختصر..."></textarea>
+        </div>
+
+        <div class="form-grid">
           <div class="form-group">
-            <label class="form-label" for="lectureSubject">
-              <i class="fas fa-book"></i>
+            <label class="form-label">
+              <i class="fas fa-book-open"></i>
               المادة
             </label>
             <select id="lectureSubject" class="form-select" required>
               <option value="">-- اختر المادة --</option>
-              <option value="statistics">الإحصاء (Statistics)</option>
-              <option value="economics">الاقتصاد (Economics)</option>
-              <option value="production">إدارة الإنتاج (Production)</option>
-              <option value="finance">المالية العامة (Public Finance)</option>
             </select>
           </div>
 
-          <!-- URL -->
           <div class="form-group">
-            <label class="form-label" for="lectureUrl">
+            <label class="form-label">
               <i class="fas fa-link"></i>
               رابط المحاضرة
             </label>
-            <input type="text" id="lectureUrl" class="form-input" placeholder="lectures/statistics/lecture1.html" required>
-            <small class="form-hint">
-              <i class="fas fa-info-circle"></i>
-              المسار النسبي للملف في المشروع
-            </small>
+            <input type="text" id="lectureUrl" class="form-input" placeholder="lectures/stat/l1.html" required>
           </div>
-
         </div>
 
-        <!-- Row 3 -->
-        <div class="form-row">
-          
-          <!-- Price -->
+        <div class="form-grid">
           <div class="form-group">
-            <label class="form-label" for="lecturePrice">
-              <i class="fas fa-dollar-sign"></i>
+            <label class="form-label">
+              <i class="fas fa-money-bill-wave"></i>
               نوع المحاضرة
             </label>
             <select id="lecturePrice" class="form-select" onchange="toggleActivationCode()" required>
-              <option value="free">مجانية (Free)</option>
-              <option value="paid">مدفوعة (Paid)</option>
+              <option value="free">مجانية</option>
+              <option value="paid">مدفوعة</option>
             </select>
           </div>
 
-          <!-- Activation Code -->
-          <div class="form-group" id="activationCodeGroup">
-            <label class="form-label" for="activationCode">
+          <div class="form-group" id="activationCodeGroup" style="display: none;">
+            <label class="form-label">
               <i class="fas fa-key"></i>
               كود التفعيل
             </label>
-            <input type="text" id="activationCode" class="form-input" placeholder="مثال: STAT2025">
-            <small class="form-hint">
-              <i class="fas fa-info-circle"></i>
-              الكود الذي سيستخدمه الطلاب لتفعيل المحاضرة
-            </small>
+            <input type="text" id="activationCode" class="form-input" placeholder="STAT2025">
           </div>
-
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="submit-btn" id="submitBtn">
-          <i class="fas fa-check-circle"></i>
+        <button type="submit" class="btn-primary" id="submitBtn">
+          <i class="fas fa-plus-circle"></i>
           إضافة المحاضرة
         </button>
-
       </form>
-    </div>
 
-    <!-- Manage Lectures -->
-    <div class="form-card">
-      <h2>
-        <i class="fas fa-list"></i>
-        المحاضرات الموجودة
-      </h2>
+      <!-- Lectures Table -->
+      <div style="margin-top: 40px;">
+        <h3 style="font-size: 1.3rem; font-weight: 700; color: #0f172a; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+          <i class="fas fa-list"></i>
+          المحاضرات الموجودة
+        </h3>
 
-      <div id="manageAlert" class="alert"></div>
-
-      <table class="lectures-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>العنوان</th>
-            <th>المادة</th>
-            <th>النوع</th>
-            <th>إجراءات</th>
-          </tr>
-        </thead>
-        <tbody id="lecturesTableBody">
-          <tr>
-            <td colspan="5" style="text-align: center; padding: 40px; color: #64748b;">
-              <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 15px; display: block;"></i>
-              جاري التحميل...
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>العنوان</th>
+              <th>المادة</th>
+              <th>النوع</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="lecturesTableBody">
+            <tr>
+              <td colspan="5" style="text-align: center; padding: 30px; color: #94a3b8;">
+                <i class="fas fa-spinner fa-spin"></i> جاري التحميل...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
   </main>
 
-  <!-- Firebase SDK -->
-  <script type="module">
+   <script type="module">
     import { auth, db } from './js/app.js';
     import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-    import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    import { 
+      collection, 
+      addDoc, 
+      getDocs, 
+      deleteDoc, 
+      doc, 
+      query, 
+      orderBy,
+      serverTimestamp
+    } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
     let currentUser = null;
 
-    // Check Admin Access
+    // ==================== ICONS & COLORS ====================
+    const popularIcons = [
+      'fa-book', 'fa-graduation-cap', 'fa-chart-bar', 'fa-chart-line', 
+      'fa-chart-pie', 'fa-calculator', 'fa-coins', 'fa-dollar-sign', 
+      'fa-money-bill-wave', 'fa-building', 'fa-industry', 'fa-landmark', 
+      'fa-university', 'fa-briefcase', 'fa-handshake', 'fa-bullhorn', 
+      'fa-shopping-cart', 'fa-lightbulb', 'fa-brain', 'fa-atom', 
+      'fa-flask', 'fa-microscope', 'fa-dna', 'fa-heartbeat', 
+      'fa-balance-scale', 'fa-gavel', 'fa-globe', 'fa-language',
+      'fa-laptop-code', 'fa-code', 'fa-paint-brush', 'fa-music'
+    ];
+
+    const colorPresets = [
+      '#16a34a', '#10b981', '#059669', '#047857',
+      '#3b82f6', '#2563eb', '#1d4ed8', '#1e40af',
+      '#8b5cf6', '#7c3aed', '#6d28d9', '#5b21b6',
+      '#f59e0b', '#d97706', '#b45309', '#92400e',
+      '#ef4444', '#dc2626', '#b91c1c', '#991b1b',
+      '#ec4899', '#db2777', '#be185d', '#9f1239'
+    ];
+
+    // ==================== AUTH CHECK ====================
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        alert('❌ يجب تسجيل الدخول');
+        alert('يجب تسجيل الدخول');
         window.location.href = 'login.html';
         return;
       }
       
       currentUser = user;
-      loadLectures();
+      initializeApp();
     });
 
-    // Toggle Activation Code
-    window.toggleActivationCode = function() {
-      const price = document.getElementById('lecturePrice').value;
-      const codeGroup = document.getElementById('activationCodeGroup');
-      codeGroup.style.display = price === 'paid' ? 'block' : 'none';
+    // ==================== INITIALIZE ====================
+    async function initializeApp() {
+      populateIconPicker();
+      populateColorGrid();
+      setupPreviewListeners();
+      await loadSubjects();
+      await loadLectures();
+    }
+
+    // ==================== ICON PICKER ====================
+    function populateIconPicker() {
+      const picker = document.getElementById('iconPickerGroup');
+      picker.innerHTML = popularIcons.map(icon => `
+        <div class="icon-option" onclick="selectIcon('${icon}')">
+          <i class="fas ${icon}"></i>
+        </div>
+      `).join('');
+    }
+
+    window.toggleIconPicker = function() {
+      const picker = document.getElementById('iconPickerGroup');
+      picker.style.display = picker.style.display === 'none' ? 'grid' : 'none';
     };
 
-    // Add Lecture Form Submit
+    window.selectIcon = function(icon) {
+      document.getElementById('subjectIcon').value = icon;
+      document.getElementById('selectedIconPreview').innerHTML = `
+        <i class="fas ${icon}" style="font-size: 1.2rem;"></i>
+        <span>${icon}</span>
+      `;
+      
+      document.getElementById('previewIcon').className = `fas ${icon}`;
+      
+      document.querySelectorAll('.icon-option').forEach(opt => opt.classList.remove('selected'));
+      event.target.closest('.icon-option').classList.add('selected');
+    };
+
+    // ==================== COLOR GRID ====================
+    function populateColorGrid() {
+      const grid = document.getElementById('colorGrid');
+      grid.innerHTML = colorPresets.map((color, index) => `
+        <div class="color-option ${index === 0 ? 'selected' : ''}" 
+             style="background: ${color};" 
+             onclick="selectColor('${color}')"></div>
+      `).join('');
+    }
+
+    window.selectColor = function(color) {
+      document.getElementById('subjectColor').value = color;
+      
+      const lighter = adjustColor(color, 20);
+      document.getElementById('previewIconContainer').style.background = 
+        `linear-gradient(135deg, ${color}, ${lighter})`;
+      
+      document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+      event.target.classList.add('selected');
+    };
+
+    function adjustColor(color, percent) {
+      const num = parseInt(color.replace('#', ''), 16);
+      const amt = Math.round(2.55 * percent);
+      const R = (num >> 16) + amt;
+      const G = (num >> 8 & 0x00FF) + amt;
+      const B = (num & 0x0000FF) + amt;
+      return '#' + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+        (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+        (B < 255 ? B < 1 ? 0 : B : 255))
+        .toString(16).slice(1);
+    }
+
+    // ==================== LIVE PREVIEW ====================
+    function setupPreviewListeners() {
+      document.getElementById('subjectNameAr').addEventListener('input', (e) => {
+        const val = e.target.value.trim();
+        document.getElementById('previewTitle').textContent = val || 'عنوان المادة';
+      });
+      
+      document.getElementById('subjectNameEn').addEventListener('input', (e) => {
+        const val = e.target.value.trim();
+        document.getElementById('previewSubtitle').textContent = val || 'Subject Name';
+      });
+    }
+
+    // ==================== OPACITY VALUE ====================
+    window.updateOpacityValue = function(value) {
+      const percentage = Math.round(value * 100);
+      document.getElementById('opacityValue').textContent = `${percentage}%`;
+    };
+
+    // ==================== ADD SUBJECT ====================
+    document.getElementById('addSubjectForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const btn = document.getElementById('submitSubjectBtn');
+      const alert = document.getElementById('subjectAlert');
+      
+      const subjectId = document.getElementById('subjectId').value.trim().toLowerCase();
+      const nameAr = document.getElementById('subjectNameAr').value.trim();
+      const nameEn = document.getElementById('subjectNameEn').value.trim();
+      const description = document.getElementById('subjectDescription').value.trim();
+      const icon = document.getElementById('subjectIcon').value.trim();
+      const color = document.getElementById('subjectColor').value;
+      const order = parseInt(document.getElementById('subjectOrder').value);
+      const isVisible = document.getElementById('subjectVisibility').value === 'true';
+      
+      // Advanced customizations
+      const customizations = {
+        border: document.getElementById('containerBorder').value,
+        shadow: document.getElementById('containerShadow').value,
+        size: document.getElementById('containerSize').value,
+        iconSize: document.getElementById('iconSize').value,
+        animation: document.getElementById('iconAnimation').value,
+        animationSpeed: document.getElementById('animationSpeed').value,
+        layout: document.getElementById('containerLayout').value,
+        hoverRotation: parseInt(document.getElementById('hoverRotation').value),
+        hoverLift: parseInt(document.getElementById('hoverLift').value),
+        hoverScale: parseFloat(document.getElementById('hoverScale').value),
+        containerRadius: parseInt(document.getElementById('containerRadius').value),
+        iconRadius: parseInt(document.getElementById('iconRadius').value),
+        bgOpacity: parseFloat(document.getElementById('bgOpacity').value),
+        shineEffect: document.getElementById('shineEffect').value === 'true',
+        customClasses: document.getElementById('customClasses').value.trim()
+      };
+      
+      if (!/^[a-z]+$/.test(subjectId)) {
+        showAlert(alert, 'error', 'معرّف المادة يجب أن يكون أحرف إنجليزية صغيرة فقط');
+        return;
+      }
+      
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإضافة...';
+      
+      try {
+        const existingSubjects = await getDocs(collection(db, 'subjects'));
+        const exists = existingSubjects.docs.some(docSnap => docSnap.data().id === subjectId);
+        
+        if (exists) {
+          showAlert(alert, 'error', 'المعرّف موجود بالفعل!');
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-plus-circle"></i> إضافة المادة';
+          return;
+        }
+        
+        await addDoc(collection(db, 'subjects'), {
+          id: subjectId,
+          nameAr: nameAr,
+          nameEn: nameEn,
+          description: description,
+          icon: icon,
+          color: color,
+          order: order,
+          isVisible: isVisible,
+          customizations: customizations,
+          lectureCount: 0,
+          createdAt: serverTimestamp()
+        });
+        
+        showAlert(alert, 'success', 'تم إضافة المادة بنجاح!');
+        resetSubjectForm();
+        loadSubjects();
+        
+      } catch (error) {
+        console.error('Error:', error);
+        showAlert(alert, 'error', 'خطأ: ' + error.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-plus-circle"></i> إضافة المادة';
+      }
+    });
+
+    function resetSubjectForm() {
+      document.getElementById('addSubjectForm').reset();
+      document.getElementById('subjectIcon').value = 'fa-book';
+      document.getElementById('subjectColor').value = '#16a34a';
+      document.getElementById('selectedIconPreview').innerHTML = '<i class="fas fa-book" style="font-size: 1.2rem;"></i> <span>fa-book</span>';
+      document.getElementById('previewIcon').className = 'fas fa-book';
+      document.getElementById('previewIconContainer').style.background = 'linear-gradient(135deg, #16a34a, #10b981)';
+      document.getElementById('previewTitle').textContent = 'عنوان المادة';
+      document.getElementById('previewSubtitle').textContent = 'Subject Name';
+      document.getElementById('opacityValue').textContent = '40%';
+      populateColorGrid();
+      document.querySelectorAll('.icon-option').forEach(opt => opt.classList.remove('selected'));
+    }
+
+    // ==================== LOAD SUBJECTS ====================
+    async function loadSubjects() {
+      const tbody = document.getElementById('subjectsTableBody');
+      
+      try {
+        const q = query(collection(db, 'subjects'), orderBy('order', 'asc'));
+        const snapshot = await getDocs(q);
+        
+        if (snapshot.empty) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px; color: #94a3b8;">لا توجد مواد</td></tr>';
+          return;
+        }
+        
+        const subjects = [];
+        snapshot.forEach(docSnap => {
+          subjects.push({ docId: docSnap.id, ...docSnap.data() });
+        });
+        
+        tbody.innerHTML = '';
+        
+        subjects.forEach(subject => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td style="font-weight: 700; color: #16a34a;">${subject.id}</td>
+            <td style="font-weight: 600;">${subject.nameAr}</td>
+            <td>${subject.nameEn}</td>
+            <td>
+              <div style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: ${subject.color}; border-radius: 12px;">
+                <i class="fas ${subject.icon}" style="color: white; font-size: 1.5rem;"></i>
+              </div>
+            </td>
+            <td style="font-weight: 700;">${subject.order}</td>
+            <td>
+              <button class="btn-danger" onclick="deleteSubject('${subject.docId}', '${subject.nameAr}')">
+                <i class="fas fa-trash-alt"></i> حذف
+              </button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+        
+        updateSubjectSelect(subjects);
+        
+      } catch (error) {
+        console.error('Error:', error);
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px; color: #ef4444;">خطأ في التحميل</td></tr>';
+      }
+    }
+
+    function updateSubjectSelect(subjects) {
+      const select = document.getElementById('lectureSubject');
+      select.innerHTML = '<option value="">-- اختر المادة --</option>';
+      
+      subjects.forEach(subject => {
+        const option = document.createElement('option');
+        option.value = subject.id;
+        option.textContent = `${subject.nameAr} (${subject.nameEn})`;
+        select.appendChild(option);
+      });
+    }
+
+    window.deleteSubject = async function(docId, name) {
+      if (!confirm(`هل تريد حذف المادة: ${name}؟`)) return;
+      
+      const alert = document.getElementById('subjectAlert');
+      
+      try {
+        await deleteDoc(doc(db, 'subjects', docId));
+        showAlert(alert, 'success', 'تم الحذف بنجاح');
+        loadSubjects();
+      } catch (error) {
+        console.error('Error:', error);
+        showAlert(alert, 'error', 'خطأ: ' + error.message);
+      }
+    };
+    // ==================== ADD LECTURE ====================
+    window.toggleActivationCode = function() {
+      const price = document.getElementById('lecturePrice').value;
+      document.getElementById('activationCodeGroup').style.display = price === 'paid' ? 'block' : 'none';
+    };
+
     document.getElementById('addLectureForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -675,18 +1404,19 @@
       
       const lectureId = document.getElementById('lectureId').value.trim();
       const title = document.getElementById('lectureTitle').value.trim();
+      const description = document.getElementById('lectureDescription').value.trim();
       const subject = document.getElementById('lectureSubject').value;
       const url = document.getElementById('lectureUrl').value.trim();
       const price = document.getElementById('lecturePrice').value;
       const activationCode = document.getElementById('activationCode').value.trim();
       
       if (!lectureId || !title || !subject || !url) {
-        showAlert(alert, 'error', '❌ يرجى ملء جميع الحقول المطلوبة');
+        showAlert(alert, 'error', 'يرجى ملء جميع الحقول المطلوبة');
         return;
       }
       
       if (price === 'paid' && !activationCode) {
-        showAlert(alert, 'error', '❌ يرجى إدخال كود التفعيل للمحاضرات المدفوعة');
+        showAlert(alert, 'error', 'يرجى إدخال كود التفعيل');
         return;
       }
       
@@ -695,13 +1425,16 @@
       
       try {
         const lectureData = {
-          lectureId: lectureId,
-          title: title,
-          subject: subject,
-          url: url,
-          price: price,
+          lectureId,
+          title,
+          description,
+          subject,
+          url,
+          price,
           status: 'active',
-          createdAt: new Date()
+          icon: 'fa-book-open',
+          order: 999,
+          createdAt: serverTimestamp()
         };
         
         if (price === 'paid') {
@@ -710,21 +1443,21 @@
         
         await addDoc(collection(db, 'lectures'), lectureData);
         
-        showAlert(alert, 'success', '✅ تم إضافة المحاضرة بنجاح!');
+        showAlert(alert, 'success', 'تم إضافة المحاضرة بنجاح!');
         document.getElementById('addLectureForm').reset();
         document.getElementById('activationCodeGroup').style.display = 'none';
         loadLectures();
         
       } catch (error) {
-        console.error('Error adding lecture:', error);
-        showAlert(alert, 'error', '❌ خطأ في الإضافة: ' + error.message);
+        console.error('Error:', error);
+        showAlert(alert, 'error', 'خطأ: ' + error.message);
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-check-circle"></i> إضافة المحاضرة';
+        btn.innerHTML = '<i class="fas fa-plus-circle"></i> إضافة المحاضرة';
       }
     });
 
-    // Load Lectures
+    // ==================== LOAD LECTURES ====================
     async function loadLectures() {
       const tbody = document.getElementById('lecturesTableBody');
       
@@ -733,25 +1466,28 @@
         const snapshot = await getDocs(q);
         
         if (snapshot.empty) {
-          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #64748b;">لا توجد محاضرات</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 30px; color: #94a3b8;">لا توجد محاضرات</td></tr>';
           return;
         }
         
         tbody.innerHTML = '';
         
-        snapshot.forEach((docSnap) => {
+        snapshot.forEach(docSnap => {
           const lec = docSnap.data();
-          const docId = docSnap.id;
           
           const row = document.createElement('tr');
           row.innerHTML = `
-            <td style="font-weight: 700;">${lec.lectureId}</td>
-            <td>${lec.title}</td>
+            <td style="font-weight: 700; color: #16a34a;">${lec.lectureId}</td>
+            <td style="font-weight: 600;">${lec.title}</td>
             <td>${getSubjectName(lec.subject)}</td>
-            <td><span class="badge badge-${lec.price}">${lec.price === 'free' ? 'مجانية' : 'مدفوعة'}</span></td>
             <td>
-              <button class="action-btn action-btn-delete" onclick="deleteLecture('${docId}', '${lec.title}')">
-                <i class="fas fa-trash"></i> حذف
+              <span class="badge badge-${lec.price === 'free' ? 'success' : 'warning'}">
+                ${lec.price === 'free' ? 'مجانية' : 'مدفوعة'}
+              </span>
+            </td>
+            <td>
+              <button class="btn-danger" onclick="deleteLecture('${docSnap.id}', '${lec.title}')">
+                <i class="fas fa-trash-alt"></i> حذف
               </button>
             </td>
           `;
@@ -759,43 +1495,49 @@
         });
         
       } catch (error) {
-        console.error('Error loading lectures:', error);
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #dc2626;">خطأ في التحميل</td></tr>';
+        console.error('Error:', error);
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 30px; color: #ef4444;">خطأ في التحميل</td></tr>';
       }
     }
 
-    // Delete Lecture
     window.deleteLecture = async function(docId, title) {
-      if (!confirm(`هل تريد حذف المحاضرة: ${title}؟`)) {
-        return;
-      }
+      if (!confirm(`هل تريد حذف المحاضرة: ${title}؟`)) return;
       
-      const alert = document.getElementById('manageAlert');
+      const alert = document.getElementById('addAlert');
       
       try {
         await deleteDoc(doc(db, 'lectures', docId));
-        showAlert(alert, 'success', '✅ تم حذف المحاضرة بنجاح');
+        showAlert(alert, 'success', 'تم الحذف بنجاح');
         loadLectures();
       } catch (error) {
-        console.error('Error deleting lecture:', error);
-        showAlert(alert, 'error', '❌ خطأ في الحذف: ' + error.message);
+        console.error('Error:', error);
+        showAlert(alert, 'error', 'خطأ: ' + error.message);
       }
     };
 
-    // Helper Functions
-    function getSubjectName(subject) {
+    // ==================== HELPERS ====================
+    function getSubjectName(subjectId) {
       const names = {
         statistics: 'الإحصاء',
         economics: 'الاقتصاد',
         production: 'إدارة الإنتاج',
-        finance: 'المالية العامة'
+        finance: 'المالية العامة',
+        marketing: 'التسويق',
+        accounting: 'المحاسبة',
+        management: 'إدارة الأعمال',
+        law: 'القانون',
+        hr: 'الموارد البشرية',
+        insurance: 'التأمين'
       };
-      return names[subject] || subject;
+      return names[subjectId] || subjectId;
     }
 
     function showAlert(element, type, message) {
       element.className = `alert alert-${type} show`;
-      element.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+      element.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+        ${message}
+      `;
       
       setTimeout(() => {
         element.classList.remove('show');
