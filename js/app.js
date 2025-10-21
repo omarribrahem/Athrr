@@ -64,7 +64,7 @@ const AVATAR_CONFIGS = [
  {
     seed: 'Luis',
     style: 'lorelei',
-    params: 'eyebrows=variant13&eyes=variant21&glasses=variant04&glassesProbability=30&hair=variant18,variant45,variant21,variant16&mouth=happy18&nose=variant01'
+    params: 'https://api.dicebear.com/9.x/lorelei/svg?seed=Luis&beard[]&eyebrows=variant13&eyes=variant21&glasses=variant04&glassesProbability=30&hair=variant18,variant45,variant21,variant16&mouth=happy18&nose=variant01'
   }, 
   {
     seed: 'Mohamed',
