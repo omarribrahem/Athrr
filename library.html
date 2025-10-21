@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المكتبة - منصة أثر</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/platform.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+
+<body>
+  
+  <div class="background-waves">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div class="profile-modal" id="profileModal">
+    <div class="profile-modal-overlay" onclick="closeProfile()"></div>
+    <div class="profile-modal-content">
+      
+      <!-- Header -->
+      <div class="profile-header">
+        <div class="profile-header-bg"></div>
+        <button class="close-modal" onclick="closeProfile()">
+          <i class="fas fa-times"></i>
+        </button>
+        
+        <!-- Avatar مع Overlay -->
+        <div class="profile-avatar-wrapper">
+          <div class="profile-avatar-large" id="avatarContainer">
+            <img id="profileAvatarImg" src="https://api.dicebear.com/7.x/avataaars/svg?seed=User" alt="Profile">
+            <div class="avatar-edit-overlay">
+              <i class="fas fa-camera"></i>
+              <span>تغيير</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Body -->
+      <div class="profile-body">
+        
+        <!-- Avatar Selector -->
+        <div class="avatar-selector" id="avatarSelector" style="display: none;">
+          <h3 class="selector-title">
+            <i class="fas fa-palette"></i>
+            اختر شكلك المفضل
+          </h3>
+          
+          <div class="avatars-grid">
+            <!-- JavaScript will fill this -->
+          </div>
+          
+          <button class="selector-close-btn" onclick="closeAvatarSelector()">
+            <i class="fas fa-check"></i>
+            تم الاختيار
+          </button>
+        </div>
+        
+        <!-- Profile Form -->
+        <div id="profileFormSection">
+          <h2 class="profile-title">
+            <i class="fas fa-user-edit"></i>
+            تعديل الملف الشخصي
+          </h2>
+          
+          <form id="profileForm">
+            
+            <!-- Name -->
+            <div class="profile-capsule-field">
+              <div class="field-icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="field-content">
+                <label class="capsule-label">الاسم الكامل</label>
+                <input type="text" id="profileName" class="capsule-input" placeholder="أحمد محمد" required>
+              </div>
+            </div>
+            
+            <!-- Email -->
+            <div class="profile-capsule-field disabled">
+              <div class="field-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="field-content">
+                <label class="capsule-label">البريد الإلكتروني</label>
+                <input type="email" id="profileEmail" class="capsule-input" placeholder="user@example.com" disabled>
+                <small class="capsule-hint">
+                  <i class="fas fa-lock"></i> لا يمكن تعديله
+                </small>
+              </div>
+            </div>
+            
+            <!-- University -->
+            <div class="profile-capsule-field" id="universityField">
+              <div class="field-icon">
+                <i class="fas fa-university"></i>
+              </div>
+              <div class="field-content">
+                <label class="capsule-label">الجامعة</label>
+                <div class="custom-select-wrapper">
+                  <div class="custom-select" id="universitySelect" onclick="toggleUniversityDropdown()">
+                    <span id="selectedUniversity">جامعة دمنهور</span>
+                    <i class="fas fa-chevron-down"></i>
+                  </div>
+                  <div class="custom-select-dropdown" id="universityDropdown">
+                    <div class="select-option" data-value="دمنهور" onclick="selectUniversity('دمنهور')">
+                      <i class="fas fa-university"></i>
+                      جامعة دمنهور
+                    </div>
+                    <div class="select-option" data-value="الإسكندرية" onclick="selectUniversity('الإسكندرية')">
+                      <i class="fas fa-university"></i>
+                      جامعة الإسكندرية
+                    </div>
+                    <div class="select-option" data-value="القاهرة" onclick="selectUniversity('القاهرة')">
+                      <i class="fas fa-university"></i>
+                      جامعة القاهرة
+                    </div>
+                    <div class="select-option" data-value="عين شمس" onclick="selectUniversity('عين شمس')">
+                      <i class="fas fa-university"></i>
+                      جامعة عين شمس
+                    </div>
+                  </div>
+                </div>
+                <input type="hidden" id="profileUniversity" value="دمنهور">
+              </div>
+            </div>
+            
+            <!-- Password -->
+            <div class="profile-capsule-field">
+              <div class="field-icon">
+                <i class="fas fa-key"></i>
+              </div>
+              <div class="field-content">
+                <label class="capsule-label">كلمة مرور جديدة</label>
+                <input type="password" id="profilePassword" class="capsule-input" placeholder="اختياري - 6 أحرف على الأقل" minlength="6">
+              </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="profile-actions">
+              <button type="submit" class="profile-save-btn" id="saveProfileBtn">
+                <i class="fas fa-check-circle"></i>
+                حفظ التغييرات
+              </button>
+              
+              <button type="button" class="profile-logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                تسجيل الخروج
+              </button>
+            </div>
+            
+          </form>
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="platform-header">
+    <div class="header-content">
+      
+      <!-- Right: User Profile with Dropdown -->
+      <div class="user-section" onclick="toggleUserMenu()">
+        <div class="user-avatar-header">
+          <img id="headerUserAvatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=User" alt="Profile">
+          <div class="user-avatar-status"></div>
+        </div>
+        <div class="user-info">
+          <h3 id="headerUserName">أحمد محمد</h3>
+          <p id="headerUserUniversity">🎓 جامعة دمنهور</p>
+        </div>
+        <i class="fas fa-chevron-down" style="font-size: 0.9rem; color: #64748b; margin-right: 10px; transition: transform 0.3s ease;" id="userMenuIcon"></i>
+        
+        <!-- ============ جديد: User Dropdown Menu ============ -->
+        <div class="user-dropdown-menu" id="userDropdownMenu">
+          <div class="user-menu-item" onclick="event.stopPropagation(); openProfile();">
+            <i class="fas fa-user-circle"></i>
+            <span>الملف الشخصي</span>
+          </div>
+          <div class="user-menu-item" onclick="event.stopPropagation(); showMyLibrary();">
+            <i class="fas fa-bookmark"></i>
+            <span>مكتبتي الخاصة</span>
+            <span class="menu-badge" id="headerLibraryCount">0</span>
+          </div>
+          <div class="user-menu-divider"></div>
+          <div class="user-menu-item logout-item" onclick="event.stopPropagation(); logout();">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>تسجيل الخروج</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Left: Logo Only -->
+      <div class="platform-logo">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="platform-container">
+    
+    <!-- Welcome -->
+    <div class="welcome-section" data-aos="fade-down">
+      <h1>مكتبتك التعليمية</h1>
+      <p>اختر المادة للبدء في رحلتك التعليمية</p>
+    </div>
+
+    <!-- ============ جديد: My Personal Library View ============ -->
+    <div id="myLibraryView" style="display: none;">
+      
+      <!-- Back Button -->
+      <button onclick="showAllSubjects()" class="capsule-btn" style="margin-bottom: 25px;">
+        <i class="fas fa-arrow-right"></i>
+        <span>العودة للمواد</span>
+      </button>
+      
+      <!-- Header -->
+      <div class="my-library-header" data-aos="fade-up">
+        <div class="library-header-card">
+          <div class="library-icon-box">
+            <i class="fas fa-book-reader"></i>
+          </div>
+          <div>
+            <h2>مكتبتي الخاصة</h2>
+            <p>المحاضرات التي حصلت عليها</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Lectures List -->
+      <div id="myLecturesList" data-aos="fade-up" data-aos-delay="100">
+        <!-- JavaScript will fill this -->
+        <div class="empty-state">
+          <i class="fas fa-inbox"></i>
+          <h3>لا توجد محاضرات بعد</h3>
+          <p>ابدأ بإضافة محاضرات من المواد المتاحة</p>
+          <button onclick="showAllSubjects()" class="browse-btn">
+            <i class="fas fa-plus-circle"></i> تصفح المواد
+          </button>
+        </div>
+      </div>
+      
+    </div>
+    
+    <!-- ============ Original: Subjects Grid ============ -->
+    <div class="subjects-grid" id="subjectsGrid">
+      
+      <div class="subject-capsule" data-aos="fade-up" onclick="showLectures('statistics')">
+        <div class="subject-icon-container">
+          <i class="fas fa-chart-bar" style="color: #3b82f6;"></i>
+        </div>
+        <h3 class="subject-title">الإحصاء</h3>
+        <p style="text-align: center; color: #64748b; margin-bottom: 20px; font-weight: 500;">Statistics</p>
+        <div style="padding-top: 15px; border-top: 2px solid rgba(203, 213, 225, 0.3); text-align: center;">
+          <span style="color: #475569; font-weight: 600;">
+            <i class="fas fa-book"></i> <span id="stat-count">0</span> محاضرة
+          </span>
+        </div>
+      </div>
+      
+      <div class="subject-capsule" data-aos="fade-up" data-aos-delay="100" onclick="showLectures('economics')">
+        <div class="subject-icon-container">
+          <i class="fas fa-chart-line" style="color: #7c3aed;"></i>
+        </div>
+        <h3 class="subject-title">الاقتصاد</h3>
+        <p style="text-align: center; color: #64748b; margin-bottom: 20px; font-weight: 500;">Economics</p>
+        <div style="padding-top: 15px; border-top: 2px solid rgba(203, 213, 225, 0.3); text-align: center;">
+          <span style="color: #475569; font-weight: 600;">
+            <i class="fas fa-book"></i> <span id="econ-count">0</span> محاضرة
+          </span>
+        </div>
+      </div>
+      
+      <div class="subject-capsule" data-aos="fade-up" data-aos-delay="200" onclick="showLectures('production')">
+        <div class="subject-icon-container">
+          <i class="fas fa-industry" style="color: #f59e0b;"></i>
+        </div>
+        <h3 class="subject-title">إدارة الإنتاج</h3>
+        <p style="text-align: center; color: #64748b; margin-bottom: 20px; font-weight: 500;">Production Management</p>
+        <div style="padding-top: 15px; border-top: 2px solid rgba(203, 213, 225, 0.3); text-align: center;">
+          <span style="color: #475569; font-weight: 600;">
+            <i class="fas fa-book"></i> <span id="prod-count">0</span> محاضرة
+          </span>
+        </div>
+      </div>
+      
+      <div class="subject-capsule" data-aos="fade-up" data-aos-delay="300" onclick="showLectures('finance')">
+        <div class="subject-icon-container">
+          <i class="fas fa-landmark" style="color: #16a34a;"></i>
+        </div>
+        <h3 class="subject-title">المالية العامة</h3>
+        <p style="text-align: center; color: #64748b; margin-bottom: 20px; font-weight: 500;">Public Finance</p>
+        <div style="padding-top: 15px; border-top: 2px solid rgba(203, 213, 225, 0.3); text-align: center;">
+          <span style="color: #475569; font-weight: 600;">
+            <i class="fas fa-book"></i> <span id="fin-count">0</span> محاضرة
+          </span>
+        </div>
+      </div>
+      
+    </div>
+    
+    <!-- ============ Original: Lectures View ============ -->
+    <div id="lecturesView" style="display: none;">
+      
+      <button onclick="backToSubjects()" class="capsule-btn" style="margin-bottom: 25px;">
+        <i class="fas fa-arrow-right"></i>
+        <span>العودة للمواد</span>
+      </button>
+      
+      <div style="background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(20px); border: 2px solid rgba(255, 255, 255, 0.4); border-radius: 20px; padding: 30px; margin-bottom: 30px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);">
+        <h2 id="subjectTitle" style="font-size: 2rem; font-weight: 800; color: #14532d; margin: 0;"></h2>
+      </div>
+      
+      <div id="lecturesList"></div>
+      
+    </div>
+
+  </main>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init({ duration: 800, once: true, easing: 'ease-in-out' });</script>
+  <script type="module" src="js/library.js"></script>
+  
+</body>
+</html>
