@@ -1,448 +1,1417 @@
 // ==========================================
-// ✅ LIBRARY PAGE - FINAL V6.0 (Icon Color + User Section Loading)
+// ✅ ATHR LIBRARY - V17.0 ULTIMATE
+// Study Timer + Modern Library + Auto-Cleanup + All Features
 // ==========================================
 
-import { auth, db, AVATAR_CONFIGS, AVATAR_STYLE, AVATAR_API_VERSION, generateAvatarUrl } from './app.js';
+import { auth, db, generateAvatarUrl } from './app.js';
 import { onAuthStateChanged, signOut, updatePassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 import { 
-  doc, 
-  getDoc, 
-  collection, 
-  getDocs, 
-  updateDoc, 
-  setDoc,
-  serverTimestamp 
+  doc, getDoc, collection, getDocs, updateDoc, serverTimestamp,
+  query, where, limit, arrayUnion, increment, setDoc
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 // ==========================================
-// 📌 STATE
+// STATE
 // ==========================================
-let currentUser = null;
-let userData = null;
-let lecturesDB = {};
-let userLectures = [];
-let subjects = {};
+let currentUser = null, userData = null, lecturesDB = {}, userLectures = [], subjects = {};
+let currentTab = 'allSubjects', selectedAvatarConfig = null;
+let continueItems = [];
+let allLectures = [];
+let searchTimeout = null;
+let studyTimerInterval = null;
+let currentLibraryView = 'grid'; // 'grid' or 'list'
 
-// ==========================================
-// 💾 CACHING
-// ==========================================
-const CACHE_DURATION = 5 * 60 * 1000;
-let subjectsCache = { data: null, timestamp: null };
-let lecturesCache = { data: null, timestamp: null };
-
-// ==========================================
-// 🎭 UI STATE
-// ==========================================
-let userMenuTimeout;
-let selectedUniversityValue = 'دمنهور';
+// ⏱️ NEW: Study Time State
+let studyTimeData = {
+  totalMinutes: 0,
+  sessions: [], // { lectureId, duration, date, lectureTitle, subjectName }
+  lectureStats: {} // { lectureId: totalMinutes }
+};
 
 // ==========================================
-// 🔄 RETRY HELPER
+// INITIALIZE
 // ==========================================
-async function fetchWithRetry(fetchFunction, retries = 3) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      return await fetchFunction();
-    } catch (error) {
-      if (i === retries - 1) throw error;
-      console.warn(`⚠️ Retry ${i + 1}/${retries}:`, error.message);
-      await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
-    }
-  }
-}
-
-// ==========================================
-// ✅ CUSTOM DIALOG SYSTEM - CAPSULE STYLE
-// ==========================================
-
-function showConfirmDialog(title, message, confirmText = 'تأكيد', cancelText = 'إلغاء', isDanger = false) {
-  return new Promise((resolve) => {
-    const overlay = document.createElement('div');
-    overlay.className = 'custom-dialog-overlay capsule-style';
-    overlay.innerHTML = `
-      <div class="custom-dialog capsule-dialog">
-        <div class="dialog-header">
-          <div class="dialog-icon-mini" style="background: ${isDanger ? 'linear-gradient(135deg, #dc2626, #b91c1c)' : 'linear-gradient(135deg, #3b82f6, #2563eb)'};">
-            <i class="fas ${isDanger ? 'fa-exclamation-triangle' : 'fa-question-circle'}"></i>
-          </div>
-          <div>
-            <h3 class="dialog-title">${title}</h3>
-            <p class="dialog-message">${message}</p>
-          </div>
-        </div>
-        <div class="dialog-actions">
-          <button class="dialog-btn dialog-btn-secondary" id="cancelBtn">
-            <i class="fas fa-times"></i>
-            <span>${cancelText}</span>
-          </button>
-          <button class="dialog-btn ${isDanger ? 'dialog-btn-danger' : 'dialog-btn-primary'}" id="confirmBtn">
-            <i class="fas fa-check"></i>
-            <span>${confirmText}</span>
-          </button>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(overlay);
-
-    requestAnimationFrame(() => {
-      overlay.style.opacity = '1';
-    });
-
-    const handleConfirm = () => {
-      overlay.style.opacity = '0';
-      setTimeout(() => {
-        document.body.removeChild(overlay);
-        resolve(true);
-      }, 200);
-    };
-
-    const handleCancel = () => {
-      overlay.style.opacity = '0';
-      setTimeout(() => {
-        document.body.removeChild(overlay);
-        resolve(false);
-      }, 200);
-    };
-
-    document.getElementById('confirmBtn').addEventListener('click', handleConfirm);
-    document.getElementById('cancelBtn').addEventListener('click', handleCancel);
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) handleCancel();
-    });
-
-    const escHandler = (e) => {
-      if (e.key === 'Escape') {
-        handleCancel();
-        document.removeEventListener('keydown', escHandler);
-      }
-    };
-    document.addEventListener('keydown', escHandler);
+document.addEventListener('DOMContentLoaded', () => {
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = 'login.html'; return; }
+    currentUser = user;
+    await initializeLibrary();
+    initializeEventListeners();
+    await loadContinueWatching();
+    await loadStudyTimeData(); // ⏱️ NEW
+    updateSmartGreeting();
+    updateOverallProgress();
+    updateStudyTimeDisplay(); // ⏱️ NEW
   });
-}
-
-function showPromptDialog(title, message, placeholder = '', inputType = 'text') {
-  return new Promise((resolve) => {
-    const overlay = document.createElement('div');
-    overlay.className = 'custom-dialog-overlay capsule-style';
-    overlay.innerHTML = `
-      <div class="custom-dialog capsule-dialog">
-        <div class="dialog-header">
-          <div class="dialog-icon-mini" style="background: linear-gradient(135deg, #16a34a, #10b981);">
-            <i class="fas fa-keyboard"></i>
-          </div>
-          <div>
-            <h3 class="dialog-title">${title}</h3>
-            <p class="dialog-message">${message}</p>
-          </div>
-        </div>
-        <input 
-          type="${inputType}" 
-          class="dialog-input" 
-          placeholder="${placeholder}"
-          id="dialogInput"
-          autocomplete="off"
-        />
-        <div class="dialog-actions">
-          <button class="dialog-btn dialog-btn-secondary" id="cancelBtn">
-            <i class="fas fa-times"></i>
-            <span>إلغاء</span>
-          </button>
-          <button class="dialog-btn dialog-btn-primary" id="confirmBtn">
-            <i class="fas fa-check"></i>
-            <span>تأكيد</span>
-          </button>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(overlay);
-
-    requestAnimationFrame(() => {
-      overlay.style.opacity = '1';
-    });
-
-    const input = document.getElementById('dialogInput');
-    input.focus();
-
-    const handleConfirm = () => {
-      const value = input.value.trim();
-      overlay.style.opacity = '0';
-      setTimeout(() => {
-        document.body.removeChild(overlay);
-        resolve(value || null);
-      }, 200);
-    };
-
-    const handleCancel = () => {
-      overlay.style.opacity = '0';
-      setTimeout(() => {
-        document.body.removeChild(overlay);
-        resolve(null);
-      }, 200);
-    };
-
-    document.getElementById('confirmBtn').addEventListener('click', handleConfirm);
-    document.getElementById('cancelBtn').addEventListener('click', handleCancel);
-
-    input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') handleConfirm();
-    });
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) handleCancel();
-    });
-
-    const escHandler = (e) => {
-      if (e.key === 'Escape') {
-        handleCancel();
-        document.removeEventListener('keydown', escHandler);
-      }
-    };
-    document.addEventListener('keydown', escHandler);
-  });
-}
-
-// ==========================================
-// 🚀 INITIALIZE
-// ==========================================
-onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    console.log('❌ No user found, redirecting to login...');
-    window.location.href = 'login.html';
-    return;
-  }
-  
-  console.log('✅ User authenticated:', user.uid);
-  currentUser = user;
-  
-  try {
-    await loadUserData();
-    await loadSubjectsFromFirestore();
-    await loadLectures();
-    await loadUserLibrary();
-    renderSubjectsGrid();
-    updateLibraryCount();
-    setupAvatarHandler();
-    
-    console.log('✅ All data loaded successfully');
-  } catch (error) {
-    console.error('❌ Initialization error:', error);
-    showToast('خطأ في تحميل البيانات', 'error');
-  }
 });
 
 // ==========================================
-// 📥 LOAD USER DATA (مع Skeleton Loading)
+// LIBRARY DATA INITIALIZATION
 // ==========================================
-async function loadUserData() {
+async function initializeLibrary() {
   try {
-    console.log('📥 Loading user data for UID:', currentUser.uid);
+    showLoadingSkeleton();
     
-    // ✅ User Section بتبدأ بـ .loading من HTML
-    // مش محتاجين نضيفها هنا
+    const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+    userData = userDoc.data() || {};
+    userLectures = userData.lectures || [];
+
+    const subjectsSnap = await getDocs(collection(db, 'subjects'));
+    subjects = {};
+    subjectsSnap.forEach(d => { subjects[d.id] = d.data(); });
+
+    const lecturesSnap = await getDocs(collection(db, 'lectures'));
+    lecturesDB = {};
+    allLectures = [];
+    const existingLectureIds = [];
     
-    const userDocRef = doc(db, 'users', currentUser.uid);
-    const userDoc = await getDoc(userDocRef);
-    
-    if (!userDoc.exists()) {
-      console.warn('⚠️ User document not found - attempting to create...');
+    lecturesSnap.forEach(d => {
+      const lecture = d.data();
+      allLectures.push({ id: d.id, ...lecture });
+      existingLectureIds.push(d.id);
       
-      const randomConfig = AVATAR_CONFIGS[Math.floor(Math.random() * AVATAR_CONFIGS.length)];
-      const avatarUrl = generateAvatarUrl(randomConfig.seed, randomConfig.params);
-      
-      await setDoc(userDocRef, {
-        uid: currentUser.uid,
-        email: currentUser.email,
-        name: currentUser.displayName || currentUser.email.split('@')[0],
-        university: 'دمنهور',
-        avatar: avatarUrl,
-        avatarSeed: randomConfig.seed,
-        avatarParams: randomConfig.params,
-        avatarStyle: AVATAR_STYLE,
-        role: 'student',
-        emailVerified: currentUser.emailVerified,
-        createdAt: serverTimestamp(),
-        lastLogin: serverTimestamp()
+      const subjectId = lecture.subject;
+      if (!lecturesDB[subjectId]) lecturesDB[subjectId] = [];
+      lecturesDB[subjectId].push({ 
+        id: d.id, 
+        ...lecture, 
+        color: subjects[subjectId]?.color || '#16a34a' 
       });
-      
-      console.log('✅ User document created successfully');
-      
-      const newUserDoc = await getDoc(userDocRef);
-      userData = newUserDoc.data();
-    } else {
-      userData = userDoc.data();
-      console.log('✅ User data loaded:', userData);
-    }
-    
-    const avatarUrl = userData.avatar || generateAvatarUrl(
-      userData.avatarSeed || 'User', 
-      userData.avatarParams || ''
+    });
+
+    // ✅ AUTO-CLEANUP: Remove deleted lectures from user library
+    const validUserLectures = userLectures.filter(lectureId => 
+      existingLectureIds.includes(lectureId)
     );
     
-    document.getElementById('headerUserName').textContent = userData.name;
-    document.getElementById('headerUserUniversity').textContent = userData.university || 'جامعة دمنهور';
-    document.getElementById('headerUserAvatar').src = avatarUrl;
-    document.getElementById('profileAvatarImg').src = avatarUrl;
-    
-    document.getElementById('profileName').value = userData.name;
-    document.getElementById('profileEmail').value = userData.email;
-    
-    const uni = userData.university || 'دمنهور';
-    document.getElementById('selectedUniversity').textContent = `جامعة ${uni}`;
-    document.getElementById('profileUniversity').value = uni;
-    selectedUniversityValue = uni;
-    
-    document.querySelectorAll('.select-option').forEach(opt => {
-      opt.classList.remove('selected');
-      if (opt.dataset.value === uni) opt.classList.add('selected');
+    if (validUserLectures.length !== userLectures.length) {
+      const deletedCount = userLectures.length - validUserLectures.length;
+      console.log(`🧹 Auto-cleanup: Removing ${deletedCount} deleted lecture(s)`);
+      
+      await updateDoc(doc(db, 'users', currentUser.uid), {
+        lectures: validUserLectures,
+        updatedAt: serverTimestamp()
+      });
+      
+      userLectures = validUserLectures;
+      window.showToast(`🧹 تم تنظيف ${deletedCount} محاضرة محذوفة`, 'info');
+    }
+
+    Object.keys(lecturesDB).forEach(sid => {
+      lecturesDB[sid].sort((a, b) => (a.order || 0) - (b.order || 0));
     });
-    
-    // ✅ إزالة Loading Class بعد التحميل
-    const userSection = document.querySelector('.user-section');
-    if (userSection) {
-      userSection.classList.remove('loading');
-    }
-    
-    console.log('✅ User data loaded and UI updated');
-  } catch (error) {
-    console.error('❌ Error loading user data:', error);
-    
-    const userSection = document.querySelector('.user-section');
-    if (userSection) {
-      userSection.classList.remove('loading');
-    }
-    
-    if (error.code === 'permission-denied') {
-      showToast('❌ خطأ في الصلاحيات - تحقق من Firestore Rules', 'error');
-    }
-    
-    throw error;
+
+    updateHeaderInfo();
+    updateLibraryCount();
+    hideLoadingSkeleton();
+    renderSubjectsGrid();
+    renderMyLibrary();
+    updateOverallProgress();
+  } catch (e) {
+    hideLoadingSkeleton();
+    console.error('❌ خطأ التهيئة:', e);
+    window.showToast('خطأ في التحميل', 'error');
   }
 }
 
 // ==========================================
-// 📡 LOAD SUBJECTS FROM FIRESTORE (بدون Skeleton)
+// ⏱️ STUDY TIME TRACKER SYSTEM (NEW)
 // ==========================================
-async function loadSubjectsFromFirestore(forceRefresh = false) {
+
+// Load Study Time Data from Firestore
+async function loadStudyTimeData() {
   try {
-    const now = Date.now();
+    const studyDoc = await getDoc(doc(db, 'studyTime', currentUser.uid));
     
-    if (!forceRefresh && subjectsCache.data && subjectsCache.timestamp && 
-        (now - subjectsCache.timestamp < CACHE_DURATION)) {
-      console.log('✅ Using cached subjects');
-      subjects = subjectsCache.data;
+    if (studyDoc.exists()) {
+      const data = studyDoc.data();
+      studyTimeData = {
+        totalMinutes: data.totalMinutes || 0,
+        sessions: data.sessions || [],
+        lectureStats: data.lectureStats || {}
+      };
+    } else {
+      // Initialize if doesn't exist
+      await setDoc(doc(db, 'studyTime', currentUser.uid), {
+        userId: currentUser.uid,
+        totalMinutes: 0,
+        sessions: [],
+        lectureStats: {},
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      });
+    }
+    
+    updateStudyTimeDisplay();
+  } catch (e) {
+    console.error('❌ Error loading study time:', e);
+  }
+}
+
+// Update Study Time Display
+function updateStudyTimeDisplay() {
+  const totalEl = document.getElementById('totalStudyTime');
+  const circleEl = document.getElementById('studyTimerCircle');
+  
+  if (totalEl) {
+    const hours = Math.floor(studyTimeData.totalMinutes / 60);
+    const mins = studyTimeData.totalMinutes % 60;
+    totalEl.textContent = `${hours}س ${mins}د`;
+  }
+  
+  // Animate circle (optional visual effect)
+  if (circleEl) {
+    const maxMinutes = 300; // 5 hours for full circle
+    const progress = Math.min(studyTimeData.totalMinutes / maxMinutes, 1);
+    const circumference = 339.29;
+    const offset = circumference - (circumference * progress);
+    circleEl.style.strokeDashoffset = offset;
+  }
+}
+
+// Start Study Session (called when user opens a lecture)
+async function startStudySession(lectureId) {
+  const lecture = allLectures.find(l => l.id === lectureId);
+  if (!lecture) return;
+  
+  const sessionStart = Date.now();
+  const sessionKey = `study_session_${lectureId}`;
+  
+  // Store session start in localStorage
+  localStorage.setItem(sessionKey, JSON.stringify({
+    lectureId,
+    lectureTitle: lecture.title,
+    subjectName: subjects[lecture.subject]?.nameAr || 'غير محدد',
+    startTime: sessionStart
+  }));
+  
+  console.log(`⏱️ Study session started for: ${lecture.title}`);
+}
+
+// End Study Session (called when user leaves lecture)
+async function endStudySession(lectureId) {
+  const sessionKey = `study_session_${lectureId}`;
+  const sessionData = localStorage.getItem(sessionKey);
+  
+  if (!sessionData) return;
+  
+  const session = JSON.parse(sessionData);
+  const endTime = Date.now();
+  const durationMinutes = Math.round((endTime - session.startTime) / 60000);
+  
+  if (durationMinutes < 1) {
+    localStorage.removeItem(sessionKey);
+    return; // Don't count sessions less than 1 minute
+  }
+  
+  try {
+    // Update local state
+    studyTimeData.totalMinutes += durationMinutes;
+    studyTimeData.lectureStats[lectureId] = (studyTimeData.lectureStats[lectureId] || 0) + durationMinutes;
+    studyTimeData.sessions.push({
+      lectureId,
+      lectureTitle: session.lectureTitle,
+      subjectName: session.subjectName,
+      duration: durationMinutes,
+      date: new Date().toISOString()
+    });
+    
+    // Keep only last 100 sessions
+    if (studyTimeData.sessions.length > 100) {
+      studyTimeData.sessions = studyTimeData.sessions.slice(-100);
+    }
+    
+    // Update Firestore
+    await updateDoc(doc(db, 'studyTime', currentUser.uid), {
+      totalMinutes: studyTimeData.totalMinutes,
+      sessions: studyTimeData.sessions,
+      lectureStats: studyTimeData.lectureStats,
+      updatedAt: serverTimestamp()
+    });
+    
+    updateStudyTimeDisplay();
+    localStorage.removeItem(sessionKey);
+    
+    console.log(`✅ Study session saved: ${durationMinutes} minutes for ${session.lectureTitle}`);
+  } catch (e) {
+    console.error('❌ Error saving study session:', e);
+  }
+}
+
+// Open Study Time Modal
+window.openStudyTimeModal = function() {
+  const modal = document.getElementById('studyTimeModal');
+  if (!modal) return;
+  
+  modal.classList.add('active');
+  renderStudyTimeStats();
+}
+
+// Close Study Time Modal
+window.closeStudyTimeModal = function() {
+  const modal = document.getElementById('studyTimeModal');
+  if (modal) modal.classList.remove('active');
+}
+
+// Render Study Time Stats in Modal
+function renderStudyTimeStats() {
+  // Update stats
+  const totalLecturesEl = document.getElementById('totalLecturesWatched');
+  const studyDaysEl = document.getElementById('studyDaysCount');
+  const studyStreakEl = document.getElementById('studyStreak');
+  
+  if (totalLecturesEl) {
+    totalLecturesEl.textContent = Object.keys(studyTimeData.lectureStats).length;
+  }
+  
+  if (studyDaysEl) {
+    const uniqueDays = new Set(studyTimeData.sessions.map(s => s.date.split('T')[0]));
+    studyDaysEl.textContent = uniqueDays.size;
+  }
+  
+  if (studyStreakEl) {
+    studyStreakEl.textContent = calculateStudyStreak();
+  }
+  
+  // Render sessions list
+  const recordsContainer = document.getElementById('studyTimeRecords');
+  if (!recordsContainer) return;
+  
+  if (studyTimeData.sessions.length === 0) {
+    recordsContainer.innerHTML = `
+      <div class="study-record-empty">
+        <i class="fas fa-clock"></i>
+        <p>لا توجد سجلات دراسة حتى الآن</p>
+        <p style="font-size: 0.85rem; margin-top: 8px;">ابدأ بفتح أي محاضرة وسيتم تسجيل وقتك تلقائياً</p>
+      </div>
+    `;
+    return;
+  }
+  
+  // Group by lecture and sum durations
+  const lectureGroups = {};
+  studyTimeData.sessions.forEach(session => {
+    if (!lectureGroups[session.lectureId]) {
+      lectureGroups[session.lectureId] = {
+        lectureTitle: session.lectureTitle,
+        subjectName: session.subjectName,
+        totalMinutes: 0,
+        sessionsCount: 0
+      };
+    }
+    lectureGroups[session.lectureId].totalMinutes += session.duration;
+    lectureGroups[session.lectureId].sessionsCount++;
+  });
+  
+  // Convert to array and sort by totalMinutes
+  const sortedLectures = Object.entries(lectureGroups)
+    .map(([id, data]) => ({ id, ...data }))
+    .sort((a, b) => b.totalMinutes - a.totalMinutes);
+  
+  recordsContainer.innerHTML = sortedLectures.map((item, index) => {
+    const hours = Math.floor(item.totalMinutes / 60);
+    const mins = item.totalMinutes % 60;
+    const timeText = hours > 0 ? `${hours}س ${mins}د` : `${mins}د`;
+    
+    const iconColors = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6'];
+    const iconColor = iconColors[index % iconColors.length];
+    
+    return `
+      <div class="study-record-item">
+        <div class="study-record-info">
+          <div class="study-record-icon" style="background: linear-gradient(135deg, ${iconColor}, ${adjustColor(iconColor, 20)});">
+            <i class="fas fa-video"></i>
+          </div>
+          <div class="study-record-text">
+            <p class="study-record-title">${item.lectureTitle}</p>
+            <p class="study-record-subtitle">${item.subjectName} • ${item.sessionsCount} جلسة</p>
+          </div>
+        </div>
+        <div class="study-record-time">${timeText}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Calculate Study Streak (consecutive days)
+function calculateStudyStreak() {
+  if (studyTimeData.sessions.length === 0) return 0;
+  
+  const today = new Date().toISOString().split('T')[0];
+  const uniqueDays = [...new Set(studyTimeData.sessions.map(s => s.date.split('T')[0]))].sort().reverse();
+  
+  let streak = 0;
+  let currentDate = new Date(today);
+  
+  for (const day of uniqueDays) {
+    const dayDate = new Date(day);
+    const diffDays = Math.floor((currentDate - dayDate) / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === streak) {
+      streak++;
+      currentDate = dayDate;
+    } else {
+      break;
+    }
+  }
+  
+  return streak;
+}
+
+// ==========================================
+// 📚 MODERN LIBRARY VIEW TOGGLE (NEW)
+// ==========================================
+
+// Set Library View (Grid or List)
+window.setLibraryView = function(view) {
+  currentLibraryView = view;
+  
+  // Update buttons
+  document.querySelectorAll('.view-control-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.view === view);
+  });
+  
+  // Update grid class
+  const grid = document.getElementById('myLibraryGrid');
+  if (grid) {
+    grid.classList.toggle('list-view', view === 'list');
+  }
+  
+  // Re-render with new view
+  renderModernLibrary();
+}
+
+// Render Modern Library (with Grid/List toggle)
+function renderModernLibrary() {
+  const container = document.getElementById('myLibraryGrid');
+  const lecturesCountEl = document.getElementById('myLibraryLecturesCount');
+  if (!container) return;
+  
+  const subjectsWithLecs = {};
+  Object.keys(lecturesDB).forEach(sid => {
+    const userLecsInSubj = lecturesDB[sid].filter(l => userLectures.includes(l.id));
+    if (userLecsInSubj.length > 0) subjectsWithLecs[sid] = userLecsInSubj;
+  });
+  
+  const totalLectures = Object.values(subjectsWithLecs).reduce((sum, lecs) => sum + lecs.length, 0);
+  if (lecturesCountEl) lecturesCountEl.textContent = totalLectures;
+  
+  if (currentLibraryView === 'grid') {
+    // Grid View (Subject Cards)
+    container.innerHTML = Object.entries(subjectsWithLecs).map(([sid, lecs]) => {
+      const subj = subjects[sid];
+      if (!subj) return '';
+      
+      const total = lecturesDB[sid]?.length || 1;
+      const prog = Math.round((lecs.length / total) * 100);
+      const col = subj.color || '#16a34a';
+      const icon = subj.icon || 'fa-book';
+      const iconColor = subj.customizations?.iconColor || 'ffffff';
+      
+      return `
+        <div class="modern-library-card" onclick="window.location.href='subject.html?s=${sid}'">
+          <div class="modern-library-card-banner" style="background: linear-gradient(135deg, ${col}, ${adjustColor(col, 20)});">
+            <i class="fas ${icon} modern-library-card-banner-icon"></i>
+            <div class="modern-library-progress-overlay">
+              <div class="modern-library-progress-bar" style="width: ${prog}%;"></div>
+            </div>
+          </div>
+          <div class="modern-library-card-body">
+            <h3 class="modern-library-card-title">${subj.nameAr || 'بدون عنوان'}</h3>
+            <div class="modern-library-card-meta">
+              <span class="modern-library-card-meta-item">
+                <i class="fas fa-video"></i> ${lecs.length} محاضرة
+              </span>
+              <span class="modern-library-card-meta-item">
+                <i class="fas fa-check-circle"></i> ${prog}%
+              </span>
+            </div>
+            <div class="modern-library-card-progress">
+              <div class="modern-library-progress-text">
+                <span>التقدم</span>
+                <span class="progress-percentage">${prog}%</span>
+              </div>
+              <div class="modern-library-progress-bar-container">
+                <div class="modern-library-progress-bar-fill" style="width: ${prog}%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="modern-library-card-footer">
+            <button class="modern-library-btn" onclick="event.stopPropagation(); window.location.href='subject.html?s=${sid}'">
+              <i class="fas fa-arrow-left"></i> متابعة
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } else {
+    // List View (Compact)
+    container.innerHTML = Object.entries(subjectsWithLecs).map(([sid, lecs]) => {
+      const subj = subjects[sid];
+      if (!subj) return '';
+      
+      const total = lecturesDB[sid]?.length || 1;
+      const prog = Math.round((lecs.length / total) * 100);
+      const col = subj.color || '#16a34a';
+      const icon = subj.icon || 'fa-book';
+      
+      return `
+        <div class="modern-library-card" onclick="window.location.href='subject.html?s=${sid}'">
+          <div class="modern-library-card-banner" style="background: linear-gradient(135deg, ${col}, ${adjustColor(col, 20)});">
+            <i class="fas ${icon} modern-library-card-banner-icon"></i>
+          </div>
+          <div class="modern-library-card-body" style="flex: 1;">
+            <h3 class="modern-library-card-title">${subj.nameAr || 'بدون عنوان'}</h3>
+            <div class="modern-library-card-meta">
+              <span class="modern-library-card-meta-item">
+                <i class="fas fa-video"></i> ${lecs.length}/${total} محاضرة
+              </span>
+              <span class="modern-library-card-meta-item">
+                <i class="fas fa-check-circle"></i> ${prog}%
+              </span>
+            </div>
+          </div>
+          <div class="modern-library-card-footer" style="border: none; padding: 16px;">
+            <button class="modern-library-btn" onclick="event.stopPropagation(); window.location.href='subject.html?s=${sid}'">
+              <i class="fas fa-arrow-left"></i> متابعة
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
+// ==========================================
+// LOADING SKELETON
+// ==========================================
+function showLoadingSkeleton() {
+  const grid = document.getElementById('subjectsGrid');
+  if (!grid) return;
+  
+  grid.classList.add('loading');
+  grid.innerHTML = Array(6).fill(`
+    <div class="skeleton-card">
+      <div class="skeleton-text title"></div>
+      <div class="skeleton-text"></div>
+      <div class="skeleton-text subtitle"></div>
+    </div>
+  `).join('');
+}
+
+function hideLoadingSkeleton() {
+  const grid = document.getElementById('subjectsGrid');
+  if (grid) grid.classList.remove('loading');
+}
+
+// ==========================================
+// UPDATE HEADER
+// ==========================================
+function updateHeaderInfo() {
+  const nameEl = document.getElementById('headerUserName');
+  const univEl = document.getElementById('headerUserUniversity');
+  const avatarEl = document.getElementById('headerUserAvatar');
+
+  if (nameEl) nameEl.textContent = userData.name || 'المستخدم';
+  if (univEl) univEl.textContent = userData.university || 'غير محدد';
+  if (avatarEl) avatarEl.src = userData.avatar || generateAvatarUrl(currentUser.uid);
+
+  document.querySelector('.user-section')?.classList.remove('loading');
+}
+
+// ==========================================
+// LIBRARY COUNT ON HEADER
+// ==========================================
+function updateLibraryCount() {
+  const cnt = document.getElementById('headerLibraryCount');
+  if (cnt) cnt.textContent = userLectures.length;
+}
+
+// ==========================================
+// UPDATE OVERALL PROGRESS VISUAL
+// ==========================================
+function updateOverallProgress() {
+  const fill = document.getElementById('overallProgressFill');
+  const circle = document.getElementById('userProgressCircle');
+  const pctText = document.getElementById('userProgressPercentage');
+  const progressTextEl = document.getElementById('progressText');
+
+  const totalLectures = Object.values(lecturesDB).reduce((acc, arr) => acc + arr.length, 0);
+  const owned = userLectures.length;
+  const pct = totalLectures ? Math.round((owned / totalLectures) * 100) : 0;
+
+  if (fill) fill.style.width = `${pct}%`;
+  if (pctText) pctText.textContent = `${pct}%`;
+  if (progressTextEl) progressTextEl.textContent = `${owned}/${totalLectures} محاضرة`;
+  
+  if (circle) {
+    const circumference = 339.29;
+    circle.style.strokeDashoffset = `${circumference - (circumference * pct) / 100}`;
+  }
+}
+
+// ==========================================
+// INIT EVENT LISTENERS
+// ==========================================
+function initializeEventListeners() {
+  const userSection = document.querySelector('.user-section');
+  if (userSection) {
+    userSection.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.openProfile();
+    });
+    userSection.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') window.openProfile();
+    });
+  }
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-bar-container')) {
+      const searchResults = document.getElementById('searchResults');
+      if (searchResults) searchResults.style.display = 'none';
+    }
+  });
+
+  document.querySelector('.profile-modal-overlay')?.addEventListener('click', window.closeProfile);
+
+  const profileForm = document.getElementById('profileForm');
+  if (profileForm) {
+    profileForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await saveProfile();
+    });
+  }
+
+  document.querySelectorAll('.tab-btn-new').forEach(btn => {
+    btn.addEventListener('click', () => window.switchTab(btn.dataset.tab));
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') window.switchTab(btn.dataset.tab);
+    });
+  });
+
+  document.addEventListener('keydown', handleKeyboardShortcuts);
+  
+  // ⏱️ NEW: Study Time Modal overlay click
+  document.querySelector('.study-time-modal-overlay')?.addEventListener('click', window.closeStudyTimeModal);
+}
+
+// ==========================================
+// KEYBOARD SHORTCUTS HANDLER
+// ==========================================
+function handleKeyboardShortcuts(e) {
+  if (e.key === 'Escape') {
+    window.closeProfile();
+    window.closeStudyTimeModal(); // ⏱️ NEW
+    document.querySelector('.custom-dialog-overlay')?.remove();
+    const searchResults = document.getElementById('searchResults');
+    if (searchResults) searchResults.style.display = 'none';
+  }
+  
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    const searchInput = document.getElementById('globalSearch');
+    if (searchInput) searchInput.focus();
+  }
+}
+
+// ==========================================
+// GLOBAL SEARCH
+// ==========================================
+window.handleGlobalSearch = function(query) {
+  clearTimeout(searchTimeout);
+  
+  const searchClear = document.getElementById('searchClear');
+  if (query.trim()) {
+    if (searchClear) searchClear.style.display = 'flex';
+  } else {
+    if (searchClear) searchClear.style.display = 'none';
+    const searchResults = document.getElementById('searchResults');
+    if (searchResults) searchResults.style.display = 'none';
+    return;
+  }
+  
+  searchTimeout = setTimeout(() => {
+    performSearch(query.trim());
+  }, 300);
+}
+
+window.clearSearch = function() {
+  const input = document.getElementById('globalSearch');
+  if (input) {
+    input.value = '';
+    input.focus();
+  }
+  const searchResults = document.getElementById('searchResults');
+  if (searchResults) searchResults.style.display = 'none';
+  const searchClear = document.getElementById('searchClear');
+  if (searchClear) searchClear.style.display = 'none';
+}
+
+function performSearch(query) {
+  const results = [];
+  const searchResults = document.getElementById('searchResults');
+  
+  if (!query) {
+    if (searchResults) searchResults.style.display = 'none';
+    return;
+  }
+  
+  const lowerQuery = query.toLowerCase();
+  
+  Object.entries(subjects).forEach(([subjectId, subject]) => {
+    if (subject.nameAr?.toLowerCase().includes(lowerQuery) ||
+        subject.nameEn?.toLowerCase().includes(lowerQuery) ||
+        subject.description?.toLowerCase().includes(lowerQuery)) {
+      results.push({
+        type: 'subject',
+        id: subjectId,
+        title: subject.nameAr,
+        subtitle: `${lecturesDB[subjectId]?.length || 0} محاضرة`,
+        color: subject.color || '#16a34a',
+        icon: subject.icon || 'fa-book'
+      });
+    }
+  });
+  
+  Object.entries(lecturesDB).forEach(([subjectId, lectures]) => {
+    lectures.forEach(lecture => {
+      if (lecture.title?.toLowerCase().includes(lowerQuery) ||
+          lecture.description?.toLowerCase().includes(lowerQuery)) {
+        results.push({
+          type: 'lecture',
+          id: lecture.id,
+          title: lecture.title,
+          subtitle: `في: ${subjects[subjectId]?.nameAr || 'بدون عنوان'}`,
+          color: lecture.color,
+          icon: lecture.icon || 'fa-video'
+        });
+      }
+    });
+  });
+  
+  renderSearchResults(results);
+}
+
+function renderSearchResults(results) {
+  const container = document.getElementById('searchResults');
+  
+  if (results.length === 0) {
+    container.innerHTML = `
+      <div class="search-empty">
+        <i class="fas fa-search"></i>
+        <p>لم نجد نتائج</p>
+      </div>
+    `;
+    container.style.display = 'block';
+    return;
+  }
+  
+  container.innerHTML = results.slice(0, 10).map(result => `
+    <div class="search-result-item" onclick="window.searchResultClick('${result.type}', '${result.id}')">
+      <div class="search-result-icon" style="background: rgba(${hexToRgb(result.color)}, 0.15);">
+        <i class="fas ${result.icon}" style="color: ${result.color};"></i>
+      </div>
+      <div class="search-result-text">
+        <p class="search-result-title">${result.title}</p>
+        <p class="search-result-subtitle">${result.subtitle}</p>
+      </div>
+    </div>
+  `).join('');
+  
+  container.style.display = 'block';
+}
+
+window.searchResultClick = function(type, id) {
+  const searchInput = document.getElementById('globalSearch');
+  if (searchInput) searchInput.value = '';
+  const searchResults = document.getElementById('searchResults');
+  if (searchResults) searchResults.style.display = 'none';
+  const searchClear = document.getElementById('searchClear');
+  if (searchClear) searchClear.style.display = 'none';
+  
+  if (type === 'subject') {
+    window.location.href = `subject.html?s=${id}`;
+  } else if (type === 'lecture') {
+    const subjectId = Object.keys(lecturesDB).find(sid =>
+      lecturesDB[sid].some(l => l.id === id)
+    );
+    if (subjectId) {
+      window.location.href = `subject.html?s=${subjectId}&lecture=${id}`;
+    }
+  }
+}
+
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? 
+    `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` :
+    '22, 163, 74';
+}
+
+// ==========================================
+// TABS MANAGEMENT
+// ==========================================
+window.switchTab = function(tabId) {
+  currentTab = tabId;
+  
+  document.querySelectorAll('.tab-btn-new').forEach(b => {
+    const isActive = b.dataset.tab === tabId;
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+  
+  document.querySelectorAll('.tab-panel-new').forEach(p => {
+    p.classList.toggle('active', p.id === tabId);
+  });
+  
+  if (tabId === 'myLibrary') {
+    renderMyLibrary();
+    renderModernLibrary(); // ⏱️ NEW: Render modern library
+    updateSmartGreeting();
+  } else if (tabId === 'continueWatching') {
+    loadContinueWatching();
+  } else if (tabId === 'allSubjects') {
+    renderSubjectsGrid();
+  }
+}
+
+// ==========================================
+// RENDER SUBJECTS GRID
+// ==========================================
+function renderSubjectsGrid() {
+  const container = document.getElementById('subjectsGrid');
+  if (!container) return;
+  
+  if (Object.keys(subjects).length === 0) {
+    container.innerHTML = `
+      <div class="empty-state-new" role="alert" aria-live="polite">
+        <i class="fas fa-inbox"></i>
+        <h3>لا توجد مواد</h3>
+        <p>يرجى المحاولة لاحقاً</p>
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = Object.entries(subjects)
+    .sort(([, a], [, b]) => (a.order || 0) - (b.order || 0))
+    .map(([subjectId, subject]) => {
+      const lectures = lecturesDB[subjectId] || [];
+      const ownedLectures = lectures.filter(l => userLectures.includes(l.id)).length;
+      const progress = lectures.length ? Math.round((ownedLectures / lectures.length) * 100) : 0;
+      const color = subject.color || '#16a34a';
+      const icon = subject.icon || 'fa-book';
+      const iconColor = subject.customizations?.iconColor || 'ffffff';
+      const isProtected = subject.protection === 'code';
+      const protectionText = isProtected ? '<i class="fas fa-lock" aria-hidden="true"></i> محمية' : '<i class="fas fa-gift" aria-hidden="true"></i> مجانية';
+      const buttonText = ownedLectures > 0 ? 'استمر' : 'ابدأ';
+
+      return `
+        <div class="subject-card" 
+          onclick="window.location.href='subject.html?s=${subjectId}'"
+          role="button"
+          tabindex="0"
+          aria-label="${subject.nameAr}: ${lectures.length} محاضرة"
+          onkeydown="if(event.key==='Enter') window.location.href='subject.html?s=${subjectId}'">
+          ${isProtected ? `<div class="status-icon-mini"><i class="fas fa-lock"></i></div>` : ''}
+          
+          <div class="subject-icon" style="background: linear-gradient(135deg, ${color}, ${adjustColor(color, 20)});">
+            <i class="fas ${icon}" style="color:#${iconColor};"></i>
+          </div>
+
+          <h3 class="subject-title">${subject.nameAr || 'بدون عنوان'}</h3>
+          <p class="subject-desc">${subject.description || ''}</p>
+
+          <div class="subject-meta">
+            <span><i class="fas fa-layer-group" aria-hidden="true"></i> ${lectures.length} محاضرة</span>
+            <span>${protectionText}</span>
+          </div>
+
+          <div class="subject-progress" aria-hidden="true">
+            <div class="subject-progress-fill" style="width:${progress}%;"></div>
+          </div>
+
+          <div class="subject-card-footer">
+            <button class="capsule-btn-sm" onclick="event.stopPropagation(); window.location.href='subject.html?s=${subjectId}'" aria-label="ابدأ ${subject.nameAr}">
+              <i class="fas fa-play" aria-hidden="true"></i> ${buttonText}
+            </button>
+          </div>
+        </div>
+      `;
+    })
+    .join('');
+}
+
+// ==========================================
+// RENDER MY LIBRARY
+// ==========================================
+function renderMyLibrary() {
+  const container = document.getElementById('myLibraryGrid');
+  const emptyState = document.getElementById('libraryEmptyState');
+  const myLibCount = document.getElementById('myLibraryCount');
+  if (!container) return;
+
+  if (userLectures.length === 0) {
+    if (emptyState) emptyState.style.display = 'block';
+    if (myLibCount) myLibCount.textContent = '0 مادة';
+    container.innerHTML = '';
+    return;
+  }
+
+  if (emptyState) emptyState.style.display = 'none';
+
+  const subjectsWithLecs = {};
+  Object.keys(lecturesDB).forEach(sid => {
+    const userLecsInSubj = lecturesDB[sid].filter(l => userLectures.includes(l.id));
+    if (userLecsInSubj.length > 0) subjectsWithLecs[sid] = userLecsInSubj;
+  });
+
+  const totalOwned = Object.values(subjectsWithLecs).reduce((sum, lecs) => sum + lecs.length, 0);
+  if (myLibCount) myLibCount.textContent = `${Object.keys(subjectsWithLecs).length} مادة`;
+
+  container.innerHTML = Object.entries(subjectsWithLecs).map(([sid, lecs]) => {
+    const subj = subjects[sid];
+    if (!subj) return '';
+
+    const total = lecturesDB[sid]?.length || 1;
+    const prog = (lecs.length / total) * 100;
+    const col = subj.color || '#16a34a';
+    const icon = subj.icon || 'fa-book';
+    const iconColor = subj.customizations?.iconColor || 'ffffff';
+
+    return `
+      <div class="subject-card" 
+        onclick="window.location.href='subject.html?s=${sid}'"
+        role="button"
+        tabindex="0"
+        aria-label="${subj.nameAr}: ${lecs.length} من ${total} محاضرة"
+        onkeydown="if(event.key==='Enter') window.location.href='subject.html?s=${sid}'">
+        <div class="subject-icon" style="background: linear-gradient(135deg, ${col}, ${adjustColor(col, 20)});">
+          <i class="fas ${icon}" style="color:#${iconColor};"></i>
+        </div>
+
+        <h3 class="subject-title">${subj.nameAr || 'بدون عنوان'}</h3>
+        <p class="subject-desc">${lecs.length} من ${total} محاضرة</p>
+
+        <div class="subject-meta">
+          <span><i class="fas fa-check-double" aria-hidden="true"></i> مملوكة</span>
+          <span>${prog.toFixed(0)}%</span>
+        </div>
+
+        <div class="subject-progress" aria-hidden="true">
+          <div class="subject-progress-fill" style="width:${prog}%;"></div>
+        </div>
+
+        <div class="subject-card-footer">
+          <button class="capsule-btn-sm" onclick="event.stopPropagation(); window.location.href='subject.html?s=${sid}'" aria-label="استمر ${subj.nameAr}">
+            <i class="fas fa-play" aria-hidden="true"></i> استمر
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  // ⏱️ NEW: Also render modern library view
+  renderModernLibrary();
+}
+
+// ==========================================
+// CONTINUE WATCHING LIST
+// ==========================================
+async function loadContinueWatching() {
+  const container = document.getElementById('continueWatchingGrid');
+  const tabBtn = document.querySelector('[data-tab="continueWatching"]');
+  const badge = document.getElementById('cwCount');
+  if (!container || !tabBtn) return;
+
+  let items = [];
+  const owned = [];
+
+  Object.keys(lecturesDB).forEach(sid => {
+    lecturesDB[sid].forEach(l => {
+      if (userLectures.includes(l.id)) {
+        owned.push({ ...l, subjectName: subjects[sid]?.nameAr || subjects[sid]?.name || sid, subjectId: sid });
+      }
+    });
+  });
+
+  items = owned.slice(-5).reverse();
+  continueItems = items;
+
+  if (items.length === 0) {
+    tabBtn.style.display = 'none';
+    if (badge) badge.style.display = 'none';
+    container.innerHTML = '';
+    updateSmartGreeting();
+    return;
+  }
+
+  tabBtn.style.display = 'flex';
+  if (badge) { badge.textContent = items.length; badge.style.display = 'inline-block'; }
+
+  container.innerHTML = items.map(lec => {
+    const bg = lec.color || '#16a34a';
+    const icon = lec.icon || 'fa-book';
+    const iconColor = lec.customizations?.iconColor || 'ffffff';
+
+    return `
+      <div class="lecture-capsule" 
+        onclick="window.location.href='subject.html?s=${lec.subjectId}'" 
+        role="button"
+        tabindex="0"
+        aria-label="${lec.title} في ${lec.subjectName}"
+        onkeydown="if(event.key==='Enter') window.location.href='subject.html?s=${lec.subjectId}'"
+        style="border-inline-start: 4px solid ${bg}; cursor: pointer;">
+        <div class="lecture-icon-box" style="background: linear-gradient(135deg, ${bg}, ${adjustColor(bg, 20)});">
+          <i class="fas ${icon}" style="color:#${iconColor};"></i>
+        </div>
+        <div class="lecture-info">
+          <h3>${lec.title}</h3>
+          <p><i class="fas fa-tag" aria-hidden="true"></i> ${lec.subjectName}</p>
+        </div>
+        <span class="lecture-status-active">
+          <i class="fas fa-play-circle" aria-hidden="true"></i> متابعة
+        </span>
+      </div>
+    `;
+  }).join('');
+
+  updateSmartGreeting();
+}
+
+// ==========================================
+// SMART GREETING
+// ==========================================
+function updateSmartGreeting() {
+  const box = document.getElementById('smartGreeting');
+  const head = document.getElementById('greetHeadline');
+  const sub = document.getElementById('greetSub');
+  const btn = document.getElementById('greetContinueBtn');
+  if (!box || !head || !sub || !btn) return;
+
+  const firstName = (userData?.name || 'صديقي').split(' ')[0];
+  const h = new Date().getHours();
+  const timeText = h < 12 ? 'صباح الخير' : h < 17 ? 'مساء الخير' : 'مساء النور';
+  head.textContent = `${timeText} ${firstName}`;
+
+  const totalLectures = Object.values(lecturesDB).reduce((acc, arr) => acc + arr.length, 0);
+  const owned = userLectures.length;
+  const ownedPct = totalLectures ? Math.round((owned / totalLectures) * 100) : 0;
+
+  if (continueItems.length) {
+    sub.textContent = 'نكمل من حيث توقفت؟';
+    const last = continueItems[0];
+    btn.style.display = 'inline-flex';
+    btn.innerHTML = `<i class="fas fa-play"></i> ${last.title.substring(0, 20)}`;
+    btn.onclick = () => window.location.href = `subject.html?s=${last.subjectId}`;
+  } else if (owned > 0) {
+    sub.textContent = `أتممت ${ownedPct}% من مكتبتك — اختر مادة لتكمل التقدم`;
+    btn.style.display = 'none';
+  } else {
+    sub.textContent = 'ابدأ أول مادة وبالتوفيق!';
+    btn.style.display = 'none';
+  }
+
+  box.style.display = 'flex';
+}
+
+// ==========================================
+// ADD TO LIBRARY
+// ==========================================
+window.addToLibrary = async function(lectureId) {
+  if (userLectures.includes(lectureId)) {
+    window.showToast('أنت تملك هذه المحاضرة', 'info');
+    return;
+  }
+
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), { 
+      lectures: arrayUnion(lectureId), 
+      updatedAt: serverTimestamp() 
+    });
+
+    userLectures = [...new Set([...(userLectures||[]), lectureId])];
+    updateLibraryCount();
+    updateOverallProgress();
+    window.showToast('✅ تمت الإضافة بنجاح', 'success');
+
+    const sid = Object.keys(lecturesDB).find(id => lecturesDB[id].some(l => l.id === lectureId));
+    if (sid) window.location.href = `subject.html?s=${sid}`;
+  } catch (e) {
+    console.error('❌ خطأ الإضافة:', e);
+    window.showToast('❌ خطأ في الإضافة', 'error');
+  }
+}
+
+// ==========================================
+// ADD MULTIPLE LECTURES TO LIBRARY
+// ==========================================
+window.addMultipleLecturesToLibrary = async function(lectureIds = []) {
+  try {
+    if (!lectureIds || lectureIds.length === 0) return;
+
+    const uniqueIds = lectureIds.filter(id => !userLectures.includes(id));
+    if (uniqueIds.length === 0) {
+      window.showToast('أنت تمتلك هذه المحاضرات بالفعل', 'info');
+      return;
+    }
+
+    const updatedLectures = [...userLectures, ...uniqueIds];
+    await updateDoc(doc(db, 'users', currentUser.uid), { 
+      lectures: updatedLectures, 
+      updatedAt: serverTimestamp() 
+    });
+
+    userLectures = updatedLectures;
+    updateLibraryCount();
+    updateOverallProgress();
+    renderMyLibrary();
+    window.showToast(`✅ تمت إضافة ${uniqueIds.length} محاضرة بنجاح`, 'success');
+  } catch (e) {
+    console.error(e);
+    window.showToast('❌ خطأ في الإضافة', 'error');
+  }
+}
+
+// ==========================================
+// SHOW ACTIVATION DIALOG
+// ==========================================
+window.showActivationDialog = function(lectureId) {
+  const dialog = document.createElement('div');
+  dialog.className = 'custom-dialog-overlay';
+  dialog.setAttribute('role', 'dialog');
+  dialog.setAttribute('aria-modal', 'true');
+  dialog.innerHTML = `
+    <div class="capsule-dialog">
+      <div class="dialog-header">
+        <div class="dialog-icon-mini">
+          <i class="fas fa-key"></i>
+        </div>
+        <div>
+          <h3 class="dialog-title">تفعيل المحاضرة</h3>
+          <p class="dialog-message">أدخل كود التفعيل (مثال: ATHR-ABC12345)</p>
+        </div>
+      </div>
+      <input 
+        type="text" 
+        class="dialog-input" 
+        id="activationCodeInput" 
+        placeholder="الكود" 
+        style="direction: ltr; text-transform: uppercase;"
+        aria-label="إدخال كود التفعيل"
+        autocomplete="off">
+      <div class="dialog-actions">
+        <button class="dialog-btn dialog-btn-primary" onclick="window.confirmActivation('${lectureId}', this)" aria-label="تفعيل الكود">
+          <i class="fas fa-check"></i> تفعيل
+        </button>
+        <button class="dialog-btn dialog-btn-secondary" onclick="this.closest('.custom-dialog-overlay').remove()" aria-label="إلغاء">
+          <i class="fas fa-times"></i> إلغاء
+        </button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(dialog);
+  dialog.style.display = 'flex';
+  const input = document.getElementById('activationCodeInput');
+  if (input) {
+    input.focus();
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') window.confirmActivation(lectureId, dialog.querySelector('.dialog-btn-primary'));
+    });
+  }
+}
+
+// ==========================================
+// SHOW VALIDATION ERROR
+// ==========================================
+function showValidationError(input, message) {
+  if (!input) return;
+  input.classList.add('error');
+  input.style.borderColor = '#ef4444';
+  input.style.background = 'rgba(239, 68, 68, 0.1)';
+  let errorMsg = input.parentElement.querySelector('.error-message');
+  if (!errorMsg) {
+    errorMsg = document.createElement('p');
+    errorMsg.className = 'error-message';
+    errorMsg.style.cssText = 'color: #ef4444; font-size: 0.85rem; margin-top: 6px; font-weight: 600; display: flex; align-items: center; gap: 6px;';
+    input.parentElement.appendChild(errorMsg);
+  }
+  errorMsg.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+  errorMsg.style.display = 'block';
+}
+
+// ==========================================
+// CLEAR VALIDATION ERROR
+// ==========================================
+function clearValidationError(input) {
+  if (!input) return;
+  input.classList.remove('error');
+  input.style.borderColor = 'var(--glass-border)';
+  input.style.background = 'rgba(255, 255, 255, 0.5)';
+  const errorMsg = input.parentElement.querySelector('.error-message');
+  if (errorMsg) errorMsg.style.display = 'none';
+}
+
+// ==========================================
+// CONFIRM ACTIVATION
+// ==========================================
+window.confirmActivation = async function(lectureId, btnEl) {
+  const codeInput = document.getElementById('activationCodeInput');
+  const code = codeInput?.value.trim().toUpperCase() || '';
+
+  if (!code) {
+    showValidationError(codeInput, 'يرجى إدخال الكود');
+    return;
+  }
+
+  if (!/^ATHR-[A-Z0-9]{8}$/.test(code)) {
+    showValidationError(codeInput, '❌ صيغة الكود خاطئة (مثال: ATHR-ABC12345)');
+    return;
+  }
+
+  try {
+    if (btnEl) {
+      btnEl.disabled = true;
+      btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري...';
+    }
+
+    const codeSnap = await getDocs(query(
+      collection(db, 'activationCodes'),
+      where('code', '==', code),
+      limit(1)
+    ));
+
+    if (codeSnap.empty) { 
+      showValidationError(codeInput, '❌ كود غير موجود');
+      if (btnEl) {
+        btnEl.disabled = false;
+        btnEl.innerHTML = '<i class="fas fa-check"></i> تفعيل';
+      }
+      return; 
+    }
+
+    const codeData = codeSnap.docs[0].data();
+    const codeDocId = codeSnap.docs[0].id;
+    const now = new Date();
+    const isExpired = codeData.expiresAt && codeData.expiresAt.toDate() < now;
+    const isMaxed = codeData.maxUses > 0 && codeData.usesCount >= codeData.maxUses;
+
+    if (!codeData.isActive) {
+      showValidationError(codeInput, '⚠️ الكود معطّل');
+      if (btnEl) { btnEl.disabled = false; btnEl.innerHTML = '<i class="fas fa-check"></i> تفعيل'; }
       return;
     }
     
-    console.log('📡 Fetching subjects from Firestore...');
+    if (isExpired) {
+      showValidationError(codeInput, '⏰ انتهت صلاحية الكود');
+      if (btnEl) { btnEl.disabled = false; btnEl.innerHTML = '<i class="fas fa-check"></i> تفعيل'; }
+      return;
+    }
     
-    const snapshot = await fetchWithRetry(() => getDocs(collection(db, 'subjects')));
-    
-    console.log('📊 Total subjects in Firestore:', snapshot.size);
-    
-    subjects = {};
-    let visibleCount = 0;
-    
-    snapshot.forEach(docSnap => {
-      const subject = docSnap.data();
-      
-      if (subject.isVisible !== false) {
-        subjects[subject.id] = {
-          name: subject.nameAr,
-          nameEn: subject.nameEn,
-          icon: subject.icon,
-          color: subject.color,
-          description: subject.description || '',
-          order: subject.order || 999,
-          customizations: subject.customizations || {}
-        };
-        visibleCount++;
+    if (isMaxed) {
+      showValidationError(codeInput, '🚫 انتهت عدد الاستخدامات');
+      if (btnEl) { btnEl.disabled = false; btnEl.innerHTML = '<i class="fas fa-check"></i> تفعيل'; }
+      return;
+    }
+
+    let lecturestoAdd = [];
+    if (codeData.targetType === 'lecture') {
+      lecturestoAdd = codeData.targetIds || [];
+    } else if (codeData.targetType === 'subject') {
+      const subjectId = codeData.targetIds?.[0];
+      if (subjectId) {
+        lecturestoAdd = allLectures.filter(l => l.subject === subjectId).map(l => l.id);
       }
+    } else if (codeData.targetType === 'bundle') {
+      const subjectIds = codeData.targetIds || [];
+      lecturestoAdd = allLectures.filter(l => subjectIds.includes(l.subject)).map(l => l.id);
+    }
+
+    await window.addMultipleLecturesToLibrary(lecturestoAdd);
+
+    await updateDoc(doc(db, 'activationCodes', codeDocId), {
+      usesCount: increment(1),
+      lastUsedAt: serverTimestamp()
     });
-    
-    subjectsCache = {
-      data: subjects,
-      timestamp: now
-    };
-    
-    console.log('✅ Loaded subjects from Firestore:', visibleCount);
-    
-    if (visibleCount === 0) {
-      console.warn('⚠️ No subjects in Firestore! Add subjects from admin.html');
-    }
-    
-  } catch (error) {
-    console.error('❌ Error loading subjects:', error);
-    
-    if (subjectsCache.data) {
-      console.log('⚠️ Using stale cache due to error');
-      subjects = subjectsCache.data;
-    } else {
-      subjects = {};
-      showToast('خطأ في تحميل المواد', 'error');
+
+    document.querySelector('.custom-dialog-overlay')?.remove();
+    window.showToast('✅ تم التفعيل بنجاح!', 'success');
+    clearValidationError(codeInput);
+    renderMyLibrary();
+    loadContinueWatching();
+  } catch (e) {
+    console.error('❌ خطأ التفعيل:', e);
+    showValidationError(codeInput, '❌ خطأ في الاتصال، حاول مرة أخرى');
+    if (btnEl) {
+      btnEl.disabled = false;
+      btnEl.innerHTML = '<i class="fas fa-check"></i> تفعيل';
     }
   }
 }
 
 // ==========================================
-// 🎨 RENDER SUBJECTS GRID (مع Icon Color)
+// OPEN LECTURE
 // ==========================================
-function renderSubjectsGrid() {
-  const subjectsGrid = document.getElementById('subjectsGrid');
-  if (!subjectsGrid) {
-    console.error('❌ subjectsGrid element not found!');
-    return;
-  }
-  
-  subjectsGrid.innerHTML = '';
-  
-  const sortedSubjects = Object.entries(subjects).sort((a, b) => {
-    return (a[1].order || 999) - (b[1].order || 999);
-  });
-  
-  console.log('🎨 Rendering', sortedSubjects.length, 'subjects');
-  
-  if (sortedSubjects.length === 0) {
-    subjectsGrid.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #64748b;">
-        <i class="fas fa-inbox" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;"></i>
-        <h3 style="font-size: 1.5rem; margin-bottom: 10px; font-weight: 800;">لا توجد مواد متاحة</h3>
-        <p>تواصل مع الإدارة لإضافة مواد من لوحة التحكم</p>
-      </div>
-    `;
-    return;
-  }
-  
-  sortedSubjects.forEach(([subjectId, subject]) => {
-    const lectureCount = lecturesDB[subjectId] ? lecturesDB[subjectId].length : 0;
-    
-    // ✅ جلب Icon Color من Customizations
-    const iconColor = subject.customizations?.iconColor || 'ffffff';
-    
-    const subjectCard = document.createElement('div');
-    subjectCard.className = 'subject-capsule';
-    subjectCard.onclick = () => showLectures(subjectId);
-    
-    subjectCard.innerHTML = `
-      <div class="subject-icon-container" style="background: linear-gradient(135deg, ${subject.color}, ${adjustColor(subject.color, 20)});">
-        <i class="fas ${subject.icon}" style="color: #${iconColor};"></i>
-      </div>
-      <h3 class="subject-title">${subject.name}</h3>
-      <p style="color: #64748b; font-weight: 600; margin: 10px 0; font-size: 0.95rem;">${subject.nameEn}</p>
-      ${subject.description ? `<small style="color: #64748b; font-size: 0.85rem; margin-top: 5px; display: block; line-height: 1.4;">${subject.description}</small>` : ''}
-      <span class="lecture-count" id="${subjectId}-count">
-        <i class="fas fa-book-open"></i> ${lectureCount} محاضرة
-      </span>
-    `;
-    
-    subjectsGrid.appendChild(subjectCard);
-  });
-  
-  console.log('✅ Subjects grid rendered successfully');
+window.openLecture = function(url) {
+  if (!url || url === '#') { window.showToast('المحاضرة قيد التطوير', 'info'); return; }
+  window.open(url, '_blank');
 }
 
+// ==========================================
+// PROFILE MODAL
+// ==========================================
+window.openProfile = function() {
+  const modal = document.getElementById('profileModal');
+  if (!modal) return;
+
+  modal.classList.add('active');
+  const nameEl = document.getElementById('profileName');
+  const emailEl = document.getElementById('profileEmail');
+  const univEl = document.getElementById('profileUniversity');
+  const univSelectEl = document.getElementById('selectedUniversity');
+  const imgEl = document.getElementById('profileAvatarImg');
+
+  if (nameEl) nameEl.value = userData.name || '';
+  if (emailEl) emailEl.value = currentUser.email || '';
+  if (univEl) univEl.value = userData.university || 'دمنهور';
+  if (univSelectEl) univSelectEl.textContent = userData.university || 'دمنهور';
+  if (imgEl) imgEl.src = userData.avatar || generateAvatarUrl(currentUser.uid);
+
+  window.loadAvatarSelector();
+}
+
+window.closeProfile = function() {
+  document.getElementById('profileModal')?.classList.remove('active');
+}
+
+window.backToLibrary = function() {
+  const lecturesView = document.getElementById('lecturesView');
+  if (lecturesView) lecturesView.style.display = 'none';
+  window.switchTab('allSubjects');
+}
+
+// ==========================================
+// SAVE PROFILE
+// ==========================================
+async function saveProfile() {
+  try {
+    const nameEl = document.getElementById('profileName');
+    const univEl = document.getElementById('profileUniversity');
+    const passEl = document.getElementById('profilePassword');
+    const btnEl = document.getElementById('saveProfileBtn');
+
+    const name = nameEl?.value.trim() || '';
+    const university = univEl?.value || 'دمنهور';
+    const newPass = passEl?.value.trim() || '';
+
+    if (!name) { window.showToast('❌ أدخل الاسم', 'error'); return; }
+
+    if (btnEl) {
+      btnEl.disabled = true;
+      btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    }
+
+    const updateData = { name, university, updatedAt: serverTimestamp() };
+    if (selectedAvatarConfig?.avatar) updateData.avatar = selectedAvatarConfig.avatar;
+
+    await updateDoc(doc(db, 'users', currentUser.uid), updateData);
+    if (newPass) await updatePassword(currentUser, newPass);
+
+    userData = { ...userData, ...updateData };
+    updateHeaderInfo();
+    window.showToast('✅ تم الحفظ بنجاح', 'success');
+    window.closeProfile();
+
+    if (btnEl) {
+      btnEl.disabled = false;
+      btnEl.innerHTML = '<i class="fas fa-check-circle"></i> حفظ';
+    }
+  } catch (e) {
+    console.error('❌ خطأ الحفظ:', e);
+    window.showToast('❌ خطأ في الحفظ', 'error');
+    const btnEl = document.getElementById('saveProfileBtn');
+    if (btnEl) {
+      btnEl.disabled = false;
+      btnEl.innerHTML = '<i class="fas fa-check-circle"></i> حفظ';
+    }
+  }
+}
+
+// ==========================================
+// AVATAR SELECTOR
+// ==========================================
+window.showAvatarSelector = function() {
+  const selector = document.getElementById('avatarSelector');
+  if (selector) selector.style.display = 'block';
+}
+
+window.closeAvatarSelector = function() {
+  const selector = document.getElementById('avatarSelector');
+  if (selector) selector.style.display = 'none';
+}
+
+function makeAvatar(color) {
+  return `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='${encodeURIComponent(color)}'/>ircle cx='50' cy='38' r='16' fill='whitete'/><path d='M25 68 Q50 84 75 68' fill='white'/></svg>`;
+}
+
+window.loadAvatarSelector = function() {
+  const grid = document.querySelector('.avatars-grid');
+  if (!grid) return;
+
+  const palette = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
+  grid.innerHTML = palette.map((c, i) => `
+    <div class="avatar-option" onclick="window.selectAvatarColor('${c}')" style="border:2px solid var(--glass-border);border-radius:var(--radius-md);overflow:hidden;cursor:pointer" tabindex="0" onkeydown="if(event.key==='Enter') window.selectAvatarColor('${c}')">
+      <img src="${makeAvatar(c)}" style="width:100%;height:100%;object-fit:cover" alt="avatar option ${i+1}">
+    </div>
+  `).join('');
+}
+
+window.selectAvatarColor = function(color) {
+  selectedAvatarConfig = { avatar: makeAvatar(color) };
+  const imgEl = document.getElementById('profileAvatarImg');
+  if (imgEl) imgEl.src = selectedAvatarConfig.avatar;
+}
+
+// ==========================================
+// UNIVERSITY SELECTOR
+// ==========================================
+window.toggleUniversityDropdown = function() {
+  const dropdown = document.getElementById('universityDropdown');
+  const select = document.getElementById('universitySelect');
+  if (dropdown && select) {
+    dropdown.classList.toggle('active');
+    select.classList.toggle('active');
+  }
+}
+
+window.selectUniversity = function(university) {
+  const univEl = document.getElementById('selectedUniversity');
+  const univInputEl = document.getElementById('profileUniversity');
+  const dropdown = document.getElementById('universityDropdown');
+  const select = document.getElementById('universitySelect');
+  
+  if (univEl) univEl.textContent = university;
+  if (univInputEl) univInputEl.value = university;
+  if (dropdown) dropdown.classList.remove('active');
+  if (select) select.classList.remove('active');
+}
+
+// ==========================================
+// LOGOUT
+// ==========================================
+window.logout = async function() {
+  try {
+    await signOut(auth);
+    window.location.href = 'login.html';
+  } catch (e) {
+    console.error('❌ خطأ الخروج:', e);
+    window.showToast('❌ خطأ في تسجيل الخروج', 'error');
+  }
+}
+
+// ==========================================
+// UTILITIES
+// ==========================================
 function adjustColor(color, percent) {
   const num = parseInt(color.replace('#', ''), 16);
   const amt = Math.round(2.55 * percent);
@@ -452,720 +1421,27 @@ function adjustColor(color, percent) {
   return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
 }
 
-// ... باقي الكود بدون تغيير ...
-
-// [الكود كامل مثل ما بعتهولك - هنا اختصرت عشان الطول]
-// ==========================================
-// 📚 LOAD LECTURES
-// ==========================================
-async function loadLectures(forceRefresh = false) {
-  try {
-    const now = Date.now();
-    
-    if (!forceRefresh && lecturesCache.data && lecturesCache.timestamp && 
-        (now - lecturesCache.timestamp < CACHE_DURATION)) {
-      console.log('✅ Using cached lectures');
-      lecturesDB = lecturesCache.data;
-      updateCounts();
-      return;
-    }
-    
-    console.log('📡 Fetching lectures from Firestore...');
-    
-    const snapshot = await fetchWithRetry(() => getDocs(collection(db, 'lectures')));
-    
-    console.log('📊 Total lectures in Firestore:', snapshot.size);
-    
-    lecturesDB = {};
-    Object.keys(subjects).forEach(subjectId => {
-      lecturesDB[subjectId] = [];
-    });
-    
-    let activeCount = 0;
-    
-    snapshot.forEach((docSnap) => {
-      const lec = docSnap.data();
-      
-      if ((lec.status === 'active' || !lec.status) && lecturesDB[lec.subject]) {
-        lecturesDB[lec.subject].push({
-          id: lec.lectureId,
-          title: lec.title,
-          url: lec.url,
-          description: lec.description || '',
-          icon: lec.icon || 'fa-book-open',
-          color: lec.color || subjects[lec.subject]?.color || '#16a34a',
-          price: lec.price || 'free',
-          activationCode: lec.activationCode || null,
-          order: lec.order || 999
-        });
-        activeCount++;
-      }
-    });
-    
-    Object.keys(lecturesDB).forEach(subjectId => {
-      lecturesDB[subjectId].sort((a, b) => a.order - b.order);
-    });
-    
-    lecturesCache = {
-      data: lecturesDB,
-      timestamp: now
-    };
-    
-    console.log('✅ Loaded active lectures:', activeCount);
-    updateCounts();
-    
-  } catch (error) {
-    console.error('❌ Error loading lectures:', error);
-    
-    if (lecturesCache.data) {
-      console.log('⚠️ Using stale cache due to error');
-      lecturesDB = lecturesCache.data;
-      updateCounts();
-    } else {
-      showToast('خطأ في تحميل المحاضرات', 'error');
-    }
-  }
+window.showToast = function(message, type = 'info') {
+  const toast = document.createElement('div');
+  toast.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+    color: white;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: var(--shadow-lg);
+    z-index: 10001;
+    animation: slideInRight 0.3s ease;
+  `;
+  toast.textContent = message;
+  toast.setAttribute('role', 'status');
+  toast.setAttribute('aria-live', 'polite');
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
 }
 
-// ==========================================
-// 📖 LOAD USER LIBRARY
-// ==========================================
-async function loadUserLibrary() {
-  try {
-    const libraryDoc = await getDoc(doc(db, 'userLibrary', currentUser.uid));
-    
-    if (libraryDoc.exists()) {
-      userLectures = libraryDoc.data().lectures || [];
-      console.log('✅ User library loaded:', userLectures.length, 'lectures');
-    } else {
-      userLectures = [];
-      console.log('ℹ️ No user library found - creating empty library');
-      
-      await setDoc(doc(db, 'userLibrary', currentUser.uid), {
-        uid: currentUser.uid,
-        lectures: [],
-        activatedAt: {},
-        createdAt: serverTimestamp()
-      });
-    }
-  } catch (error) {
-    console.error('❌ Error loading user library:', error);
-    userLectures = [];
-  }
-}
-
-// ==========================================
-// 🔢 UPDATE COUNTS
-// ==========================================
-function updateCounts() {
-  Object.keys(subjects).forEach(subjectId => {
-    const countEl = document.getElementById(`${subjectId}-count`);
-    if (countEl) {
-      const count = lecturesDB[subjectId] ? lecturesDB[subjectId].length : 0;
-      countEl.innerHTML = `<i class="fas fa-book-open"></i> ${count} محاضرة`;
-    }
-  });
-}
-
-function updateLibraryCount() {
-  const count = userLectures.length;
-  const myLibraryCountEl = document.getElementById('myLibraryCount');
-  const headerLibraryCountEl = document.getElementById('headerLibraryCount');
-  
-  if (myLibraryCountEl) myLibraryCountEl.textContent = count;
-  if (headerLibraryCountEl) headerLibraryCountEl.textContent = count;
-}
-
-// ==========================================
-// 📋 SHOW LECTURES
-// ==========================================
-window.showLectures = function(subjectId) {
-  const subject = subjects[subjectId];
-  if (!subject) {
-    console.error('❌ Subject not found:', subjectId);
-    return;
-  }
-  
-  const lectures = lecturesDB[subjectId] || [];
-  
-  document.getElementById('subjectsGrid').style.display = 'none';
-  document.getElementById('myLibraryView').style.display = 'none';
-  document.getElementById('lecturesView').style.display = 'block';
-  document.getElementById('subjectTitle').textContent = `${subject.name} (${subject.nameEn})`;
-  
-  const lecturesList = document.getElementById('lecturesList');
-  
-  if (lectures.length === 0) {
-    lecturesList.innerHTML = `
-      <div style="text-align: center; padding: 60px 20px; color: #64748b;">
-        <i class="fas fa-book-open" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;"></i>
-        <h3 style="font-size: 1.3rem; margin-bottom: 10px;">لا توجد محاضرات في هذه المادة</h3>
-        <p>ترقب المحاضرات قريباً</p>
-      </div>
-    `;
-    return;
-  }
-  
-  lecturesList.innerHTML = lectures.map(lec => {
-    const hasAccess = userLectures.includes(lec.id);
-    const isFree = lec.price === 'free';
-    
-    if (hasAccess) {
-      return `
-        <div class="lecture-capsule" onclick="openLecture('${lec.url}')" style="border-left: 4px solid ${lec.color};">
-          <div class="lecture-icon-box" style="background: ${lec.color};">
-            <i class="fas ${lec.icon}"></i>
-          </div>
-          <div class="lecture-info">
-            <h3>${lec.title}</h3>
-            ${lec.description ? `<p style="margin: 5px 0 0; color: #64748b; font-size: 0.9rem; line-height: 1.4;">${lec.description}</p>` : ''}
-            <p style="margin: 5px 0 0; color: #10b981; font-size: 0.9rem; font-weight: 600;">
-              <i class="fas fa-check-circle"></i> متاحة للمشاهدة
-            </p>
-          </div>
-          <span class="lecture-status-active">
-            <i class="fas fa-play-circle"></i> مفتوحة
-          </span>
-        </div>
-      `;
-    } else if (isFree) {
-      return `
-        <div class="lecture-capsule lecture-locked" style="border-left: 4px solid #94a3b8;">
-          <div class="lecture-icon-box-locked">
-            <i class="fas fa-gift"></i>
-          </div>
-          <div class="lecture-info">
-            <h3>${lec.title}</h3>
-            ${lec.description ? `<p style="margin: 5px 0 0; color: #64748b; font-size: 0.9rem; line-height: 1.4;">${lec.description}</p>` : ''}
-            <p style="margin: 5px 0 0; color: #64748b; font-size: 0.9rem; font-weight: 600;">
-              <i class="fas fa-star"></i> محاضرة مجانية
-            </p>
-          </div>
-          <button class="get-lecture-btn" onclick="event.stopPropagation(); getLecture('${lec.id}', '${subjectId}')">
-            <i class="fas fa-plus"></i> احصل عليها
-          </button>
-        </div>
-      `;
-    } else {
-      return `
-        <div class="lecture-capsule lecture-locked" style="border-left: 4px solid #94a3b8;">
-          <div class="lecture-icon-box-locked">
-            <i class="fas fa-lock"></i>
-          </div>
-          <div class="lecture-info">
-            <h3>${lec.title}</h3>
-            ${lec.description ? `<p style="margin: 5px 0 0; color: #64748b; font-size: 0.9rem; line-height: 1.4;">${lec.description}</p>` : ''}
-            <p style="margin: 5px 0 0; color: #64748b; font-size: 0.9rem; font-weight: 600;">
-              <i class="fas fa-crown"></i> محاضرة مدفوعة
-            </p>
-          </div>
-          <button class="activate-lecture-btn" onclick="event.stopPropagation(); showActivationModal('${lec.id}', '${subjectId}')">
-            <i class="fas fa-key"></i> تفعيل
-          </button>
-        </div>
-      `;
-    }
-  }).join('');
-};
-
-// ==========================================
-// 🎨 TOAST NOTIFICATIONS
-// ==========================================
-function showToast(message, type = 'info') {
-  if (typeof window.showToastNotification === 'function') {
-    window.showToastNotification(message, type);
-  } else {
-    const toast = document.createElement('div');
-    toast.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
-      color: white;
-      padding: 16px 24px;
-      border-radius: 12px;
-      font-weight: 600;
-      z-index: 99999;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      animation: slideIn 0.3s ease;
-    `;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-      toast.style.animation = 'slideOut 0.3s ease';
-      setTimeout(() => toast.remove(), 300);
-    }, 3000);
-  }
-}
-
-// ==========================================
-// 🎁 GET FREE LECTURE
-// ==========================================
-window.getLecture = async function(lectureId, subjectId) {
-  try {
-    const btn = event.target.closest('button');
-    if (!btn) return;
-    
-    const originalHTML = btn.innerHTML;
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإضافة...';
-    
-    const libraryRef = doc(db, 'userLibrary', currentUser.uid);
-    const libraryDoc = await getDoc(libraryRef);
-    
-    let lectures = [];
-    let activatedAt = {};
-    
-    if (libraryDoc.exists()) {
-      lectures = libraryDoc.data().lectures || [];
-      activatedAt = libraryDoc.data().activatedAt || {};
-    }
-    
-    if (!lectures.includes(lectureId)) {
-      lectures.push(lectureId);
-      activatedAt[lectureId] = serverTimestamp();
-      
-      if (libraryDoc.exists()) {
-        await updateDoc(libraryRef, { lectures, activatedAt });
-      } else {
-        await setDoc(libraryRef, {
-          uid: currentUser.uid,
-          lectures,
-          activatedAt,
-          createdAt: serverTimestamp()
-        });
-      }
-      
-      userLectures = lectures;
-      updateLibraryCount();
-      
-      showToast('تم إضافة المحاضرة لمكتبتك بنجاح!', 'success');
-      showLectures(subjectId);
-    } else {
-      showToast('المحاضرة موجودة بالفعل!', 'info');
-      btn.disabled = false;
-      btn.innerHTML = originalHTML;
-    }
-  } catch (error) {
-    console.error('❌ Error:', error);
-    showToast('خطأ في الإضافة', 'error');
-    
-    const btn = event.target.closest('button');
-    if (btn) {
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-plus"></i> احصل عليها';
-    }
-  }
-};
-
-// ==========================================
-// 🔑 ACTIVATION MODAL
-// ==========================================
-window.showActivationModal = async function(lectureId, subjectId) {
-  const code = await showPromptDialog(
-    '🔑 إدخال كود التفعيل',
-    'من فضلك أدخل كود تفعيل المحاضرة',
-    'أدخل الكود هنا...',
-    'text'
-  );
-
-  if (code && code.trim()) {
-    activateLecture(lectureId, subjectId, code.trim());
-  }
-};
-
-window.activateLecture = async function(lectureId, subjectId, code) {
-  try {
-    const lectures = lecturesDB[subjectId];
-    if (!lectures) {
-      showToast('مادة غير موجودة', 'error');
-      return;
-    }
-    
-    const lecture = lectures.find(l => l.id === lectureId);
-    
-    if (!lecture) {
-      showToast('محاضرة غير موجودة', 'error');
-      return;
-    }
-    
-    if (lecture.activationCode !== code) {
-      showToast('كود التفعيل خاطئ', 'error');
-      return;
-    }
-    
-    const libraryRef = doc(db, 'userLibrary', currentUser.uid);
-    const libraryDoc = await getDoc(libraryRef);
-    
-    let userLecturesList = [];
-    let activatedAt = {};
-    
-    if (libraryDoc.exists()) {
-      userLecturesList = libraryDoc.data().lectures || [];
-      activatedAt = libraryDoc.data().activatedAt || {};
-    }
-    
-    if (!userLecturesList.includes(lectureId)) {
-      userLecturesList.push(lectureId);
-      activatedAt[lectureId] = serverTimestamp();
-      
-      if (libraryDoc.exists()) {
-        await updateDoc(libraryRef, { lectures: userLecturesList, activatedAt });
-      } else {
-        await setDoc(libraryRef, {
-          uid: currentUser.uid,
-          lectures: userLecturesList,
-          activatedAt,
-          createdAt: serverTimestamp()
-        });
-      }
-      
-      userLectures = userLecturesList;
-      updateLibraryCount();
-      
-      showToast('تم تفعيل المحاضرة بنجاح!', 'success');
-      showLectures(subjectId);
-    } else {
-      showToast('المحاضرة مفعلة بالفعل!', 'info');
-    }
-  } catch (error) {
-    console.error('❌ Error:', error);
-    showToast('خطأ في التفعيل', 'error');
-  }
-};
-
-// ==========================================
-// 👤 USER MENU
-// ==========================================
-window.toggleUserMenu = function() {
-  const menu = document.getElementById('userDropdownMenu');
-  if (!menu) return;
-  
-  clearTimeout(userMenuTimeout);
-  menu.classList.toggle('active');
-  
-  if (menu.classList.contains('active')) {
-    userMenuTimeout = setTimeout(() => {
-      menu.classList.remove('active');
-    }, 10000);
-  }
-};
-
-document.addEventListener('click', function(event) {
-  const userSection = document.querySelector('.user-section');
-  const menu = document.getElementById('userDropdownMenu');
-  
-  if (menu && userSection && !userSection.contains(event.target)) {
-    menu.classList.remove('active');
-    clearTimeout(userMenuTimeout);
-  }
-});
-
-// ==========================================
-// 📚 SHOW MY LIBRARY
-// ==========================================
-window.showMyLibrary = function() {
-  document.getElementById('subjectsGrid').style.display = 'none';
-  document.getElementById('lecturesView').style.display = 'none';
-  document.getElementById('myLibraryView').style.display = 'block';
-  
-  const menu = document.getElementById('userDropdownMenu');
-  if (menu) menu.classList.remove('active');
-  
-  loadMyLectures();
-};
-
-function loadMyLectures() {
-  const container = document.getElementById('myLecturesList');
-  if (!container) return;
-  
-  if (userLectures.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <i class="fas fa-inbox"></i>
-        <h3>لا توجد محاضرات بعد</h3>
-        <p>ابدأ بإضافة محاضرات من "جميع المواد"</p>
-        <button onclick="showAllSubjects()" class="browse-btn">
-          <i class="fas fa-plus-circle"></i> تصفح المواد
-        </button>
-      </div>
-    `;
-    return;
-  }
-  
-  let myLecturesData = [];
-  
-  Object.keys(lecturesDB).forEach(subjectId => {
-    lecturesDB[subjectId].forEach(lec => {
-      if (userLectures.includes(lec.id)) {
-        myLecturesData.push({ 
-          ...lec, 
-          subjectName: subjects[subjectId]?.name || subjectId,
-          subjectOrder: subjects[subjectId]?.order || 999
-        });
-      }
-    });
-  });
-  
-  myLecturesData.sort((a, b) => {
-    if (a.subjectOrder !== b.subjectOrder) {
-      return a.subjectOrder - b.subjectOrder;
-    }
-    return a.order - b.order;
-  });
-  
-  container.innerHTML = myLecturesData.map(lec => `
-    <div class="lecture-capsule" onclick="openLecture('${lec.url}')" style="margin-bottom: 20px; border-left: 4px solid ${lec.color};">
-      <div class="lecture-icon-box" style="background: ${lec.color};">
-        <i class="fas ${lec.icon}"></i>
-      </div>
-      <div class="lecture-info">
-        <h3>${lec.title}</h3>
-        <p style="margin: 0; color: #64748b; font-size: 0.9rem; font-weight: 600;">
-          <i class="fas fa-tag"></i> ${lec.subjectName}
-        </p>
-      </div>
-      <span class="lecture-status-active">
-        <i class="fas fa-play-circle"></i> مفتوحة
-      </span>
-    </div>
-  `).join('');
-}
-
-// ==========================================
-// 🧭 NAVIGATION
-// ==========================================
-window.showAllSubjects = function() {
-  document.getElementById('myLibraryView').style.display = 'none';
-  document.getElementById('lecturesView').style.display = 'none';
-  document.getElementById('subjectsGrid').style.display = 'grid';
-};
-
-window.backToSubjects = function() {
-  document.getElementById('subjectsGrid').style.display = 'grid';
-  document.getElementById('lecturesView').style.display = 'none';
-  document.getElementById('myLibraryView').style.display = 'none';
-};
-
-window.openLecture = (url) => {
-  console.log('📖 Opening lecture:', url);
-  window.location.href = url;
-};
-
-// ==========================================
-// 🚪 LOGOUT
-// ==========================================
-window.logout = async function() {
-  const confirmed = await showConfirmDialog(
-    'تسجيل الخروج',
-    'هل أنت متأكد من تسجيل الخروج؟',
-    'تسجيل الخروج',
-    'إلغاء',
-    true
-  );
-
-  if (confirmed) {
-    try {
-      await signOut(auth);
-      window.location.href = 'login.html';
-    } catch (error) {
-      console.error('❌ Logout error:', error);
-      showToast('خطأ في تسجيل الخروج', 'error');
-    }
-  }
-};
-
-// ==========================================
-// 👤 PROFILE MODAL
-// ==========================================
-window.openProfile = function() {
-  document.getElementById('profileModal').classList.add('active');
-  const menu = document.getElementById('userDropdownMenu');
-  if (menu) {
-    menu.classList.remove('active');
-    clearTimeout(userMenuTimeout);
-  }
-};
-
-window.closeProfile = function() {
-  document.getElementById('profileModal').classList.remove('active');
-  document.getElementById('avatarSelector').style.display = 'none';
-  document.getElementById('profileFormSection').style.display = 'block';
-  
-  const select = document.getElementById('universitySelect');
-  const dropdown = document.getElementById('universityDropdown');
-  if (select) select.classList.remove('active');
-  if (dropdown) dropdown.classList.remove('active');
-};
-
-// ==========================================
-// 🎨 AVATAR HANDLER
-// ==========================================
-function setupAvatarHandler() {
-  const avatarContainer = document.getElementById('avatarContainer');
-  if (!avatarContainer) {
-    console.warn('⚠️ Avatar container not found');
-    return;
-  }
-  
-  avatarContainer.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    console.log('🎨 Opening avatar selector...');
-    
-    document.getElementById('avatarSelector').style.display = 'block';
-    document.getElementById('profileFormSection').style.display = 'none';
-    
-    const grid = document.querySelector('.avatars-grid');
-    if (!grid) return;
-    
-    grid.innerHTML = AVATAR_CONFIGS.map(config => `
-      <div class="avatar-option" data-seed="${config.seed}" data-params="${config.params}">
-        <img src="${generateAvatarUrl(config.seed, config.params)}" alt="${config.seed}">
-      </div>
-    `).join('');
-    
-    grid.querySelectorAll('.avatar-option').forEach(option => {
-      option.addEventListener('click', function() {
-        selectAvatarNew(this.dataset.seed, this.dataset.params);
-      });
-    });
-    
-    if (userData && userData.avatarSeed) {
-      const current = grid.querySelector(`[data-seed="${userData.avatarSeed}"]`);
-      if (current) current.classList.add('selected');
-    }
-  });
-}
-
-function selectAvatarNew(seed, params) {
-  console.log('🎨 Selecting avatar:', seed);
-  
-  document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
-  
-  const clickedElement = document.querySelector(`[data-seed="${seed}"]`);
-  if (clickedElement) clickedElement.classList.add('selected');
-  
-  const avatarUrl = generateAvatarUrl(seed, params);
-  
-  document.getElementById('profileAvatarImg').src = avatarUrl;
-  document.getElementById('headerUserAvatar').src = avatarUrl;
-  
-  if (currentUser) {
-    updateDoc(doc(db, 'users', currentUser.uid), {
-      avatarSeed: seed,
-      avatarParams: params,
-      avatarStyle: AVATAR_STYLE,
-      avatar: avatarUrl
-    }).then(() => {
-      if (userData) {
-        userData.avatarSeed = seed;
-        userData.avatarParams = params;
-        userData.avatarStyle = AVATAR_STYLE;
-        userData.avatar = avatarUrl;
-      }
-      console.log('✅ Avatar updated in Firestore');
-      showToast('تم تحديث الصورة بنجاح!', 'success');
-    }).catch(error => {
-      console.error('❌ Error updating avatar:', error);
-      showToast('خطأ في حفظ الصورة', 'error');
-    });
-  }
-}
-
-window.closeAvatarSelector = function() {
-  document.getElementById('avatarSelector').style.display = 'none';
-  document.getElementById('profileFormSection').style.display = 'block';
-};
-
-// ==========================================
-// 🎓 CUSTOM SELECT
-// ==========================================
-window.toggleUniversityDropdown = function() {
-  const select = document.getElementById('universitySelect');
-  const dropdown = document.getElementById('universityDropdown');
-  if (select) select.classList.toggle('active');
-  if (dropdown) dropdown.classList.toggle('active');
-};
-
-window.selectUniversity = function(value) {
-  selectedUniversityValue = value;
-  
-  const selectedUniv = document.getElementById('selectedUniversity');
-  const profileUniv = document.getElementById('profileUniversity');
-  
-  if (selectedUniv) selectedUniv.textContent = `جامعة ${value}`;
-  if (profileUniv) profileUniv.value = value;
-  
-  document.querySelectorAll('.select-option').forEach(opt => {
-    opt.classList.remove('selected');
-    if (opt.dataset.value === value) opt.classList.add('selected');
-  });
-  
-  const select = document.getElementById('universitySelect');
-  const dropdown = document.getElementById('universityDropdown');
-  if (select) select.classList.remove('active');
-  if (dropdown) dropdown.classList.remove('active');
-};
-
-// ==========================================
-// 💾 PROFILE FORM
-// ==========================================
-const profileForm = document.getElementById('profileForm');
-if (profileForm) {
-  profileForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const name = document.getElementById('profileName').value.trim();
-    const university = document.getElementById('profileUniversity').value;
-    const password = document.getElementById('profilePassword').value;
-    const btn = document.getElementById('saveProfileBtn');
-    
-    if (!name) {
-      showToast('يرجى إدخال الاسم', 'error');
-      return;
-    }
-    
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
-    
-    try {
-      await updateDoc(doc(db, 'users', currentUser.uid), {
-        name,
-        university
-      });
-      
-      if (password && password.length >= 6) {
-        await updatePassword(currentUser, password);
-      }
-      
-      userData.name = name;
-      userData.university = university;
-      
-      document.getElementById('headerUserName').textContent = name;
-      document.getElementById('headerUserUniversity').textContent = university;
-      
-      showToast('تم حفظ التغييرات بنجاح!', 'success');
-      closeProfile();
-      
-    } catch (error) {
-      console.error('❌ Error:', error);
-      
-      let errorMsg = 'خطأ في الحفظ';
-      
-      if (error.code === 'auth/requires-recent-login') {
-        errorMsg = 'يجب تسجيل الدخول مرة أخرى لتغيير كلمة المرور';
-      } else if (error.code === 'auth/weak-password') {
-        errorMsg = 'كلمة المرور ضعيفة جداً';
-      }
-      
-      showToast(errorMsg, 'error');
-    } finally {
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-check-circle"></i> حفظ التغييرات';
-      document.getElementById('profilePassword').value = '';
-    }
-  });
-}
+console.log('✅ Library.js V17.0 ULTIMATE Ready - Study Timer + Modern Library + Auto-Cleanup');

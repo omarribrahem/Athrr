@@ -3,729 +3,347 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#16a34a">
   <title>لوحة التحكم - منصة أثر</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
   <link rel="stylesheet" href="css/style.css">
-  
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Cairo', sans-serif;
-      min-height: 100vh;
-      background: #f8fafc;
-    }
-
-    /* HEADER */
-    .admin-header {
-      background: white;
-      padding: 20px 0;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      margin-bottom: 40px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .admin-header-content {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .admin-logo {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: #0f172a;
-    }
-
-    .admin-logo i {
-      font-size: 2rem;
-      color: #16a34a;
-    }
-
-    .back-btn {
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-family: inherit;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .back-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
-    }
-
-    /* CONTAINER */
-    .admin-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 30px 50px;
-    }
-
-    .admin-tabs {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 40px;
-      border-bottom: 2px solid #e2e8f0;
-    }
-
-    .tab-btn {
-      background: transparent;
-      border: none;
-      padding: 15px 30px;
-      font-family: inherit;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #64748b;
-      cursor: pointer;
-      transition: all 0.3s;
-      position: relative;
-    }
-
-    .tab-btn.active {
-      color: #16a34a;
-    }
-
-    .tab-btn.active::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(135deg, #16a34a, #10b981);
-      border-radius: 3px 3px 0 0;
-    }
-
-    .tab-btn:hover {
-      color: #16a34a;
-    }
-
-    /* TAB CONTENT */
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-      animation: fadeIn 0.4s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* FORM CARD */
-    .form-card {
-      background: white;
-      border-radius: 20px;
-      padding: 35px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      margin-bottom: 30px;
-    }
-
-    .form-card h2 {
-      font-size: 1.6rem;
-      color: #0f172a;
-      margin-bottom: 25px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .form-card h2 i {
-      color: #16a34a;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 25px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .form-group.full-width {
-      grid-column: 1 / -1;
-    }
-
-    .form-label {
-      font-weight: 700;
-      color: #334155;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 1rem;
-    }
-
-    .form-label i {
-      color: #16a34a;
-      font-size: 0.95rem;
-    }
-
-    .form-input, .form-select, .form-textarea {
-      padding: 14px 18px;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      font-family: inherit;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #0f172a;
-      transition: all 0.3s;
-      background: #f8fafc;
-    }
-
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      outline: none;
-      border-color: #16a34a;
-      background: white;
-      box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
-    }
-
-    .form-textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
-
-    /* ICON PICKER */
-    .icon-picker-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-      gap: 12px;
-      max-height: 300px;
-      overflow-y: auto;
-      padding: 15px;
-      background: #f8fafc;
-      border-radius: 12px;
-      border: 2px solid #e2e8f0;
-    }
-
-    .icon-option {
-      width: 60px;
-      height: 60px;
-      background: white;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-size: 1.5rem;
-      color: #64748b;
-    }
-
-    .icon-option:hover {
-      border-color: #16a34a;
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
-    }
-
-    .icon-option.selected {
-      border-color: #16a34a;
-      background: rgba(22, 163, 74, 0.1);
-      color: #16a34a;
-      border-width: 3px;
-    }
-
-    /* COLOR PICKER */
-    .color-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-      gap: 12px;
-      padding: 15px;
-      background: #f8fafc;
-      border-radius: 12px;
-      border: 2px solid #e2e8f0;
-    }
-
-    .color-option {
-      width: 50px;
-      height: 50px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s;
-      border: 3px solid transparent;
-      position: relative;
-    }
-
-    .color-option:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-
-    .color-option.selected {
-      border-color: #0f172a;
-      box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.2);
-    }
-
-    .color-option.selected::after {
-      content: '\f00c';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      font-size: 1.2rem;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-
-    /* PREVIEW */
-    .preview-section {
-      background: #f8fafc;
-      border: 2px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 30px;
-      text-align: center;
-    }
-
-    .preview-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 20px;
-    }
-
-    .subject-preview {
-      background: rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(20px);
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      border-radius: 24px;
-      padding: 35px 25px;
-      display: inline-block;
-      min-width: 280px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
-
-    .preview-icon-container {
-      width: 90px;
-      height: 90px;
-      border-radius: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 25px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-      transition: all 0.3s;
-    }
-
-    .preview-icon-container i {
-      font-size: 2.8rem;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
-    }
-
-    .preview-name {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #14532d;
-      margin-bottom: 5px;
-    }
-
-    .preview-name-en {
-      color: #64748b;
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-
-    /* SUBMIT BUTTON */
-    .submit-btn {
-      background: linear-gradient(135deg, #16a34a, #10b981);
-      color: white;
-      border: none;
-      padding: 16px 32px;
-      border-radius: 14px;
-      font-family: inherit;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      box-shadow: 0 6px 20px rgba(22, 163, 74, 0.3);
-    }
-
-    .submit-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(22, 163, 74, 0.4);
-    }
-
-    .submit-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* SUBJECTS LIST */
-    .subjects-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 25px;
-    }
-
-    .subject-item {
-      background: white;
-      border-radius: 20px;
-      padding: 25px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      transition: all 0.3s;
-      border: 2px solid transparent;
-    }
-
-    .subject-item:hover {
-      border-color: #16a34a;
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(22, 163, 74, 0.15);
-    }
-
-    .subject-item-header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 15px;
-    }
-
-    .subject-item-icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-    }
-
-    .subject-item-info h3 {
-      font-size: 1.2rem;
-      color: #0f172a;
-      margin-bottom: 5px;
-    }
-
-    .subject-item-info p {
-      color: #64748b;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    .subject-item-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .action-btn {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      border-radius: 10px;
-      font-family: inherit;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .edit-btn {
-      background: rgba(59, 130, 246, 0.1);
-      color: #3b82f6;
-      border: 2px solid rgba(59, 130, 246, 0.3);
-    }
-
-    .edit-btn:hover {
-      background: rgba(59, 130, 246, 0.2);
-    }
-
-    .delete-btn {
-      background: rgba(220, 38, 38, 0.1);
-      color: #dc2626;
-      border: 2px solid rgba(220, 38, 38, 0.3);
-    }
-
-    .delete-btn:hover {
-      background: rgba(220, 38, 38, 0.2);
-    }
-
-    /* LECTURES TABLE */
-    .lectures-table {
-      background: white;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    }
-
-    .lectures-table table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .lectures-table th {
-      background: linear-gradient(135deg, #16a34a, #10b981);
-      color: white;
-      padding: 18px;
-      text-align: right;
-      font-weight: 800;
-      font-size: 1rem;
-    }
-
-    .lectures-table td {
-      padding: 18px;
-      border-bottom: 1px solid #e2e8f0;
-      color: #334155;
-      font-weight: 600;
-    }
-
-    .lectures-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .lectures-table tr:hover {
-      background: #f8fafc;
-    }
-
-    .status-badge {
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      display: inline-block;
-    }
-
-    .status-active {
-      background: rgba(16, 185, 129, 0.15);
-      color: #10b981;
-    }
-
-    .status-inactive {
-      background: rgba(100, 116, 139, 0.15);
-      color: #64748b;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .admin-tabs {
-        overflow-x: auto;
-      }
-      
-      .subjects-list {
-        grid-template-columns: 1fr;
-      }
-      
-      .lectures-table {
-        overflow-x: auto;
-      }
-    }
-
-    /* TOAST */
-    .toast {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: white;
-      padding: 18px 24px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 700;
-      z-index: 9999;
-      animation: slideIn 0.3s ease;
-    }
-
-    @keyframes slideIn {
-      from {
-        transform: translateX(400px);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    .toast.success {
-      border-right: 4px solid #10b981;
-      color: #10b981;
-    }
-
-    .toast.error {
-      border-right: 4px solid #ef4444;
-      color: #ef4444;
-    }
-  </style>
+  <link rel="stylesheet" href="css/platform.css">
+  <link rel="stylesheet" href="css/admin.css">
 </head>
-
 <body>
+  <div class="background-waves">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
   
-  <!-- Header -->
+  <!-- Header Glass -->
   <header class="admin-header">
-    <div class="admin-header-content">
-      <div class="admin-logo">
-        <i class="fas fa-user-shield"></i>
-        <span>لوحة التحكم</span>
+    <div class="header-content">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <button class="back-button-admin" onclick="window.location.href='library.html'" title="العودة للمكتبة">
+          <i class="fas fa-arrow-right"></i>
+        </button>
+        <div class="admin-title">
+          <i class="fas fa-user-shield"></i>
+          <span>لوحة التحكم - منصة أثر</span>
+        </div>
       </div>
-      <button class="back-btn" onclick="window.location.href='library.html'">
-        <i class="fas fa-arrow-left"></i>
-        العودة للمكتبة
-      </button>
+      <div class="header-actions">
+        <input type="text" class="search-box" placeholder="ابحث عن مادة أو محاضرة..." id="globalSearchAdmin">
+        <button class="logout-btn" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i> خروج
+        </button>
+      </div>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <div class="admin-container">
-    
-    <!-- Tabs -->
-    <div class="admin-tabs">
-      <button class="tab-btn active" onclick="switchTab('subjects')">
-        <i class="fas fa-book"></i> إدارة المواد
+  <!-- Tabs Glass Navigation -->
+  <nav class="admin-tabs">
+    <div class="tabs-container">
+      <button class="tab-btn active" data-tab="tutorial">
+        <i class="fas fa-graduation-cap"></i> الدليل التعليمي
       </button>
-      <button class="tab-btn" onclick="switchTab('lectures')">
-        <i class="fas fa-video"></i> إدارة المحاضرات
+      <button class="tab-btn" data-tab="subjects">
+        <i class="fas fa-book"></i> المواد
+      </button>
+      <button class="tab-btn" data-tab="lectures">
+        <i class="fas fa-video"></i> المحاضرات
+      </button>
+      <button class="tab-btn" data-tab="codes">
+        <i class="fas fa-key"></i> الأكواد
+      </button>
+      <button class="tab-btn" data-tab="users">
+        <i class="fas fa-users"></i> المستخدمون
       </button>
     </div>
+  </nav>
 
-    <!-- ==========================================
-         SUBJECTS TAB
-         ========================================== -->
-    <div id="subjectsTab" class="tab-content active">
-      
-      <!-- Add Subject Form -->
-      <div class="form-card">
-        <h2>
-          <i class="fas fa-plus-circle"></i>
-          إضافة مادة جديدة
-        </h2>
+  <!-- Main Content -->
+  <main class="admin-main">
+    
+    <!-- ============================================ -->
+    <!-- TUTORIAL PANEL (NEW) -->
+    <!-- ============================================ -->
+    <div id="tutorial" class="admin-panel active">
+      <div class="admin-card tutorial-card">
+        <h2><i class="fas fa-graduation-cap"></i> مرحباً بك في لوحة التحكم</h2>
+        <p class="tutorial-intro">هذا الدليل الشامل سيساعدك على إدارة المنصة بكل سهولة دون الحاجة لكتابة كود أو التعديل في Firebase مباشرة.</p>
         
+        <!-- Tutorial Sections -->
+        <div class="tutorial-section">
+          <h3><i class="fas fa-book"></i> 1. إضافة مادة جديدة</h3>
+          <div class="tutorial-steps">
+            <div class="step">
+              <span class="step-number">1</span>
+              <div class="step-content">
+                <h4>انتقل إلى تبويب "المواد"</h4>
+                <p>املأ البيانات الأساسية: معرف المادة (فريد مثل: economics-101)، الاسم بالعربي والإنجليزي، اسم المحاضر، والوصف.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">2</span>
+              <div class="step-content">
+                <h4>اختر الأيقونة واللون</h4>
+                <p>اختر أيقونة من +90 أيقونة تعليمية، اختر لون الخلفية ولون الأيقونة، وشاهد المعاينة المباشرة.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">3</span>
+              <div class="step-content">
+                <h4>احفظ المادة</h4>
+                <p>اضغط "حفظ المادة" - ستظهر في قائمة المواد وفي المكتبة مباشرة للطلاب.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tutorial-section">
+          <h3><i class="fas fa-video"></i> 2. إضافة محاضرة</h3>
+          <div class="tutorial-steps">
+            <div class="step">
+              <span class="step-number">1</span>
+              <div class="step-content">
+                <h4>البيانات الأساسية</h4>
+                <p>انتقل لتبويب "المحاضرات"، أدخل معرف فريد (مثل: lec-eco-01)، اختر المادة، العنوان، والترتيب.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">2</span>
+              <div class="step-content">
+                <h4>نوع الرابط (مهم جداً!)</h4>
+                <p><strong>خياران متاحان:</strong></p>
+                <ul class="tutorial-list">
+                  <li><strong>GitHub Path:</strong> مثل <code>lectures/economics/lec-01.html</code> (مسار نسبي من المجلد الرئيسي)</li>
+                  <li><strong>Cloudflare URL:</strong> مثل <code>https://athr-platform.pages.dev/lectures/lec-01.html</code> (رابط كامل)</li>
+                </ul>
+                <p class="warning-box"><i class="fas fa-exclamation-triangle"></i> تأكد من صحة المسار - الرابط الخاطئ لن يعمل!</p>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">3</span>
+              <div class="step-content">
+                <h4>الحماية والكود</h4>
+                <p><strong>محاضرة مجانية:</strong> اختر "مجانية" - متاحة لجميع الطلاب.</p>
+                <p><strong>محاضرة محمية:</strong> اختر "محمية بكود":</p>
+                <ul class="tutorial-list">
+                  <li><strong>إنشاء كود جديد:</strong> حدد عدد الاستخدامات وتاريخ الانتهاء (اختياري)</li>
+                  <li><strong>ربط كود موجود:</strong> أدخل كود موجود مسبقاً (مثل: ATHR-ABC12345)</li>
+                </ul>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">4</span>
+              <div class="step-content">
+                <h4>التخصيص النهائي</h4>
+                <p>اختر أيقونة للمحاضرة، لون مميز، واكتب وصف مختصر. احفظ المحاضرة.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tutorial-section">
+          <h3><i class="fas fa-code"></i> 3. بنية ملف المحاضرة (HTML)</h3>
+          <div class="code-tutorial">
+            <p><strong>لكي تعمل المحاضرة بشكل صحيح، يجب أن يحتوي ملف HTML على:</strong></p>
+            <pre class="code-block"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ar" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;عنوان المحاضرة&lt;/title&gt;
+  &lt;!-- روابط CSS الخاصة بالمنصة --&gt;
+  &lt;link rel="stylesheet" href="../../css/style.css"&gt;
+  &lt;link rel="stylesheet" href="../../css/platform.css"&gt;
+  &lt;link rel="stylesheet" href="../../css/features.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- محتوى المحاضرة هنا --&gt;
+  
+  &lt;!-- 🔥 CRITICAL: Security Check --&gt;
+  &lt;script type="module"&gt;
+    import { checkLectureAccess } from '../../js/lecture-auth.js';
+    
+    // ✅ استبدل 'LECTURE_ID' بمعرف المحاضرة الفعلي
+    checkLectureAccess('lec-eco-01', (user) =&gt; {
+      // المحاضرة تعمل هنا - يمكن تحميل features.js
+      import('../../js/features.js');
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            
+            <div class="warning-box">
+              <i class="fas fa-shield-alt"></i>
+              <div>
+                <strong>مهم جداً:</strong>
+                <p>يجب استدعاء <code>checkLectureAccess()</code> في كل محاضرة لضمان الحماية. الطالب الذي لا يملك المحاضرة سيتم منعه تلقائياً.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tutorial-section">
+          <h3><i class="fas fa-folder-tree"></i> 4. هيكل المجلدات الموصى به</h3>
+          <pre class="code-block"><code>📦 athr-platform/
+├── 📁 lectures/
+│   ├── 📁 economics/
+│   │   ├── lec-01.html
+│   │   ├── lec-02.html
+│   │   └── ...
+│   ├── 📁 statistics/
+│   │   ├── lec-01.html
+│   │   └── ...
+│   └── 📁 mathematics/
+│       └── ...
+├── 📁 css/
+├── 📁 js/
+└── index.html</code></pre>
+          <p class="info-box"><i class="fas fa-lightbulb"></i> نظّم المحاضرات في مجلدات حسب المادة لسهولة الإدارة.</p>
+        </div>
+
+        <div class="tutorial-section">
+          <h3><i class="fas fa-key"></i> 5. إدارة الأكواد</h3>
+          <div class="tutorial-steps">
+            <div class="step">
+              <span class="step-number">1</span>
+              <div class="step-content">
+                <h4>الأكواد التلقائية</h4>
+                <p>عند إنشاء محاضرة محمية، يتم إنشاء كود تلقائياً بصيغة <code>ATHR-XXXXXXXX</code>.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">2</span>
+              <div class="step-content">
+                <h4>تفعيل/تعطيل الأكواد</h4>
+                <p>من تبويب "الأكواد"، يمكنك تفعيل أو تعطيل أي كود، عرض الاستخدامات، وحذف الأكواد المنتهية.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">3</span>
+              <div class="step-content">
+                <h4>Bundle Codes (مجموعات)</h4>
+                <p>يمكنك إنشاء كود واحد لتفعيل مادة كاملة أو مجموعة مواد - مفيد للباقات المدفوعة.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tutorial-section">
+          <h3><i class="fas fa-users"></i> 6. إدارة المستخدمين</h3>
+          <p>يمكنك من تبويب "المستخدمون":</p>
+          <ul class="tutorial-list">
+            <li>عرض جميع المستخدمين المسجلين</li>
+            <li>إضافة محاضرات لمستخدم معين يدوياً</li>
+            <li>إزالة محاضرات من مكتبة المستخدم</li>
+            <li>ترقية مستخدم إلى Admin</li>
+            <li>حذف حسابات المستخدمين</li>
+          </ul>
+        </div>
+
+        <div class="tutorial-section">
+          <h3><i class="fas fa-question-circle"></i> 7. أسئلة شائعة</h3>
+          <div class="faq-item">
+            <h4>س: هل يمكنني تعديل محاضرة بعد نشرها؟</h4>
+            <p>نعم! اضغط "تعديل" في قائمة المحاضرات، عدّل البيانات، واحفظ مجدداً. التعديلات فورية.</p>
+          </div>
+          <div class="faq-item">
+            <h4>س: كيف أحذف محاضرة؟</h4>
+            <p>اضغط "حذف" في قائمة المحاضرات. سيتم حذفها من Firebase ومن مكتبات جميع المستخدمين تلقائياً.</p>
+          </div>
+          <div class="faq-item">
+            <h4>س: ماذا يحدث لو أدخلت رابط خاطئ؟</h4>
+            <p>ستظهر رسالة "المحاضرة قيد التطوير" للطالب. تحقق من المسار وعدّله من قسم التعديل.</p>
+          </div>
+          <div class="faq-item">
+            <h4>س: كيف أعرف إذا كان الكود مستخدم؟</h4>
+            <p>في تبويب "الأكواد"، تجد عدد الاستخدامات لكل كود. يمكنك تتبع من استخدم الكود من بيانات المستخدمين.</p>
+          </div>
+        </div>
+
+        <div class="success-box">
+          <i class="fas fa-check-circle"></i>
+          <div>
+            <strong>نصيحة أخيرة:</strong>
+            <p>جرّب إضافة مادة ومحاضرة تجريبية أولاً للتأكد من فهم النظام. يمكنك حذفها لاحقاً دون مشاكل!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUBJECTS PANEL -->
+    <!-- ============================================ -->
+    <div id="subjects" class="admin-panel">
+      <div class="admin-card">
+        <h2><i class="fas fa-plus-circle"></i> إضافة / تعديل مادة</h2>
         <form id="addSubjectForm">
           <div class="form-grid">
-            
-            <!-- Arabic Name -->
             <div class="form-group">
-              <label class="form-label">
-                <i class="fas fa-font"></i>
-                اسم المادة بالعربي
-              </label>
-              <input type="text" class="form-input" id="subjectNameAr" placeholder="مثال: إحصاء" required>
+              <label class="form-label"><i class="fas fa-hashtag"></i> معرف المادة</label>
+              <input type="text" class="form-input" id="subjectId" placeholder="statistics-2025" required>
+              <small class="form-hint">يجب أن يكون فريداً (حروف، أرقام، وشرطات فقط)</small>
             </div>
-
-            <!-- English Name -->
             <div class="form-group">
-              <label class="form-label">
-                <i class="fas fa-language"></i>
-                اسم المادة بالإنجليزي
-              </label>
-              <input type="text" class="form-input" id="subjectNameEn" placeholder="Example: Statistics" required>
+              <label class="form-label"><i class="fas fa-font"></i> الاسم (عربي)</label>
+              <input type="text" class="form-input" id="subjectNameAr" placeholder="الإحصاء" required>
             </div>
-
-            <!-- Subject ID -->
             <div class="form-group">
-              <label class="form-label">
-                <i class="fas fa-hashtag"></i>
-                معرف المادة (ID)
-              </label>
-              <input type="text" class="form-input" id="subjectId" placeholder="مثال: statistics" required>
+              <label class="form-label"><i class="fas fa-language"></i> الاسم (إنجليزي)</label>
+              <input type="text" class="form-input" id="subjectNameEn" placeholder="Statistics" required>
             </div>
-
-            <!-- Order -->
             <div class="form-group">
-              <label class="form-label">
-                <i class="fas fa-sort-numeric-down"></i>
-                ترتيب العرض
-              </label>
+              <label class="form-label"><i class="fas fa-sort-numeric-down"></i> الترتيب</label>
               <input type="number" class="form-input" id="subjectOrder" value="1" min="1">
             </div>
-
-            <!-- Description -->
+            
             <div class="form-group full-width">
-              <label class="form-label">
-                <i class="fas fa-align-right"></i>
-                وصف المادة (اختياري)
-              </label>
-              <textarea class="form-textarea" id="subjectDescription" placeholder="وصف مختصر عن المادة"></textarea>
+              <label class="form-label"><i class="fas fa-user-tie"></i> المحاضر</label>
+              <input type="text" class="form-input" id="lecturerName" placeholder="د. أحمد علي">
             </div>
-
-            <!-- Icon Selection -->
+            
             <div class="form-group full-width">
-              <label class="form-label">
-                <i class="fas fa-icons"></i>
-                اختر الأيقونة
-              </label>
-              <div class="icon-picker-grid" id="iconPicker">
-                <!-- Icons populated by JS -->
+              <label class="form-label"><i class="fas fa-align-right"></i> الوصف</label>
+              <textarea class="form-textarea" id="subjectDescription" placeholder="وصف المادة..." rows="3"></textarea>
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-icons"></i> الأيقونة (اختر واحدة)</label>
+              <div class="search-icon-container">
+                <input type="text" class="form-input" id="iconSearchInput" placeholder="ابحث عن أيقونة... (مثل: كتاب، حاسب، علوم)">
               </div>
+              <div class="icon-picker-grid" id="iconPicker"></div>
               <input type="hidden" id="subjectIcon" value="fa-book" required>
             </div>
-
-            <!-- Color Selection -->
+            
             <div class="form-group full-width">
-              <label class="form-label">
-                <i class="fas fa-palette"></i>
-                اختر اللون
-              </label>
-              <div class="color-grid" id="colorGrid">
-                <!-- Colors populated by JS -->
-              </div>
-              <input type="hidden" id="subjectColor" value="16a34a" required>
+              <label class="form-label"><i class="fas fa-palette"></i> لون الخلفية</label>
+              <div class="color-grid" id="colorGrid"></div>
+              <input type="hidden" id="subjectColor" value="#16a34a" required>
             </div>
-
-            <!-- ✅ Icon Color Selection (NEW) -->
+            
             <div class="form-group full-width">
-              <label class="form-label">
-                <i class="fas fa-paint-brush"></i>
-                لون الآيكون
-              </label>
-              <div class="color-grid" id="iconColorGrid">
-                <!-- Icon Colors populated by JS -->
-              </div>
-              <input type="hidden" id="iconColor" value="ffffff">
+              <label class="form-label"><i class="fas fa-paint-brush"></i> لون الأيقونة</label>
+              <div class="color-grid" id="iconColorGrid"></div>
+              <input type="hidden" id="iconColor" value="#ffffff">
             </div>
-
-            <!-- Preview -->
+            
             <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-shield-alt"></i> نوع الحماية</label>
+              <select class="form-select" id="subjectProtection">
+                <option value="free">مجانية (متاحة للجميع)</option>
+                <option value="code">محمية بكود (تحتاج تفعيل)</option>
+              </select>
+              <small class="form-hint">إذا اخترت "محمية"، سيحتاج الطلاب لكود لرؤية محاضرات هذه المادة</small>
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-eye"></i> المعاينة</label>
               <div class="preview-section">
-                <div class="preview-title">
-                  <i class="fas fa-eye"></i> معاينة
-                </div>
                 <div class="subject-preview">
                   <div class="preview-icon-container" id="previewIconContainer">
                     <i class="fas fa-book" id="previewIcon"></i>
@@ -735,696 +353,249 @@
                 </div>
               </div>
             </div>
-
-            <!-- Submit Button -->
+            
             <div class="form-group full-width">
               <button type="submit" class="submit-btn" id="submitSubjectBtn">
-                <i class="fas fa-check-circle"></i>
-                إضافة المادة
+                <i class="fas fa-check-circle"></i> حفظ المادة
               </button>
             </div>
-
           </div>
         </form>
       </div>
 
-      <!-- Subjects List -->
-      <div class="form-card">
-        <h2>
-          <i class="fas fa-list"></i>
-          المواد المتاحة
-        </h2>
-        <div class="subjects-list" id="subjectsList">
-          <!-- Subjects populated by JS -->
-        </div>
+      <div class="admin-card">
+        <h2><i class="fas fa-list"></i> المواد المتاحة</h2>
+        <div class="subjects-grid" id="subjectsList"></div>
       </div>
-
     </div>
 
-    <!-- ... Lectures Tab (يكمل في Part 2) ... -->
-
-    <!-- ==========================================
-         LECTURES TAB
-         ========================================== -->
-    <div id="lecturesTab" class="tab-content">
-      
-      <!-- Add Lecture Form -->
-      <div class="form-card">
-        <h2>
-          <i class="fas fa-plus-circle"></i>
-          إضافة محاضرة جديدة
-        </h2>
-        
+    <!-- ============================================ -->
+    <!-- LECTURES PANEL -->
+    <!-- ============================================ -->
+    <div id="lectures" class="admin-panel">
+      <div class="admin-card">
+        <h2><i class="fas fa-plus-circle"></i> إضافة / تعديل محاضرة</h2>
         <form id="addLectureForm">
           <div class="form-grid">
-            
-            <!-- Lecture Title -->
-            <div class="form-group full-width">
-              <label class="form-label">
-                <i class="fas fa-heading"></i>
-                عنوان المحاضرة
-              </label>
-              <input type="text" class="form-input" id="lectureTitle" placeholder="مثال: المحاضرة الأولى" required>
-            </div>
-
-            <!-- Subject -->
             <div class="form-group">
-              <label class="form-label">
-                <i class="fas fa-book"></i>
-                المادة
-              </label>
+              <label class="form-label"><i class="fas fa-hashtag"></i> معرف المحاضرة</label>
+              <input type="text" class="form-input" id="lectureId" placeholder="lec-stat-01" required>
+              <small class="form-hint">فريد (حروف، أرقام، شرطات فقط)</small>
+            </div>
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-book"></i> المادة</label>
               <select class="form-select" id="lectureSubject" required>
-                <option value="">اختر المادة</option>
-                <!-- Options populated by JS -->
+                <option value="">اختر مادة...</option>
               </select>
             </div>
-
-            <!-- Lecture ID -->
             <div class="form-group">
-              <label class="form-label">
-                <i class="fas fa-hashtag"></i>
-                معرف المحاضرة (ID)
-              </label>
-              <input type="text" class="form-input" id="lectureId" placeholder="مثال: stats_lecture_1" required>
+              <label class="form-label"><i class="fas fa-heading"></i> العنوان</label>
+              <input type="text" class="form-input" id="lectureTitle" placeholder="عنوان المحاضرة" required>
             </div>
-
-            <!-- URL -->
-            <div class="form-group full-width">
-              <label class="form-label">
-                <i class="fas fa-link"></i>
-                رابط المحاضرة
-              </label>
-              <input type="url" class="form-input" id="lectureUrl" placeholder="https://example.com/lecture.html" required>
-            </div>
-
-            <!-- Description -->
-            <div class="form-group full-width">
-              <label class="form-label">
-                <i class="fas fa-align-right"></i>
-                وصف المحاضرة (اختياري)
-              </label>
-              <textarea class="form-textarea" id="lectureDescription" placeholder="وصف مختصر"></textarea>
-            </div>
-
-            <!-- Price Type -->
             <div class="form-group">
-              <label class="form-label">
-                <i class="fas fa-tag"></i>
-                نوع المحاضرة
-              </label>
-              <select class="form-select" id="lecturePrice" onchange="toggleActivationCode()">
-                <option value="free">مجانية</option>
-                <option value="paid">مدفوعة</option>
-              </select>
-            </div>
-
-            <!-- Activation Code -->
-            <div class="form-group" id="activationCodeGroup" style="display: none;">
-              <label class="form-label">
-                <i class="fas fa-key"></i>
-                كود التفعيل
-              </label>
-              <input type="text" class="form-input" id="activationCode" placeholder="كود التفعيل للمحاضرة المدفوعة">
-            </div>
-
-            <!-- Order -->
-            <div class="form-group">
-              <label class="form-label">
-                <i class="fas fa-sort-numeric-down"></i>
-                ترتيب العرض
-              </label>
+              <label class="form-label"><i class="fas fa-sort-numeric-down"></i> الترتيب</label>
               <input type="number" class="form-input" id="lectureOrder" value="1" min="1">
             </div>
-
-            <!-- Status -->
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-align-right"></i> الوصف</label>
+              <textarea class="form-textarea" id="lectureDescription" placeholder="وصف المحاضرة..." rows="2"></textarea>
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-icons"></i> الأيقونة</label>
+              <div class="search-icon-container">
+                <input type="text" class="form-input" id="lectureIconSearchInput" placeholder="ابحث عن أيقونة...">
+              </div>
+              <div class="icon-picker-grid-small" id="lectureIconPicker"></div>
+              <input type="hidden" id="lectureIcon" value="fa-video" required>
+            </div>
+            
             <div class="form-group">
-              <label class="form-label">
-                <i class="fas fa-toggle-on"></i>
-                الحالة
-              </label>
-              <select class="form-select" id="lectureStatus">
-                <option value="active">نشطة</option>
-                <option value="inactive">معطلة</option>
+              <label class="form-label"><i class="fas fa-palette"></i> اللون</label>
+              <div class="color-grid-small" id="lectureColorGrid"></div>
+              <input type="hidden" id="lectureColor" value="#3b82f6">
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-link"></i> نوع الرابط</label>
+              <div style="display: flex; gap: 16px; margin-top: 8px;">
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                  <input type="radio" name="linkType" value="github" checked>
+                  <span>GitHub Path (مسار نسبي)</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                  <input type="radio" name="linkType" value="cloudflare">
+                  <span>Cloudflare URL (رابط كامل)</span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="form-group full-width" id="githubPathField">
+              <label class="form-label"><i class="fas fa-folder"></i> مسار المحاضرة (GitHub Path)</label>
+              <input type="text" class="form-input" id="lectureUrlGithub" placeholder="lectures/economics/lec-01.html">
+              <small class="form-hint">مثال: lectures/statistics/lec-01.html</small>
+            </div>
+            
+            <div class="form-group full-width" id="cloudflareUrlField" style="display: none;">
+              <label class="form-label"><i class="fas fa-globe"></i> رابط Cloudflare Pages</label>
+              <input type="text" class="form-input" id="lectureUrlCloudflare" placeholder="https://athr-platform.pages.dev/lectures/lec-01.html">
+              <small class="form-hint">مثال: https://your-domain.pages.dev/lectures/lec-01.html</small>
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-shield-alt"></i> نوع الحماية</label>
+              <select class="form-select" id="lectureProtection" required>
+                <option value="free">مجانية</option>
+                <option value="code">محمية بكود</option>
               </select>
             </div>
 
-            <!-- Submit Button -->
+            <!-- Protection Options -->
+            <div id="protectionOptions" class="form-group full-width" style="display: none;">
+              <div class="protection-card">
+                <h4><i class="fas fa-key"></i> إعدادات الحماية</h4>
+                
+                <div style="display: flex; gap: 16px; margin: 16px 0; flex-wrap: wrap;">
+                  <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="radio" name="codeMode" value="create" checked>
+                    <span>إنشاء كود جديد</span>
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="radio" name="codeMode" value="attach">
+                    <span>ربط كود موجود</span>
+                  </label>
+                </div>
+
+                <!-- Create New Code -->
+                <div id="createCodeFields">
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label class="form-label"><i class="fas fa-users"></i> عدد الاستخدامات</label>
+                      <input type="number" class="form-input" id="newCodeMaxUses" min="0" value="1" placeholder="0 = غير محدود">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label"><i class="fas fa-calendar-alt"></i> تاريخ الانتهاء</label>
+                      <input type="date" class="form-input" id="newCodeExpiresAt">
+                      <small class="form-hint">اختياري - اتركه فارغاً إذا لم تريد انتهاء صلاحية</small>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Attach Existing Code -->
+                <div id="attachCodeFields" style="display: none;">
+                  <label class="form-label"><i class="fas fa-key"></i> الكود الموجود</label>
+                  <input type="text" class="form-input" id="existingCodeString" placeholder="ATHR-ABC12345" style="text-transform: uppercase; letter-spacing: 1px;">
+                  <small class="form-hint">أدخل كود موجود مسبقاً في النظام</small>
+                </div>
+
+                <div class="form-group" style="margin-top: 16px;">
+                  <label class="form-label"><i class="fas fa-sticky-note"></i> ملاحظات (اختياري)</label>
+                  <textarea class="form-textarea" id="codeNotes" placeholder="ملاحظات داخلية للمرجع..." rows="2"></textarea>
+                </div>
+              </div>
+            </div>
+            
             <div class="form-group full-width">
               <button type="submit" class="submit-btn" id="submitLectureBtn">
-                <i class="fas fa-check-circle"></i>
-                إضافة المحاضرة
+                <i class="fas fa-check-circle"></i> حفظ المحاضرة
               </button>
             </div>
-
           </div>
         </form>
       </div>
 
-      <!-- Lectures List -->
-      <div class="form-card">
-        <h2>
-          <i class="fas fa-list"></i>
-          المحاضرات المتاحة
-        </h2>
-        <div class="lectures-table">
+      <div class="admin-card">
+        <h2><i class="fas fa-list"></i> المحاضرات</h2>
+        <div class="table-controls">
+          <input type="text" class="search-box" id="lecturesSearchInput" placeholder="ابحث في المحاضرات...">
+          <select class="form-select" id="filterBySubject" style="max-width: 200px;">
+            <option value="">جميع المواد</option>
+          </select>
+        </div>
+        <div class="data-table">
           <table>
             <thead>
               <tr>
                 <th>العنوان</th>
                 <th>المادة</th>
+                <th>الترتيب</th>
                 <th>النوع</th>
-                <th>الحالة</th>
-                <th>إجراءات</th>
+                <th>الرابط</th>
+                <th>إجراء</th>
               </tr>
             </thead>
-            <tbody id="lecturesTableBody">
-              <!-- Lectures populated by JS -->
-            </tbody>
+            <tbody id="lecturesTableBody"></tbody>
           </table>
         </div>
       </div>
-
     </div>
 
-  </div>
-
-  <!-- Firebase & Script -->
-  <script type="module">
-    import { auth, db } from './js/app.js';
-    import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-    import { 
-      collection, 
-      addDoc, 
-      getDocs, 
-      doc, 
-      updateDoc, 
-      deleteDoc,
-      getDoc,
-      serverTimestamp 
-    } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-
-    // ==========================================
-    // ICONS & COLORS
-    // ==========================================
-    const iconOptions = [
-      'fa-book', 'fa-chart-line', 'fa-calculator', 'fa-microscope',
-      'fa-flask', 'fa-dna', 'fa-atom', 'fa-brain',
-      'fa-code', 'fa-laptop-code', 'fa-database', 'fa-network-wired',
-      'fa-globe', 'fa-language', 'fa-graduation-cap', 'fa-user-graduate',
-      'fa-briefcase', 'fa-balance-scale', 'fa-gavel', 'fa-landmark',
-      'fa-paint-brush', 'fa-music', 'fa-theater-masks', 'fa-palette',
-      'fa-heartbeat', 'fa-stethoscope', 'fa-syringe', 'fa-pills',
-      'fa-leaf', 'fa-tree', 'fa-seedling', 'fa-water',
-      'fa-sun', 'fa-moon', 'fa-star', 'fa-rocket'
-    ];
-
-    const colorPresets = [
-      '16a34a', '10b981', '059669', '047857',
-      '3b82f6', '2563eb', '1d4ed8', '1e40af',
-      'f59e0b', 'd97706', 'b45309', '92400e',
-      'ef4444', 'dc2626', 'b91c1c', '991b1b',
-      '8b5cf6', '7c3aed', '6d28d9', '5b21b6',
-      'ec4899', 'd946ef', 'c026d3', 'a21caf',
-      '06b6d4', '0891b2', '0e7490', '155e75',
-      '84cc16', '65a30d', '4d7c0f', '3f6212'
-    ];
-
-    // ✅ Icon Color Presets (NEW)
-    const iconColorPresets = [
-      'ffffff', // أبيض
-      'f0fdf4', // أخضر فاتح جداً
-      'dcfce7', // أخضر فاتح
-      '000000', // أسود
-      '1e293b', // رمادي غامق
-      '475569', // رمادي متوسط
-      'fef3c7', // أصفر فاتح
-      'fde68a', // أصفر
-      'fca5a5', // أحمر فاتح
-      'f87171', // أحمر
-      'bfdbfe', // أزرق فاتح
-      '60a5fa', // أزرق
-      'c7d2fe', // بنفسجي فاتح
-      'a78bfa'  // بنفسجي
-    ];
-
-    // ==========================================
-    // POPULATE UI
-    // ==========================================
-    function populateIconPicker() {
-      const grid = document.getElementById('iconPicker');
-      grid.innerHTML = iconOptions.map((icon, index) => `
-        <div class="icon-option ${index === 0 ? 'selected' : ''}" 
-             data-icon="${icon}" 
-             onclick="selectIcon('${icon}')">
-          <i class="fas ${icon}"></i>
+    <!-- ============================================ -->
+    <!-- CODES PANEL -->
+    <!-- ============================================ -->
+    <div id="codes" class="admin-panel">
+      <div class="admin-card">
+        <h2><i class="fas fa-list"></i> الأكواد النشطة</h2>
+        <div class="table-controls">
+          <input type="text" class="search-box" id="codesSearchInput" placeholder="ابحث في الأكواد...">
+          <button class="btn-secondary" onclick="window.refreshCodes()">
+            <i class="fas fa-sync-alt"></i> تحديث
+          </button>
         </div>
-      `).join('');
-    }
-
-    function populateColorGrid() {
-      const grid = document.getElementById('colorGrid');
-      grid.innerHTML = colorPresets.map((color, index) => `
-        <div class="color-option ${index === 0 ? 'selected' : ''}" 
-             style="background: #${color}" 
-             onclick="selectColor('${color}')">
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr>
+                <th>الكود</th>
+                <th>النوع</th>
+                <th>المادة/المحاضرة</th>
+                <th>الاستخدام</th>
+                <th>الانتهاء</th>
+                <th>الحالة</th>
+                <th>إجراء</th>
+              </tr>
+            </thead>
+            <tbody id="codesTableBody"></tbody>
+          </table>
         </div>
-      `).join('');
-    }
+      </div>
+    </div>
 
-    // ✅ Populate Icon Color Grid (NEW)
-    function populateIconColorGrid() {
-      const grid = document.getElementById('iconColorGrid');
-      grid.innerHTML = iconColorPresets.map((color, index) => `
-        <div class="color-option ${index === 0 ? 'selected' : ''}" 
-             style="background: #${color}" 
-             onclick="selectIconColor('${color}')">
+    <!-- ============================================ -->
+    <!-- USERS PANEL -->
+    <!-- ============================================ -->
+    <div id="users" class="admin-panel">
+      <div class="admin-card">
+        <h2><i class="fas fa-users"></i> إدارة المستخدمين</h2>
+        <div class="table-controls">
+          <input type="text" class="search-box" id="usersSearchInput" placeholder="ابحث عن مستخدم...">
+          <div class="stats-box">
+            <span>إجمالي المستخدمين: <strong id="totalUsersCount">0</strong></span>
+          </div>
         </div>
-      `).join('');
-    }
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr>
+                <th>الاسم</th>
+                <th>البريد</th>
+                <th>الجامعة</th>
+                <th>المحاضرات</th>
+                <th>الدور</th>
+                <th>إجراء</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
-    // ==========================================
-    // SELECTION HANDLERS
-    // ==========================================
-    window.selectIcon = function(icon) {
-      document.getElementById('subjectIcon').value = icon;
-      document.getElementById('previewIcon').className = `fas ${icon}`;
-      
-      document.querySelectorAll('#iconPicker .icon-option').forEach(opt => {
-        opt.classList.remove('selected');
-      });
-      event.target.closest('.icon-option').classList.add('selected');
-    };
+  </main>
 
-    window.selectColor = function(color) {
-      document.getElementById('subjectColor').value = color;
-      const container = document.getElementById('previewIconContainer');
-      container.style.background = `linear-gradient(135deg, #${color}, #${adjustColor(color, 20)})`;
-      
-      document.querySelectorAll('#colorGrid .color-option').forEach(opt => {
-        opt.classList.remove('selected');
-      });
-      event.target.classList.add('selected');
-    };
+  <div class="toast-container" id="toastContainer"></div>
 
-    // ✅ Select Icon Color (NEW)
-    window.selectIconColor = function(color) {
-      document.getElementById('iconColor').value = color;
-      
-      // Update preview icon color
-      document.getElementById('previewIcon').style.color = `#${color}`;
-      
-      // Update selected state
-      document.querySelectorAll('#iconColorGrid .color-option').forEach(opt => {
-        opt.classList.remove('selected');
-      });
-      event.target.classList.add('selected');
-    };
-
-    function adjustColor(color, percent) {
-      const num = parseInt(color, 16);
-      const amt = Math.round(2.55 * percent);
-      const R = Math.min(255, Math.max(0, (num >> 16) + amt));
-      const G = Math.min(255, Math.max(0, (num >> 8 & 0x00FF) + amt));
-      const B = Math.min(255, Math.max(0, (num & 0x0000FF) + amt));
-      return (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
-    }
-
-    // ==========================================
-    // PREVIEW LISTENERS
-    // ==========================================
-    function setupPreviewListeners() {
-      document.getElementById('subjectNameAr').addEventListener('input', (e) => {
-        document.getElementById('previewNameAr').textContent = e.target.value || 'اسم المادة';
-      });
-
-      document.getElementById('subjectNameEn').addEventListener('input', (e) => {
-        document.getElementById('previewNameEn').textContent = e.target.value || 'Subject Name';
-      });
-    }
-
-    // ==========================================
-    // TAB SWITCHING
-    // ==========================================
-    window.switchTab = function(tab) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-      
-      event.target.classList.add('active');
-      document.getElementById(tab + 'Tab').classList.add('active');
-    };
-
-    // ==========================================
-    // TOAST
-    // ==========================================
-    function showToast(message, type = 'success') {
-      const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
-      toast.innerHTML = `
-        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
-        <span>${message}</span>
-      `;
-      document.body.appendChild(toast);
-      
-      setTimeout(() => {
-        toast.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    }
-
-    // ==========================================
-    // ADD SUBJECT
-    // ==========================================
-    document.getElementById('addSubjectForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const btn = document.getElementById('submitSubjectBtn');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإضافة...';
-      
-      try {
-        const nameAr = document.getElementById('subjectNameAr').value;
-        const nameEn = document.getElementById('subjectNameEn').value;
-        const id = document.getElementById('subjectId').value;
-        const icon = document.getElementById('subjectIcon').value;
-        const color = '#' + document.getElementById('subjectColor').value;
-        const iconColor = document.getElementById('iconColor').value; // ✅ NEW
-        const order = parseInt(document.getElementById('subjectOrder').value);
-        const description = document.getElementById('subjectDescription').value;
-        
-        await addDoc(collection(db, 'subjects'), {
-          id: id,
-          nameAr: nameAr,
-          nameEn: nameEn,
-          icon: icon,
-          color: color,
-          order: order,
-          description: description,
-          isVisible: true,
-          createdAt: serverTimestamp(),
-          customizations: {
-            iconColor: iconColor, // ✅ Save Icon Color
-            border: '2px',
-            shadow: 'medium'
-          }
-        });
-        
-        showToast('تم إضافة المادة بنجاح!', 'success');
-        document.getElementById('addSubjectForm').reset();
-        document.getElementById('subjectIcon').value = 'fa-book';
-        document.getElementById('subjectColor').value = '16a34a';
-        document.getElementById('iconColor').value = 'ffffff'; // ✅ Reset
-        
-        populateIconPicker();
-        populateColorGrid();
-        populateIconColorGrid(); // ✅ Reset Icon Color Grid
-        
-        document.getElementById('previewNameAr').textContent = 'اسم المادة';
-        document.getElementById('previewNameEn').textContent = 'Subject Name';
-        document.getElementById('previewIcon').className = 'fas fa-book';
-        document.getElementById('previewIcon').style.color = '#ffffff'; // ✅ Reset Preview
-        document.getElementById('previewIconContainer').style.background = 'linear-gradient(135deg, #16a34a, #10b981)';
-        
-        await loadSubjects();
-        
-      } catch (error) {
-        console.error('Error:', error);
-        showToast('حدث خطأ أثناء الإضافة', 'error');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-check-circle"></i> إضافة المادة';
-      }
-    });
-
-    // ==========================================
-    // LOAD SUBJECTS
-    // ==========================================
-    async function loadSubjects() {
-      try {
-        const snapshot = await getDocs(collection(db, 'subjects'));
-        const list = document.getElementById('subjectsList');
-        const select = document.getElementById('lectureSubject');
-        
-        list.innerHTML = '';
-        select.innerHTML = '<option value="">اختر المادة</option>';
-        
-        snapshot.forEach((docSnap) => {
-          const subject = docSnap.data();
-          const docId = docSnap.id;
-          
-          // ✅ Get Icon Color
-          const iconColor = subject.customizations?.iconColor || 'ffffff';
-          
-          list.innerHTML += `
-            <div class="subject-item">
-              <div class="subject-item-header">
-                <div class="subject-item-icon" style="background: linear-gradient(135deg, ${subject.color}, ${adjustColor(subject.color.replace('#',''), 20)})">
-                  <i class="fas ${subject.icon}" style="color: #${iconColor};"></i>
-                </div>
-                <div class="subject-item-info">
-                  <h3>${subject.nameAr}</h3>
-                  <p>${subject.nameEn}</p>
-                </div>
-              </div>
-              <div class="subject-item-actions">
-                <button class="action-btn edit-btn" onclick="editSubject('${docId}')">
-                  <i class="fas fa-edit"></i> تعديل
-                </button>
-                <button class="action-btn delete-btn" onclick="deleteSubject('${docId}')">
-                  <i class="fas fa-trash"></i> حذف
-                </button>
-              </div>
-            </div>
-          `;
-          
-          select.innerHTML += `<option value="${subject.id}">${subject.nameAr}</option>`;
-        });
-        
-      } catch (error) {
-        console.error('Error loading subjects:', error);
-      }
-    }
-
-    // ==========================================
-    // DELETE SUBJECT
-    // ==========================================
-    window.deleteSubject = async function(docId) {
-      if (!confirm('هل أنت متأكد من حذف هذه المادة؟')) return;
-      
-      try {
-        await deleteDoc(doc(db, 'subjects', docId));
-        showToast('تم حذف المادة بنجاح', 'success');
-        await loadSubjects();
-      } catch (error) {
-        console.error('Error:', error);
-        showToast('حدث خطأ أثناء الحذف', 'error');
-      }
-    };
-
-    // ... باقي الكود في Part 3 ...
-    // ==========================================
-    // TOGGLE ACTIVATION CODE
-    // ==========================================
-    window.toggleActivationCode = function() {
-      const priceType = document.getElementById('lecturePrice').value;
-      const codeGroup = document.getElementById('activationCodeGroup');
-      
-      if (priceType === 'paid') {
-        codeGroup.style.display = 'block';
-        document.getElementById('activationCode').required = true;
-      } else {
-        codeGroup.style.display = 'none';
-        document.getElementById('activationCode').required = false;
-      }
-    };
-
-    // ==========================================
-    // ADD LECTURE
-    // ==========================================
-    document.getElementById('addLectureForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const btn = document.getElementById('submitLectureBtn');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإضافة...';
-      
-      try {
-        const title = document.getElementById('lectureTitle').value;
-        const subject = document.getElementById('lectureSubject').value;
-        const lectureId = document.getElementById('lectureId').value;
-        const url = document.getElementById('lectureUrl').value;
-        const description = document.getElementById('lectureDescription').value;
-        const price = document.getElementById('lecturePrice').value;
-        const activationCode = document.getElementById('activationCode').value;
-        const order = parseInt(document.getElementById('lectureOrder').value);
-        const status = document.getElementById('lectureStatus').value;
-        
-        if (!subject) {
-          showToast('يرجى اختيار المادة', 'error');
-          btn.disabled = false;
-          btn.innerHTML = '<i class="fas fa-check-circle"></i> إضافة المحاضرة';
-          return;
-        }
-        
-        await addDoc(collection(db, 'lectures'), {
-          lectureId: lectureId,
-          title: title,
-          subject: subject,
-          url: url,
-          description: description,
-          price: price,
-          activationCode: price === 'paid' ? activationCode : null,
-          order: order,
-          status: status,
-          createdAt: serverTimestamp()
-        });
-        
-        showToast('تم إضافة المحاضرة بنجاح!', 'success');
-        document.getElementById('addLectureForm').reset();
-        await loadLectures();
-        
-      } catch (error) {
-        console.error('Error:', error);
-        showToast('حدث خطأ أثناء الإضافة', 'error');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-check-circle"></i> إضافة المحاضرة';
-      }
-    });
-
-    // ==========================================
-    // LOAD LECTURES
-    // ==========================================
-    async function loadLectures() {
-      try {
-        const snapshot = await getDocs(collection(db, 'lectures'));
-        const tbody = document.getElementById('lecturesTableBody');
-        
-        tbody.innerHTML = '';
-        
-        if (snapshot.empty) {
-          tbody.innerHTML = `
-            <tr>
-              <td colspan="5" style="text-align: center; color: #64748b; padding: 40px;">
-                <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 15px; display: block; opacity: 0.3;"></i>
-                لا توجد محاضرات بعد
-              </td>
-            </tr>
-          `;
-          return;
-        }
-        
-        snapshot.forEach((docSnap) => {
-          const lecture = docSnap.data();
-          const docId = docSnap.id;
-          
-          tbody.innerHTML += `
-            <tr>
-              <td>${lecture.title}</td>
-              <td>${lecture.subject}</td>
-              <td>
-                <span style="color: ${lecture.price === 'free' ? '#10b981' : '#f59e0b'}; font-weight: 700;">
-                  <i class="fas ${lecture.price === 'free' ? 'fa-gift' : 'fa-crown'}"></i>
-                  ${lecture.price === 'free' ? 'مجانية' : 'مدفوعة'}
-                </span>
-              </td>
-              <td>
-                <span class="status-badge ${lecture.status === 'active' ? 'status-active' : 'status-inactive'}">
-                  ${lecture.status === 'active' ? 'نشطة' : 'معطلة'}
-                </span>
-              </td>
-              <td>
-                <div style="display: flex; gap: 8px;">
-                  <button class="action-btn edit-btn" onclick="editLecture('${docId}')" style="flex: none; padding: 8px 12px;">
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button class="action-btn delete-btn" onclick="deleteLecture('${docId}')" style="flex: none; padding: 8px 12px;">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          `;
-        });
-        
-      } catch (error) {
-        console.error('Error loading lectures:', error);
-      }
-    }
-
-    // ==========================================
-    // DELETE LECTURE
-    // ==========================================
-    window.deleteLecture = async function(docId) {
-      if (!confirm('هل أنت متأكد من حذف هذه المحاضرة؟')) return;
-      
-      try {
-        await deleteDoc(doc(db, 'lectures', docId));
-        showToast('تم حذف المحاضرة بنجاح', 'success');
-        await loadLectures();
-      } catch (error) {
-        console.error('Error:', error);
-        showToast('حدث خطأ أثناء الحذف', 'error');
-      }
-    };
-
-    // ==========================================
-    // EDIT SUBJECT (Placeholder)
-    // ==========================================
-    window.editSubject = async function(docId) {
-      showToast('ميزة التعديل قيد التطوير', 'error');
-    };
-
-    // ==========================================
-    // EDIT LECTURE (Placeholder)
-    // ==========================================
-    window.editLecture = async function(docId) {
-      showToast('ميزة التعديل قيد التطوير', 'error');
-    };
-
-    // ==========================================
-    // AUTH CHECK
-    // ==========================================
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = 'login.html';
-        return;
-      }
-      
-      try {
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
-        
-        if (!userDoc.exists() || userDoc.data().role !== 'admin') {
-          showToast('ليس لديك صلاحية الوصول', 'error');
-          setTimeout(() => {
-            window.location.href = 'library.html';
-          }, 2000);
-          return;
-        }
-        
-        console.log('✅ Admin authenticated');
-        await initializeApp();
-        
-      } catch (error) {
-        console.error('Auth error:', error);
-        window.location.href = 'login.html';
-      }
-    });
-
-    // ==========================================
-    // INITIALIZE APP
-    // ==========================================
-    async function initializeApp() {
-      populateIconPicker();
-      populateColorGrid();
-      populateIconColorGrid(); // ✅ Initialize Icon Color Grid
-      setupPreviewListeners();
-      await loadSubjects();
-      await loadLectures();
-      
-      console.log('✅ Admin panel initialized');
-    }
-
-  </script>
-
+  <script type="module" src="js/admin.js"></script>
 </body>
 </html>

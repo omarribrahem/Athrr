@@ -124,60 +124,6 @@
       margin-bottom: 50px;
     }
     
-    /* Features Grid */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 25px;
-      margin: 50px 0;
-    }
-    
-    .feature-capsule {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(15px);
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-radius: 20px;
-      padding: 30px 25px;
-      transition: all 0.3s ease;
-    }
-    
-    .feature-capsule:hover {
-      transform: translateY(-8px);
-      background: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-    }
-    
-    .feature-icon {
-      width: 70px;
-      height: 70px;
-      margin: 0 auto 20px;
-      background: rgba(22, 163, 74, 0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid rgba(22, 163, 74, 0.3);
-    }
-    
-    .feature-icon i {
-      font-size: 2rem;
-      color: var(--color-primary);
-    }
-    
-    .feature-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 10px;
-    }
-    
-    .feature-desc {
-      font-size: 0.9rem;
-      color: #64748b;
-      line-height: 1.6;
-    }
-    
     /* CTA Buttons */
     .cta-buttons {
       display: flex;
@@ -227,35 +173,6 @@
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     }
     
-    /* Trust Badges */
-    .trust-section {
-      margin-top: 60px;
-      padding-top: 40px;
-      border-top: 2px solid rgba(203, 213, 225, 0.3);
-    }
-    
-    .trust-badges {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 40px;
-      flex-wrap: wrap;
-      color: #64748b;
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
-    
-    .badge-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .badge-item i {
-      font-size: 1.3rem;
-      color: var(--color-primary);
-    }
-    
     /* Footer */
     .home-footer {
       margin-top: 60px;
@@ -292,10 +209,6 @@
     @media (max-width: 768px) {
       .hero-card {
         padding: 40px 30px;
-      }
-      
-      .features-grid {
-        grid-template-columns: 1fr;
       }
       
       .cta-buttons {
@@ -336,41 +249,7 @@
         منصة تعليمية رقمية متكاملة للتعلم الذكي والتطوير المستمر
       </p>
       
-      <p class="hero-description" data-aos="fade-up" data-aos-delay="500">
-        تعلّم بطريقة تفاعلية مع محتوى علمي متخصص، رسومات بيانية توضيحية،<br>
-        أسئلة تفاعلية، ومساعد ذكاء اصطناعي لدعمك في رحلتك التعليمية
-      </p>
       
-      <!-- Features Grid -->
-      <div class="features-grid">
-        
-        <div class="feature-capsule" data-aos="fade-up" data-aos-delay="100">
-          <div class="feature-icon">
-            <i class="fas fa-book-open"></i>
-          </div>
-          <div class="feature-title">محاضرات تفاعلية</div>
-          <div class="feature-desc">محتوى علمي غني ومنظم</div>
-        </div>
-        
-        <div class="feature-capsule" data-aos="fade-up" data-aos-delay="200">
-          <div class="feature-icon">
-            <i class="fas fa-chart-line"></i>
-          </div>
-          <div class="feature-title">رسومات بيانية</div>
-          <div class="feature-desc">تصورات مرئية واضحة</div>
-        </div>
-        
-        <div class="feature-capsule" data-aos="fade-up" data-aos-delay="300">
-          <div class="feature-icon">
-            <i class="fas fa-question-circle"></i>
-          </div>
-          <div class="feature-title">أسئلة تفاعلية</div>
-          <div class="feature-desc">اختبر معلوماتك فوراً</div>
-        </div>
-        
-      </div>
-      
-      <!-- CTA Buttons -->
       <div class="cta-buttons" data-aos="fade-up" data-aos-delay="600">
         <a href="login.html" class="cta-btn primary">
           <i class="fas fa-sign-in-alt"></i> 
@@ -382,35 +261,12 @@
         </a>
       </div>
       
-      <!-- Trust Badges -->
-      <div class="trust-section" data-aos="fade-up" data-aos-delay="700">
-        <div class="trust-badges">
-          <div class="badge-item">
-            <i class="fas fa-shield-alt"></i>
-            <span>آمن ومحمي</span>
-          </div>
-          <div class="badge-item">
-            <i class="fas fa-infinity"></i>
-            <span>وصول غير محدود</span>
-          </div>
-          <div class="badge-item">
-            <i class="fas fa-headset"></i>
-            <span>دعم فني 24/7</span>
-          </div>
-        </div>
-      </div>
-      
     </div>
   </main>
 
-  <!-- Footer -->
   <footer class="home-footer">
     <p>© 2025 منصة أثر التعليمية. جميع الحقوق محفوظة.</p>
-    <div class="footer-links">
-      <a href="#">سياسة الخصوصية</a>
-      <a href="#">الشروط والأحكام</a>
-      <a href="#">اتصل بنا</a>
-    </div>
+    
   </footer>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
