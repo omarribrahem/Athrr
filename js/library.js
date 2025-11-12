@@ -1,9 +1,10 @@
 // ==========================================
-// ✅ ATHR LIBRARY - V17.0 ULTIMATE
-// Study Timer + Modern Library + Auto-Cleanup + All Features
+// ✅ ATHR LIBRARY - V18.0 ULTIMATE
+// Username + Phone Support (No University)
+// All Critical Fixes Applied + New User Schema
 // ==========================================
 
-import { auth, db, generateAvatarUrl } from './app.js';
+import { auth, db, generateAvatarUrl, AVATAR_CONFIGS } from './app.js';
 import { onAuthStateChanged, signOut, updatePassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 import { 
   doc, getDoc, collection, getDocs, updateDoc, serverTimestamp,
@@ -14,18 +15,19 @@ import {
 // STATE
 // ==========================================
 let currentUser = null, userData = null, lecturesDB = {}, userLectures = [], subjects = {};
-let currentTab = 'allSubjects', selectedAvatarConfig = null;
+let currentTab = 'allSubjects', selectedAvatarConfig = null, tempAvatarConfig = null;
 let continueItems = [];
 let allLectures = [];
 let searchTimeout = null;
 let studyTimerInterval = null;
-let currentLibraryView = 'grid'; // 'grid' or 'list'
+let currentLibraryView = 'grid';
+let loadingToast = null;
 
-// ⏱️ NEW: Study Time State
+// ⏱️ Study Time State
 let studyTimeData = {
   totalMinutes: 0,
-  sessions: [], // { lectureId, duration, date, lectureTitle, subjectName }
-  lectureStats: {} // { lectureId: totalMinutes }
+  sessions: [],
+  lectureStats: {}
 };
 
 // ==========================================
@@ -38,18 +40,19 @@ document.addEventListener('DOMContentLoaded', () => {
     await initializeLibrary();
     initializeEventListeners();
     await loadContinueWatching();
-    await loadStudyTimeData(); // ⏱️ NEW
+    await loadStudyTimeData();
     updateSmartGreeting();
     updateOverallProgress();
-    updateStudyTimeDisplay(); // ⏱️ NEW
+    updateStudyTimeDisplay();
   });
 });
 
 // ==========================================
-// LIBRARY DATA INITIALIZATION
+// ✅ ENHANCED: LIBRARY DATA INITIALIZATION
 // ==========================================
 async function initializeLibrary() {
   try {
+    loadingToast = showToast('جاري تحميل المكتبة...', 'info', 0);
     showLoadingSkeleton();
     
     const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
@@ -79,7 +82,7 @@ async function initializeLibrary() {
       });
     });
 
-    // ✅ AUTO-CLEANUP: Remove deleted lectures from user library
+    // ✅ AUTO-CLEANUP
     const validUserLectures = userLectures.filter(lectureId => 
       existingLectureIds.includes(lectureId)
     );
@@ -94,7 +97,7 @@ async function initializeLibrary() {
       });
       
       userLectures = validUserLectures;
-      window.showToast(`🧹 تم تنظيف ${deletedCount} محاضرة محذوفة`, 'info');
+      showToast(`🧹 تم تنظيف ${deletedCount} محاضرة محذوفة`, 'info');
     }
 
     Object.keys(lecturesDB).forEach(sid => {
@@ -104,21 +107,25 @@ async function initializeLibrary() {
     updateHeaderInfo();
     updateLibraryCount();
     hideLoadingSkeleton();
+    
+    if (loadingToast) loadingToast.remove();
+    
     renderSubjectsGrid();
     renderMyLibrary();
     updateOverallProgress();
   } catch (e) {
     hideLoadingSkeleton();
+    if (loadingToast) loadingToast.remove();
+    
     console.error('❌ خطأ التهيئة:', e);
-    window.showToast('خطأ في التحميل', 'error');
+    showToast('❌ خطأ في التحميل، حاول تحديث الصفحة', 'error');
   }
 }
 
 // ==========================================
-// ⏱️ STUDY TIME TRACKER SYSTEM (NEW)
+// ⏱️ STUDY TIME TRACKER SYSTEM
 // ==========================================
 
-// Load Study Time Data from Firestore
 async function loadStudyTimeData() {
   try {
     const studyDoc = await getDoc(doc(db, 'studyTime', currentUser.uid));
@@ -131,7 +138,6 @@ async function loadStudyTimeData() {
         lectureStats: data.lectureStats || {}
       };
     } else {
-      // Initialize if doesn't exist
       await setDoc(doc(db, 'studyTime', currentUser.uid), {
         userId: currentUser.uid,
         totalMinutes: 0,
@@ -148,7 +154,6 @@ async function loadStudyTimeData() {
   }
 }
 
-// Update Study Time Display
 function updateStudyTimeDisplay() {
   const totalEl = document.getElementById('totalStudyTime');
   const circleEl = document.getElementById('studyTimerCircle');
@@ -159,9 +164,8 @@ function updateStudyTimeDisplay() {
     totalEl.textContent = `${hours}س ${mins}د`;
   }
   
-  // Animate circle (optional visual effect)
   if (circleEl) {
-    const maxMinutes = 300; // 5 hours for full circle
+    const maxMinutes = 300;
     const progress = Math.min(studyTimeData.totalMinutes / maxMinutes, 1);
     const circumference = 339.29;
     const offset = circumference - (circumference * progress);
@@ -169,7 +173,6 @@ function updateStudyTimeDisplay() {
   }
 }
 
-// Start Study Session (called when user opens a lecture)
 async function startStudySession(lectureId) {
   const lecture = allLectures.find(l => l.id === lectureId);
   if (!lecture) return;
@@ -177,7 +180,6 @@ async function startStudySession(lectureId) {
   const sessionStart = Date.now();
   const sessionKey = `study_session_${lectureId}`;
   
-  // Store session start in localStorage
   localStorage.setItem(sessionKey, JSON.stringify({
     lectureId,
     lectureTitle: lecture.title,
@@ -188,7 +190,6 @@ async function startStudySession(lectureId) {
   console.log(`⏱️ Study session started for: ${lecture.title}`);
 }
 
-// End Study Session (called when user leaves lecture)
 async function endStudySession(lectureId) {
   const sessionKey = `study_session_${lectureId}`;
   const sessionData = localStorage.getItem(sessionKey);
@@ -201,11 +202,10 @@ async function endStudySession(lectureId) {
   
   if (durationMinutes < 1) {
     localStorage.removeItem(sessionKey);
-    return; // Don't count sessions less than 1 minute
+    return;
   }
   
   try {
-    // Update local state
     studyTimeData.totalMinutes += durationMinutes;
     studyTimeData.lectureStats[lectureId] = (studyTimeData.lectureStats[lectureId] || 0) + durationMinutes;
     studyTimeData.sessions.push({
@@ -216,12 +216,10 @@ async function endStudySession(lectureId) {
       date: new Date().toISOString()
     });
     
-    // Keep only last 100 sessions
     if (studyTimeData.sessions.length > 100) {
       studyTimeData.sessions = studyTimeData.sessions.slice(-100);
     }
     
-    // Update Firestore
     await updateDoc(doc(db, 'studyTime', currentUser.uid), {
       totalMinutes: studyTimeData.totalMinutes,
       sessions: studyTimeData.sessions,
@@ -238,7 +236,8 @@ async function endStudySession(lectureId) {
   }
 }
 
-// Open Study Time Modal
+export { startStudySession, endStudySession };
+
 window.openStudyTimeModal = function() {
   const modal = document.getElementById('studyTimeModal');
   if (!modal) return;
@@ -247,15 +246,12 @@ window.openStudyTimeModal = function() {
   renderStudyTimeStats();
 }
 
-// Close Study Time Modal
 window.closeStudyTimeModal = function() {
   const modal = document.getElementById('studyTimeModal');
   if (modal) modal.classList.remove('active');
 }
 
-// Render Study Time Stats in Modal
 function renderStudyTimeStats() {
-  // Update stats
   const totalLecturesEl = document.getElementById('totalLecturesWatched');
   const studyDaysEl = document.getElementById('studyDaysCount');
   const studyStreakEl = document.getElementById('studyStreak');
@@ -273,7 +269,6 @@ function renderStudyTimeStats() {
     studyStreakEl.textContent = calculateStudyStreak();
   }
   
-  // Render sessions list
   const recordsContainer = document.getElementById('studyTimeRecords');
   if (!recordsContainer) return;
   
@@ -288,7 +283,6 @@ function renderStudyTimeStats() {
     return;
   }
   
-  // Group by lecture and sum durations
   const lectureGroups = {};
   studyTimeData.sessions.forEach(session => {
     if (!lectureGroups[session.lectureId]) {
@@ -303,7 +297,6 @@ function renderStudyTimeStats() {
     lectureGroups[session.lectureId].sessionsCount++;
   });
   
-  // Convert to array and sort by totalMinutes
   const sortedLectures = Object.entries(lectureGroups)
     .map(([id, data]) => ({ id, ...data }))
     .sort((a, b) => b.totalMinutes - a.totalMinutes);
@@ -333,7 +326,6 @@ function renderStudyTimeStats() {
   }).join('');
 }
 
-// Calculate Study Streak (consecutive days)
 function calculateStudyStreak() {
   if (studyTimeData.sessions.length === 0) return 0;
   
@@ -359,29 +351,24 @@ function calculateStudyStreak() {
 }
 
 // ==========================================
-// 📚 MODERN LIBRARY VIEW TOGGLE (NEW)
+// 📚 MODERN LIBRARY VIEW TOGGLE
 // ==========================================
 
-// Set Library View (Grid or List)
 window.setLibraryView = function(view) {
   currentLibraryView = view;
   
-  // Update buttons
   document.querySelectorAll('.view-control-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.view === view);
   });
   
-  // Update grid class
   const grid = document.getElementById('myLibraryGrid');
   if (grid) {
     grid.classList.toggle('list-view', view === 'list');
   }
   
-  // Re-render with new view
   renderModernLibrary();
 }
 
-// Render Modern Library (with Grid/List toggle)
 function renderModernLibrary() {
   const container = document.getElementById('myLibraryGrid');
   const lecturesCountEl = document.getElementById('myLibraryLecturesCount');
@@ -397,7 +384,6 @@ function renderModernLibrary() {
   if (lecturesCountEl) lecturesCountEl.textContent = totalLectures;
   
   if (currentLibraryView === 'grid') {
-    // Grid View (Subject Cards)
     container.innerHTML = Object.entries(subjectsWithLecs).map(([sid, lecs]) => {
       const subj = subjects[sid];
       if (!subj) return '';
@@ -406,7 +392,6 @@ function renderModernLibrary() {
       const prog = Math.round((lecs.length / total) * 100);
       const col = subj.color || '#16a34a';
       const icon = subj.icon || 'fa-book';
-      const iconColor = subj.customizations?.iconColor || 'ffffff';
       
       return `
         <div class="modern-library-card" onclick="window.location.href='subject.html?s=${sid}'">
@@ -445,7 +430,6 @@ function renderModernLibrary() {
       `;
     }).join('');
   } else {
-    // List View (Compact)
     container.innerHTML = Object.entries(subjectsWithLecs).map(([sid, lecs]) => {
       const subj = subjects[sid];
       if (!subj) return '';
@@ -505,15 +489,23 @@ function hideLoadingSkeleton() {
 }
 
 // ==========================================
-// UPDATE HEADER
+// ✅ UPDATED: UPDATE HEADER (USERNAME + PHONE)
 // ==========================================
 function updateHeaderInfo() {
   const nameEl = document.getElementById('headerUserName');
-  const univEl = document.getElementById('headerUserUniversity');
+  const infoEl = document.getElementById('headerUserUniversity'); // هنعيد استخدامه للـ username
   const avatarEl = document.getElementById('headerUserAvatar');
 
-  if (nameEl) nameEl.textContent = userData.name || 'المستخدم';
-  if (univEl) univEl.textContent = userData.university || 'غير محدد';
+  // ✅ عرض الاسم أو username
+  if (nameEl) nameEl.textContent = userData.name || userData.username || 'المستخدم';
+  
+  // ✅ عرض username + phone بدلاً من university
+  if (infoEl) {
+    const usernameText = userData.username ? `@${userData.username}` : '';
+    const phoneText = userData.phone ? `📱 ${userData.phone}` : '';
+    infoEl.textContent = usernameText || phoneText || 'غير محدد';
+  }
+  
   if (avatarEl) avatarEl.src = userData.avatar || generateAvatarUrl(currentUser.uid);
 
   document.querySelector('.user-section')?.classList.remove('loading');
@@ -551,7 +543,7 @@ function updateOverallProgress() {
 }
 
 // ==========================================
-// INIT EVENT LISTENERS
+// ✅ FIXED: INIT EVENT LISTENERS
 // ==========================================
 function initializeEventListeners() {
   const userSection = document.querySelector('.user-section');
@@ -576,9 +568,17 @@ function initializeEventListeners() {
 
   const profileForm = document.getElementById('profileForm');
   if (profileForm) {
-    profileForm.addEventListener('submit', async (e) => {
+    profileForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      await saveProfile();
+      saveProfile(e);
+    });
+  }
+
+  const saveBtn = document.getElementById('saveProfileBtn');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      saveProfile(e);
     });
   }
 
@@ -591,7 +591,6 @@ function initializeEventListeners() {
 
   document.addEventListener('keydown', handleKeyboardShortcuts);
   
-  // ⏱️ NEW: Study Time Modal overlay click
   document.querySelector('.study-time-modal-overlay')?.addEventListener('click', window.closeStudyTimeModal);
 }
 
@@ -601,7 +600,8 @@ function initializeEventListeners() {
 function handleKeyboardShortcuts(e) {
   if (e.key === 'Escape') {
     window.closeProfile();
-    window.closeStudyTimeModal(); // ⏱️ NEW
+    window.closeStudyTimeModal();
+    window.closeAvatarSelector();
     document.querySelector('.custom-dialog-overlay')?.remove();
     const searchResults = document.getElementById('searchResults');
     if (searchResults) searchResults.style.display = 'none';
@@ -615,7 +615,7 @@ function handleKeyboardShortcuts(e) {
 }
 
 // ==========================================
-// GLOBAL SEARCH
+// ✅ ENHANCED: GLOBAL SEARCH
 // ==========================================
 window.handleGlobalSearch = function(query) {
   clearTimeout(searchTimeout);
@@ -707,7 +707,13 @@ function renderSearchResults(results) {
   }
   
   container.innerHTML = results.slice(0, 10).map(result => `
-    <div class="search-result-item" onclick="window.searchResultClick('${result.type}', '${result.id}')">
+    <div 
+      class="search-result-item" 
+      onclick="window.searchResultClick('${result.type}', '${result.id}')"
+      onkeydown="if(event.key==='Enter') window.searchResultClick('${result.type}', '${result.id}')"
+      tabindex="0"
+      role="button"
+      aria-label="${result.title}">
       <div class="search-result-icon" style="background: rgba(${hexToRgb(result.color)}, 0.15);">
         <i class="fas ${result.icon}" style="color: ${result.color};"></i>
       </div>
@@ -766,7 +772,7 @@ window.switchTab = function(tabId) {
   
   if (tabId === 'myLibrary') {
     renderMyLibrary();
-    renderModernLibrary(); // ⏱️ NEW: Render modern library
+    renderModernLibrary();
     updateSmartGreeting();
   } else if (tabId === 'continueWatching') {
     loadContinueWatching();
@@ -911,7 +917,6 @@ function renderMyLibrary() {
     `;
   }).join('');
   
-  // ⏱️ NEW: Also render modern library view
   renderModernLibrary();
 }
 
@@ -989,7 +994,8 @@ function updateSmartGreeting() {
   const btn = document.getElementById('greetContinueBtn');
   if (!box || !head || !sub || !btn) return;
 
-  const firstName = (userData?.name || 'صديقي').split(' ')[0];
+  // ✅ استخدام name أو username
+  const firstName = (userData?.name || userData?.username || 'صديقي').split(' ')[0];
   const h = new Date().getHours();
   const timeText = h < 12 ? 'صباح الخير' : h < 17 ? 'مساء الخير' : 'مساء النور';
   head.textContent = `${timeText} ${firstName}`;
@@ -1016,30 +1022,37 @@ function updateSmartGreeting() {
 }
 
 // ==========================================
-// ADD TO LIBRARY
+// ✅ ENHANCED: ADD TO LIBRARY (WITH ROLLBACK)
 // ==========================================
 window.addToLibrary = async function(lectureId) {
   if (userLectures.includes(lectureId)) {
-    window.showToast('أنت تملك هذه المحاضرة', 'info');
+    showToast('أنت تملك هذه المحاضرة', 'info');
     return;
   }
 
+  const originalLectures = [...userLectures];
+
   try {
+    userLectures = [...userLectures, lectureId];
+    updateLibraryCount();
+    updateOverallProgress();
+
     await updateDoc(doc(db, 'users', currentUser.uid), { 
       lectures: arrayUnion(lectureId), 
       updatedAt: serverTimestamp() 
     });
 
-    userLectures = [...new Set([...(userLectures||[]), lectureId])];
-    updateLibraryCount();
-    updateOverallProgress();
-    window.showToast('✅ تمت الإضافة بنجاح', 'success');
+    showToast('✅ تمت الإضافة بنجاح', 'success');
 
     const sid = Object.keys(lecturesDB).find(id => lecturesDB[id].some(l => l.id === lectureId));
     if (sid) window.location.href = `subject.html?s=${sid}`;
   } catch (e) {
+    userLectures = originalLectures;
+    updateLibraryCount();
+    updateOverallProgress();
+    
     console.error('❌ خطأ الإضافة:', e);
-    window.showToast('❌ خطأ في الإضافة', 'error');
+    showToast('❌ خطأ في الإضافة، حاول مرة أخرى', 'error');
   }
 }
 
@@ -1052,7 +1065,7 @@ window.addMultipleLecturesToLibrary = async function(lectureIds = []) {
 
     const uniqueIds = lectureIds.filter(id => !userLectures.includes(id));
     if (uniqueIds.length === 0) {
-      window.showToast('أنت تمتلك هذه المحاضرات بالفعل', 'info');
+      showToast('أنت تمتلك هذه المحاضرات بالفعل', 'info');
       return;
     }
 
@@ -1066,10 +1079,10 @@ window.addMultipleLecturesToLibrary = async function(lectureIds = []) {
     updateLibraryCount();
     updateOverallProgress();
     renderMyLibrary();
-    window.showToast(`✅ تمت إضافة ${uniqueIds.length} محاضرة بنجاح`, 'success');
+    showToast(`✅ تمت إضافة ${uniqueIds.length} محاضرة بنجاح`, 'success');
   } catch (e) {
     console.error(e);
-    window.showToast('❌ خطأ في الإضافة', 'error');
+    showToast('❌ خطأ في الإضافة', 'error');
   }
 }
 
@@ -1122,7 +1135,7 @@ window.showActivationDialog = function(lectureId) {
 }
 
 // ==========================================
-// SHOW VALIDATION ERROR
+// VALIDATION HELPERS
 // ==========================================
 function showValidationError(input, message) {
   if (!input) return;
@@ -1140,9 +1153,6 @@ function showValidationError(input, message) {
   errorMsg.style.display = 'block';
 }
 
-// ==========================================
-// CLEAR VALIDATION ERROR
-// ==========================================
 function clearValidationError(input) {
   if (!input) return;
   input.classList.remove('error');
@@ -1231,11 +1241,12 @@ window.confirmActivation = async function(lectureId, btnEl) {
 
     await updateDoc(doc(db, 'activationCodes', codeDocId), {
       usesCount: increment(1),
-      lastUsedAt: serverTimestamp()
+      lastUsedAt: serverTimestamp(),
+      lastUsedBy: currentUser.uid
     });
 
     document.querySelector('.custom-dialog-overlay')?.remove();
-    window.showToast('✅ تم التفعيل بنجاح!', 'success');
+    showToast('✅ تم التفعيل بنجاح!', 'success');
     clearValidationError(codeInput);
     renderMyLibrary();
     loadContinueWatching();
@@ -1253,28 +1264,29 @@ window.confirmActivation = async function(lectureId, btnEl) {
 // OPEN LECTURE
 // ==========================================
 window.openLecture = function(url) {
-  if (!url || url === '#') { window.showToast('المحاضرة قيد التطوير', 'info'); return; }
+  if (!url || url === '#') { showToast('المحاضرة قيد التطوير', 'info'); return; }
   window.open(url, '_blank');
 }
 
 // ==========================================
-// PROFILE MODAL
+// ✅ UPDATED: PROFILE MODAL (USERNAME + PHONE)
 // ==========================================
 window.openProfile = function() {
   const modal = document.getElementById('profileModal');
   if (!modal) return;
 
   modal.classList.add('active');
+  
   const nameEl = document.getElementById('profileName');
   const emailEl = document.getElementById('profileEmail');
-  const univEl = document.getElementById('profileUniversity');
-  const univSelectEl = document.getElementById('selectedUniversity');
+  const usernameEl = document.getElementById('profileUsername');
+  const phoneEl = document.getElementById('profilePhone');
   const imgEl = document.getElementById('profileAvatarImg');
 
   if (nameEl) nameEl.value = userData.name || '';
   if (emailEl) emailEl.value = currentUser.email || '';
-  if (univEl) univEl.value = userData.university || 'دمنهور';
-  if (univSelectEl) univSelectEl.textContent = userData.university || 'دمنهور';
+  if (usernameEl) usernameEl.value = userData.username || '';
+  if (phoneEl) phoneEl.value = userData.phone || '';
   if (imgEl) imgEl.src = userData.avatar || generateAvatarUrl(currentUser.uid);
 
   window.loadAvatarSelector();
@@ -1291,35 +1303,62 @@ window.backToLibrary = function() {
 }
 
 // ==========================================
-// SAVE PROFILE
+// ✅ UPDATED: SAVE PROFILE (USERNAME + PHONE)
 // ==========================================
-async function saveProfile() {
+async function saveProfile(e) {
+  if (e) e.preventDefault();
+  
   try {
     const nameEl = document.getElementById('profileName');
-    const univEl = document.getElementById('profileUniversity');
+    const phoneEl = document.getElementById('profilePhone');
     const passEl = document.getElementById('profilePassword');
     const btnEl = document.getElementById('saveProfileBtn');
 
     const name = nameEl?.value.trim() || '';
-    const university = univEl?.value || 'دمنهور';
+    const phone = phoneEl?.value.trim() || '';
     const newPass = passEl?.value.trim() || '';
 
-    if (!name) { window.showToast('❌ أدخل الاسم', 'error'); return; }
+    // ✅ Validate phone if provided
+    if (phone && !/^(010|011|012|015)[0-9]{8}$/.test(phone)) {
+      showToast('❌ رقم الهاتف غير صحيح', 'error');
+      phoneEl.focus();
+      return;
+    }
 
     if (btnEl) {
       btnEl.disabled = true;
-      btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
     }
 
-    const updateData = { name, university, updatedAt: serverTimestamp() };
-    if (selectedAvatarConfig?.avatar) updateData.avatar = selectedAvatarConfig.avatar;
+    const updateData = { updatedAt: serverTimestamp() };
+    
+    // ✅ Only update fields that are provided
+    if (name) updateData.name = name;
+    if (phone) updateData.phone = phone;
+    
+    // ✅ Save new avatar if changed
+    if (selectedAvatarConfig?.avatar) {
+      updateData.avatar = selectedAvatarConfig.avatar;
+      if (selectedAvatarConfig.seed) updateData.avatarSeed = selectedAvatarConfig.seed;
+      if (selectedAvatarConfig.params) updateData.avatarParams = selectedAvatarConfig.params;
+    }
 
     await updateDoc(doc(db, 'users', currentUser.uid), updateData);
-    if (newPass) await updatePassword(currentUser, newPass);
+    
+    // ✅ Update password if provided
+    if (newPass) {
+      try {
+        await updatePassword(currentUser, newPass);
+        showToast('✅ تم تحديث كلمة المرور', 'success');
+      } catch (passErr) {
+        console.error('❌ خطأ كلمة المرور:', passErr);
+        showToast('⚠️ فشل تحديث كلمة المرور (سجل دخول مجدداً)', 'error');
+      }
+    }
 
     userData = { ...userData, ...updateData };
     updateHeaderInfo();
-    window.showToast('✅ تم الحفظ بنجاح', 'success');
+    showToast('✅ تم الحفظ بنجاح', 'success');
     window.closeProfile();
 
     if (btnEl) {
@@ -1328,7 +1367,7 @@ async function saveProfile() {
     }
   } catch (e) {
     console.error('❌ خطأ الحفظ:', e);
-    window.showToast('❌ خطأ في الحفظ', 'error');
+    showToast('❌ خطأ في الحفظ', 'error');
     const btnEl = document.getElementById('saveProfileBtn');
     if (btnEl) {
       btnEl.disabled = false;
@@ -1338,7 +1377,7 @@ async function saveProfile() {
 }
 
 // ==========================================
-// AVATAR SELECTOR
+// ✅ ENHANCED: AVATAR SELECTOR
 // ==========================================
 window.showAvatarSelector = function() {
   const selector = document.getElementById('avatarSelector');
@@ -1348,52 +1387,61 @@ window.showAvatarSelector = function() {
 window.closeAvatarSelector = function() {
   const selector = document.getElementById('avatarSelector');
   if (selector) selector.style.display = 'none';
-}
-
-function makeAvatar(color) {
-  return `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='${encodeURIComponent(color)}'/>ircle cx='50' cy='38' r='16' fill='whitete'/><path d='M25 68 Q50 84 75 68' fill='white'/></svg>`;
+  tempAvatarConfig = null;
 }
 
 window.loadAvatarSelector = function() {
   const grid = document.querySelector('.avatars-grid');
   if (!grid) return;
 
-  const palette = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
-  grid.innerHTML = palette.map((c, i) => `
-    <div class="avatar-option" onclick="window.selectAvatarColor('${c}')" style="border:2px solid var(--glass-border);border-radius:var(--radius-md);overflow:hidden;cursor:pointer" tabindex="0" onkeydown="if(event.key==='Enter') window.selectAvatarColor('${c}')">
-      <img src="${makeAvatar(c)}" style="width:100%;height:100%;object-fit:cover" alt="avatar option ${i+1}">
-    </div>
-  `).join('');
+  grid.innerHTML = AVATAR_CONFIGS.slice(0, 6).map((config, i) => {
+    const avatarUrl = `https://api.dicebear.com/9.x/adventurer/svg?seed=${encodeURIComponent(config.seed)}&${config.params}`;
+    
+    return `
+      <div class="avatar-option" 
+        onclick="window.selectDiceAvatar('${config.seed}', '${config.params.replace(/'/g, "&#39;")}')" 
+        style="border:2px solid var(--glass-border);border-radius:var(--radius-md);overflow:hidden;cursor:pointer; transition: transform 0.2s; position: relative;" 
+        tabindex="0" 
+        onmouseover="this.style.transform='scale(1.05)'" 
+        onmouseout="this.style.transform='scale(1)'"
+        onkeydown="if(event.key==='Enter') window.selectDiceAvatar('${config.seed}', '${config.params.replace(/'/g, "&#39;")}')">
+        <img src="${avatarUrl}" style="width:100%;height:100%;object-fit:cover" alt="avatar ${i+1}">
+      </div>
+    `;
+  }).join('');
 }
 
-window.selectAvatarColor = function(color) {
-  selectedAvatarConfig = { avatar: makeAvatar(color) };
-  const imgEl = document.getElementById('profileAvatarImg');
-  if (imgEl) imgEl.src = selectedAvatarConfig.avatar;
-}
-
-// ==========================================
-// UNIVERSITY SELECTOR
-// ==========================================
-window.toggleUniversityDropdown = function() {
-  const dropdown = document.getElementById('universityDropdown');
-  const select = document.getElementById('universitySelect');
-  if (dropdown && select) {
-    dropdown.classList.toggle('active');
-    select.classList.toggle('active');
-  }
-}
-
-window.selectUniversity = function(university) {
-  const univEl = document.getElementById('selectedUniversity');
-  const univInputEl = document.getElementById('profileUniversity');
-  const dropdown = document.getElementById('universityDropdown');
-  const select = document.getElementById('universitySelect');
+window.selectDiceAvatar = function(seed, params) {
+  const avatarUrl = `https://api.dicebear.com/9.x/adventurer/svg?seed=${encodeURIComponent(seed)}&${params}`;
   
-  if (univEl) univEl.textContent = university;
-  if (univInputEl) univInputEl.value = university;
-  if (dropdown) dropdown.classList.remove('active');
-  if (select) select.classList.remove('active');
+  tempAvatarConfig = { 
+    avatar: avatarUrl,
+    seed: seed,
+    params: params 
+  };
+  
+  document.querySelectorAll('.avatar-option').forEach(opt => {
+    opt.style.borderColor = 'var(--glass-border)';
+    opt.style.boxShadow = 'none';
+  });
+  
+  event.currentTarget.style.borderColor = '#16a34a';
+  event.currentTarget.style.boxShadow = '0 0 0 3px rgba(22, 163, 74, 0.2)';
+}
+
+window.confirmAvatarSelection = function() {
+  if (tempAvatarConfig) {
+    selectedAvatarConfig = tempAvatarConfig;
+    const imgEl = document.getElementById('profileAvatarImg');
+    if (imgEl) imgEl.src = selectedAvatarConfig.avatar;
+    showToast('✅ تم اختيار الصورة', 'success');
+  }
+  window.closeAvatarSelector();
+}
+
+window.cancelAvatarSelection = function() {
+  tempAvatarConfig = null;
+  window.closeAvatarSelector();
 }
 
 // ==========================================
@@ -1405,7 +1453,7 @@ window.logout = async function() {
     window.location.href = 'login.html';
   } catch (e) {
     console.error('❌ خطأ الخروج:', e);
-    window.showToast('❌ خطأ في تسجيل الخروج', 'error');
+    showToast('❌ خطأ في تسجيل الخروج', 'error');
   }
 }
 
@@ -1421,27 +1469,60 @@ function adjustColor(color, percent) {
   return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
 }
 
-window.showToast = function(message, type = 'info') {
+function showToast(message, type = 'info', duration = 3000) {
+  let container = document.getElementById('toastContainer');
+  
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toastContainer';
+    container.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10001;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    `;
+    document.body.appendChild(container);
+  }
+  
   const toast = document.createElement('div');
   toast.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
+    min-width: 320px;
     padding: 15px 25px;
-    background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+    background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#3b82f6'};
     color: white;
     border-radius: var(--radius-md);
     font-weight: 700;
     font-size: 0.95rem;
     box-shadow: var(--shadow-lg);
-    z-index: 10001;
     animation: slideInRight 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
   `;
-  toast.textContent = message;
+  
+  toast.innerHTML = `
+    <span>${message}</span>
+    ${duration > 0 ? `<button onclick="this.parentElement.remove()" style="background:none;border:none;color:white;cursor:pointer;font-size:1.2rem;padding:0;"><i class="fas fa-times"></i></button>` : ''}
+  `;
+  
   toast.setAttribute('role', 'status');
   toast.setAttribute('aria-live', 'polite');
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
+  
+  container.appendChild(toast);
+  
+  if (duration > 0) {
+    setTimeout(() => {
+      if (toast.parentElement) toast.remove();
+    }, duration);
+  }
+  
+  return toast;
 }
 
-console.log('✅ Library.js V17.0 ULTIMATE Ready - Study Timer + Modern Library + Auto-Cleanup');
+window.showToast = showToast;
+
+console.log('✅ Library.js V18.0 ULTIMATE Ready - Username + Phone Support (No University)');

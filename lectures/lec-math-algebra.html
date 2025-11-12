@@ -6,29 +6,23 @@
   <meta name="theme-color" content="#16a34a">
   <meta name="description" content="محاضرة الجبر الخطي - منصة أثر">
   
-  <!-- ✅ عنوان المحاضرة -->
   <title>الجبر الخطي - مقدمة - منصة أثر</title>
   
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <!-- CSS Stylesheets -->
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/platform.css">
   
-  <!-- Lecture Styles -->
   <style>
     /* ==========================================
        LECTURE TEMPLATE STYLES V2.0
        ========================================== */
     
     body {
-      /* إخفاء المحتوى مبدئياً حتى يتم التحقق من الصلاحية */
       visibility: hidden;
       opacity: 0;
       transition: opacity 0.5s ease;
@@ -113,7 +107,7 @@
     .video-container {
       position: relative;
       width: 100%;
-      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      padding-bottom: 56.25%;
       margin-bottom: 30px;
       border-radius: var(--radius-lg);
       overflow: hidden;
@@ -236,6 +230,39 @@
       text-align: left;
     }
     
+    /* ✅ NEW: Study Time Indicator */
+    .study-time-indicator {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 999px;
+      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .study-time-indicator i {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    
     /* Responsive Design */
     @media (max-width: 768px) {
       .lecture-container {
@@ -275,6 +302,13 @@
       .lecture-text {
         font-size: 0.95rem;
       }
+      
+      .study-time-indicator {
+        bottom: 10px;
+        left: 10px;
+        padding: 10px 16px;
+        font-size: 0.85rem;
+      }
     }
     
     @media (max-width: 480px) {
@@ -298,18 +332,10 @@
   </style>
 </head>
 
-
 <body>
-  <!-- ==========================================
-       LECTURE CONTAINER
-       ========================================== -->
   <div class="lecture-container">
     
-    <!-- ==========================================
-         HEADER
-         ========================================== -->
     <div class="lecture-header">
-      <!-- ✅ عنوان المحاضرة سيتغير ديناميكياً -->
       <h1 class="lecture-title" id="lectureTitle">
         <i class="fas fa-book"></i>
         <span>تحميل...</span>
@@ -321,58 +347,44 @@
       </button>
     </div>
 
-
-    <!-- ==========================================
-         CONTENT
-         ========================================== -->
     <div class="lecture-content">
       
-      <!-- ==========================================
-           VIDEO PLAYER
-           ========================================== -->
       <div class="video-container">
-        <!-- ✅ سيتم تحميل الفيديو هنا ديناميكياً -->
         <div id="video-placeholder"></div>
       </div>
 
-
-      <!-- ==========================================
-           LECTURE TEXT CONTENT
-           ========================================== -->
       <div class="lecture-text" id="lectureTextContent">
-        
         <!-- سيتم تحميل المحتوى هنا ديناميكياً -->
-        
       </div>
     </div>
   </div>
 
+  <!-- ✅ NEW: Study Time Indicator -->
+  <div class="study-time-indicator">
+    <i class="fas fa-clock"></i>
+    <span>جاري تسجيل وقت الدراسة...</span>
+  </div>
 
-  <!-- ==========================================
-       SCRIPTS
-       ========================================== -->
-  
   <!-- Error Handler -->
   <script>
     window.addEventListener('error', (event) => {
       console.error('❌ Global error:', event.error);
     });
 
-
     window.addEventListener('unhandledrejection', (event) => {
       console.error('❌ Unhandled rejection:', event.reason);
     });
   </script>
 
-
-  <!-- ✅ LECTURE LOGIC - V3.0 (PROMISE-BASED) -->
+  <!-- ✅ LECTURE LOGIC V4.0 - WITH STUDY TIME INTEGRATION -->
   <script type="module">
     import { checkLectureAccess } from '../js/lecture-auth.js';
+    import { startStudySession, endStudySession } from '../js/library.js';
     
-    // ✅ معرف المحاضرة - يجب أن يكون فريداً لكل ملف
+    // ✅ معرف المحاضرة (UNIQUE!)
     const LECTURE_ID = 'lec-math-algebra';
     
-    // تحديث واجهة المستخدم بالبيانات الديناميكية
+    // تحديث واجهة المستخدم
     function updateUI(lectureData) {
       document.title = `${lectureData.title || 'محاضرة'} - منصة أثر`;
       
@@ -383,17 +395,30 @@
           <span>${lectureData.title || 'محاضرة'}</span>
         `;
       }
-      
-      // ✅ يمكنك إضافة المزيد من التحديثات هنا
     }
     
-    // التشغيل
+    // التشغيل الرئيسي
     (async () => {
       try {
         const { userData, lectureData } = await checkLectureAccess(LECTURE_ID);
         
         console.log('✅ Access granted!', { user: userData.name, lecture: lectureData.title });
         updateUI(lectureData);
+        
+        // ✅ NEW: Start study time tracking
+        startStudySession(LECTURE_ID);
+        console.log('⏱️ Study time tracking started');
+        
+        // ✅ NEW: End tracking on page leave
+        window.addEventListener('beforeunload', () => {
+          endStudySession(LECTURE_ID);
+          console.log('⏱️ Study time tracking ended');
+        });
+        
+        // ✅ NEW: End tracking on back button
+        window.addEventListener('pagehide', () => {
+          endStudySession(LECTURE_ID);
+        });
         
         // استيراد المميزات التفاعلية
         import('../js/features.js');
@@ -403,13 +428,14 @@
       }
     })();
 
-
     // وظيفة العودة للخلف
     window.goBack = function() {
+      // ✅ End study session before leaving
+      endStudySession(LECTURE_ID);
+      
       const subjectId = new URLSearchParams(location.search).get('s');
       window.location.href = subjectId ? `../html/subject.html?s=${subjectId}` : '../html/library.html';
     };
-
 
     // اختصارات لوحة المفاتيح
     document.addEventListener('keydown', (e) => {
@@ -418,8 +444,7 @@
       }
     });
 
-
-    console.log('✅ Lecture Template V3.0 Ready');
+    console.log('✅ Lecture Template V4.0 Ready (with Study Time)');
   </script>
 </body>
 </html>

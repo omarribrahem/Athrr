@@ -53,6 +53,7 @@
     
     .toast.success { border-color: rgba(22, 163, 74, 0.3); }
     .toast.error { border-color: rgba(220, 38, 38, 0.3); }
+    .toast.warning { border-color: rgba(245, 158, 11, 0.3); }
     
     .toast-icon {
       width: 45px;
@@ -71,6 +72,11 @@
     
     .toast.error .toast-icon {
       background: linear-gradient(135deg, #dc2626, #ef4444);
+      color: white;
+    }
+    
+    .toast.warning .toast-icon {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
       color: white;
     }
     
@@ -135,108 +141,113 @@
       font-weight: 600;
     }
     
-    /* University Selector */
-    .university-selector {
-      display: grid;
-      gap: 15px;
-      margin-bottom: 25px;
-    }
-    
-    .university-option {
-      background: rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(203, 213, 225, 0.5);
-      border-radius: 20px;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+    /* Password Wrapper */
+    .password-wrapper {
       position: relative;
     }
     
-    .university-option:hover {
-      background: rgba(255, 255, 255, 0.7);
-      border-color: var(--color-primary);
-      transform: translateX(-5px);
-      box-shadow: 0 4px 20px rgba(22, 163, 74, 0.15);
+    .toggle-password {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #94a3b8;
+      font-size: 1.1rem;
+      padding: 8px;
+      transition: color 0.3s;
+      z-index: 1;
     }
     
-    .university-option.selected {
-      background: rgba(22, 163, 74, 0.1);
-      border-color: var(--color-primary);
-      border-width: 3px;
-    }
-    
-    .university-icon {
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, var(--color-primary), #10b981);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
-    }
-    
-    .university-icon i {
-      font-size: 1.8rem;
-      color: white;
-    }
-    
-    .university-info {
-      flex: 1;
-    }
-    
-    .university-info h4 {
-      margin: 0 0 5px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #0f172a;
-    }
-    
-    .university-info p {
-      margin: 0;
-      font-size: 0.9rem;
+    .toggle-password:hover {
       color: #64748b;
-      font-weight: 500;
     }
     
-    .check-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(203, 213, 225, 0.2);
+    /* Password Strength Indicator */
+    .password-strength {
+      margin-top: 8px;
+      display: none;
+    }
+    
+    .strength-bar {
+      height: 4px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    
+    .strength-fill {
+      height: 100%;
+      transition: all 0.3s;
+      width: 0%;
+    }
+    
+    .strength-text {
+      font-size: 0.85rem;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+    
+    /* Terms Checkbox */
+    .terms-wrapper {
+      margin: 20px 0;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .terms-wrapper input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      margin-top: 2px;
       flex-shrink: 0;
+      accent-color: var(--color-primary);
     }
     
-    .check-icon i {
-      font-size: 1.3rem;
-      color: #cbd5e1;
-      transition: all 0.3s;
+    .terms-wrapper label {
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #475569;
+      line-height: 1.5;
     }
     
-    .university-option.selected .check-icon {
-      background: var(--color-primary);
+    .terms-wrapper a {
+      color: var(--color-primary);
+      font-weight: 600;
+      text-decoration: none;
     }
     
-    .university-option.selected .check-icon i {
-      color: white;
+    .terms-wrapper a:hover {
+      text-decoration: underline;
     }
     
-    @keyframes selectPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+    /* ✅ NEW: Username Availability Indicator */
+    .availability-indicator {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      display: none;
     }
     
-    .university-option.selected .check-icon {
-      animation: selectPulse 0.5s ease;
+    .availability-indicator.checking {
+      display: block;
+      color: #3b82f6;
+      animation: spin 1s linear infinite;
+    }
+    
+    .availability-indicator.available {
+      display: block;
+      color: #16a34a;
+    }
+    
+    .availability-indicator.taken {
+      display: block;
+      color: #ef4444;
     }
     
     /* Responsive */
@@ -244,78 +255,104 @@
       .toast {
         min-width: 280px;
       }
-      
-      .university-option {
-        padding: 15px;
-      }
-      
-      .university-icon {
-        width: 50px;
-        height: 50px;
-      }
-      
-      .university-icon i {
-        font-size: 1.5rem;
-      }
-      
-      .university-info h4 {
-        font-size: 1.1rem;
-      }
-      
-      .check-icon {
-        width: 35px;
-        height: 35px;
-      }
     }
   </style>
 </head>
 
 <body>
   
-  <!-- Background Waves -->
-  <div class="background-waves">
+  <div class="background-waves" aria-hidden="true">
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
   </div>
 
-  <!-- Toast Container -->
-  <div class="toast-container" id="toastContainer"></div>
+  <div class="toast-container" id="toastContainer" role="region" aria-live="polite" aria-label="الإشعارات"></div>
   
-  <!-- Loading Overlay -->
-  <div class="loading-overlay" id="loadingOverlay">
-    <div class="loader"></div>
+  <div class="loading-overlay" id="loadingOverlay" role="status" aria-live="polite">
+    <div class="loader" aria-hidden="true"></div>
     <div class="loading-text">جاري إنشاء الحساب...</div>
   </div>
 
-  <!-- Main Content -->
   <div class="auth-container">
     <div class="auth-glass-card">
       
-      <!-- Logo Section -->
       <div class="logo-container">
-        <div class="glass-logo">
+        <div class="glass-logo" aria-hidden="true">
           <i class="fas fa-user-plus"></i>
         </div>
         <h1 class="auth-title">إنشاء حساب جديد</h1>
         <p class="auth-subtitle">انضم إلى منصة أثر التعليمية</p>
       </div>
       
-      <!-- Signup Form -->
-      <form id="signupForm">
+      <form id="signupForm" aria-label="نموذج إنشاء حساب">
         
-        <!-- Name Input -->
+        <!-- ✅ Username Input (NEW - WITH AVAILABILITY CHECK) -->
+        <div class="input-capsule">
+          <div class="input-wrapper" style="position: relative;">
+            <div class="input-icon" aria-hidden="true">
+              <i class="fas fa-at"></i>
+            </div>
+            <input 
+              type="text" 
+              id="username" 
+              class="capsule-input"
+              placeholder="اسم المستخدم (حروف إنجليزية وأرقام فقط)"
+              required
+              autocomplete="username"
+              aria-label="اسم المستخدم"
+              aria-required="true"
+              minlength="3"
+              maxlength="20"
+              oninput="checkUsername(this.value)"
+              style="padding-left: 50px;"
+            >
+            <div class="availability-indicator" id="usernameIndicator">
+              <i class="fas fa-circle-notch"></i>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: #64748b; margin: 8px 0 0; padding: 0 15px;">
+            <i class="fas fa-info-circle"></i> 3-20 حرف، حروف إنجليزية وأرقام و _ فقط
+          </p>
+        </div>
+        
+        <!-- ✅ Phone Input (NEW) -->
         <div class="input-capsule">
           <div class="input-wrapper">
-            <div class="input-icon">
-              <i class="fas fa-user"></i>
+            <div class="input-icon" aria-hidden="true">
+              <i class="fas fa-phone"></i>
+            </div>
+            <input 
+              type="tel" 
+              id="phone" 
+              class="capsule-input"
+              placeholder="رقم الهاتف (مثال: 01012345678)"
+              required
+              autocomplete="tel"
+              aria-label="رقم الهاتف"
+              aria-required="true"
+              pattern="^(010|011|012|015)[0-9]{8}$"
+              maxlength="11"
+            >
+          </div>
+          <p style="font-size: 0.85rem; color: #64748b; margin: 8px 0 0; padding: 0 15px;">
+            <i class="fas fa-info-circle"></i> يجب أن يبدأ بـ 010 أو 011 أو 012 أو 015
+          </p>
+        </div>
+        
+        <!-- Name Input (OPTIONAL NOW) -->
+        <div class="input-capsule">
+          <div class="input-wrapper">
+            <div class="input-icon" aria-hidden="true">
+              <i class="fas fa-id-card"></i>
             </div>
             <input 
               type="text" 
               id="name" 
               class="capsule-input"
-              placeholder="الاسم الكامل"
-              required 
+              placeholder="الاسم الكامل (اختياري)"
+              autocomplete="name"
+              aria-label="الاسم الكامل"
             >
           </div>
         </div>
@@ -323,7 +360,7 @@
         <!-- Email Input -->
         <div class="input-capsule">
           <div class="input-wrapper">
-            <div class="input-icon">
+            <div class="input-icon" aria-hidden="true">
               <i class="fas fa-envelope"></i>
             </div>
             <input 
@@ -331,15 +368,37 @@
               id="email" 
               class="capsule-input"
               placeholder="البريد الإلكتروني"
-              required 
+              required
+              autocomplete="email"
+              aria-label="البريد الإلكتروني"
+              aria-required="true"
             >
           </div>
         </div>
         
-        <!-- Password Input -->
+        <!-- Email Confirmation -->
         <div class="input-capsule">
           <div class="input-wrapper">
-            <div class="input-icon">
+            <div class="input-icon" aria-hidden="true">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <input 
+              type="email" 
+              id="emailConfirm" 
+              class="capsule-input"
+              placeholder="تأكيد البريد الإلكتروني"
+              required
+              autocomplete="off"
+              aria-label="تأكيد البريد الإلكتروني"
+              aria-required="true"
+            >
+          </div>
+        </div>
+        
+        <!-- Password Input with Toggle & Strength -->
+        <div class="input-capsule">
+          <div class="input-wrapper password-wrapper">
+            <div class="input-icon" aria-hidden="true">
               <i class="fas fa-lock"></i>
             </div>
             <input 
@@ -349,54 +408,51 @@
               placeholder="كلمة المرور (6 أحرف على الأقل)"
               required
               minlength="6"
+              autocomplete="new-password"
+              aria-label="كلمة المرور"
+              aria-required="true"
+              oninput="checkPasswordStrength(this.value)"
             >
+            <button 
+              type="button" 
+              class="toggle-password" 
+              onclick="togglePassword()"
+              aria-label="إظهار/إخفاء كلمة المرور"
+              tabindex="0">
+              <i class="fas fa-eye" id="passwordIcon"></i>
+            </button>
+          </div>
+          
+          <!-- Password Strength Indicator -->
+          <div class="password-strength" id="passwordStrength">
+            <div class="strength-bar">
+              <div class="strength-fill" id="strengthFill"></div>
+            </div>
+            <p class="strength-text" id="strengthText"></p>
           </div>
         </div>
         
-        <!-- University Selector -->
-        <div class="input-capsule">
-          <label style="display: block; margin-bottom: 12px; font-weight: 600; color: #1e293b; font-size: 0.95rem;">
-            <i class="fas fa-university"></i> اختر جامعتك
+        <!-- Terms & Conditions -->
+        <div class="terms-wrapper">
+          <input 
+            type="checkbox" 
+            id="termsAccept" 
+            required
+            aria-label="أوافق على الشروط والأحكام">
+          <label for="termsAccept">
+            أوافق على <a href="#" onclick="return false;">الشروط والأحكام</a> و <a href="#" onclick="return false;">سياسة الخصوصية</a>
           </label>
-          
-          <div class="university-selector">
-            <div class="university-option" data-value="دمنهور" onclick="selectUniversity(this)">
-              <div class="university-icon">
-                <i class="fas fa-graduation-cap"></i>
-              </div>
-              <div class="university-info">
-                <h4>جامعة دمنهور</h4>
-                <p>Damanhour University</p>
-              </div>
-              <div class="check-icon">
-                <i class="fas fa-check-circle"></i>
-              </div>
-            </div>
-            
-            <div class="university-option" data-value="الإسكندرية" onclick="selectUniversity(this)">
-              <div class="university-icon">
-                <i class="fas fa-graduation-cap"></i>
-              </div>
-              <div class="university-info">
-                <h4>جامعة الإسكندرية</h4>
-                <p>Alexandria University</p>
-              </div>
-              <div class="check-icon">
-                <i class="fas fa-check-circle"></i>
-              </div>
-            </div>
-          </div>
-          
-          <input type="hidden" id="university" required>
         </div>
         
-        <!-- Submit Button -->
-        <button type="submit" class="submit-btn" id="signupBtn">
+        <button 
+          type="submit" 
+          class="submit-btn" 
+          id="signupBtn"
+          aria-label="إنشاء الحساب">
           <i class="fas fa-user-plus"></i> إنشاء الحساب
         </button>
       </form>
       
-      <!-- Footer Links -->
       <div class="footer-links">
         <p>لديك حساب بالفعل؟ 
           <a href="login.html">سجّل دخولك</a>
@@ -409,28 +465,36 @@
     </div>
   </div>
 
-  <!-- Toast Function -->
   <script>
+    // ==========================================
+    // 🍞 TOAST NOTIFICATIONS
+    // ==========================================
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
       const icons = {
         success: '<i class="fas fa-check-circle"></i>',
-        error: '<i class="fas fa-exclamation-circle"></i>'
+        error: '<i class="fas fa-exclamation-circle"></i>',
+        warning: '<i class="fas fa-exclamation-triangle"></i>'
       };
       const titles = { 
         success: 'نجح!', 
-        error: 'خطأ!' 
+        error: 'خطأ!',
+        warning: 'تنبيه!'
       };
       
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
+      toast.setAttribute('role', 'alert');
       toast.innerHTML = `
-        <div class="toast-icon">${icons[type]}</div>
+        <div class="toast-icon" aria-hidden="true">${icons[type]}</div>
         <div class="toast-content">
           <div class="toast-title">${titles[type]}</div>
           <div class="toast-message">${message}</div>
         </div>
-        <button class="toast-close" onclick="this.parentElement.remove()">
+        <button 
+          class="toast-close" 
+          onclick="this.parentElement.remove()"
+          aria-label="إغلاق">
           <i class="fas fa-times"></i>
         </button>
       `;
@@ -441,33 +505,123 @@
       }, 4000);
     }
     
+    // ==========================================
+    // ⏳ LOADING OVERLAY
+    // ==========================================
     function showLoading(show) {
       document.getElementById('loadingOverlay').classList.toggle('active', show);
     }
     
-    function selectUniversity(element) {
-      // إزالة selected من كل الخيارات
-      document.querySelectorAll('.university-option').forEach(opt => {
-        opt.classList.remove('selected');
-      });
+    // ==========================================
+    // 👁️ PASSWORD VISIBILITY TOGGLE
+    // ==========================================
+    function togglePassword() {
+      const input = document.getElementById('password');
+      const icon = document.getElementById('passwordIcon');
       
-      // إضافة selected للخيار المختار
-      element.classList.add('selected');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+      }
+    }
+    
+    // ==========================================
+    // 💪 PASSWORD STRENGTH INDICATOR
+    // ==========================================
+    function checkPasswordStrength(password) {
+      const strengthEl = document.getElementById('passwordStrength');
+      const fill = document.getElementById('strengthFill');
+      const text = document.getElementById('strengthText');
       
-      // تحديث hidden input
-      const value = element.getAttribute('data-value');
-      document.getElementById('university').value = value;
+      if (password.length === 0) {
+        strengthEl.style.display = 'none';
+        return;
+      }
       
-      console.log('✅ University selected:', value);
+      strengthEl.style.display = 'block';
+      
+      let strength = 0;
+      if (password.length >= 6) strength += 25;
+      if (password.length >= 8) strength += 25;
+      if (/[A-Z]/.test(password)) strength += 25;
+      if (/[0-9]/.test(password)) strength += 25;
+      
+      fill.style.width = `${strength}%`;
+      
+      if (strength <= 25) {
+        fill.style.background = '#ef4444';
+        text.textContent = '⚠️ ضعيفة';
+        text.style.color = '#ef4444';
+      } else if (strength <= 50) {
+        fill.style.background = '#f59e0b';
+        text.textContent = '⚠️ متوسطة';
+        text.style.color = '#f59e0b';
+      } else if (strength <= 75) {
+        fill.style.background = '#10b981';
+        text.textContent = '✅ جيدة';
+        text.style.color = '#10b981';
+      } else {
+        fill.style.background = '#16a34a';
+        text.textContent = '🔒 قوية جداً';
+        text.style.color = '#16a34a';
+      }
+    }
+    
+    // ==========================================
+    // ✅ USERNAME AVAILABILITY CHECK (NEW)
+    // ==========================================
+    let usernameCheckTimeout;
+    
+    async function checkUsername(username) {
+      const indicator = document.getElementById('usernameIndicator');
+      const trimmed = username.trim().toLowerCase();
+      
+      // Reset indicator
+      indicator.className = 'availability-indicator';
+      indicator.innerHTML = '';
+      
+      if (trimmed.length < 3) return;
+      
+      // Clear previous timeout
+      clearTimeout(usernameCheckTimeout);
+      
+      // Show checking state
+      indicator.className = 'availability-indicator checking';
+      indicator.innerHTML = '<i class="fas fa-circle-notch"></i>';
+      
+      // Debounce check
+      usernameCheckTimeout = setTimeout(async () => {
+        try {
+          const { checkUsernameAvailability } = await import('./js/app.js');
+          const result = await checkUsernameAvailability(trimmed);
+          
+          if (result.available) {
+            indicator.className = 'availability-indicator available';
+            indicator.innerHTML = '<i class="fas fa-check-circle"></i>';
+            indicator.title = 'متاح ✓';
+          } else {
+            indicator.className = 'availability-indicator taken';
+            indicator.innerHTML = '<i class="fas fa-times-circle"></i>';
+            indicator.title = result.message || 'غير متاح';
+          }
+        } catch (error) {
+          console.error('Error checking username:', error);
+          indicator.className = 'availability-indicator';
+        }
+      }, 800);
     }
   </script>
   
-  <!-- Firebase Integration -->
   <script type="module">
-    import { signup, auth } from './js/app.js';
+    import { signup, checkUsernameAvailability, auth } from './js/app.js';
     import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
     
-    // ✅ التحقق من Auth State
+    // ==========================================
+    // ✅ AUTH STATE CHECK
+    // ==========================================
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log('✅ User already logged in, redirecting to library...');
@@ -475,55 +629,146 @@
       }
     });
 
-    // ✅ Form Submit Handler (محسّن)
+    // ==========================================
+    // ⏱️ REQUEST TIMEOUT WRAPPER
+    // ==========================================
+    function withTimeout(promise, ms = 15000) {
+      return Promise.race([
+        promise,
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('timeout')), ms)
+        )
+      ]);
+    }
+
+    // ==========================================
+    // 📝 FORM SUBMIT HANDLER V4.0 (USERNAME + PHONE, NO UNIVERSITY)
+    // ==========================================
     document.getElementById('signupForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
+      const username = document.getElementById('username').value.trim().toLowerCase();
+      const phone = document.getElementById('phone').value.trim();
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
-      const university = document.getElementById('university').value;
+      const emailConfirm = document.getElementById('emailConfirm').value.trim();
       const password = document.getElementById('password').value;
+      const termsAccept = document.getElementById('termsAccept').checked;
       const btn = document.getElementById('signupBtn');
       
-      // Validation
-      if (!name) {
-        showToast('⚠️ يرجى إدخال الاسم الكامل', 'error');
+      // ==========================================
+      // ✅ VALIDATION
+      // ==========================================
+      
+      // Username validation
+      if (!username) {
+        showToast('⚠️ يرجى إدخال اسم المستخدم', 'error');
+        document.getElementById('username').focus();
         return;
       }
       
-      if (!university) {
-        showToast('⚠️ يرجى اختيار الجامعة', 'error');
+      if (username.length < 3 || username.length > 20) {
+        showToast('⚠️ اسم المستخدم يجب أن يكون بين 3 و 20 حرف', 'error');
+        document.getElementById('username').focus();
         return;
       }
       
+      if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+        showToast('⚠️ اسم المستخدم يجب أن يحتوي على حروف إنجليزية وأرقام و _ فقط', 'error');
+        document.getElementById('username').focus();
+        return;
+      }
+      
+      // Phone validation
+      if (!phone) {
+        showToast('⚠️ يرجى إدخال رقم الهاتف', 'error');
+        document.getElementById('phone').focus();
+        return;
+      }
+      
+      if (!/^(010|011|012|015)[0-9]{8}$/.test(phone)) {
+        showToast('⚠️ رقم الهاتف غير صحيح (يجب أن يبدأ بـ 010 أو 011 أو 012 أو 015 ويتكون من 11 رقم)', 'error');
+        document.getElementById('phone').focus();
+        return;
+      }
+      
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showToast('⚠️ البريد الإلكتروني غير صحيح', 'error');
+        document.getElementById('email').focus();
+        return;
+      }
+      
+      // Email confirmation
+      if (email !== emailConfirm) {
+        showToast('⚠️ البريدان الإلكترونيان غير متطابقين', 'error');
+        document.getElementById('emailConfirm').focus();
+        return;
+      }
+      
+      // Password validation
       if (password.length < 6) {
         showToast('⚠️ كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+        document.getElementById('password').focus();
         return;
       }
       
-      // Disable button & show loading
+      // Terms acceptance
+      if (!termsAccept) {
+        showToast('⚠️ يجب الموافقة على الشروط والأحكام', 'error');
+        document.getElementById('termsAccept').focus();
+        return;
+      }
+      
+      // ==========================================
+      // ✅ SUBMIT
+      // ==========================================
+      
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإنشاء...';
       showLoading(true);
       
-      // Call signup
-      const result = await signup(email, password, name, university);
+      console.log('🔄 Starting signup with data:', {
+        username: username,
+        phone: phone,
+        name: name || '(empty)',
+        email: email
+      });
       
-      if (result.success) {
-        showToast('✅ تم إنشاء الحساب بنجاح! جارٍ التوجيه...', 'success');
+      try {
+        const result = await withTimeout(signup(email, password, username, phone, name), 15000);
         
-        // ✅ التوجيه المباشر للمكتبة (المستخدم مسجل دخول بالفعل)
-        setTimeout(() => {
-          window.location.href = 'library.html';
-        }, 1500);
-      } else {
-        // Error handling
+        if (result.success) {
+          showToast('✅ تم إنشاء الحساب بنجاح! جارٍ التوجيه...', 'success');
+          
+          setTimeout(() => {
+            window.location.href = 'library.html';
+          }, 1500);
+        } else {
+          showLoading(false);
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-user-plus"></i> إنشاء الحساب';
+          
+          console.error('❌ Signup failed:', result);
+          showToast(result.message || '❌ حدث خطأ في إنشاء الحساب', 'error');
+          
+          if (result.details) {
+            console.error('Details:', result.details);
+          }
+        }
+      } catch (e) {
         showLoading(false);
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-user-plus"></i> إنشاء الحساب';
         
-        // Error messages
-        showToast(result.message || '❌ حدث خطأ في إنشاء الحساب', 'error');
+        console.error('❌ Signup exception:', e);
+        
+        if (e.message === 'timeout') {
+          showToast('⏱️ انتهت المهلة، تحقق من اتصال الإنترنت', 'error');
+        } else {
+          showToast('❌ خطأ في الاتصال، حاول مجدداً', 'error');
+        }
       }
     });
   </script>

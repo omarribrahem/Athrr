@@ -1,6 +1,6 @@
 // ==========================================
-// ✅ ATHR PLATFORM CORE - FINAL V3.0 
-// Adventurer Avatars + Caching + Enhanced Auth
+// ✅ ATHR PLATFORM CORE - V5.0 FINAL
+// Username + Phone + Fixed & Simplified
 // ==========================================
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
@@ -18,19 +18,20 @@ import {
   getDoc, 
   setDoc, 
   updateDoc,
-  serverTimestamp 
+  serverTimestamp
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 // ==========================================
 // 🔥 FIREBASE CONFIG
 // ==========================================
 const firebaseConfig = {
-  apiKey: "AIzaSyDT5k6AYUESxKen1Pg45PuxX-2EG11TYss",
-  authDomain: "athr-platform-21b06.firebaseapp.com",
-  projectId: "athr-platform-21b06",
-  storageBucket: "athr-platform-21b06.appspot.com",
-  messagingSenderId: "895928710949",
-  appId: "1:895928710949:web:a738b5c2f0d367543f4ccc"
+  apiKey: "AIzaSyAp7yAWtWdXOC7iFr-M5kRJNTYXy3FzYyM",
+  authDomain: "athr-9356f.firebaseapp.com",
+  projectId: "athr-9356f",
+  storageBucket: "athr-9356f.firebasestorage.app",
+  messagingSenderId: "17656594096",
+  appId: "1:17656594096:web:1b7edd28b8770e47fcc575",
+  measurementId: "G-Y9M6KT3EG4"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -38,7 +39,7 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 // ==========================================
-// 🎨 AVATAR CONFIGURATION - ADVENTURER
+// 🎨 AVATAR CONFIGURATION
 // ==========================================
 export const AVATAR_STYLE = 'adventurer';
 export const AVATAR_API_VERSION = '9.x';
@@ -83,7 +84,7 @@ export function generateAvatarUrl(seed, params = '') {
 // ==========================================
 let cachedUser = null;
 let cacheTimestamp = null;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const CACHE_DURATION = 5 * 60 * 1000;
 
 // ==========================================
 // ⚠️ ERROR MESSAGES
@@ -98,9 +99,15 @@ function getErrorMessage(errorCode) {
     'auth/too-many-requests': 'محاولات كثيرة جداً، حاول بعد قليل',
     'auth/network-request-failed': 'خطأ في الاتصال بالإنترنت',
     'auth/invalid-credential': 'بيانات الدخول غير صحيحة',
+    'permission-denied': 'خطأ في الصلاحيات',
     'missing-fields': 'يرجى ملء جميع الحقول',
+    'invalid-username-length': 'اسم المستخدم يجب أن يكون بين 3 و 20 حرف',
+    'invalid-username-format': 'اسم المستخدم يجب أن يحتوي على حروف وأرقام فقط',
+    'username-taken': 'اسم المستخدم مستخدم بالفعل',
+    'invalid-phone': 'رقم الهاتف غير صحيح',
     'user-not-found': 'المستخدم غير موجود في قاعدة البيانات',
-    'weak-password': 'كلمة المرور يجب أن تكون 6 أحرف على الأقل'
+    'weak-password': 'كلمة المرور يجب أن تكون 6 أحرف على الأقل',
+    'firestore-save-failed': 'فشل حفظ البيانات'
   };
   return errors[errorCode] || 'حدث خطأ غير متوقع';
 }
@@ -118,11 +125,15 @@ export async function login(email, password) {
       };
     }
 
+    console.log('🔄 Attempting login...');
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    console.log('✅ Auth login successful');
+    
     const userRef = doc(db, 'users', userCredential.user.uid);
     const userDoc = await getDoc(userRef);
 
     if (!userDoc.exists()) {
+      console.error('❌ User not found in Firestore');
       return { 
         success: false, 
         error: 'user-not-found', 
@@ -134,9 +145,10 @@ export async function login(email, password) {
     cachedUser = userDoc.data();
     cacheTimestamp = Date.now();
 
+    console.log('✅ Login successful:', cachedUser.name || cachedUser.username);
     return { success: true, user: cachedUser };
   } catch (error) {
-    console.error('❌ خطأ الدخول:', error);
+    console.error('❌ Login error:', error);
     return { 
       success: false, 
       error: error.code, 
@@ -146,18 +158,61 @@ export async function login(email, password) {
 }
 
 // ==========================================
-// ✅ SIGNUP
+// ✅ SIGNUP V5.0 - FIXED & SIMPLIFIED
 // ==========================================
-export async function signup(email, password, name, university) {
+export async function signup(email, password, username, phone, name = '') {
   try {
-    if (!email || !password || !name || !university) {
+    // ✅ STEP 1: Validate Required Fields
+    if (!email || !password || !username || !phone) {
       return { 
         success: false, 
         error: 'missing-fields', 
-        message: 'يرجى ملء جميع الحقول' 
+        message: 'يرجى ملء جميع الحقول المطلوبة' 
       };
     }
 
+    const trimmedUsername = username.trim().toLowerCase();
+    const trimmedPhone = phone.trim();
+
+    // ✅ STEP 2: Validate Username
+    if (trimmedUsername.length < 3 || trimmedUsername.length > 20) {
+      return { 
+        success: false, 
+        error: 'invalid-username-length', 
+        message: 'اسم المستخدم يجب أن يكون بين 3 و 20 حرف' 
+      };
+    }
+    
+    if (!/^[a-zA-Z0-9_]+$/.test(trimmedUsername)) {
+      return { 
+        success: false, 
+        error: 'invalid-username-format', 
+        message: 'اسم المستخدم يجب أن يحتوي على حروف إنجليزية وأرقام و _ فقط' 
+      };
+    }
+
+    // ✅ STEP 3: Check if username is available
+    console.log('🔄 Checking username availability...');
+    const usernameDoc = await getDoc(doc(db, 'usernames', trimmedUsername));
+    if (usernameDoc.exists()) {
+      return { 
+        success: false, 
+        error: 'username-taken', 
+        message: 'اسم المستخدم مستخدم بالفعل، اختر اسماً آخر' 
+      };
+    }
+    console.log('✅ Username available');
+
+    // ✅ STEP 4: Validate Phone
+    if (!/^(010|011|012|015)[0-9]{8}$/.test(trimmedPhone)) {
+      return { 
+        success: false, 
+        error: 'invalid-phone', 
+        message: 'رقم الهاتف غير صحيح (مثال: 01012345678)' 
+      };
+    }
+
+    // ✅ STEP 5: Validate Password
     if (password.length < 6) {
       return { 
         success: false, 
@@ -166,46 +221,149 @@ export async function signup(email, password, name, university) {
       };
     }
 
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    console.log('🔄 Step 1: Creating auth user...');
     
-    try { 
-      await sendEmailVerification(userCredential.user); 
-    } catch (e) { 
-      console.warn('⚠️ تحذير التحقق من البريد:', e); 
+    // ✅ STEP 6: Create Auth User
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    
+    console.log('✅ Auth user created:', user.uid);
+
+    // ✅ STEP 7: Send Email Verification (optional)
+    try {
+      await sendEmailVerification(user);
+      console.log('✅ Verification email sent');
+    } catch (e) {
+      console.warn('⚠️ Failed to send verification email:', e);
     }
 
+    // ✅ STEP 8: Generate Avatar
     const randomConfig = getRandomAvatarConfig();
     const avatarUrl = generateAvatarUrl(randomConfig.seed, randomConfig.params);
 
-    await setDoc(doc(db, 'users', userCredential.user.uid), {
-      uid: userCredential.user.uid,
-      email,
-      name,
-      university,
+    console.log('🔄 Step 2: Preparing user data...');
+
+    // ✅ STEP 9: Prepare User Data (SIMPLE)
+    const userData = {
+      uid: user.uid,
+      email: email,
+      username: trimmedUsername,
+      phone: trimmedPhone,
+      name: name.trim() || trimmedUsername,
+      role: 'student',
       avatar: avatarUrl,
       avatarSeed: randomConfig.seed,
       avatarParams: randomConfig.params,
       avatarStyle: AVATAR_STYLE,
-      role: 'student',
-      emailVerified: userCredential.user.emailVerified === true,
+      emailVerified: false,
       lectures: [],
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
       lastLogin: serverTimestamp()
-    });
+    };
 
+    console.log('🔄 Step 3: Saving to Firestore...');
+    console.log('User data:', JSON.stringify(userData, null, 2));
+
+    // ✅ STEP 10: Save to Firestore (WITH ERROR HANDLING)
+    try {
+      await setDoc(doc(db, 'users', user.uid), userData);
+      console.log('✅ SUCCESS: User document saved!');
+    } catch (firestoreError) {
+      console.error('❌ FIRESTORE ERROR:', firestoreError);
+      console.error('Error code:', firestoreError.code);
+      console.error('Error message:', firestoreError.message);
+      
+      // Rollback: Delete auth user
+      console.log('🔄 Rolling back: Deleting auth user...');
+      try {
+        await user.delete();
+        console.log('✅ Auth user deleted');
+      } catch (deleteError) {
+        console.error('❌ Failed to delete auth user:', deleteError);
+      }
+      
+      return {
+        success: false,
+        error: 'firestore-save-failed',
+        message: 'فشل حفظ البيانات: ' + firestoreError.message
+      };
+    }
+
+    // ✅ STEP 11: Create username mapping
+    console.log('🔄 Step 4: Creating username mapping...');
+    try {
+      await setDoc(doc(db, 'usernames', trimmedUsername), {
+        userId: user.uid,
+        createdAt: serverTimestamp()
+      });
+      console.log('✅ Username mapping created');
+    } catch (e) {
+      console.warn('⚠️ Username mapping failed (non-critical):', e);
+    }
+
+    // ✅ STEP 12: Initialize study time
+    console.log('🔄 Step 5: Initializing study time...');
+    try {
+      await setDoc(doc(db, 'studyTime', user.uid), {
+        userId: user.uid,
+        totalMinutes: 0,
+        sessions: [],
+        lectureStats: {},
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      });
+      console.log('✅ Study time initialized');
+    } catch (e) {
+      console.warn('⚠️ Study time init failed (non-critical):', e);
+    }
+
+    console.log('🎉 SIGNUP COMPLETE!');
+    
     return { 
       success: true, 
-      user: userCredential.user, 
+      user: user,
       message: 'تم إنشاء الحساب بنجاح!' 
     };
+
   } catch (error) {
-    console.error('❌ خطأ التسجيل:', error);
+    console.error('❌ SIGNUP ERROR:', error);
+    console.error('Error code:', error.code);
+    console.error('Error message:', error.message);
+    
     return { 
       success: false, 
       error: error.code, 
       message: getErrorMessage(error.code) 
     };
+  }
+}
+
+// ==========================================
+// ✅ CHECK USERNAME AVAILABILITY
+// ==========================================
+export async function checkUsernameAvailability(username) {
+  try {
+    const trimmedUsername = username.trim().toLowerCase();
+    
+    if (trimmedUsername.length < 3 || trimmedUsername.length > 20) {
+      return { available: false, message: 'اسم المستخدم يجب أن يكون بين 3 و 20 حرف' };
+    }
+    
+    if (!/^[a-zA-Z0-9_]+$/.test(trimmedUsername)) {
+      return { available: false, message: 'استخدم حروف إنجليزية وأرقام و _ فقط' };
+    }
+    
+    const usernameDoc = await getDoc(doc(db, 'usernames', trimmedUsername));
+    
+    if (usernameDoc.exists()) {
+      return { available: false, message: 'اسم المستخدم مستخدم بالفعل' };
+    }
+    
+    return { available: true, message: 'اسم المستخدم متاح ✓' };
+  } catch (error) {
+    console.error('❌ Error checking username:', error);
+    return { available: false, message: 'خطأ في التحقق' };
   }
 }
 
@@ -218,9 +376,10 @@ export async function logout() {
     localStorage.removeItem('athr_user');
     cachedUser = null;
     cacheTimestamp = null;
+    console.log('✅ Logout successful');
     return { success: true };
   } catch (error) {
-    console.error('❌ خطأ الخروج:', error);
+    console.error('❌ Logout error:', error);
     return { 
       success: false, 
       error: error.code, 
@@ -230,7 +389,7 @@ export async function logout() {
 }
 
 // ==========================================
-// ✅ GET CURRENT USER (with caching)
+// ✅ GET CURRENT USER
 // ==========================================
 export async function getCurrentUser(forceRefresh = false) {
   const currentUser = auth.currentUser;
@@ -249,9 +408,10 @@ export async function getCurrentUser(forceRefresh = false) {
       cacheTimestamp = now;
       return cachedUser;
     }
+    console.warn('⚠️ User document not found in Firestore');
     return null;
   } catch (error) {
-    console.error('❌ خطأ جلب البيانات:', error);
+    console.error('❌ Error fetching user data:', error);
     return cachedUser;
   }
 }
@@ -264,7 +424,7 @@ export async function isAdmin(userId) {
     const userDoc = await getDoc(doc(db, 'users', userId));
     return userDoc.exists() && userDoc.data().role === 'admin';
   } catch (error) {
-    console.error('❌ خطأ التحقق من الإدارة:', error);
+    console.error('❌ Error checking admin status:', error);
     return false;
   }
 }
@@ -277,8 +437,7 @@ export async function updateUserProfile(userId, updates) {
     const userRef = doc(db, 'users', userId);
     const safeUpdates = {};
     
-    // تحديد الحقول المسموحة
-    const allowedFields = ['name', 'university', 'avatar', 'avatarSeed', 'avatarParams'];
+    const allowedFields = ['name', 'phone', 'avatar', 'avatarSeed', 'avatarParams'];
     for (const key of Object.keys(updates)) {
       if (allowedFields.includes(key)) {
         safeUpdates[key] = updates[key];
@@ -287,12 +446,15 @@ export async function updateUserProfile(userId, updates) {
     
     safeUpdates.updatedAt = serverTimestamp();
     
+    console.log('🔄 Updating profile:', safeUpdates);
     await updateDoc(userRef, safeUpdates);
-    cachedUser = null; // Clear cache for fresh data
+    
+    cachedUser = null;
+    console.log('✅ Profile updated successfully');
     
     return { success: true, message: 'تم تحديث البيانات بنجاح' };
   } catch (error) {
-    console.error('❌ خطأ التحديث:', error);
+    console.error('❌ Profile update error:', error);
     return { 
       success: false, 
       error: error.code, 
@@ -318,16 +480,28 @@ export async function refreshAuth() {
       await user.reload();
       await user.getIdToken(true);
       cachedUser = null;
+      console.log('✅ Auth token refreshed');
       return { success: true };
     }
     return { success: false, error: 'no-user' };
   } catch (error) {
-    console.error('❌ خطأ تحديث الجلسة:', error);
+    console.error('❌ Token refresh error:', error);
     return { success: false, error: error.code };
   }
 }
 
 // ==========================================
-// 📝 CONSOLE LOG
+// 🛠️ DEBUG HELPER
 // ==========================================
-console.log('✅ App.js V3.0 Ready - Adventurer Avatars Enabled');
+export function debugFirebase() {
+  console.log('=== Firebase Debug Info ===');
+  console.log('Auth:', auth);
+  console.log('DB:', db);
+  console.log('Current User:', auth.currentUser);
+  console.log('Cached User:', cachedUser);
+  console.log('=========================');
+}
+
+window.debugFirebase = debugFirebase;
+
+console.log('✅ App.js V5.0 FINAL Ready - Fixed & Simplified');

@@ -21,6 +21,7 @@
       padding: 20px;
     }
     
+    /* Toast Notifications */
     .toast-container {
       position: fixed;
       bottom: 20px;
@@ -52,6 +53,7 @@
     
     .toast.success { border-color: rgba(22, 163, 74, 0.3); }
     .toast.error { border-color: rgba(220, 38, 38, 0.3); }
+    .toast.warning { border-color: rgba(245, 158, 11, 0.3); }
     
     .toast-icon {
       width: 45px;
@@ -70,6 +72,11 @@
     
     .toast.error .toast-icon {
       background: linear-gradient(135deg, #dc2626, #ef4444);
+      color: white;
+    }
+    
+    .toast.warning .toast-icon {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
       color: white;
     }
     
@@ -98,6 +105,7 @@
       color: #64748b;
     }
     
+    /* Loading Overlay */
     .loading-overlay {
       position: fixed;
       top: 0;
@@ -132,20 +140,87 @@
       font-size: 1.2rem;
       font-weight: 600;
     }
+    
+    /* ✅ NEW: Password Toggle Button */
+    .password-wrapper {
+      position: relative;
+    }
+    
+    .toggle-password {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #94a3b8;
+      font-size: 1.1rem;
+      padding: 8px;
+      transition: color 0.3s;
+      z-index: 1;
+    }
+    
+    .toggle-password:hover {
+      color: #64748b;
+    }
+    
+    /* ✅ NEW: Remember Me & Forgot Password */
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0;
+      font-size: 0.95rem;
+    }
+    
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    
+    .remember-me input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: var(--color-primary);
+    }
+    
+    .remember-me label {
+      cursor: pointer;
+      font-weight: 600;
+      color: #475569;
+      user-select: none;
+    }
+    
+    .forgot-password {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    
+    .forgot-password:hover {
+      color: #15803d;
+      text-decoration: underline;
+    }
   </style>
 </head>
 
 <body>
   
-  <div class="background-waves">
+  <div class="background-waves" aria-hidden="true">
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
   </div>
 
-  <div class="toast-container" id="toastContainer"></div>
-  <div class="loading-overlay" id="loadingOverlay">
-    <div class="loader"></div>
+  <div class="toast-container" id="toastContainer" role="region" aria-live="polite" aria-label="الإشعارات"></div>
+  
+  <div class="loading-overlay" id="loadingOverlay" role="status" aria-live="polite">
+    <div class="loader" aria-hidden="true"></div>
     <div class="loading-text">جاري تسجيل الدخول...</div>
   </div>
 
@@ -153,17 +228,19 @@
     <div class="auth-glass-card">
       
       <div class="logo-container">
-        <div class="glass-logo">
+        <div class="glass-logo" aria-hidden="true">
           <i class="fas fa-graduation-cap"></i>
         </div>
         <h1 class="auth-title">تسجيل الدخول</h1>
         <p class="auth-subtitle">أهلاً بك في منصة أثر التعليمية</p>
       </div>
       
-      <form id="loginForm">
+      <form id="loginForm" aria-label="نموذج تسجيل الدخول">
+        
+        <!-- Email Input -->
         <div class="input-capsule">
           <div class="input-wrapper">
-            <div class="input-icon">
+            <div class="input-icon" aria-hidden="true">
               <i class="fas fa-envelope"></i>
             </div>
             <input 
@@ -171,14 +248,18 @@
               id="email" 
               class="capsule-input"
               placeholder="البريد الإلكتروني"
-              required 
+              required
+              autocomplete="email"
+              aria-label="البريد الإلكتروني"
+              aria-required="true"
             >
           </div>
         </div>
         
+        <!-- Password Input with Toggle -->
         <div class="input-capsule">
-          <div class="input-wrapper">
-            <div class="input-icon">
+          <div class="input-wrapper password-wrapper">
+            <div class="input-icon" aria-hidden="true">
               <i class="fas fa-lock"></i>
             </div>
             <input 
@@ -186,12 +267,47 @@
               id="password" 
               class="capsule-input"
               placeholder="كلمة المرور"
-              required 
+              required
+              autocomplete="current-password"
+              aria-label="كلمة المرور"
+              aria-required="true"
             >
+            <!-- ✅ NEW: Password Visibility Toggle -->
+            <button 
+              type="button" 
+              class="toggle-password" 
+              onclick="togglePassword()"
+              aria-label="إظهار/إخفاء كلمة المرور"
+              tabindex="0">
+              <i class="fas fa-eye" id="passwordIcon"></i>
+            </button>
           </div>
         </div>
         
-        <button type="submit" class="submit-btn" id="loginBtn">
+        <!-- ✅ NEW: Remember Me & Forgot Password -->
+        <div class="form-options">
+          <div class="remember-me">
+            <input 
+              type="checkbox" 
+              id="rememberMe"
+              aria-label="تذكرني"
+            >
+            <label for="rememberMe">تذكرني</label>
+          </div>
+          <a 
+            href="#" 
+            class="forgot-password" 
+            onclick="showForgotPassword(); return false;"
+            aria-label="نسيت كلمة المرور">
+            نسيت كلمة المرور؟
+          </a>
+        </div>
+        
+        <button 
+          type="submit" 
+          class="submit-btn" 
+          id="loginBtn"
+          aria-label="تسجيل الدخول">
           <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
         </button>
       </form>
@@ -209,26 +325,35 @@
   </div>
 
   <script>
+    // ==========================================
+    // 🍞 TOAST NOTIFICATIONS
+    // ==========================================
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
       const icons = {
         success: '<i class="fas fa-check-circle"></i>',
-        error: '<i class="fas fa-exclamation-circle"></i>'
+        error: '<i class="fas fa-exclamation-circle"></i>',
+        warning: '<i class="fas fa-exclamation-triangle"></i>'
       };
       const titles = { 
         success: 'نجح!', 
-        error: 'خطأ!' 
+        error: 'خطأ!',
+        warning: 'تنبيه!'
       };
       
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
+      toast.setAttribute('role', 'alert');
       toast.innerHTML = `
-        <div class="toast-icon">${icons[type]}</div>
+        <div class="toast-icon" aria-hidden="true">${icons[type]}</div>
         <div class="toast-content">
           <div class="toast-title">${titles[type]}</div>
           <div class="toast-message">${message}</div>
         </div>
-        <button class="toast-close" onclick="this.parentElement.remove()">
+        <button 
+          class="toast-close" 
+          onclick="this.parentElement.remove()"
+          aria-label="إغلاق">
           <i class="fas fa-times"></i>
         </button>
       `;
@@ -239,8 +364,67 @@
       }, 4000);
     }
     
+    // ==========================================
+    // ⏳ LOADING OVERLAY
+    // ==========================================
     function showLoading(show) {
       document.getElementById('loadingOverlay').classList.toggle('active', show);
+    }
+    
+    // ==========================================
+    // 👁️ PASSWORD VISIBILITY TOGGLE
+    // ==========================================
+    function togglePassword() {
+      const input = document.getElementById('password');
+      const icon = document.getElementById('passwordIcon');
+      
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+      }
+    }
+    
+    // ==========================================
+    // 🔑 FORGOT PASSWORD
+    // ==========================================
+    window.showForgotPassword = async function() {
+      const email = prompt('📧 أدخل بريدك الإلكتروني:\n\nسنرسل لك رابط إعادة تعيين كلمة المرور.');
+      
+      if (!email) return;
+      
+      // Basic email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showToast('⚠️ البريد الإلكتروني غير صحيح', 'error');
+        return;
+      }
+      
+      try {
+        showLoading(true);
+        
+        // Import Firebase Auth
+        const { sendPasswordResetEmail } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+        const { auth } = await import('./js/app.js');
+        
+        await sendPasswordResetEmail(auth, email);
+        
+        showLoading(false);
+        showToast('✅ تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني', 'success');
+      } catch (e) {
+        showLoading(false);
+        console.error('❌ Forgot password error:', e);
+        
+        if (e.code === 'auth/user-not-found') {
+          showToast('⚠️ البريد الإلكتروني غير مسجل', 'error');
+        } else if (e.code === 'auth/too-many-requests') {
+          showToast('⏱️ محاولات كثيرة، حاول بعد قليل', 'error');
+        } else {
+          showToast('❌ خطأ في إرسال البريد، حاول مجدداً', 'error');
+        }
+      }
     }
   </script>
   
@@ -248,46 +432,108 @@
     import { login, auth } from './js/app.js';
     import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
     
-    // ✅ التحقق من Auth State
+    // ==========================================
+    // ✅ AUTH STATE CHECK
+    // ==========================================
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log('✅ User already logged in, redirecting...');
         window.location.href = 'library.html';
+      } else {
+        // ✅ Load saved email if "Remember Me" was checked
+        const savedEmail = localStorage.getItem('athr_remember_email');
+        if (savedEmail) {
+          document.getElementById('email').value = savedEmail;
+          document.getElementById('rememberMe').checked = true;
+        }
       }
     });
 
-    // ✅ Form Submit Handler
+    // ==========================================
+    // ⏱️ REQUEST TIMEOUT WRAPPER
+    // ==========================================
+    function withTimeout(promise, ms = 15000) {
+      return Promise.race([
+        promise,
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('timeout')), ms)
+        )
+      ]);
+    }
+
+    // ==========================================
+    // 📝 FORM SUBMIT HANDLER (ENHANCED)
+    // ==========================================
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
+      const rememberMe = document.getElementById('rememberMe').checked;
       const btn = document.getElementById('loginBtn');
       
+      // ✅ Client-side validation
       if (!email || !password) {
         showToast('⚠️ يرجى إدخال البريد الإلكتروني وكلمة المرور', 'error');
         return;
       }
       
+      // ✅ Basic email format check
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showToast('⚠️ البريد الإلكتروني غير صحيح', 'error');
+        return;
+      }
+      
+      // ✅ Disable button + show loading
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...';
       showLoading(true);
       
-      const result = await login(email, password);
-      
-      if (result.success) {
-        showToast('✅ تم تسجيل الدخول بنجاح! جارٍ التوجيه...', 'success');
+      try {
+        // ✅ Login with 15s timeout
+        const result = await withTimeout(login(email, password), 15000);
         
-        // ✅ التوجيه المباشر للمكتبة
-        setTimeout(() => {
-          window.location.href = 'library.html';
-        }, 1000);
-      } else {
+        if (result.success) {
+          // ✅ Save email if "Remember Me" is checked
+          if (rememberMe) {
+            localStorage.setItem('athr_remember_email', email);
+          } else {
+            localStorage.removeItem('athr_remember_email');
+          }
+          
+          showToast('✅ تم تسجيل الدخول بنجاح! جارٍ التوجيه...', 'success');
+          
+          // ✅ Redirect to library
+          setTimeout(() => {
+            window.location.href = 'library.html';
+          }, 1000);
+        } else {
+          // ✅ Keep email on error, clear password
+          document.getElementById('email').value = email;
+          document.getElementById('password').value = '';
+          document.getElementById('password').focus();
+          
+          showLoading(false);
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+          
+          showToast(result.message || '❌ خطأ في تسجيل الدخول', 'error');
+        }
+      } catch (e) {
         showLoading(false);
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
         
-        showToast(result.message || '❌ خطأ في تسجيل الدخول', 'error');
+        // ✅ Keep email on error
+        document.getElementById('email').value = email;
+        document.getElementById('password').value = '';
+        
+        if (e.message === 'timeout') {
+          showToast('⏱️ انتهت المهلة، تحقق من اتصال الإنترنت', 'error');
+        } else {
+          showToast('❌ خطأ في الاتصال، حاول مجدداً', 'error');
+        }
       }
     });
   </script>
