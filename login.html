@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <!-- Meta Tags -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="تسجيل الدخول إلى منصة أثر التعليمية - ادخل إلى حسابك للوصول إلى المحاضرات والدورات التعليمية">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#16a34a">
+  
+  <title>تسجيل الدخول - منصة أثر التعليمية</title>
+  
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  
+  <!-- Inline Critical CSS -->
+  <style>
+    /* Base Layout */
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .toast {
+      min-width: 320px;
+      padding: 18px 22px;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      transform: translateX(450px);
+      animation: slideInToast 0.4s ease forwards;
+      border: 2px solid;
+    }
+    
+    @keyframes slideInToast {
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    .toast.success { border-color: rgba(22, 163, 74, 0.3); }
+    .toast.error { border-color: rgba(220, 38, 38, 0.3); }
+    .toast.warning { border-color: rgba(245, 158, 11, 0.3); }
+    .toast.info { border-color: rgba(59, 130, 246, 0.3); }
+    
+    .toast-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    
+    .toast.success .toast-icon {
+      background: linear-gradient(135deg, #16a34a, #10b981);
+      color: white;
+    }
+    
+    .toast.error .toast-icon {
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+      color: white;
+    }
+    
+    .toast.warning .toast-icon {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+      color: white;
+    }
+    
+    .toast.info .toast-icon {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+      color: white;
+    }
+    
+    .toast-content { 
+      flex: 1; 
+    }
+    
+    .toast-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 4px;
+      color: #1e293b;
+    }
+    
+    .toast-message {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.4;
+    }
+    
+    .toast-close {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: color 0.3s;
+      padding: 4px 8px;
+      flex-shrink: 0;
+    }
+    
+    .toast-close:hover {
+      color: #64748b;
+    }
+    
+    /* Loading Overlay */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .loading-overlay.active { 
+      display: flex; 
+    }
+    
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(22, 163, 74, 0.2);
+      border-top-color: #16a34a;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin { 
+      to { transform: rotate(360deg); } 
+    }
+    
+    .loading-text {
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    /* Responsive Toast */
+    @media (max-width: 768px) {
+      .toast-container {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+      }
+      
+      .toast {
+        min-width: auto;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Background Waves -->
+  <div class="background-waves" aria-hidden="true">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
+
+  <!-- Toast Container -->
+  <div 
+    class="toast-container" 
+    id="toastContainer" 
+    role="region" 
+    aria-live="polite" 
+    aria-label="الإشعارات"></div>
+  
+  <!-- Loading Overlay -->
+  <div 
+    class="loading-overlay" 
+    id="loadingOverlay" 
+    role="status" 
+    aria-live="polite">
+    <div class="loader" aria-hidden="true"></div>
+    <div class="loading-text">جاري تسجيل الدخول...</div>
+  </div>
+
+  <!-- Auth Container -->
+  <div class="auth-container">
+    <div class="auth-glass-card">
+      
+      <!-- Logo Section -->
+      <div class="logo-container">
+        <div class="glass-logo" aria-hidden="true">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <h1 class="auth-title">تسجيل الدخول</h1>
+        <p class="auth-subtitle">أهلاً بك في منصة أثر التعليمية</p>
+      </div>
+      
+      <!-- Login Form -->
+      <form id="loginForm" novalidate aria-label="نموذج تسجيل الدخول">
+        
+        <!-- Email Input -->
+        <div class="input-capsule">
+          <div class="input-wrapper">
+            <div class="input-icon" aria-hidden="true">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <input 
+              type="email" 
+              id="email" 
+              class="capsule-input"
+              placeholder="البريد الإلكتروني"
+              required
+              autocomplete="email"
+              aria-label="البريد الإلكتروني"
+              aria-required="true"
+            >
+          </div>
+        </div>
+        
+        <!-- Password Input -->
+        <div class="input-capsule">
+          <div class="input-wrapper">
+            <div class="input-icon" aria-hidden="true">
+              <i class="fas fa-lock"></i>
+            </div>
+            <input 
+              type="password" 
+              id="password" 
+              class="capsule-input"
+              placeholder="كلمة المرور"
+              required
+              autocomplete="current-password"
+              aria-label="كلمة المرور"
+              aria-required="true"
+            >
+            <button 
+              type="button" 
+              class="password-toggle" 
+              onclick="togglePassword()"
+              aria-label="إظهار أو إخفاء كلمة المرور"
+              tabindex="0">
+              <i class="fas fa-eye" id="passwordIcon"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Options Row -->
+        <div class="options-row">
+          <div class="checkbox-wrapper">
+            <input 
+              type="checkbox" 
+              id="rememberMe"
+              aria-label="تذكرني"
+            >
+            <label for="rememberMe">تذكرني</label>
+          </div>
+          <a 
+            href="#" 
+            class="forgot-link" 
+            onclick="showForgotPassword(); return false;"
+            aria-label="نسيت كلمة المرور">
+            نسيت كلمة المرور؟
+          </a>
+        </div>
+        
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="submit-btn" 
+          id="loginBtn"
+          aria-label="تسجيل الدخول">
+          <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+        </button>
+      </form>
+      
+      <!-- Footer Links -->
+      <div class="footer-links">
+        <p>ليس لديك حساب؟ 
+          <a href="signup.html">سجّل الآن</a>
+        </p>
+        <p>
+          <a href="index.html">العودة للصفحة الرئيسية</a>
+        </p>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Utilities Script -->
+  <script>
+    /* Toast Notifications System */
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const icons = {
+        success: '<i class="fas fa-check-circle"></i>',
+        error: '<i class="fas fa-exclamation-circle"></i>',
+        warning: '<i class="fas fa-exclamation-triangle"></i>',
+        info: '<i class="fas fa-info-circle"></i>'
+      };
+      const titles = { 
+        success: 'نجح', 
+        error: 'خطأ',
+        warning: 'تنبيه',
+        info: 'معلومة'
+      };
+      
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.setAttribute('role', 'alert');
+      toast.innerHTML = `
+        <div class="toast-icon" aria-hidden="true">${icons[type]}</div>
+        <div class="toast-content">
+          <div class="toast-title">${titles[type]}</div>
+          <div class="toast-message">${message}</div>
+        </div>
+        <button 
+          class="toast-close" 
+          onclick="this.parentElement.remove()"
+          aria-label="إغلاق الإشعار">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        if (toast.parentElement) {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateX(450px)';
+          setTimeout(() => toast.remove(), 300);
+        }
+      }, 4000);
+    }
+    
+    /* Loading Overlay Control */
+    function showLoading(show) {
+      const overlay = document.getElementById('loadingOverlay');
+      overlay.classList.toggle('active', show);
+    }
+    
+    /* Password Visibility Toggle */
+    function togglePassword() {
+      const input = document.getElementById('password');
+      const icon = document.getElementById('passwordIcon');
+      
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+      }
+    }
+    
+    /* Forgot Password Handler */
+    window.showForgotPassword = async function() {
+      const email = prompt('أدخل بريدك الإلكتروني:\n\nسنرسل لك رابط إعادة تعيين كلمة المرور.');
+      
+      if (!email) return;
+      
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showToast('البريد الإلكتروني غير صحيح', 'error');
+        return;
+      }
+      
+      try {
+        showLoading(true);
+        
+        const { supabase } = await import('./js/app.js');
+        
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + '/reset-password.html'
+        });
+        
+        if (error) throw error;
+        
+        showLoading(false);
+        showToast('تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني', 'success');
+      } catch (e) {
+        showLoading(false);
+        console.error('Forgot password error:', e);
+        showToast('خطأ في إرسال البريد، حاول مجدداً', 'error');
+      }
+    }
+  </script>
+  
+  <!-- Main Auth Script -->
+  <script type="module">
+    import { login, supabase, onAuthChange } from './js/app.js';
+    
+    /* Auth State Check */
+    onAuthChange((user) => {
+      if (user) {
+        console.log('User already authenticated, redirecting to library...');
+        window.location.href = 'library.html';
+      } else {
+        const savedEmail = localStorage.getItem('athr_remember_email');
+        if (savedEmail) {
+          document.getElementById('email').value = savedEmail;
+          document.getElementById('rememberMe').checked = true;
+        }
+      }
+    });
+
+    /* Request Timeout Wrapper */
+    function withTimeout(promise, ms = 15000) {
+      return Promise.race([
+        promise,
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('timeout')), ms)
+        )
+      ]);
+    }
+
+    /* Form Submit Handler */
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const rememberMe = document.getElementById('rememberMe').checked;
+      const btn = document.getElementById('loginBtn');
+      
+      /* Validation */
+      if (!email || !password) {
+        showToast('يرجى إدخال البريد الإلكتروني وكلمة المرور', 'error');
+        return;
+      }
+      
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showToast('البريد الإلكتروني غير صحيح', 'error');
+        return;
+      }
+      
+      if (password.length < 6) {
+        showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+        return;
+      }
+      
+      /* Disable button & show loading */
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...';
+      showLoading(true);
+      
+      try {
+        const result = await withTimeout(login(email, password), 15000);
+        
+        if (result.success) {
+          /* Save email if remember me is checked */
+          if (rememberMe) {
+            localStorage.setItem('athr_remember_email', email);
+          } else {
+            localStorage.removeItem('athr_remember_email');
+          }
+          
+          showToast('تم تسجيل الدخول بنجاح! جارٍ التوجيه...', 'success');
+          
+          setTimeout(() => {
+            window.location.href = 'library.html';
+          }, 1000);
+        } else {
+          /* Keep email, clear password */
+          document.getElementById('password').value = '';
+          document.getElementById('password').focus();
+          
+          showLoading(false);
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+          
+          showToast(result.message || 'خطأ في تسجيل الدخول', 'error');
+        }
+      } catch (e) {
+        showLoading(false);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+        
+        document.getElementById('password').value = '';
+        
+        if (e.message === 'timeout') {
+          showToast('انتهت المهلة، تحقق من اتصال الإنترنت', 'error');
+        } else {
+          console.error('Login error:', e);
+          showToast('خطأ في الاتصال، حاول مجدداً', 'error');
+        }
+      }
+    });
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <!-- ==================================================
+       META TAGS - SEO & Performance Optimization
+       Standards: Google Lighthouse 100/100
+       ================================================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="منصة أثر التعليمية - منصة تعليمية رقمية متكاملة للتعلم الذكي والتطوير المستمر. انضم الآن واستمتع بتجربة تعليمية فريدة مع أفضل المحاضرات والدورات التعليمية.">
+  <meta name="keywords" content="منصة تعليمية، تعليم رقمي، محاضرات أونلاين، دروس، أثر، تعلم إلكتروني، جامعة، تطوير مهارات، دورات تدريبية">
+  <meta name="author" content="منصة أثر التعليمية">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://athr.education/">
+  
+  <!-- Theme & PWA Configuration -->
+  <meta name="theme-color" content="#16a34a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="أثر">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <!-- Open Graph - Social Media Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="منصة أثر التعليمية">
+  <meta property="og:title" content="منصة أثر التعليمية - التعليم الرقمي المتطور">
+  <meta property="og:description" content="منصة تعليمية رقمية متكاملة للتعلم الذكي والتطوير المستمر">
+  <meta property="og:image" content="https://athr.education/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://athr.education/">
+  <meta property="og:locale" content="ar_SA">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="منصة أثر - التعليم الرقمي المتطور">
+  <meta name="twitter:description" content="منصة تعليمية رقمية متكاملة للتعلم الذكي">
+  <meta name="twitter:image" content="https://athr.education/assets/twitter-card.jpg">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  
+  <title>منصة أثر - التعليم الرقمي المتطور</title>
+  
+  <!-- ==================================================
+       PRECONNECT - Performance Optimization
+       DNS prefetch and preconnect for faster loading
+       ================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://unpkg.com">
+  
+  <!-- ==================================================
+       FONTS - Google Fonts (Arabic + Latin)
+       Optimized font loading with display=swap
+       ================================================== -->
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" 
+    rel="stylesheet">
+  
+  <!-- ==================================================
+       ICONS - Font Awesome 6
+       CDN with integrity check for security
+       ================================================== -->
+  <link 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer">
+  
+  <!-- ==================================================
+       STYLESHEETS - External CSS
+       ================================================== -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- ==================================================
+       AOS ANIMATION LIBRARY
+       Animate on scroll for smooth entrance effects
+       ================================================== -->
+  <link 
+    href="https://unpkg.com/aos@2.3.1/dist/aos.css" 
+    rel="stylesheet">
+  
+  <!-- ==================================================
+       INLINE CRITICAL CSS - Above the Fold
+       First Contentful Paint optimization
+       ================================================== -->
+  <style>
+    /* CSS Custom Properties - Design System */
+    :root {
+      --color-primary: #16a34a;
+      --color-primary-dark: #14532d;
+      --color-primary-light: #22c55e;
+      --color-primary-medium: #10b981;
+      --glass-bg: rgba(255, 255, 255, 0.12);
+      --glass-border: rgba(255, 255, 255, 0.25);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-tertiary: #64748b;
+      --shadow-xl: 0 20px 50px rgba(0,0,0,0.1);
+      --radius-xl: 30px;
+      --radius-full: 50px;
+      --transition-base: 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+      --transition-emphasized: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    
+    /* Base Body Styles */
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    /* Hero Container */
+    .hero-container {
+      max-width: 920px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      animation: containerFadeIn 0.8s ease;
+    }
+    
+    @keyframes containerFadeIn {
+      from { 
+        opacity: 0; 
+        transform: scale(0.96); 
+      }
+      to { 
+        opacity: 1; 
+        transform: scale(1); 
+      }
+    }
+    
+    /* Hero Card - Glass Morphism */
+    .hero-card {
+      background: rgba(240, 253, 244, 0.35);
+      backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: var(--radius-xl);
+      padding: 70px 60px;
+      box-shadow: 
+        0 20px 60px rgba(0,0,0,0.12),
+        0 8px 20px rgba(0,0,0,0.08),
+        inset 0 2px 0 rgba(255,255,255,0.6),
+        inset 0 -1px 0 rgba(0,0,0,0.05);
+      animation: heroSlideUp 0.8s var(--transition-emphasized);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    @keyframes heroSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Ambient Gradient */
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(
+        circle,
+        rgba(22, 163, 74, 0.1) 0%,
+        transparent 70%
+      );
+      pointer-events: none;
+      animation: gradientFloat 10s ease-in-out infinite;
+    }
+    
+    @keyframes gradientFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-40px, -40px) scale(1.08); }
+    }
+    
+    /* Badge */
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: rgba(22, 163, 74, 0.12);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(22, 163, 74, 0.3);
+      border-radius: var(--radius-full);
+      color: var(--color-primary);
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.15);
+      position: relative;
+      z-index: 1;
+      animation: badgePulse 2.5s ease-in-out infinite;
+    }
+    
+    @keyframes badgePulse {
+      0%, 100% { 
+        box-shadow: 0 4px 12px rgba(22, 163, 74, 0.15); 
+        transform: scale(1);
+      }
+      50% { 
+        box-shadow: 0 6px 20px rgba(22, 163, 74, 0.25); 
+        transform: scale(1.02);
+      }
+    }
+    
+    /* Logo */
+    .hero-logo {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 35px;
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(15px);
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        inset 0 2px 0 rgba(255, 255, 255, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      animation: logoFloat 3.5s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
+      transition: transform var(--transition-base);
+    }
+    
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(1deg); }
+    }
+    
+    .hero-logo:hover {
+      transform: translateY(-10px) scale(1.05);
+    }
+    
+    .hero-logo i {
+      font-size: 3.8rem;
+      color: var(--color-primary);
+      filter: drop-shadow(0 4px 12px rgba(22, 163, 74, 0.3));
+      transition: all var(--transition-base);
+    }
+    
+    .hero-logo:hover i {
+      transform: scale(1.08) rotate(-3deg);
+    }
+    
+    /* Typography */
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 3.8rem);
+      font-weight: 900;
+      margin: 0 0 25px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      background: linear-gradient(
+        135deg, 
+        #14532d 0%, 
+        #16a34a 40%, 
+        #10b981 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: titleSlideIn 0.8s var(--transition-emphasized) 0.2s backwards;
+      position: relative;
+      z-index: 1;
+    }
+    
+    @keyframes titleSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .hero-subtitle {
+      font-size: clamp(1.15rem, 3.5vw, 1.5rem);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-weight: 600;
+      margin: 0 0 20px;
+      animation: titleSlideIn 0.8s var(--transition-emphasized) 0.3s backwards;
+    }
+    
+    /* CTA Buttons */
+    .cta-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 45px;
+      animation: titleSlideIn 0.8s var(--transition-emphasized) 0.5s backwards;
+    }
+    
+    .cta-btn {
+      padding: 18px 45px;
+      border-radius: var(--radius-full);
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition-base);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 220px;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      font-family: inherit;
+    }
+    
+    /* Primary Button */
+    .cta-btn.primary {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-medium) 100%);
+      color: white;
+      border: none;
+      box-shadow: 0 4px 20px rgba(22, 163, 74, 0.3);
+    }
+    
+    .cta-btn.primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--color-primary-medium) 0%, var(--color-primary) 100%);
+      opacity: 0;
+      transition: opacity var(--transition-base);
+    }
+    
+    .cta-btn.primary:hover::before {
+      opacity: 1;
+    }
+    
+    .cta-btn.primary:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(22, 163, 74, 0.4);
+    }
+    
+    .cta-btn.primary:active {
+      transform: translateY(-2px) scale(0.98);
+    }
+    
+    .cta-btn.primary i,
+    .cta-btn.primary span {
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Secondary Button */
+    .cta-btn.secondary {
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(12px);
+      color: var(--text-primary);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+    
+    .cta-btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.5);
+      transform: translateY(-4px);
+      box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .cta-btn.secondary:active {
+      transform: translateY(-2px) scale(0.98);
+    }
+    
+    /* Footer */
+    .home-footer {
+      margin-top: 70px;
+      text-align: center;
+      color: var(--text-tertiary);
+      font-size: 0.9rem;
+      position: relative;
+      z-index: 10;
+      animation: titleSlideIn 0.8s var(--transition-emphasized) 0.6s backwards;
+    }
+    
+    .home-footer p {
+      margin: 12px 0;
+      font-weight: 500;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero-card {
+        padding: 45px 35px;
+      }
+      
+      .hero-logo {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 25px;
+      }
+      
+      .hero-logo i {
+        font-size: 3rem;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .cta-btn {
+        width: 100%;
+        padding: 16px 35px;
+      }
+      
+      .home-footer {
+        margin-top: 50px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+      
+      .hero-card {
+        padding: 35px 25px;
+        border-radius: 20px;
+      }
+      
+      .hero-badge {
+        padding: 10px 20px;
+        font-size: 0.85rem;
+      }
+      
+      .hero-logo {
+        width: 90px;
+        height: 90px;
+      }
+      
+      .hero-logo i {
+        font-size: 2.5rem;
+      }
+      
+      .cta-btn {
+        padding: 14px 30px;
+        font-size: 1rem;
+      }
+    }
+    
+    /* Accessibility */
+    @media (prefers-contrast: high) {
+      .hero-card {
+        background: rgba(255, 255, 255, 0.95);
+        border: 3px solid var(--text-primary);
+      }
+      
+      .hero-badge {
+        background: var(--color-primary);
+        color: white;
+      }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Background Waves -->
+  <div class="background-waves" aria-hidden="true">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
+
+  <!-- Skip to Content Link -->
+  <a href="#main-content" class="skip-to-content">
+    الانتقال إلى المحتوى الرئيسي
+  </a>
+
+  <!-- Main Content -->
+  <main class="hero-container" id="main-content" role="main">
+    <article 
+      class="hero-card" 
+      data-aos="zoom-in" 
+      data-aos-duration="1000"
+      data-aos-once="true">
+      
+      <!-- Badge -->
+      <div 
+        class="hero-badge" 
+        data-aos="fade-down" 
+        data-aos-delay="100"
+        role="status"
+        aria-label="منصة التعليم الرقمي">
+        <i class="fas fa-graduation-cap" aria-hidden="true"></i> 
+        <span>منصة التعليم الرقمي</span>
+      </div>
+      
+      <!-- Logo -->
+      <div 
+        class="hero-logo" 
+        data-aos="fade-down" 
+        data-aos-delay="200"
+        aria-label="شعار منصة أثر">
+        <i class="fas fa-book-reader" aria-hidden="true"></i>
+      </div>
+      
+      <!-- Title -->
+      <h1 
+        class="hero-title" 
+        data-aos="fade-up" 
+        data-aos-delay="300">
+        منصة أثر التعليمية
+      </h1>
+      
+      <!-- Subtitle -->
+      <p 
+        class="hero-subtitle" 
+        data-aos="fade-up" 
+        data-aos-delay="400">
+        منصة تعليمية رقمية متكاملة للتعلم الذكي والتطوير المستمر
+      </p>
+      
+      <!-- CTA Buttons -->
+      <nav 
+        class="cta-buttons" 
+        data-aos="fade-up" 
+        data-aos-delay="600"
+        aria-label="روابط التنقل الرئيسية">
+        <a 
+          href="login.html" 
+          class="cta-btn primary"
+          aria-label="تسجيل الدخول إلى منصة أثر">
+          <i class="fas fa-sign-in-alt" aria-hidden="true"></i> 
+          <span>تسجيل الدخول</span>
+        </a>
+        <a 
+          href="signup.html" 
+          class="cta-btn secondary"
+          aria-label="إنشاء حساب جديد مجاني">
+          <i class="fas fa-user-plus" aria-hidden="true"></i>
+          <span>إنشاء حساب مجاني</span>
+        </a>
+      </nav>
+      
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer class="home-footer" role="contentinfo">
+    <p>&copy; 2025 منصة أثر التعليمية. جميع الحقوق محفوظة.</p>
+  </footer>
+
+  <!-- AOS Animation Library -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+      offset: 50,
+      disable: 'mobile',
+      anchorPlacement: 'top-bottom'
+    });
+  </script>
+  
+  <!-- Auth Check & Auto-redirect -->
+  <script type="module">
+    import { supabase } from './js/app.js';
+    
+    const checkAuth = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) throw error;
+        
+        if (session?.user) {
+          console.log('User authenticated, redirecting to library...');
+          
+          const badge = document.querySelector('.hero-badge');
+          if (badge) {
+            badge.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> <span>جاري التحويل...</span>';
+          }
+          
+          setTimeout(() => {
+            window.location.href = 'library.html';
+          }, 500);
+        } else {
+          console.log('No active session, displaying landing page');
+        }
+      } catch (error) {
+        console.error('Auth check error:', error);
+      }
+    };
+    
+    checkAuth();
+  </script>
+  
+  <!-- Page Load Complete -->
+  <script>
+    window.addEventListener('load', () => {
+      const announcement = document.createElement('div');
+      announcement.setAttribute('role', 'status');
+      announcement.setAttribute('aria-live', 'polite');
+      announcement.className = 'sr-only';
+      announcement.textContent = 'تم تحميل الصفحة الرئيسية بنجاح';
+      document.body.appendChild(announcement);
+      
+      setTimeout(() => announcement.remove(), 1000);
+    });
+  </script>
+  
+</body>
+</html>

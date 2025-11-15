@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <!-- ==========================================
+       META TAGS - SEO & Performance Optimized
+       Standards: Google Lighthouse + Core Web Vitals
+       ========================================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="منصة أثر التعليمية - مكتبتك الرقمية للمحاضرات والمواد الدراسية" />
+  <meta name="keywords" content="تعليم، محاضرات، مكتبة رقمية، أثر، دروس أونلاين" />
+  <meta name="author" content="منصة أثر التعليمية" />
+  <meta name="robots" content="index, follow" />
+  
+  <!-- Theme & PWA -->
+  <meta name="theme-color" content="#16a34a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="أثر" />
+  
+  <!-- Open Graph - Social Media -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="المكتبة - منصة أثر التعليمية" />
+  <meta property="og:description" content="مكتبتك الرقمية للمحاضرات والمواد الدراسية" />
+  <meta property="og:image" content="/assets/og-image.jpg" />
+  <meta property="og:url" content="https://athr.education/library.html" />
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="المكتبة - منصة أثر" />
+  <meta name="twitter:description" content="مكتبتك الرقمية للمحاضرات" />
+  
+  <title>المكتبة - منصة أثر التعليمية</title>
+
+  <!-- ==========================================
+       PRECONNECT - Performance Optimization
+       ========================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="dns-prefetch" href="https://unpkg.com" />
+
+  <!-- ==========================================
+       FONTS - Google Fonts (Arabic)
+       Standard: Variable Fonts for Performance
+       ========================================== -->
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" 
+    rel="stylesheet" 
+  />
+
+  <!-- ==========================================
+       ICONS - Font Awesome 6
+       ========================================== -->
+  <link 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer" 
+  />
+
+  <!-- ==========================================
+       STYLESHEETS - Glass Morphism Design
+       ========================================== -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/platform.css" />
+
+  <!-- ==========================================
+       AOS ANIMATION LIBRARY
+       ========================================== -->
+  <link 
+    href="https://unpkg.com/aos@2.3.1/dist/aos.css" 
+    rel="stylesheet" 
+  />
+
+  <!-- ==========================================
+       INLINE SVG GRADIENTS - Performance
+       ========================================== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <!-- Progress Gradient - Apple Watch Style -->
+      <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#10b981" />
+        <stop offset="100%" stop-color="#22c55e" />
+      </linearGradient>
+      
+      <!-- Glow Effect -->
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ==========================================
+       CRITICAL CSS - Inline for Performance
+       ========================================== -->
+  <style>
+    /* Loading Screen - Prevent FOUC */
+    body:not(.loaded) {
+      overflow: hidden;
+    }
+    
+    body:not(.loaded)::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #16a34a 0%, #10b981 100%);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    body:not(.loaded)::after {
+      content: '';
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      z-index: 999999;
+    }
+    
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body role="application" aria-label="تطبيق المكتبة - منصة أثر التعليمية">
+  <!-- ==========================================
+       BACKGROUND WAVES - Decorative
+       ========================================== -->
+  <div class="background-waves" aria-hidden="true">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
+
+  <!-- ==========================================
+       SKIP TO CONTENT LINK - Accessibility
+       Standard: WCAG 2.1 AA Compliant
+       ========================================== -->
+  <a href="#main-content" class="skip-to-content">
+    الانتقال إلى المحتوى الرئيسي
+  </a>
+
+  <!-- ==========================================
+       PROFILE MODAL - iOS Settings Style
+       Standard: Apple Modal Presentation
+       ========================================== -->
+  <div 
+    class="profile-modal" 
+    id="profileModal" 
+    role="dialog" 
+    aria-modal="true" 
+    aria-labelledby="profileModalTitle" 
+    aria-hidden="true"
+    tabindex="-1">
+    
+    <!-- Backdrop -->
+    <div 
+      class="profile-modal-overlay" 
+      onclick="window.closeProfile()"
+      aria-label="إغلاق"></div>
+    
+    <!-- Modal Content -->
+    <div class="profile-modal-content" role="document">
+      <!-- Header -->
+      <header class="profile-modal-header">
+        <h2 id="profileModalTitle">الملف الشخصي</h2>
+        <button 
+          class="close-modal" 
+          onclick="window.closeProfile()" 
+          aria-label="إغلاق الملف الشخصي"
+          type="button">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+      </header>
+
+      <!-- Grid Layout -->
+      <div class="profile-modal-grid">
+        <!-- Avatar Column -->
+        <section class="profile-avatar-column" aria-label="إعدادات الصورة الرمزية">
+          <div class="profile-card-section">
+            <div class="profile-avatar-wrapper">
+              <div class="profile-avatar-large">
+                <img 
+                  id="profileAvatarImg" 
+                  alt="صورة المستخدم" 
+                  loading="lazy"
+                />
+                <button 
+                  class="avatar-edit-overlay" 
+                  onclick="event.stopPropagation(); window.showAvatarSelector();" 
+                  aria-label="تغيير الصورة الرمزية"
+                  type="button">
+                  <i class="fas fa-camera" aria-hidden="true"></i>
+                  <span>تغيير</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Avatar Selector - iOS Photo Picker Style -->
+          <div class="avatar-selector" id="avatarSelector" style="display:none;">
+            <div 
+              class="avatars-grid" 
+              role="group" 
+              aria-label="اختر صورة رمزية"></div>
+            
+            <div class="avatar-selector-footer" style="display:flex; gap:12px; margin-top:16px;">
+              <button 
+                type="button" 
+                class="profile-save-btn" 
+                onclick="event.stopPropagation(); window.confirmAvatarSelection();" 
+                style="flex:1; padding:12px; border-radius:var(--radius-md);">
+                <i class="fas fa-check" aria-hidden="true"></i> تأكيد
+              </button>
+              <button 
+                type="button" 
+                class="profile-logout-btn" 
+                onclick="event.stopPropagation(); window.cancelAvatarSelection();" 
+                style="flex:1; padding:12px; border-radius:var(--radius-md); background:#64748b;">
+                <i class="fas fa-times" aria-hidden="true"></i> إلغاء
+              </button>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Form Column -->
+        <section class="profile-form-column" aria-label="معلومات الملف الشخصي">
+          <form id="profileForm" onsubmit="return false;" novalidate>
+            <!-- Name Field -->
+            <div class="form-group">
+              <label for="profileName" class="form-label">
+                <i class="fas fa-user" aria-hidden="true"></i> الاسم الكامل
+              </label>
+              <input 
+                id="profileName" 
+                type="text" 
+                class="form-input" 
+                autocomplete="name"
+                required
+                aria-required="true"
+                placeholder="أدخل اسمك الكامل"
+              />
+            </div>
+            
+            <!-- Username Field -->
+            <div class="form-group">
+              <label for="profileUsername" class="form-label">
+                <i class="fas fa-at" aria-hidden="true"></i> اسم المستخدم
+              </label>
+              <input 
+                id="profileUsername" 
+                type="text" 
+                class="form-input" 
+                autocomplete="username"
+                required
+                aria-required="true"
+                pattern="[a-z0-9_]+"
+                placeholder="حروف وأرقام و _ فقط"
+              />
+            </div>
+            
+            <!-- Phone Field -->
+            <div class="form-group">
+              <label for="profilePhone" class="form-label">
+                <i class="fas fa-phone" aria-hidden="true"></i> رقم الهاتف
+              </label>
+              <input 
+                id="profilePhone" 
+                type="tel" 
+                class="form-input" 
+                autocomplete="tel"
+                placeholder="اختياري"
+              />
+            </div>
+            
+            <!-- Email Field (Disabled) -->
+            <div class="form-group">
+              <label for="profileEmail" class="form-label">
+                <i class="fas fa-envelope" aria-hidden="true"></i> البريد الإلكتروني
+              </label>
+              <input 
+                id="profileEmail" 
+                type="email" 
+                class="form-input" 
+                disabled 
+                aria-disabled="true"
+                style="background: rgba(100, 116, 139, 0.1); cursor: not-allowed;" 
+              />
+              <p style="font-size: 0.85rem; color: #64748b; margin-top: 6px;">
+                <i class="fas fa-info-circle" aria-hidden="true"></i> البريد الإلكتروني لا يمكن تغييره
+              </p>
+            </div>
+            
+            <!-- Password Field -->
+            <div class="form-group">
+              <label for="profilePassword" class="form-label">
+                <i class="fas fa-lock" aria-hidden="true"></i> كلمة مرور جديدة
+              </label>
+              <input 
+                id="profilePassword" 
+                type="password" 
+                class="form-input" 
+                placeholder="اتركها فارغة إذا لم تريد التغيير" 
+                minlength="6" 
+                autocomplete="new-password"
+                aria-describedby="password-help"
+              />
+              <p id="password-help" style="font-size: 0.85rem; color: #64748b; margin-top: 6px;">
+                <i class="fas fa-info-circle" aria-hidden="true"></i> 6 أحرف على الأقل
+              </p>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <!-- Footer Actions -->
+      <footer class="profile-modal-footer">
+        <button 
+          id="saveProfileBtn" 
+          type="button" 
+          class="profile-save-btn">
+          <i class="fas fa-check-circle" aria-hidden="true"></i> حفظ التغييرات
+        </button>
+        <button 
+          class="profile-logout-btn" 
+          onclick="window.logout()"
+          type="button">
+          <i class="fas fa-sign-out-alt" aria-hidden="true"></i> خروج
+        </button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       HEADER - Sticky Navigation
+       Standard: iOS Navigation Bar (64px)
+       ========================================== -->
+  <header class="platform-header" role="banner">
+    <div class="header-content">
+      <!-- Logo -->
+      <a href="index.html" class="platform-logo" aria-label="الصفحة الرئيسية">
+        <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+      </a>
+
+      <!-- Right Section -->
+      <div style="display:flex; align-items:center; gap:12px;">
+        <!-- Search Bar -->
+        <div 
+          class="search-bar-container" 
+          data-aos="fade-down" 
+          data-aos-delay="50"
+          role="search">
+          <div class="search-box-wrapper">
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <input
+              id="globalSearch"
+              type="search"
+              class="search-input"
+              placeholder="ابحث عن مادة أو محاضرة..."
+              oninput="window.handleGlobalSearch(this.value)"
+              autocomplete="off"
+              aria-label="البحث في المكتبة"
+              aria-describedby="search-instructions"
+            />
+            <button 
+              id="searchClear" 
+              class="search-clear-btn" 
+              onclick="window.clearSearch()" 
+              style="display:none;"
+              aria-label="مسح البحث"
+              type="button">
+              <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+          </div>
+          
+          <!-- Search Results Dropdown -->
+          <div 
+            id="searchResults" 
+            class="search-results" 
+            style="display:none;"
+            role="listbox"
+            aria-label="نتائج البحث"></div>
+          
+          <!-- Screen Reader Instructions -->
+          <span id="search-instructions" class="sr-only">
+            استخدم Ctrl+K لفتح البحث
+          </span>
+        </div>
+
+        <!-- User Section -->
+        <button 
+          class="user-section loading" 
+          onclick="window.openProfile()"
+          aria-label="فتح الملف الشخصي"
+          aria-haspopup="dialog"
+          type="button">
+          <div class="user-avatar-header">
+            <img 
+              id="headerUserAvatar" 
+              alt="صورة المستخدم"
+              loading="lazy"
+            />
+          </div>
+          <div class="user-info">
+            <h3 id="headerUserName">المستخدم</h3>
+            <p id="headerUserUniversity">طالب</p>
+          </div>
+          <i class="fas fa-angle-down" id="userMenuIcon" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       MAIN CONTENT
+       ========================================== -->
+  <main class="platform-container" role="main" id="main-content">
+    <!-- Welcome Card - Dashboard Hero -->
+    <section 
+      class="welcome-card-new" 
+      data-aos="fade-down"
+      aria-label="لوحة المعلومات">
+      <div>
+        <h1>مرحباً بك</h1>
+        <p>اختر محاضرة لبدء الدراسة</p>
+
+        <!-- Smart Greeting -->
+        <div id="smartGreeting" class="smart-greeting" style="display:none;">
+          <div style="flex:1">
+            <h3 
+              id="greetHeadline" 
+              style="font-size:1.2rem; font-weight:800; margin:0 0 4px 0; color:var(--text-primary);">
+              مرحباً
+            </h3>
+            <p 
+              id="greetSub" 
+              style="color:var(--text-secondary); font-weight:600; margin:0; font-size:0.95rem;">
+              جاهز تبدأ؟
+            </p>
+          </div>
+          <button 
+            id="greetContinueBtn" 
+            class="capsule-btn" 
+            style="display:none; white-space:nowrap; flex-shrink:0; padding: 10px 16px;"
+            type="button">
+            <i class="fas fa-play" aria-hidden="true"></i> متابعة
+          </button>
+        </div>
+
+        <!-- Overall Progress Bar -->
+        <div class="progress-bar-minimal" style="margin-top:20px;">
+          <small style="color:var(--text-secondary); font-weight:600;">التقدم العام</small>
+          <div 
+            class="subject-card-progressbar" 
+            style="margin-top:8px; height:8px;"
+            role="progressbar"
+            aria-label="التقدم العام"
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100">
+            <div 
+              id="overallProgressFill" 
+              class="subject-card-progressbar-fill" 
+              style="width:0%; background: linear-gradient(135deg,#10b981,#22c55e); border-radius:999px"></div>
+          </div>
+          <div style="margin-top:4px; font-size:0.85rem; color:var(--text-secondary);">
+            <span id="progressText" aria-live="polite">0/0 محاضرة</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Circle - Apple Watch Style -->
+      <div class="welcome-icon-wrapper" aria-hidden="true">
+        <div class="stat-card-progress-circle">
+          <svg class="progress-svg" viewBox="0 0 120 120">
+            ircle class="progress-bg" cx="60" cy="60" r="54" strokeke-width="8"></circle>
+            ircle 
+              class="progress-bar" 
+              id="userProgressCircle" 
+              cx="60" 
+              cy="60" 
+              r="54" 
+              stroke-width="8" 
+              stroke-dasharray="339.29" 
+              stroke-dashoffsetet="339.29"></circle>
+          </svg>
+          <div class="progress-text">
+            <span id="userProgressPercentage">0%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         TABS - iOS Segmented Control
+         ========================================== -->
+    <nav 
+      class="filter-tabs-container" 
+      data-aos="fade-up" 
+      data-aos-delay="200"
+      role="tablist"
+      aria-label="التنقل بين الأقسام">
+      <div class="tabs-new">
+        <button 
+          class="tab-btn-new active" 
+          data-tab="allSubjects" 
+          onclick="window.switchTab('allSubjects')"
+          role="tab"
+          aria-selected="true"
+          aria-controls="allSubjects"
+          id="tab-allSubjects"
+          type="button">
+          <i class="fas fa-th-large" aria-hidden="true"></i> 
+          <span>المواد</span>
+        </button>
+
+        <button 
+          class="tab-btn-new" 
+          data-tab="myLibrary" 
+          onclick="window.switchTab('myLibrary')"
+          role="tab"
+          aria-selected="false"
+          aria-controls="myLibrary"
+          id="tab-myLibrary"
+          type="button">
+          <i class="fas fa-book" aria-hidden="true"></i> 
+          <span>مكتبتي (<span id="headerLibraryCount" aria-live="polite">0</span>)</span>
+        </button>
+
+        <button 
+          class="tab-btn-new" 
+          data-tab="continueWatching" 
+          style="display:none;" 
+          onclick="window.switchTab('continueWatching')"
+          role="tab"
+          aria-selected="false"
+          aria-controls="continueWatching"
+          id="tab-continueWatching"
+          type="button">
+          <i class="fas fa-play-circle" aria-hidden="true"></i> 
+          <span>متابعة <span class="cw-badge" id="cwCount"></span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ==========================================
+         TAB PANELS
+         ========================================== -->
+    <div class="tab-content-container">
+      <!-- All Subjects Panel -->
+      <section 
+        class="tab-panel-new active" 
+        id="allSubjects"
+        role="tabpanel"
+        aria-labelledby="tab-allSubjects"
+        tabindex="0">
+        <div 
+          id="subjectsGrid" 
+          class="subjects-grid"
+          role="list"
+          aria-label="قائمة المواد"></div>
+      </section>
+      
+      <!-- My Library Panel -->
+      <section 
+        class="tab-panel-new" 
+        id="myLibrary"
+        role="tabpanel"
+        aria-labelledby="tab-myLibrary"
+        aria-hidden="true"
+        tabindex="0">
+        
+        <!-- Empty State -->
+        <div 
+          id="libraryEmptyState" 
+          class="library-empty-state" 
+          style="display:none;"
+          role="status">
+          <i class="fas fa-book-open" aria-hidden="true"></i>
+          <h3>مكتبتك فارغة</h3>
+          <p style="color:var(--text-secondary);margin:0 0 20px;">
+            ابدأ بتفعيل محاضرة أو اختر من المواد المجانية
+          </p>
+          <button 
+            class="browse-btn-new" 
+            onclick="window.switchTab('allSubjects')"
+            type="button">
+            تصفح المواد
+          </button>
+        </div>
+        
+        <!-- Modern Library Container -->
+        <div class="modern-library-container">
+          <header class="modern-library-header">
+            <div>
+              <h2>مكتبتي</h2>
+              <p>
+                <span id="myLibraryCount" aria-live="polite">0</span> مادة - 
+                <span id="myLibraryLecturesCount" aria-live="polite">0</span> محاضرة
+              </p>
+            </div>
+
+            <!-- View Controls -->
+            <div 
+              class="library-view-controls" 
+              role="radiogroup"
+              aria-label="نوع العرض">
+              <button 
+                class="view-control-btn active" 
+                data-view="grid" 
+                onclick="window.setLibraryView('grid')" 
+                aria-label="عرض شبكي"
+                aria-pressed="true"
+                role="radio"
+                type="button">
+                <i class="fas fa-th" aria-hidden="true"></i>
+              </button>
+              <button 
+                class="view-control-btn" 
+                data-view="list" 
+                onclick="window.setLibraryView('list')" 
+                aria-label="عرض قائمة"
+                aria-pressed="false"
+                role="radio"
+                type="button">
+                <i class="fas fa-list" aria-hidden="true"></i>
+              </button>
+            </div>
+          </header>
+          
+          <div 
+            id="myLibraryGrid" 
+            class="modern-library-grid"
+            role="list"
+            aria-label="مكتبتي"></div>
+        </div>
+      </section>
+      
+      <!-- Continue Watching Panel -->
+      <section 
+        class="tab-panel-new" 
+        id="continueWatching"
+        role="tabpanel"
+        aria-labelledby="tab-continueWatching"
+        aria-hidden="true"
+        tabindex="0">
+        <div 
+          id="continueWatchingGrid"
+          role="list"
+          aria-label="متابعة المشاهدة"></div>
+      </section>
+    </div>
+
+    <!-- ==========================================
+         LECTURES VIEW (Hidden by Default)
+         ========================================== -->
+    <section 
+      id="lecturesView" 
+      style="display:none;"
+      aria-label="عرض المحاضرات">
+      <header class="lectures-view-header">
+        <button 
+          class="back-button" 
+          onclick="window.backToLibrary()"
+          aria-label="العودة للمكتبة"
+          type="button">
+          <i class="fas fa-arrow-right" aria-hidden="true"></i> عودة
+        </button>
+        <h2 id="subjectTitle">المحاضرات</h2>
+      </header>
+      <div 
+        id="lecturesList" 
+        class="lectures-list-new"
+        role="list"></div>
+    </section>
+  </main>
+
+  <!-- ==========================================
+       SCRIPTS
+       ========================================== -->
+  
+  <!-- AOS Animation Library -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // Initialize AOS with Best Practices
+    AOS.init({
+      duration: 800,
+      once: true,
+      easing: 'ease-in-out',
+      disable: 'mobile', // Disable on mobile for performance
+      offset: 50,
+      delay: 0,
+    });
+  </script>
+
+  <!-- Main Application Script (ES6 Module) -->
+  <script type="module" src="js/library.js"></script>
+
+  <!-- ==========================================
+       PAGE LOAD COMPLETION
+       ========================================== -->
+  <script>
+    // Remove Loading State
+    window.addEventListener('load', () => {
+      document.body.classList.add('loaded');
+      
+      // Announce to Screen Readers
+      const announcement = document.createElement('div');
+      announcement.setAttribute('role', 'status');
+      announcement.setAttribute('aria-live', 'polite');
+      announcement.className = 'sr-only';
+      announcement.textContent = 'تم تحميل الصفحة بنجاح';
+      document.body.appendChild(announcement);
+      
+      // Remove after announcement
+      setTimeout(() => announcement.remove(), 1000);
+    });
+
+    // Service Worker Registration (PWA)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('✅ Service Worker registered'))
+          .catch(err => console.log('❌ Service Worker registration failed'));
+      });
+    }
+  </script>
+</body>
+</html>

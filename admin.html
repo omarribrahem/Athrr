@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#16a34a">
+  <title>لوحة التحكم - منصة أثر</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/platform.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div class="background-waves">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
+  
+  <!-- Header Glass -->
+  <header class="admin-header">
+    <div class="header-content">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <button class="back-button-admin" onclick="window.location.href='library.html'" title="العودة للمكتبة">
+          <i class="fas fa-arrow-right"></i>
+        </button>
+        <div class="admin-title">
+          <i class="fas fa-user-shield"></i>
+          <span>لوحة التحكم - منصة أثر</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <input type="text" class="search-box" placeholder="ابحث عن مادة أو محاضرة..." id="globalSearchAdmin">
+        <button class="logout-btn" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i> خروج
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Tabs Glass Navigation -->
+  <nav class="admin-tabs">
+    <div class="tabs-container">
+      <button class="tab-btn active" data-tab="tutorial">
+        <i class="fas fa-graduation-cap"></i> الدليل التعليمي
+      </button>
+      <button class="tab-btn" data-tab="subjects">
+        <i class="fas fa-book"></i> المواد
+      </button>
+      <button class="tab-btn" data-tab="lectures">
+        <i class="fas fa-video"></i> المحاضرات
+      </button>
+      <button class="tab-btn" data-tab="codes">
+        <i class="fas fa-key"></i> الأكواد
+      </button>
+      <button class="tab-btn" data-tab="users">
+        <i class="fas fa-users"></i> المستخدمون
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="admin-main">
+    
+    <!-- ============================================ -->
+    <!-- TUTORIAL PANEL (NEW) -->
+    <!-- ============================================ -->
+    <div id="tutorial" class="admin-panel active">
+      <div class="admin-card tutorial-card">
+        <h2><i class="fas fa-graduation-cap"></i> مرحباً بك في لوحة التحكم</h2>
+        <p class="tutorial-intro">هذا الدليل الشامل سيساعدك على إدارة المنصة بكل سهولة دون الحاجة لكتابة كود أو التعديل في Firebase مباشرة.</p>
+        
+        <!-- Tutorial Sections -->
+        <div class="tutorial-section">
+          <h3><i class="fas fa-book"></i> 1. إضافة مادة جديدة</h3>
+          <div class="tutorial-steps">
+            <div class="step">
+              <span class="step-number">1</span>
+              <div class="step-content">
+                <h4>انتقل إلى تبويب "المواد"</h4>
+                <p>املأ البيانات الأساسية: معرف المادة (فريد مثل: economics-101)، الاسم بالعربي والإنجليزي، اسم المحاضر، والوصف.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">2</span>
+              <div class="step-content">
+                <h4>اختر الأيقونة واللون</h4>
+                <p>اختر أيقونة من +90 أيقونة تعليمية، اختر لون الخلفية ولون الأيقونة، وشاهد المعاينة المباشرة.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">3</span>
+              <div class="step-content">
+                <h4>احفظ المادة</h4>
+                <p>اضغط "حفظ المادة" - ستظهر في قائمة المواد وفي المكتبة مباشرة للطلاب.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tutorial-section">
+          <h3><i class="fas fa-video"></i> 2. إضافة محاضرة</h3>
+          <div class="tutorial-steps">
+            <div class="step">
+              <span class="step-number">1</span>
+              <div class="step-content">
+                <h4>البيانات الأساسية</h4>
+                <p>انتقل لتبويب "المحاضرات"، أدخل معرف فريد (مثل: lec-eco-01)، اختر المادة، العنوان، والترتيب.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">2</span>
+              <div class="step-content">
+                <h4>نوع الرابط (مهم جداً!)</h4>
+                <p><strong>خياران متاحان:</strong></p>
+                <ul class="tutorial-list">
+                  <li><strong>GitHub Path:</strong> مثل <code>lectures/economics/lec-01.html</code> (مسار نسبي من المجلد الرئيسي)</li>
+                  <li><strong>Cloudflare URL:</strong> مثل <code>https://athr-platform.pages.dev/lectures/lec-01.html</code> (رابط كامل)</li>
+                </ul>
+                <p class="warning-box"><i class="fas fa-exclamation-triangle"></i> تأكد من صحة المسار - الرابط الخاطئ لن يعمل!</p>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">3</span>
+              <div class="step-content">
+                <h4>الحماية والكود</h4>
+                <p><strong>محاضرة مجانية:</strong> اختر "مجانية" - متاحة لجميع الطلاب.</p>
+                <p><strong>محاضرة محمية:</strong> اختر "محمية بكود":</p>
+                <ul class="tutorial-list">
+                  <li><strong>إنشاء كود جديد:</strong> حدد عدد الاستخدامات وتاريخ الانتهاء (اختياري)</li>
+                  <li><strong>ربط كود موجود:</strong> أدخل كود موجود مسبقاً (مثل: ATHR-ABC12345)</li>
+                </ul>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">4</span>
+              <div class="step-content">
+                <h4>التخصيص النهائي</h4>
+                <p>اختر أيقونة للمحاضرة، لون مميز، واكتب وصف مختصر. احفظ المحاضرة.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tutorial-section">
+          <h3><i class="fas fa-code"></i> 3. بنية ملف المحاضرة (HTML)</h3>
+          <div class="code-tutorial">
+            <p><strong>لكي تعمل المحاضرة بشكل صحيح، يجب أن يحتوي ملف HTML على:</strong></p>
+            <pre class="code-block"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ar" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;عنوان المحاضرة&lt;/title&gt;
+  &lt;!-- روابط CSS الخاصة بالمنصة --&gt;
+  &lt;link rel="stylesheet" href="../../css/style.css"&gt;
+  &lt;link rel="stylesheet" href="../../css/platform.css"&gt;
+  &lt;link rel="stylesheet" href="../../css/features.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- محتوى المحاضرة هنا --&gt;
+  
+  &lt;!-- 🔥 CRITICAL: Security Check --&gt;
+  &lt;script type="module"&gt;
+    import { checkLectureAccess } from '../../js/lecture-auth.js';
+    
+    // ✅ استبدل 'LECTURE_ID' بمعرف المحاضرة الفعلي
+    checkLectureAccess('lec-eco-01', (user) =&gt; {
+      // المحاضرة تعمل هنا - يمكن تحميل features.js
+      import('../../js/features.js');
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            
+            <div class="warning-box">
+              <i class="fas fa-shield-alt"></i>
+              <div>
+                <strong>مهم جداً:</strong>
+                <p>يجب استدعاء <code>checkLectureAccess()</code> في كل محاضرة لضمان الحماية. الطالب الذي لا يملك المحاضرة سيتم منعه تلقائياً.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tutorial-section">
+          <h3><i class="fas fa-folder-tree"></i> 4. هيكل المجلدات الموصى به</h3>
+          <pre class="code-block"><code>📦 athr-platform/
+├── 📁 lectures/
+│   ├── 📁 economics/
+│   │   ├── lec-01.html
+│   │   ├── lec-02.html
+│   │   └── ...
+│   ├── 📁 statistics/
+│   │   ├── lec-01.html
+│   │   └── ...
+│   └── 📁 mathematics/
+│       └── ...
+├── 📁 css/
+├── 📁 js/
+└── index.html</code></pre>
+          <p class="info-box"><i class="fas fa-lightbulb"></i> نظّم المحاضرات في مجلدات حسب المادة لسهولة الإدارة.</p>
+        </div>
+
+        <div class="tutorial-section">
+          <h3><i class="fas fa-key"></i> 5. إدارة الأكواد</h3>
+          <div class="tutorial-steps">
+            <div class="step">
+              <span class="step-number">1</span>
+              <div class="step-content">
+                <h4>الأكواد التلقائية</h4>
+                <p>عند إنشاء محاضرة محمية، يتم إنشاء كود تلقائياً بصيغة <code>ATHR-XXXXXXXX</code>.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">2</span>
+              <div class="step-content">
+                <h4>تفعيل/تعطيل الأكواد</h4>
+                <p>من تبويب "الأكواد"، يمكنك تفعيل أو تعطيل أي كود، عرض الاستخدامات، وحذف الأكواد المنتهية.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span class="step-number">3</span>
+              <div class="step-content">
+                <h4>Bundle Codes (مجموعات)</h4>
+                <p>يمكنك إنشاء كود واحد لتفعيل مادة كاملة أو مجموعة مواد - مفيد للباقات المدفوعة.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tutorial-section">
+          <h3><i class="fas fa-users"></i> 6. إدارة المستخدمين</h3>
+          <p>يمكنك من تبويب "المستخدمون":</p>
+          <ul class="tutorial-list">
+            <li>عرض جميع المستخدمين المسجلين</li>
+            <li>إضافة محاضرات لمستخدم معين يدوياً</li>
+            <li>إزالة محاضرات من مكتبة المستخدم</li>
+            <li>ترقية مستخدم إلى Admin</li>
+            <li>حذف حسابات المستخدمين</li>
+          </ul>
+        </div>
+
+        <div class="tutorial-section">
+          <h3><i class="fas fa-question-circle"></i> 7. أسئلة شائعة</h3>
+          <div class="faq-item">
+            <h4>س: هل يمكنني تعديل محاضرة بعد نشرها؟</h4>
+            <p>نعم! اضغط "تعديل" في قائمة المحاضرات، عدّل البيانات، واحفظ مجدداً. التعديلات فورية.</p>
+          </div>
+          <div class="faq-item">
+            <h4>س: كيف أحذف محاضرة؟</h4>
+            <p>اضغط "حذف" في قائمة المحاضرات. سيتم حذفها من Firebase ومن مكتبات جميع المستخدمين تلقائياً.</p>
+          </div>
+          <div class="faq-item">
+            <h4>س: ماذا يحدث لو أدخلت رابط خاطئ؟</h4>
+            <p>ستظهر رسالة "المحاضرة قيد التطوير" للطالب. تحقق من المسار وعدّله من قسم التعديل.</p>
+          </div>
+          <div class="faq-item">
+            <h4>س: كيف أعرف إذا كان الكود مستخدم؟</h4>
+            <p>في تبويب "الأكواد"، تجد عدد الاستخدامات لكل كود. يمكنك تتبع من استخدم الكود من بيانات المستخدمين.</p>
+          </div>
+        </div>
+
+        <div class="success-box">
+          <i class="fas fa-check-circle"></i>
+          <div>
+            <strong>نصيحة أخيرة:</strong>
+            <p>جرّب إضافة مادة ومحاضرة تجريبية أولاً للتأكد من فهم النظام. يمكنك حذفها لاحقاً دون مشاكل!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUBJECTS PANEL -->
+    <!-- ============================================ -->
+    <div id="subjects" class="admin-panel">
+      <div class="admin-card">
+        <h2><i class="fas fa-plus-circle"></i> إضافة / تعديل مادة</h2>
+        <form id="addSubjectForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-hashtag"></i> معرف المادة</label>
+              <input type="text" class="form-input" id="subjectId" placeholder="statistics-2025" required>
+              <small class="form-hint">يجب أن يكون فريداً (حروف، أرقام، وشرطات فقط)</small>
+            </div>
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-font"></i> الاسم (عربي)</label>
+              <input type="text" class="form-input" id="subjectNameAr" placeholder="الإحصاء" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-language"></i> الاسم (إنجليزي)</label>
+              <input type="text" class="form-input" id="subjectNameEn" placeholder="Statistics" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-sort-numeric-down"></i> الترتيب</label>
+              <input type="number" class="form-input" id="subjectOrder" value="1" min="1">
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-user-tie"></i> المحاضر</label>
+              <input type="text" class="form-input" id="lecturerName" placeholder="د. أحمد علي">
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-align-right"></i> الوصف</label>
+              <textarea class="form-textarea" id="subjectDescription" placeholder="وصف المادة..." rows="3"></textarea>
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-icons"></i> الأيقونة (اختر واحدة)</label>
+              <div class="search-icon-container">
+                <input type="text" class="form-input" id="iconSearchInput" placeholder="ابحث عن أيقونة... (مثل: كتاب، حاسب، علوم)">
+              </div>
+              <div class="icon-picker-grid" id="iconPicker"></div>
+              <input type="hidden" id="subjectIcon" value="fa-book" required>
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-palette"></i> لون الخلفية</label>
+              <div class="color-grid" id="colorGrid"></div>
+              <input type="hidden" id="subjectColor" value="#16a34a" required>
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-paint-brush"></i> لون الأيقونة</label>
+              <div class="color-grid" id="iconColorGrid"></div>
+              <input type="hidden" id="iconColor" value="#ffffff">
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-shield-alt"></i> نوع الحماية</label>
+              <select class="form-select" id="subjectProtection">
+                <option value="free">مجانية (متاحة للجميع)</option>
+                <option value="code">محمية بكود (تحتاج تفعيل)</option>
+              </select>
+              <small class="form-hint">إذا اخترت "محمية"، سيحتاج الطلاب لكود لرؤية محاضرات هذه المادة</small>
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-eye"></i> المعاينة</label>
+              <div class="preview-section">
+                <div class="subject-preview">
+                  <div class="preview-icon-container" id="previewIconContainer">
+                    <i class="fas fa-book" id="previewIcon"></i>
+                  </div>
+                  <div class="preview-name" id="previewNameAr">اسم المادة</div>
+                  <div class="preview-name-en" id="previewNameEn">Subject Name</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group full-width">
+              <button type="submit" class="submit-btn" id="submitSubjectBtn">
+                <i class="fas fa-check-circle"></i> حفظ المادة
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="admin-card">
+        <h2><i class="fas fa-list"></i> المواد المتاحة</h2>
+        <div class="subjects-grid" id="subjectsList"></div>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- LECTURES PANEL -->
+    <!-- ============================================ -->
+    <div id="lectures" class="admin-panel">
+      <div class="admin-card">
+        <h2><i class="fas fa-plus-circle"></i> إضافة / تعديل محاضرة</h2>
+        <form id="addLectureForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-hashtag"></i> معرف المحاضرة</label>
+              <input type="text" class="form-input" id="lectureId" placeholder="lec-stat-01" required>
+              <small class="form-hint">فريد (حروف، أرقام، شرطات فقط)</small>
+            </div>
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-book"></i> المادة</label>
+              <select class="form-select" id="lectureSubject" required>
+                <option value="">اختر مادة...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-heading"></i> العنوان</label>
+              <input type="text" class="form-input" id="lectureTitle" placeholder="عنوان المحاضرة" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-sort-numeric-down"></i> الترتيب</label>
+              <input type="number" class="form-input" id="lectureOrder" value="1" min="1">
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-align-right"></i> الوصف</label>
+              <textarea class="form-textarea" id="lectureDescription" placeholder="وصف المحاضرة..." rows="2"></textarea>
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-icons"></i> الأيقونة</label>
+              <div class="search-icon-container">
+                <input type="text" class="form-input" id="lectureIconSearchInput" placeholder="ابحث عن أيقونة...">
+              </div>
+              <div class="icon-picker-grid-small" id="lectureIconPicker"></div>
+              <input type="hidden" id="lectureIcon" value="fa-video" required>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-palette"></i> اللون</label>
+              <div class="color-grid-small" id="lectureColorGrid"></div>
+              <input type="hidden" id="lectureColor" value="#3b82f6">
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-link"></i> نوع الرابط</label>
+              <div style="display: flex; gap: 16px; margin-top: 8px;">
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                  <input type="radio" name="linkType" value="github" checked>
+                  <span>GitHub Path (مسار نسبي)</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                  <input type="radio" name="linkType" value="cloudflare">
+                  <span>Cloudflare URL (رابط كامل)</span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="form-group full-width" id="githubPathField">
+              <label class="form-label"><i class="fas fa-folder"></i> مسار المحاضرة (GitHub Path)</label>
+              <input type="text" class="form-input" id="lectureUrlGithub" placeholder="lectures/economics/lec-01.html">
+              <small class="form-hint">مثال: lectures/statistics/lec-01.html</small>
+            </div>
+            
+            <div class="form-group full-width" id="cloudflareUrlField" style="display: none;">
+              <label class="form-label"><i class="fas fa-globe"></i> رابط Cloudflare Pages</label>
+              <input type="text" class="form-input" id="lectureUrlCloudflare" placeholder="https://athr-platform.pages.dev/lectures/lec-01.html">
+              <small class="form-hint">مثال: https://your-domain.pages.dev/lectures/lec-01.html</small>
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label"><i class="fas fa-shield-alt"></i> نوع الحماية</label>
+              <select class="form-select" id="lectureProtection" required>
+                <option value="free">مجانية</option>
+                <option value="code">محمية بكود</option>
+              </select>
+            </div>
+
+            <!-- Protection Options -->
+            <div id="protectionOptions" class="form-group full-width" style="display: none;">
+              <div class="protection-card">
+                <h4><i class="fas fa-key"></i> إعدادات الحماية</h4>
+                
+                <div style="display: flex; gap: 16px; margin: 16px 0; flex-wrap: wrap;">
+                  <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="radio" name="codeMode" value="create" checked>
+                    <span>إنشاء كود جديد</span>
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="radio" name="codeMode" value="attach">
+                    <span>ربط كود موجود</span>
+                  </label>
+                </div>
+
+                <!-- Create New Code -->
+                <div id="createCodeFields">
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label class="form-label"><i class="fas fa-users"></i> عدد الاستخدامات</label>
+                      <input type="number" class="form-input" id="newCodeMaxUses" min="0" value="1" placeholder="0 = غير محدود">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label"><i class="fas fa-calendar-alt"></i> تاريخ الانتهاء</label>
+                      <input type="date" class="form-input" id="newCodeExpiresAt">
+                      <small class="form-hint">اختياري - اتركه فارغاً إذا لم تريد انتهاء صلاحية</small>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Attach Existing Code -->
+                <div id="attachCodeFields" style="display: none;">
+                  <label class="form-label"><i class="fas fa-key"></i> الكود الموجود</label>
+                  <input type="text" class="form-input" id="existingCodeString" placeholder="ATHR-ABC12345" style="text-transform: uppercase; letter-spacing: 1px;">
+                  <small class="form-hint">أدخل كود موجود مسبقاً في النظام</small>
+                </div>
+
+                <div class="form-group" style="margin-top: 16px;">
+                  <label class="form-label"><i class="fas fa-sticky-note"></i> ملاحظات (اختياري)</label>
+                  <textarea class="form-textarea" id="codeNotes" placeholder="ملاحظات داخلية للمرجع..." rows="2"></textarea>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group full-width">
+              <button type="submit" class="submit-btn" id="submitLectureBtn">
+                <i class="fas fa-check-circle"></i> حفظ المحاضرة
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="admin-card">
+        <h2><i class="fas fa-list"></i> المحاضرات</h2>
+        <div class="table-controls">
+          <input type="text" class="search-box" id="lecturesSearchInput" placeholder="ابحث في المحاضرات...">
+          <select class="form-select" id="filterBySubject" style="max-width: 200px;">
+            <option value="">جميع المواد</option>
+          </select>
+        </div>
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr>
+                <th>العنوان</th>
+                <th>المادة</th>
+                <th>الترتيب</th>
+                <th>النوع</th>
+                <th>الرابط</th>
+                <th>إجراء</th>
+              </tr>
+            </thead>
+            <tbody id="lecturesTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- CODES PANEL -->
+    <!-- ============================================ -->
+    <div id="codes" class="admin-panel">
+      <div class="admin-card">
+        <h2><i class="fas fa-list"></i> الأكواد النشطة</h2>
+        <div class="table-controls">
+          <input type="text" class="search-box" id="codesSearchInput" placeholder="ابحث في الأكواد...">
+          <button class="btn-secondary" onclick="window.refreshCodes()">
+            <i class="fas fa-sync-alt"></i> تحديث
+          </button>
+        </div>
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr>
+                <th>الكود</th>
+                <th>النوع</th>
+                <th>المادة/المحاضرة</th>
+                <th>الاستخدام</th>
+                <th>الانتهاء</th>
+                <th>الحالة</th>
+                <th>إجراء</th>
+              </tr>
+            </thead>
+            <tbody id="codesTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- USERS PANEL -->
+    <!-- ============================================ -->
+    <div id="users" class="admin-panel">
+      <div class="admin-card">
+        <h2><i class="fas fa-users"></i> إدارة المستخدمين</h2>
+        <div class="table-controls">
+          <input type="text" class="search-box" id="usersSearchInput" placeholder="ابحث عن مستخدم...">
+          <div class="stats-box">
+            <span>إجمالي المستخدمين: <strong id="totalUsersCount">0</strong></span>
+          </div>
+        </div>
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr>
+                <th>الاسم</th>
+                <th>البريد</th>
+                <th>الجامعة</th>
+                <th>المحاضرات</th>
+                <th>الدور</th>
+                <th>إجراء</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

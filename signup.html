@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <!-- Meta Tags -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="إنشاء حساب في منصة أثر التعليمية - سجّل الآن للحصول على وصول كامل للمحاضرات والدورات التعليمية">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#16a34a">
+  
+  <title>إنشاء حساب - منصة أثر التعليمية</title>
+  
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  
+  <!-- Inline Critical CSS -->
+  <style>
+    /* Base Layout */
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .toast {
+      min-width: 320px;
+      padding: 18px 22px;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      transform: translateX(450px);
+      animation: slideInToast 0.4s ease forwards;
+      border: 2px solid;
+    }
+    
+    @keyframes slideInToast {
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    .toast.success { border-color: rgba(22, 163, 74, 0.3); }
+    .toast.error { border-color: rgba(220, 38, 38, 0.3); }
+    .toast.warning { border-color: rgba(245, 158, 11, 0.3); }
+    .toast.info { border-color: rgba(59, 130, 246, 0.3); }
+    
+    .toast-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    
+    .toast.success .toast-icon {
+      background: linear-gradient(135deg, #16a34a, #10b981);
+      color: white;
+    }
+    
+    .toast.error .toast-icon {
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+      color: white;
+    }
+    
+    .toast.warning .toast-icon {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+      color: white;
+    }
+    
+    .toast.info .toast-icon {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+      color: white;
+    }
+    
+    .toast-content { flex: 1; }
+    
+    .toast-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 4px;
+      color: #1e293b;
+    }
+    
+    .toast-message {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.4;
+    }
+    
+    .toast-close {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: color 0.3s;
+      padding: 4px 8px;
+      flex-shrink: 0;
+    }
+    
+    .toast-close:hover {
+      color: #64748b;
+    }
+    
+    /* Loading Overlay */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .loading-overlay.active { display: flex; }
+    
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(22, 163, 74, 0.2);
+      border-top-color: #16a34a;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin { 
+      to { transform: rotate(360deg); } 
+    }
+    
+    .loading-text {
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    /* CRITICAL FIX: Force rounded shadow for inputs */
+    .input-wrapper {
+      border-radius: 9999px !important;
+    }
+    
+    /* Responsive Toast */
+    @media (max-width: 768px) {
+      .toast-container {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+      }
+      
+      .toast {
+        min-width: auto;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Background Waves -->
+  <div class="background-waves" aria-hidden="true">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
+
+  <!-- Toast Container -->
+  <div 
+    class="toast-container" 
+    id="toastContainer"
+    role="region" 
+    aria-live="polite" 
+    aria-label="الإشعارات"></div>
+  
+  <!-- Loading Overlay -->
+  <div 
+    class="loading-overlay" 
+    id="loadingOverlay"
+    role="status" 
+    aria-live="polite">
+    <div class="loader" aria-hidden="true"></div>
+    <div class="loading-text">جاري إنشاء الحساب...</div>
+  </div>
+
+  <!-- Auth Container -->
+  <div class="auth-container">
+    <div class="auth-glass-card">
+      
+      <!-- Logo Section -->
+      <div class="logo-container">
+        <div class="glass-logo" aria-hidden="true">
+          <i class="fas fa-user-plus"></i>
+        </div>
+        <h1 class="auth-title">إنشاء حساب جديد</h1>
+        <p class="auth-subtitle">انضم إلى منصة أثر التعليمية</p>
+      </div>
+      
+      <!-- Signup Form -->
+      <form id="signupForm" novalidate aria-label="نموذج إنشاء حساب جديد">
+        
+        <!-- Full Name -->
+        <div class="input-capsule">
+          <div class="input-wrapper">
+            <div class="input-icon" aria-hidden="true">
+              <i class="fas fa-user"></i>
+            </div>
+            <input 
+              type="text" 
+              id="name" 
+              class="capsule-input"
+              placeholder="الاسم الكامل"
+              required
+              autocomplete="name"
+              aria-label="الاسم الكامل"
+              aria-required="true">
+          </div>
+        </div>
+        
+        <!-- Username -->
+        <div class="input-capsule">
+          <div class="input-wrapper">
+            <div class="input-icon" aria-hidden="true">
+              <i class="fas fa-at"></i>
+            </div>
+            <input 
+              type="text" 
+              id="username" 
+              class="capsule-input"
+              placeholder="اسم المستخدم (حروف وأرقام فقط)"
+              required
+              pattern="[a-zA-Z0-9_]+"
+              autocomplete="username"
+              aria-label="اسم المستخدم"
+              aria-required="true">
+          </div>
+        </div>
+        
+        <!-- Phone Number (Optional) -->
+        <div class="input-capsule">
+          <div class="input-wrapper">
+            <div class="input-icon" aria-hidden="true">
+              <i class="fas fa-phone"></i>
+            </div>
+            <input 
+              type="tel" 
+              id="phone" 
+              class="capsule-input"
+              placeholder="رقم الهاتف (اختياري)"
+              autocomplete="tel"
+              aria-label="رقم الهاتف"
+              aria-required="false">
+          </div>
+        </div>
+        
+        <!-- Email -->
+        <div class="input-capsule">
+          <div class="input-wrapper">
+            <div class="input-icon" aria-hidden="true">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <input 
+              type="email" 
+              id="email" 
+              class="capsule-input"
+              placeholder="البريد الإلكتروني"
+              required
+              autocomplete="email"
+              aria-label="البريد الإلكتروني"
+              aria-required="true">
+          </div>
+        </div>
+        
+        <!-- Email Confirmation -->
+        <div class="input-capsule">
+          <div class="input-wrapper">
+            <div class="input-icon" aria-hidden="true">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <input 
+              type="email" 
+              id="emailConfirm" 
+              class="capsule-input"
+              placeholder="تأكيد البريد الإلكتروني"
+              required
+              autocomplete="off"
+              aria-label="تأكيد البريد الإلكتروني"
+              aria-required="true">
+          </div>
+        </div>
+        
+        <!-- Password -->
+        <div class="input-capsule">
+          <div class="input-wrapper">
+            <div class="input-icon" aria-hidden="true">
+              <i class="fas fa-lock"></i>
+            </div>
+            <input 
+              type="password" 
+              id="password" 
+              class="capsule-input"
+              placeholder="كلمة المرور (6 أحرف على الأقل)"
+              required
+              minlength="6"
+              autocomplete="new-password"
+              aria-label="كلمة المرور"
+              aria-required="true">
+            <button 
+              type="button" 
+              class="password-toggle" 
+              onclick="togglePassword()"
+              aria-label="إظهار أو إخفاء كلمة المرور"
+              tabindex="0">
+              <i class="fas fa-eye" id="passwordIcon"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="submit-btn" 
+          id="signupBtn"
+          aria-label="إنشاء الحساب">
+          <i class="fas fa-user-plus"></i> إنشاء الحساب
+        </button>
+      </form>
+      
+      <!-- Footer Links -->
+      <div class="footer-links">
+        <p>لديك حساب بالفعل؟ 
+          <a href="login.html">سجّل دخولك</a>
+        </p>
+        <p>
+          <a href="index.html">العودة للصفحة الرئيسية</a>
+        </p>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Utilities Script -->
+  <script>
+    /* Toast Notifications System */
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const icons = {
+        success: '<i class="fas fa-check-circle"></i>',
+        error: '<i class="fas fa-exclamation-circle"></i>',
+        warning: '<i class="fas fa-exclamation-triangle"></i>',
+        info: '<i class="fas fa-info-circle"></i>'
+      };
+      const titles = { 
+        success: 'نجح', 
+        error: 'خطأ',
+        warning: 'تنبيه',
+        info: 'معلومة'
+      };
+      
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.setAttribute('role', 'alert');
+      toast.innerHTML = `
+        <div class="toast-icon" aria-hidden="true">${icons[type]}</div>
+        <div class="toast-content">
+          <div class="toast-title">${titles[type]}</div>
+          <div class="toast-message">${message}</div>
+        </div>
+        <button 
+          class="toast-close" 
+          onclick="this.parentElement.remove()"
+          aria-label="إغلاق الإشعار">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        if (toast.parentElement) {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateX(450px)';
+          setTimeout(() => toast.remove(), 300);
+        }
+      }, 4000);
+    }
+    
+    /* Loading Overlay Control */
+    function showLoading(show) {
+      const overlay = document.getElementById('loadingOverlay');
+      overlay.classList.toggle('active', show);
+    }
+    
+    /* Password Visibility Toggle */
+    function togglePassword() {
+      const input = document.getElementById('password');
+      const icon = document.getElementById('passwordIcon');
+      
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+      }
+    }
+  </script>
+  
+  <!-- Main Auth Script -->
+  <script type="module">
+    import { signup, supabase, onAuthChange } from './js/app.js';
+    
+    /* Auth State Check */
+    onAuthChange((user) => {
+      if (user) {
+        console.log('User already authenticated, redirecting to library...');
+        window.location.href = 'library.html';
+      }
+    });
+
+    /* Form Submit Handler */
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value.trim();
+      const username = document.getElementById('username').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const emailConfirm = document.getElementById('emailConfirm').value.trim();
+      const password = document.getElementById('password').value;
+      const btn = document.getElementById('signupBtn');
+      
+      /* Validation */
+      if (!name || name.length < 3) {
+        showToast('يرجى إدخال اسمك الكامل (3 أحرف على الأقل)', 'error');
+        return;
+      }
+      
+      if (!username || username.length < 3) {
+        showToast('يرجى إدخال اسم مستخدم (3 أحرف على الأقل)', 'error');
+        return;
+      }
+      
+      if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+        showToast('اسم المستخدم يجب أن يحتوي على حروف وأرقام فقط (بدون مسافات)', 'error');
+        return;
+      }
+      
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showToast('البريد الإلكتروني غير صحيح', 'error');
+        return;
+      }
+      
+      if (email !== emailConfirm) {
+        showToast('البريدان الإلكترونيان غير متطابقين', 'error');
+        document.getElementById('emailConfirm').focus();
+        return;
+      }
+      
+      if (password.length < 6) {
+        showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+        return;
+      }
+      
+      if (phone && !/^[\d\s\-\+\(\)]+$/.test(phone)) {
+        showToast('رقم الهاتف غير صحيح', 'error');
+        return;
+      }
+      
+      /* Submit */
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإنشاء...';
+      showLoading(true);
+      
+      try {
+        const result = await signup(
+          email, 
+          password, 
+          name, 
+          username, 
+          phone || null
+        );
+        
+        if (result.success) {
+          showToast('تم إنشاء الحساب بنجاح! جارٍ التوجيه...', 'success');
+          
+          setTimeout(() => {
+            window.location.href = 'library.html';
+          }, 1500);
+        } else {
+          showLoading(false);
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-user-plus"></i> إنشاء الحساب';
+          
+          showToast(result.message || 'حدث خطأ في إنشاء الحساب', 'error');
+        }
+      } catch (e) {
+        showLoading(false);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-user-plus"></i> إنشاء الحساب';
+        
+        console.error('Signup error:', e);
+        showToast('خطأ في الاتصال، حاول مجدداً', 'error');
+      }
+    });
+  </script>
+  
+</body>
+</html>

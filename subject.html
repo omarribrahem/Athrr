@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المحاضرات - منصة أثر</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/platform.css">
+  <link rel="stylesheet" href="css/subject.css">
+</head>
+<body>
+  <div class="background-waves">
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+    <div class="wave-layer"></div>
+  </div>
+
+  <header class="platform-header">
+    <div class="header-content">
+      <div class="platform-logo"><i class="fas fa-graduation-cap"></i></div>
+      
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div class="user-section loading" onclick="toggleUserMenu()">
+          <div class="user-avatar-header">
+            <img id="headerUserAvatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316a34a'/><circle cx='50' cy='38' r='16' fill='white'/><path d='M25 68 Q50 84 75 68' fill='white'/></svg>" alt="avatar">
+          </div>
+          <div class="user-info">
+            <h3 id="headerUserName">المستخدم</h3>
+            <p id="headerUserUniversity">الجامعة</p>
+          </div>
+          <i class="fas fa-angle-down" id="userMenuIcon"></i>
+          
+          <div class="user-dropdown-menu" id="userDropdownMenu">
+            <div class="user-menu-item" onclick="event.stopPropagation(); openProfile();"><i class="fas fa-user-circle"></i><span>الملف الشخصي</span></div>
+            <div class="user-menu-divider"></div>
+            <div class="user-menu-item logout-item" onclick="event.stopPropagation(); logout();"><i class="fas fa-sign-out-alt"></i><span>خروج</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="platform-container">
+    <!-- زر العودة -->
+    <div class="back-button-container">
+      <button class="back-button" onclick="window.location.href='library.html'" aria-label="العودة إلى المكتبة">
+        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+        <span>عودة للمكتبة</span>
+      </button>
+    </div>
+
+    <!-- عنوان ووصف المادة في الوسط -->
+    <div class="subject-hero-center">
+      <h1 id="subjectName">المادة</h1>
+      <p id="subjectHeaderDesc">وصف المادة</p>
+    </div>
+
+    <!-- شريط البحث -->
+    <div class="subject-search-row">
+      <input id="lecturesSearch" class="form-input" placeholder="ابحث عن محاضرة...">
+    </div>
+
+    <!-- قائمة المحاضرات -->
+    <section id="lecturesListContainer" class="lectures-list-new"></section>
+  </main>
+
+  <script type="module" src="js/subject.js"></script>
+</body>
+</html>
