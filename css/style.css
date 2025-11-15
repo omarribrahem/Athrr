@@ -1,0 +1,835 @@
+/* ==================================================
+ * ATHR PLATFORM - BASE STYLES V24.1 FINAL
+ * Foundation CSS - Background, Colors, Typography
+ * Standards: Apple HIG + Material 3 + BEM Methodology
+ * Performance: GPU Optimized + Core Web Vitals
+ * Accessibility: WCAG 2.1 AA Compliant
+ * ================================================== */
+
+/* ==================================================
+   CSS CUSTOM PROPERTIES - Design Tokens
+   ================================================== */
+:root {
+  /* Primary Color System - Green Brand */
+  --color-primary: #16a34a;
+  --color-primary-dark: #15803d;
+  --color-primary-darker: #14532d;
+  --color-primary-light: #22c55e;
+  --color-primary-lighter: #4ade80;
+  
+  /* Secondary Color System - Education Context */
+  --color-ai: #f59e0b;
+  --color-business: #2563eb;
+  --color-finance: #059669;
+  --color-accounting: #dc2626;
+  --color-economics: #7c3aed;
+  
+  /* Glass Morphism System */
+  --glass-bg: rgba(240, 253, 244, 0.28);
+  --glass-bg-medium: rgba(240, 253, 244, 0.35);
+  --glass-bg-strong: rgba(240, 253, 244, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-border-hover: rgba(255, 255, 255, 0.6);
+  --glass-blur: blur(30px) saturate(180%);
+  --glass-blur-light: blur(20px) saturate(160%);
+  
+  /* Semantic Colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+  
+  /* Text Color System */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  --text-heading: #14532d;
+  --text-muted: #94a3b8;
+  
+  /* Background System */
+  --bg-primary: #f0fdf4;
+  --bg-secondary: #dcfce7;
+  --bg-tertiary: #bbf7d0;
+  
+  /* Shadow System - Material Design 3 Elevation */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.10);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.15);
+  --shadow-glass: 0 20px 50px rgba(0, 0, 0, 0.1), 
+                   inset 0 2px 0 rgba(255, 255, 255, 0.5);
+  
+  /* Border Radius - 8px Grid System */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-full: 9999px;
+  
+  /* Spacing - 8px Grid System */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  
+  /* Typography - Type Scale */
+  --font-arabic: 'IBM Plex Sans Arabic', 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-english: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: 'Roboto Mono', 'SF Mono', 'Courier New', monospace;
+  
+  /* Font Sizes - Fluid Typography */
+  --text-xs: clamp(0.75rem, 1.5vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 2vw, 1rem);
+  --text-base: clamp(1rem, 2.5vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 3vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 3.5vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 4vw, 1.875rem);
+  --text-3xl: clamp(1.875rem, 5vw, 2.25rem);
+  --text-4xl: clamp(2.25rem, 6vw, 3rem);
+  --text-5xl: clamp(3rem, 7vw, 3.75rem);
+  
+  /* Transitions - Apple Motion */
+  --transition-fast: 150ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  --transition-bounce: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  /* Z-Index Scale */
+  --z-base: 1;
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}
+
+/* ==================================================
+   KEYFRAME ANIMATIONS
+   ================================================== */
+
+@keyframes gradientShift {
+  0%, 100% { 
+    background-position: 0% 50%; 
+  }
+  50% { 
+    background-position: 100% 50%; 
+  }
+}
+
+@keyframes waveFlow {
+  0%, 100% { 
+    transform: translateX(-25%) scaleY(1) scaleX(1); 
+  }
+  33% { 
+    transform: translateX(-10%) scaleY(1.08) scaleX(0.92); 
+  }
+  66% { 
+    transform: translateX(10%) scaleY(0.92) scaleX(1.08); 
+  }
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: scale(0.96); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(24px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes slideDown {
+  from { 
+    opacity: 0; 
+    transform: translateY(-24px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes shimmer {
+  0% { 
+    background-position: -1000px 0; 
+  }
+  100% { 
+    background-position: 1000px 0; 
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    opacity: 1; 
+  }
+  50% { 
+    opacity: 0.7; 
+  }
+}
+
+/* ==================================================
+   CSS RESET & BASE STYLES
+   ================================================== */
+
+*,
+*::before,
+*::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html { 
+  font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-arabic);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-weight: 400;
+  overflow-x: hidden;
+  direction: rtl;
+  padding: clamp(10px, 3vw, 20px);
+  -webkit-overflow-scrolling: touch;
+  touch-action: manipulation;
+  min-height: 100vh;
+}
+
+body[dir="ltr"] { 
+  direction: ltr; 
+  font-family: var(--font-english);
+}
+
+/* ==================================================
+   BACKGROUND WAVES - Animated Gradient
+   ================================================== */
+.background-waves {
+  position: fixed; 
+  inset: 0; 
+  z-index: -2;
+  background: linear-gradient(
+    135deg, 
+    #f0fdf4 0%, 
+    #dcfce7 25%, 
+    #fefce8 50%, 
+    #ecfccb 75%, 
+    #f0fdf4 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 25s ease infinite;
+  will-change: background-position;
+  transform: translateZ(0);
+}
+
+.wave-layer {
+  position: absolute; 
+  bottom: -10%; 
+  left: -10%; 
+  width: 120%; 
+  height: 300px;
+  background: linear-gradient(
+    90deg, 
+    rgba(22, 163, 74, 0.08), 
+    rgba(77, 124, 15, 0.08), 
+    rgba(34, 197, 94, 0.08)
+  );
+  border-radius: 60% 40% 0 0;
+  animation: waveFlow 18s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.wave-layer:nth-child(2) {
+  bottom: -5%; 
+  height: 250px; 
+  animation-delay: -6s;
+  animation-duration: 20s;
+  background: linear-gradient(
+    90deg, 
+    rgba(77, 124, 15, 0.06), 
+    rgba(34, 197, 94, 0.06)
+  );
+  border-radius: 40% 60% 0 0;
+}
+
+.wave-layer:nth-child(3) {
+  bottom: 0%; 
+  height: 200px; 
+  animation-delay: -12s;
+  animation-duration: 22s;
+  background: linear-gradient(
+    90deg, 
+    rgba(34, 197, 94, 0.04), 
+    rgba(22, 163, 74, 0.04)
+  );
+  border-radius: 80% 20% 0 0;
+}
+
+/* ==================================================
+   MAIN CONTENT CONTAINER
+   ================================================== */
+.main-content { 
+  max-width: 1200px; 
+  margin: 90px auto 0; 
+  padding: clamp(20px, 5vw, 40px);
+  position: relative;
+  z-index: var(--z-base);
+}
+
+/* ==================================================
+   GLASS CARD - Premium Glass Morphism
+   ================================================== */
+.glassy-card {
+  background: var(--glass-bg-medium);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: clamp(20px, 5vw, 32px);
+  margin-bottom: clamp(24px, 5vw, 36px);
+  box-shadow: var(--shadow-glass);
+  transition: all var(--transition-slow);
+  position: relative;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.glassy-card:hover { 
+  transform: translateY(-6px) scale(1.01); 
+  border-color: var(--glass-border-hover);
+  box-shadow: 
+    0 24px 64px rgba(0, 0, 0, 0.15),
+    inset 0 2px 0 rgba(255, 255, 255, 0.6);
+}
+
+.glassy-card:active {
+  transform: translateY(-3px) scale(1.005);
+}
+
+/* ==================================================
+   TYPOGRAPHY SYSTEM
+   ================================================== */
+
+h1, h2, h3, h4, h5, h6 { 
+  font-weight: 700; 
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text-heading);
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.8);
+  margin-bottom: var(--space-lg);
+}
+
+h1 {
+  font-size: var(--text-5xl);
+  text-align: center;
+  font-weight: 900;
+  color: var(--color-primary-darker);
+  margin-bottom: var(--space-2xl);
+}
+
+h2 {
+  font-size: var(--text-4xl);
+  font-weight: 800;
+  color: #166534;
+  border-bottom: 3px solid rgba(22, 163, 74, 0.3);
+  padding-bottom: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+h3 {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: #15803d;
+}
+
+h4 {
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+h5 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+h6 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+p, li { 
+  color: var(--text-secondary); 
+  margin-bottom: var(--space-md);
+  line-height: 1.8;
+  font-size: var(--text-base);
+}
+
+strong { 
+  color: var(--text-heading); 
+  font-weight: 700; 
+}
+
+em {
+  font-style: italic;
+  color: var(--text-primary);
+}
+
+ul, ol { 
+  padding-right: clamp(20px, 4vw, 28px); 
+  margin-bottom: var(--space-lg); 
+}
+
+body[dir="ltr"] ul, 
+body[dir="ltr"] ol { 
+  padding-right: 0; 
+  padding-left: clamp(20px, 4vw, 28px); 
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  font-weight: 500;
+}
+
+a:hover {
+  color: var(--color-primary-light);
+  text-decoration: underline;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+code {
+  font-family: var(--font-mono);
+  background: rgba(124, 58, 237, 0.1);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9em;
+  color: var(--color-economics);
+  font-weight: 500;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+pre {
+  background: rgba(30, 41, 59, 0.95);
+  color: #e2e8f0;
+  padding: var(--space-xl);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  margin: var(--space-xl) 0;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  border: none;
+}
+
+blockquote {
+  border-right: 4px solid var(--color-primary);
+  padding: var(--space-lg) var(--space-xl);
+  margin: var(--space-xl) 0;
+  background: rgba(22, 163, 74, 0.08);
+  border-radius: var(--radius-md);
+  font-style: italic;
+  color: var(--text-secondary);
+  font-size: var(--text-lg);
+}
+
+body[dir="ltr"] blockquote {
+  border-right: none;
+  border-left: 4px solid var(--color-primary);
+}
+
+hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(
+    90deg, 
+    transparent, 
+    var(--color-primary), 
+    transparent
+  );
+  margin: var(--space-2xl) 0;
+  opacity: 0.3;
+}
+
+/* ==================================================
+   TEXT HIGHLIGHTERS - Color System
+   ================================================== */
+mark {
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  font-weight: 600;
+  border: none;
+}
+
+.highlight-green { 
+  background: rgba(22, 163, 74, 0.2); 
+  color: #14532d; 
+}
+
+.highlight-blue { 
+  background: rgba(59, 130, 246, 0.2); 
+  color: #1e3a8a; 
+}
+
+.highlight-yellow { 
+  background: rgba(234, 179, 8, 0.2); 
+  color: #713f12; 
+}
+
+.highlight-orange { 
+  background: rgba(249, 115, 22, 0.2); 
+  color: #7c2d12; 
+}
+
+.highlight-pink { 
+  background: rgba(236, 72, 153, 0.2); 
+  color: #831843; 
+}
+
+.highlight-purple { 
+  background: rgba(168, 85, 247, 0.2); 
+  color: #581c87; 
+}
+
+.highlight-business { 
+  background: rgba(37, 99, 235, 0.2); 
+  color: #1e3a8a; 
+}
+
+.highlight-finance { 
+  background: rgba(5, 150, 105, 0.2); 
+  color: #064e3b; 
+}
+
+.highlight-accounting { 
+  background: rgba(220, 38, 38, 0.2); 
+  color: #7f1d1d; 
+}
+
+.highlight-economics { 
+  background: rgba(124, 58, 237, 0.2); 
+  color: #4c1d95; 
+}
+
+/* ==================================================
+   MEDIA ELEMENTS - Images & Figures
+   ================================================== */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+figure {
+  margin: var(--space-xl) 0;
+}
+
+figcaption {
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  margin-top: var(--space-sm);
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* ==================================================
+   CUSTOM SCROLLBAR - Themed Scrollbar
+   ================================================== */
+::-webkit-scrollbar { 
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(22, 163, 74, 0.5);
+  border-radius: var(--radius-md);
+  transition: background var(--transition-base);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(22, 163, 74, 0.7);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgba(22, 163, 74, 0.9);
+}
+
+/* ==================================================
+   TEXT SELECTION - Highlight Color
+   ================================================== */
+::selection {
+  background: rgba(22, 163, 74, 0.3);
+  color: var(--text-primary);
+}
+
+::-moz-selection {
+  background: rgba(22, 163, 74, 0.3);
+  color: var(--text-primary);
+}
+
+/* ==================================================
+   FOCUS STYLES - Accessibility
+   ================================================== */
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ==================================================
+   BASE FORM ELEMENTS
+   ================================================== */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+input, 
+textarea, 
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* ==================================================
+   UTILITY CLASSES
+   ================================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-primary);
+  color: white;
+  padding: var(--space-md) var(--space-lg);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  z-index: var(--z-tooltip);
+}
+
+.skip-to-content:focus {
+  top: var(--space-md);
+}
+
+/* ==================================================
+   RESPONSIVE DESIGN - Mobile First
+   ================================================== */
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-top: 70px;
+    padding: var(--space-lg);
+  }
+  
+  h2 { 
+    border-bottom-width: 2px; 
+  }
+  
+  blockquote {
+    padding: var(--space-md) var(--space-lg);
+  }
+  
+  pre {
+    padding: var(--space-lg);
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    margin-top: 60px;
+    padding: var(--space-md);
+  }
+  
+  .glassy-card {
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+  }
+  
+  h1 {
+    margin-bottom: var(--space-lg);
+  }
+  
+  h2 {
+    margin-top: var(--space-xl);
+  }
+}
+
+/* ==================================================
+   PRINT STYLES - Print Optimization
+   ================================================== */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .background-waves,
+  .wave-layer {
+    display: none;
+  }
+  
+  .glassy-card {
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: none;
+  }
+  
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+  
+  h2, h3 {
+    page-break-after: avoid;
+  }
+  
+  pre, blockquote {
+    page-break-inside: avoid;
+  }
+}
+
+/* ==================================================
+   REDUCED MOTION - Accessibility
+   ================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .wave-layer {
+    animation: none;
+  }
+  
+  .background-waves {
+    animation: none;
+  }
+}
+
+/* ==================================================
+   HIGH CONTRAST MODE - Accessibility
+   ================================================== */
+@media (prefers-contrast: high) {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .glassy-card {
+    background: white;
+    border: 3px solid black;
+  }
+  
+  h2 {
+    border-bottom-width: 4px;
+    border-color: black;
+  }
+  
+  a {
+    color: #0000EE;
+  }
+  
+  button {
+    border: 2px solid black;
+  }
+}
+
+/* ==================================================
+   DARK MODE SUPPORT - System Preference
+   ================================================== */
+@media (prefers-color-scheme: dark) {
+  /* Dark mode styles can be added here if needed */
+  /* Currently platform uses light theme only */
+}
+
+/* ==================================================
+   END OF FILE - V24.1 FINAL
+   Total Lines: 750+
+   Standards: Apple HIG, Material 3, BEM
+   Performance: GPU Optimized, Core Web Vitals
+   Accessibility: WCAG 2.1 AA
+   Fixed: Removed duplicate .skip-to-content
+   ================================================== */
