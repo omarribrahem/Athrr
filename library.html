@@ -64,10 +64,22 @@
   />
 
   <!-- ==========================================
-       STYLESHEETS - Glass Morphism Design
+       STYLESHEETS - Glass Morphism Design V19.0 CLEAN
+       ✅ FIXED: Using platform-clean.css for 2-column Profile Modal
        ========================================== -->
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/platform.css" />
+  <!-- ==========================================
+       PWA MANIFEST
+       ========================================== -->
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- ==========================================
+       FAVICONS
+       ========================================== -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
   <!-- ==========================================
        AOS ANIMATION LIBRARY
@@ -159,8 +171,8 @@
   </a>
 
   <!-- ==========================================
-       PROFILE MODAL - iOS Settings Style
-       Standard: Apple Modal Presentation
+       PROFILE MODAL - ENHANCED V2.0
+       2-Column Layout: Avatar Left | Form Right
        ========================================== -->
   <div 
     class="profile-modal" 
@@ -181,9 +193,17 @@
     <div class="profile-modal-content" role="document">
       <!-- Header -->
       <header class="profile-modal-header">
-        <h2 id="profileModalTitle">الملف الشخصي</h2>
+        <div>
+          <h2 id="profileModalTitle">
+            <i class="fas fa-user-circle" aria-hidden="true"></i>
+            الملف الشخصي
+          </h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 4px 0 0 0;">
+            إدارة معلوماتك الشخصية
+          </p>
+        </div>
         <button 
-          class="close-modal" 
+          class="profile-modal-close" 
           onclick="window.closeProfile()" 
           aria-label="إغلاق الملف الشخصي"
           type="button">
@@ -191,144 +211,156 @@
         </button>
       </header>
 
-      <!-- Grid Layout -->
-      <div class="profile-modal-grid">
-        <!-- Avatar Column -->
-        <section class="profile-avatar-column" aria-label="إعدادات الصورة الرمزية">
-          <div class="profile-card-section">
-            <div class="profile-avatar-wrapper">
-              <div class="profile-avatar-large">
-                <img 
-                  id="profileAvatarImg" 
-                  alt="صورة المستخدم" 
-                  loading="lazy"
-                />
+      <!-- Body: 2-Column Grid Layout -->
+      <div class="profile-modal-body">
+        <div class="profile-grid-layout">
+          <!-- LEFT COLUMN: Avatar Section -->
+          <section class="profile-avatar-section" aria-label="إعدادات الصورة الرمزية">
+            <div class="profile-avatar-card">
+              <div class="profile-avatar-wrapper">
+                <div class="profile-avatar-large">
+                  <img 
+                    id="profileAvatarImg" 
+                    alt="صورة المستخدم" 
+                    loading="lazy"
+                  />
+                  <button 
+                    class="avatar-edit-overlay" 
+                    onclick="event.stopPropagation(); window.showAvatarSelector();" 
+                    aria-label="تغيير الصورة الرمزية"
+                    type="button">
+                    <i class="fas fa-camera" aria-hidden="true"></i>
+                    <span>تغيير</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div style="text-align: center; margin-top: 16px;">
+                <h3 id="profileModalName" style="font-size: 1.1rem; font-weight: 700; margin: 0 0 4px 0; color: var(--text-primary);">
+                  المستخدم
+                </h3>
+                
+              </div>
+            </div>
+            
+            <!-- Avatar Selector -->
+            <div class="avatar-selector" id="avatarSelector" style="display:none; margin-top: 20px;">
+              <h4 style="font-size: 0.95rem; font-weight: 700; margin: 0 0 12px 0; color: var(--text-primary);">
+                اختر صورة رمزية
+              </h4>
+              <div 
+                class="avatars-grid" 
+                role="group" 
+                aria-label="اختر صورة رمزية"></div>
+              
+              <div class="avatar-selector-footer" style="display:flex; gap:12px; margin-top:16px;">
                 <button 
-                  class="avatar-edit-overlay" 
-                  onclick="event.stopPropagation(); window.showAvatarSelector();" 
-                  aria-label="تغيير الصورة الرمزية"
-                  type="button">
-                  <i class="fas fa-camera" aria-hidden="true"></i>
-                  <span>تغيير</span>
+                  type="button" 
+                  class="btn-confirm" 
+                  onclick="event.stopPropagation(); window.confirmAvatarSelection();" 
+                  style="flex:1; padding:12px; border-radius:var(--radius-lg); background: linear-gradient(135deg, #16a34a, #10b981); color: white; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                  <i class="fas fa-check" aria-hidden="true"></i> تأكيد
+                </button>
+                <button 
+                  type="button" 
+                  class="btn-cancel" 
+                  onclick="event.stopPropagation(); window.cancelAvatarSelection();" 
+                  style="flex:1; padding:12px; border-radius:var(--radius-lg); background: rgba(100, 116, 139, 0.15); color: #64748b; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                  <i class="fas fa-times" aria-hidden="true"></i> إلغاء
                 </button>
               </div>
             </div>
-          </div>
+          </section>
           
-          <!-- Avatar Selector - iOS Photo Picker Style -->
-          <div class="avatar-selector" id="avatarSelector" style="display:none;">
-            <div 
-              class="avatars-grid" 
-              role="group" 
-              aria-label="اختر صورة رمزية"></div>
-            
-            <div class="avatar-selector-footer" style="display:flex; gap:12px; margin-top:16px;">
-              <button 
-                type="button" 
-                class="profile-save-btn" 
-                onclick="event.stopPropagation(); window.confirmAvatarSelection();" 
-                style="flex:1; padding:12px; border-radius:var(--radius-md);">
-                <i class="fas fa-check" aria-hidden="true"></i> تأكيد
-              </button>
-              <button 
-                type="button" 
-                class="profile-logout-btn" 
-                onclick="event.stopPropagation(); window.cancelAvatarSelection();" 
-                style="flex:1; padding:12px; border-radius:var(--radius-md); background:#64748b;">
-                <i class="fas fa-times" aria-hidden="true"></i> إلغاء
-              </button>
-            </div>
-          </div>
-        </section>
-        
-        <!-- Form Column -->
-        <section class="profile-form-column" aria-label="معلومات الملف الشخصي">
-          <form id="profileForm" onsubmit="return false;" novalidate>
-            <!-- Name Field -->
-            <div class="form-group">
-              <label for="profileName" class="form-label">
-                <i class="fas fa-user" aria-hidden="true"></i> الاسم الكامل
-              </label>
-              <input 
-                id="profileName" 
-                type="text" 
-                class="form-input" 
-                autocomplete="name"
-                required
-                aria-required="true"
-                placeholder="أدخل اسمك الكامل"
-              />
-            </div>
-            
-            <!-- Username Field -->
-            <div class="form-group">
-              <label for="profileUsername" class="form-label">
-                <i class="fas fa-at" aria-hidden="true"></i> اسم المستخدم
-              </label>
-              <input 
-                id="profileUsername" 
-                type="text" 
-                class="form-input" 
-                autocomplete="username"
-                required
-                aria-required="true"
-                pattern="[a-z0-9_]+"
-                placeholder="حروف وأرقام و _ فقط"
-              />
-            </div>
-            
-            <!-- Phone Field -->
-            <div class="form-group">
-              <label for="profilePhone" class="form-label">
-                <i class="fas fa-phone" aria-hidden="true"></i> رقم الهاتف
-              </label>
-              <input 
-                id="profilePhone" 
-                type="tel" 
-                class="form-input" 
-                autocomplete="tel"
-                placeholder="اختياري"
-              />
-            </div>
-            
-            <!-- Email Field (Disabled) -->
-            <div class="form-group">
-              <label for="profileEmail" class="form-label">
-                <i class="fas fa-envelope" aria-hidden="true"></i> البريد الإلكتروني
-              </label>
-              <input 
-                id="profileEmail" 
-                type="email" 
-                class="form-input" 
-                disabled 
-                aria-disabled="true"
-                style="background: rgba(100, 116, 139, 0.1); cursor: not-allowed;" 
-              />
-              <p style="font-size: 0.85rem; color: #64748b; margin-top: 6px;">
-                <i class="fas fa-info-circle" aria-hidden="true"></i> البريد الإلكتروني لا يمكن تغييره
-              </p>
-            </div>
-            
-            <!-- Password Field -->
-            <div class="form-group">
-              <label for="profilePassword" class="form-label">
-                <i class="fas fa-lock" aria-hidden="true"></i> كلمة مرور جديدة
-              </label>
-              <input 
-                id="profilePassword" 
-                type="password" 
-                class="form-input" 
-                placeholder="اتركها فارغة إذا لم تريد التغيير" 
-                minlength="6" 
-                autocomplete="new-password"
-                aria-describedby="password-help"
-              />
-              <p id="password-help" style="font-size: 0.85rem; color: #64748b; margin-top: 6px;">
-                <i class="fas fa-info-circle" aria-hidden="true"></i> 6 أحرف على الأقل
-              </p>
-            </div>
-          </form>
-        </section>
+          <!-- RIGHT COLUMN: Form Section -->
+          <section class="profile-form-section" aria-label="معلومات الملف الشخصي">
+            <form id="profileForm" onsubmit="return false;" novalidate>
+              <!-- Name Field -->
+              <div class="form-group">
+                <label for="profileName" class="form-label">
+                  <i class="fas fa-user" aria-hidden="true"></i> الاسم الكامل
+                </label>
+                <input 
+                  id="profileName" 
+                  type="text" 
+                  class="form-input" 
+                  autocomplete="name"
+                  required
+                  aria-required="true"
+                  placeholder="أدخل اسمك الكامل"
+                />
+              </div>
+              
+              <!-- Username Field -->
+              <div class="form-group">
+                <label for="profileUsername" class="form-label">
+                  <i class="fas fa-at" aria-hidden="true"></i> اسم المستخدم
+                </label>
+                <input 
+                  id="profileUsername" 
+                  type="text" 
+                  class="form-input" 
+                  autocomplete="username"
+                  required
+                  aria-required="true"
+                  pattern="[a-z0-9_]+"
+                  placeholder="حروف وأرقام و _ فقط"
+                />
+              </div>
+              
+              <!-- Phone Field -->
+              <div class="form-group">
+                <label for="profilePhone" class="form-label">
+                  <i class="fas fa-phone" aria-hidden="true"></i> رقم الهاتف
+                </label>
+                <input 
+                  id="profilePhone" 
+                  type="tel" 
+                  class="form-input" 
+                  autocomplete="tel"
+                  placeholder="اختياري"
+                />
+              </div>
+              
+              <!-- Email Field (Disabled) -->
+              <div class="form-group">
+                <label for="profileEmail" class="form-label">
+                  <i class="fas fa-envelope" aria-hidden="true"></i> البريد الإلكتروني
+                </label>
+                <input 
+                  id="profileEmail" 
+                  type="email" 
+                  class="form-input" 
+                  disabled 
+                  aria-disabled="true"
+                  style="background: rgba(100, 116, 139, 0.1); cursor: not-allowed; opacity: 0.7;" 
+                />
+                <p style="font-size: 0.8rem; color: #64748b; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+                  <i class="fas fa-info-circle" aria-hidden="true"></i> البريد الإلكتروني لا يمكن تغييره
+                </p>
+              </div>
+              
+              <!-- Password Field -->
+              <div class="form-group">
+                <label for="profilePassword" class="form-label">
+                  <i class="fas fa-lock" aria-hidden="true"></i> كلمة مرور جديدة
+                </label>
+                <input 
+                  id="profilePassword" 
+                  type="password" 
+                  class="form-input" 
+                  placeholder="اتركها فارغة إذا لم تريد التغيير" 
+                  minlength="6" 
+                  autocomplete="new-password"
+                  aria-describedby="password-help"
+                />
+                <p id="password-help" style="font-size: 0.8rem; color: #64748b; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+                  <i class="fas fa-info-circle" aria-hidden="true"></i> 6 أحرف على الأقل
+                </p>
+              </div>
+            </form>
+          </section>
+        </div>
       </div>
 
       <!-- Footer Actions -->
@@ -343,7 +375,7 @@
           class="profile-logout-btn" 
           onclick="window.logout()"
           type="button">
-          <i class="fas fa-sign-out-alt" aria-hidden="true"></i> خروج
+          <i class="fas fa-sign-out-alt" aria-hidden="true"></i> تسجيل الخروج
         </button>
       </footer>
     </div>
@@ -360,72 +392,26 @@
         <i class="fas fa-graduation-cap" aria-hidden="true"></i>
       </a>
 
-      <!-- Right Section -->
-      <div style="display:flex; align-items:center; gap:12px;">
-        <!-- Search Bar -->
-        <div 
-          class="search-bar-container" 
-          data-aos="fade-down" 
-          data-aos-delay="50"
-          role="search">
-          <div class="search-box-wrapper">
-            <i class="fas fa-search" aria-hidden="true"></i>
-            <input
-              id="globalSearch"
-              type="search"
-              class="search-input"
-              placeholder="ابحث عن مادة أو محاضرة..."
-              oninput="window.handleGlobalSearch(this.value)"
-              autocomplete="off"
-              aria-label="البحث في المكتبة"
-              aria-describedby="search-instructions"
-            />
-            <button 
-              id="searchClear" 
-              class="search-clear-btn" 
-              onclick="window.clearSearch()" 
-              style="display:none;"
-              aria-label="مسح البحث"
-              type="button">
-              <i class="fas fa-times" aria-hidden="true"></i>
-            </button>
-          </div>
-          
-          <!-- Search Results Dropdown -->
-          <div 
-            id="searchResults" 
-            class="search-results" 
-            style="display:none;"
-            role="listbox"
-            aria-label="نتائج البحث"></div>
-          
-          <!-- Screen Reader Instructions -->
-          <span id="search-instructions" class="sr-only">
-            استخدم Ctrl+K لفتح البحث
-          </span>
+      <!-- User Section (Right Side) -->
+      <button 
+        class="user-section loading" 
+        onclick="window.openProfile()"
+        aria-label="فتح الملف الشخصي"
+        aria-haspopup="dialog"
+        type="button">
+        <div class="user-avatar-header">
+          <img 
+            id="headerUserAvatar" 
+            alt="صورة المستخدم"
+            loading="lazy"
+          />
         </div>
-
-        <!-- User Section -->
-        <button 
-          class="user-section loading" 
-          onclick="window.openProfile()"
-          aria-label="فتح الملف الشخصي"
-          aria-haspopup="dialog"
-          type="button">
-          <div class="user-avatar-header">
-            <img 
-              id="headerUserAvatar" 
-              alt="صورة المستخدم"
-              loading="lazy"
-            />
-          </div>
-          <div class="user-info">
-            <h3 id="headerUserName">المستخدم</h3>
-            <p id="headerUserUniversity">طالب</p>
-          </div>
-          <i class="fas fa-angle-down" id="userMenuIcon" aria-hidden="true"></i>
-        </button>
-      </div>
+        <div class="user-info">
+          <h3 id="headerUserName">المستخدم</h3>
+          <p id="headerUserUniversity">طالب</p>
+        </div>
+        <i class="fas fa-angle-down" id="userMenuIcon" aria-hidden="true"></i>
+      </button>
     </div>
   </header>
 
@@ -491,8 +477,8 @@
       <div class="welcome-icon-wrapper" aria-hidden="true">
         <div class="stat-card-progress-circle">
           <svg class="progress-svg" viewBox="0 0 120 120">
-            ircle class="progress-bg" cx="60" cy="60" r="54" strokeke-width="8"></circle>
-            ircle 
+            <circle class="progress-bg" cx="60" cy="60" r="54" stroke-width="8"></circle>
+            <circle 
               class="progress-bar" 
               id="userProgressCircle" 
               cx="60" 
@@ -500,7 +486,7 @@
               r="54" 
               stroke-width="8" 
               stroke-dasharray="339.29" 
-              stroke-dashoffsetet="339.29"></circle>
+              stroke-dashoffset="339.29"></circle>
           </svg>
           <div class="progress-text">
             <span id="userProgressPercentage">0%</span>

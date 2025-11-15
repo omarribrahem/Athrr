@@ -1,7 +1,7 @@
 // ==========================================
-// ✅ ATHR PLATFORM CORE - V9.0 FINAL
-// Email + Password + Name + Username + Phone
-// SUPABASE VERSION - NO STUDY TIME
+// ✅ ATHR PLATFORM CORE - V10.0 ATOMIC
+// Enhanced with Database V2.0 Functions
+// SUPABASE VERSION - Production Ready
 // ==========================================
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
@@ -81,13 +81,15 @@ function getErrorMessage(errorCode) {
     'weak-password': 'كلمة المرور يجب أن تكون 6 أحرف على الأقل',
     'firestore-save-failed': 'فشل حفظ البيانات',
     'Invalid login credentials': 'بيانات الدخول غير صحيحة',
-    'Email not confirmed': 'يرجى تأكيد البريد الإلكتروني أولاً'
+    'Email not confirmed': 'يرجى تأكيد البريد الإلكتروني أولاً',
+    'username_taken': 'اسم المستخدم محجوز بالفعل',
+    'email_taken': 'البريد الإلكتروني مستخدم بالفعل'
   }
   return errors[errorCode] || 'حدث خطأ غير متوقع'
 }
 
 // ==========================================
-// ✅ LOGIN
+// ✅ LOGIN V10.0
 // ==========================================
 export async function login(email, password) {
   try {
@@ -132,10 +134,19 @@ export async function login(email, password) {
       }
     }
 
+    // Update last login
     await supabase
       .from('users')
       .update({ last_login: new Date().toISOString() })
       .eq('uid', authData.user.id)
+
+    // Log action
+    await supabase.rpc('log_user_action', {
+      user_uuid: authData.user.id,
+      action: 'login',
+      target: null,
+      extra_data: {}
+    })
 
     cachedUser = userData
     cacheTimestamp = Date.now()
@@ -153,10 +164,29 @@ export async function login(email, password) {
 }
 
 // ==========================================
-// ✅ SIGNUP V9.0 - NO STUDY TIME
+// ✅ VALIDATE USERNAME V10.0 (NEW)
+// ==========================================
+export async function validateUsername(username) {
+  try {
+    const { data, error } = await supabase.rpc('validate_username', {
+      username_input: username
+    })
+
+    if (error) throw error
+
+    return data // Returns {valid: true/false, error?: string, message?: string}
+  } catch (error) {
+    console.error('❌ Username validation error:', error)
+    return { valid: false, error: 'خطأ في التحقق من اسم المستخدم' }
+  }
+}
+
+// ==========================================
+// ✅ SIGNUP V10.0 - ATOMIC WITH DATABASE FUNCTION
 // ==========================================
 export async function signup(email, password, name, username, phoneNumber = null) {
   try {
+    // Validation
     if (!email || !password || !name || !username) {
       return { 
         success: false, 
@@ -175,6 +205,7 @@ export async function signup(email, password, name, username, phoneNumber = null
 
     const cleanUsername = username.toLowerCase().trim()
     
+    // Validate username format
     if (!/^[a-z0-9_]+$/.test(cleanUsername)) {
       return {
         success: false,
@@ -183,22 +214,19 @@ export async function signup(email, password, name, username, phoneNumber = null
       }
     }
 
-    const { data: existingUser } = await supabase
-      .from('users')
-      .select('uid')
-      .eq('username', cleanUsername)
-      .single()
-
-    if (existingUser) {
+    // ✅ NEW: Use database validation function
+    const validation = await validateUsername(cleanUsername)
+    if (!validation.valid) {
       return {
         success: false,
-        error: 'username-taken',
-        message: 'اسم المستخدم محجوز بالفعل'
+        error: 'username-invalid',
+        message: validation.error || 'اسم المستخدم غير صالح'
       }
     }
 
     console.log('🔄 Creating auth user...')
     
+    // Create Supabase Auth user
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password
@@ -216,34 +244,25 @@ export async function signup(email, password, name, username, phoneNumber = null
     const user = authData.user
     console.log('✅ Auth user created:', user.id)
 
+    // Generate avatar
     const randomConfig = getRandomAvatarConfig()
     const avatarUrl = generateAvatarUrl(randomConfig.seed, randomConfig.params)
 
-    const userData = {
-      uid: user.id,
-      email: email,
-      name: name,
-      username: cleanUsername,
-      phone_number: phoneNumber || null,
-      role: 'student',
-      avatar: avatarUrl,
-      avatar_seed: randomConfig.seed,
-      avatar_params: randomConfig.params,
-      avatar_style: AVATAR_STYLE,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      last_login: new Date().toISOString()
-    }
+    console.log('🔄 Saving to database with atomic function...')
 
-    console.log('🔄 Saving to database...')
+    // ✅ NEW: Use atomic create_user_account function
+    const { data: createResult, error: createError } = await supabase.rpc('create_user_account', {
+      user_uid: user.id,
+      user_name: name,
+      user_username: cleanUsername,
+      user_email: email,
+      user_avatar: avatarUrl
+    })
 
-    const { error: insertError } = await supabase
-      .from('users')
-      .insert(userData)
-
-    if (insertError) {
-      console.error('❌ DATABASE ERROR:', insertError)
+    if (createError) {
+      console.error('❌ DATABASE ERROR:', createError)
       
+      // Rollback: delete auth user
       try {
         await supabase.auth.admin.deleteUser(user.id)
         console.log('✅ Auth user deleted (rollback)')
@@ -254,11 +273,27 @@ export async function signup(email, password, name, username, phoneNumber = null
       return {
         success: false,
         error: 'firestore-save-failed',
-        message: 'فشل حفظ البيانات: ' + insertError.message
+        message: 'فشل حفظ البيانات: ' + createError.message
       }
     }
 
-    console.log('✅ User document saved!')
+    // Check if creation was successful
+    if (!createResult.success) {
+      // Rollback
+      try {
+        await supabase.auth.admin.deleteUser(user.id)
+      } catch (e) {
+        console.error('❌ Rollback failed:', e)
+      }
+
+      return {
+        success: false,
+        error: createResult.error,
+        message: createResult.message || getErrorMessage(createResult.error)
+      }
+    }
+
+    console.log('✅ User document saved atomically!')
     console.log('🎉 SIGNUP COMPLETE!')
     
     return { 
@@ -279,13 +314,25 @@ export async function signup(email, password, name, username, phoneNumber = null
 }
 
 // ==========================================
-// ✅ LOGOUT
+// ✅ LOGOUT V10.0
 // ==========================================
 export async function logout() {
   try {
+    const currentUserId = cachedUser?.uid
+
     const { error } = await supabase.auth.signOut()
     
     if (error) throw error
+
+    // Log action before clearing cache
+    if (currentUserId) {
+      await supabase.rpc('log_user_action', {
+        user_uuid: currentUserId,
+        action: 'logout',
+        target: null,
+        extra_data: {}
+      })
+    }
 
     localStorage.removeItem('athr_user')
     cachedUser = null
@@ -303,7 +350,7 @@ export async function logout() {
 }
 
 // ==========================================
-// ✅ GET CURRENT USER
+// ✅ GET CURRENT USER V10.0
 // ==========================================
 export async function getCurrentUser(forceRefresh = false) {
   const { data: { user: authUser } } = await supabase.auth.getUser()
@@ -357,7 +404,7 @@ export async function isAdmin(userId) {
 }
 
 // ==========================================
-// ✅ UPDATE USER PROFILE
+// ✅ UPDATE USER PROFILE V10.0
 // ==========================================
 export async function updateUserProfile(userId, updates) {
   try {
@@ -367,9 +414,7 @@ export async function updateUserProfile(userId, updates) {
       'name',
       'username', 
       'phone_number',
-      'avatar', 
-      'avatar_seed', 
-      'avatar_params'
+      'avatar'
     ]
     
     for (const key of Object.keys(updates)) {
@@ -388,6 +433,14 @@ export async function updateUserProfile(userId, updates) {
       .eq('uid', userId)
 
     if (error) throw error
+    
+    // Log action
+    await supabase.rpc('log_user_action', {
+      user_uuid: userId,
+      action: 'profile_updated',
+      target: null,
+      extra_data: { fields: Object.keys(safeUpdates) }
+    })
     
     cachedUser = null
     console.log('✅ Profile updated successfully')
@@ -444,4 +497,4 @@ export async function debugSupabase() {
 
 window.debugSupabase = debugSupabase
 
-console.log('✅ App.js V9.0 FINAL - NO STUDY TIME - Production Ready')
+console.log('✅ App.js V10.0 ATOMIC - Production Ready with Database V2.0 Functions')

@@ -1,76 +1,438 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- ==========================================
+       META TAGS - SEO & Performance Optimized
+       ========================================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="منصة أثر التعليمية - محاضرات المادة" />
+  <meta name="keywords" content="تعليم، محاضرات، مكتبة رقمية، أثر" />
+  <meta name="author" content="منصة أثر التعليمية" />
+  <meta name="robots" content="index, follow" />
+  
+  <!-- Theme & PWA -->
+  <meta name="theme-color" content="#16a34a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  
   <title>المحاضرات - منصة أثر</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/platform.css">
-  <link rel="stylesheet" href="css/subject.css">
+
+  <!-- ==========================================
+       PRECONNECT - Performance
+       ========================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+
+  <!-- ==========================================
+       FONTS - Google Fonts (Arabic)
+       ========================================== -->
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" 
+    rel="stylesheet" 
+  />
+
+  <!-- ==========================================
+       ICONS - Font Awesome 6
+       ========================================== -->
+  <link 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer" 
+  />
+
+  <!-- ==========================================
+       STYLESHEETS - Glass Morphism V19.0 CLEAN
+       ========================================== -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/platform-clean.css" />
+  <link rel="stylesheet" href="css/subject.css" />
+
+  <!-- ==========================================
+       PWA MANIFEST & FAVICONS
+       ========================================== -->
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+  <!-- ==========================================
+       INLINE SVG GRADIENTS
+       ========================================== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#10b981" />
+        <stop offset="100%" stop-color="#22c55e" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- ==========================================
+       CRITICAL CSS - Loading Screen
+       ========================================== -->
+  <style>
+    body:not(.loaded) {
+      overflow: hidden;
+    }
+    
+    body:not(.loaded)::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #16a34a 0%, #10b981 100%);
+      z-index: 99999;
+    }
+    
+    body:not(.loaded)::after {
+      content: '';
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      z-index: 999999;
+    }
+    
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+  </style>
 </head>
-<body>
-  <div class="background-waves">
+
+<body role="application" aria-label="صفحة المحاضرات - منصة أثر">
+  <!-- ==========================================
+       BACKGROUND WAVES - Decorative
+       ========================================== -->
+  <div class="background-waves" aria-hidden="true">
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
   </div>
 
-  <header class="platform-header">
-    <div class="header-content">
-      <div class="platform-logo"><i class="fas fa-graduation-cap"></i></div>
-      
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <div class="user-section loading" onclick="toggleUserMenu()">
-          <div class="user-avatar-header">
-            <img id="headerUserAvatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2316a34a'/><circle cx='50' cy='38' r='16' fill='white'/><path d='M25 68 Q50 84 75 68' fill='white'/></svg>" alt="avatar">
-          </div>
-          <div class="user-info">
-            <h3 id="headerUserName">المستخدم</h3>
-            <p id="headerUserUniversity">الجامعة</p>
-          </div>
-          <i class="fas fa-angle-down" id="userMenuIcon"></i>
+  <!-- ==========================================
+       SKIP TO CONTENT - Accessibility
+       ========================================== -->
+  <a href="#main-content" class="skip-to-content">
+    الانتقال إلى المحتوى الرئيسي
+  </a>
+
+  <!-- ==========================================
+       PROFILE MODAL - ENHANCED V2.0
+       2-Column Layout: Avatar Left | Form Right
+       ========================================== -->
+  <div 
+    class="profile-modal" 
+    id="profileModal" 
+    role="dialog" 
+    aria-modal="true" 
+    aria-labelledby="profileModalTitle" 
+    aria-hidden="true"
+    tabindex="-1">
+    
+    <!-- Backdrop -->
+    <div 
+      class="profile-modal-overlay" 
+      onclick="window.closeProfile()"
+      aria-label="إغلاق"></div>
+    
+    <!-- Modal Content -->
+    <div class="profile-modal-content" role="document">
+      <!-- Header -->
+      <header class="profile-modal-header">
+        <div>
+          <h2 id="profileModalTitle">
+            <i class="fas fa-user-circle" aria-hidden="true"></i>
+            الملف الشخصي
+          </h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 4px 0 0 0;">
+            إدارة معلوماتك الشخصية
+          </p>
+        </div>
+        <button 
+          class="profile-modal-close" 
+          onclick="window.closeProfile()" 
+          aria-label="إغلاق الملف الشخصي"
+          type="button">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+      </header>
+
+      <!-- Body: 2-Column Grid Layout -->
+      <div class="profile-modal-body">
+        <div class="profile-grid-layout">
+          <!-- LEFT COLUMN: Avatar Section -->
+          <section class="profile-avatar-section" aria-label="إعدادات الصورة الرمزية">
+            <div class="profile-avatar-card">
+              <div class="profile-avatar-wrapper">
+                <div class="profile-avatar-large">
+                  <img 
+                    id="profileAvatarImg" 
+                    alt="صورة المستخدم" 
+                    loading="lazy"
+                  />
+                  <button 
+                    class="avatar-edit-overlay" 
+                    onclick="event.stopPropagation(); window.showAvatarSelector();" 
+                    aria-label="تغيير الصورة الرمزية"
+                    type="button">
+                    <i class="fas fa-camera" aria-hidden="true"></i>
+                    <span>تغيير</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div style="text-align: center; margin-top: 16px;">
+                <h3 id="profileModalName" style="font-size: 1.1rem; font-weight: 700; margin: 0 0 4px 0; color: var(--text-primary);">
+                  المستخدم
+                </h3>
+                <p id="profileModalEmail" style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
+                  user@example.com
+                </p>
+              </div>
+            </div>
+            
+            <!-- Avatar Selector -->
+            <div class="avatar-selector" id="avatarSelector" style="display:none; margin-top: 20px;">
+              <h4 style="font-size: 0.95rem; font-weight: 700; margin: 0 0 12px 0; color: var(--text-primary);">
+                اختر صورة رمزية
+              </h4>
+              <div 
+                class="avatars-grid" 
+                role="group" 
+                aria-label="اختر صورة رمزية"></div>
+              
+              <div class="avatar-selector-footer" style="display:flex; gap:12px; margin-top:16px;">
+                <button 
+                  type="button" 
+                  class="btn-confirm" 
+                  onclick="event.stopPropagation(); window.confirmAvatarSelection();">
+                  <i class="fas fa-check" aria-hidden="true"></i> تأكيد
+                </button>
+                <button 
+                  type="button" 
+                  class="btn-cancel" 
+                  onclick="event.stopPropagation(); window.cancelAvatarSelection();">
+                  <i class="fas fa-times" aria-hidden="true"></i> إلغاء
+                </button>
+              </div>
+            </div>
+          </section>
           
-          <div class="user-dropdown-menu" id="userDropdownMenu">
-            <div class="user-menu-item" onclick="event.stopPropagation(); openProfile();"><i class="fas fa-user-circle"></i><span>الملف الشخصي</span></div>
-            <div class="user-menu-divider"></div>
-            <div class="user-menu-item logout-item" onclick="event.stopPropagation(); logout();"><i class="fas fa-sign-out-alt"></i><span>خروج</span></div>
-          </div>
+          <!-- RIGHT COLUMN: Form Section -->
+          <section class="profile-form-section" aria-label="معلومات الملف الشخصي">
+            <form id="profileForm" onsubmit="return false;" novalidate>
+              <!-- Name Field -->
+              <div class="form-group">
+                <label for="profileName" class="form-label">
+                  <i class="fas fa-user" aria-hidden="true"></i> الاسم الكامل
+                </label>
+                <input 
+                  id="profileName" 
+                  type="text" 
+                  class="form-input" 
+                  autocomplete="name"
+                  required
+                  aria-required="true"
+                  placeholder="أدخل اسمك الكامل"
+                />
+              </div>
+              
+              <!-- Username Field -->
+              <div class="form-group">
+                <label for="profileUsername" class="form-label">
+                  <i class="fas fa-at" aria-hidden="true"></i> اسم المستخدم
+                </label>
+                <input 
+                  id="profileUsername" 
+                  type="text" 
+                  class="form-input" 
+                  autocomplete="username"
+                  required
+                  aria-required="true"
+                  pattern="[a-z0-9_]+"
+                  placeholder="حروف وأرقام و _ فقط"
+                />
+              </div>
+              
+              <!-- Phone Field -->
+              <div class="form-group">
+                <label for="profilePhone" class="form-label">
+                  <i class="fas fa-phone" aria-hidden="true"></i> رقم الهاتف
+                </label>
+                <input 
+                  id="profilePhone" 
+                  type="tel" 
+                  class="form-input" 
+                  autocomplete="tel"
+                  placeholder="اختياري"
+                />
+              </div>
+              
+              <!-- Email Field (Disabled) -->
+              <div class="form-group">
+                <label for="profileEmail" class="form-label">
+                  <i class="fas fa-envelope" aria-hidden="true"></i> البريد الإلكتروني
+                </label>
+                <input 
+                  id="profileEmail" 
+                  type="email" 
+                  class="form-input" 
+                  disabled 
+                  aria-disabled="true"
+                  style="background: rgba(100, 116, 139, 0.1); cursor: not-allowed; opacity: 0.7;" 
+                />
+                <p style="font-size: 0.8rem; color: #64748b; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+                  <i class="fas fa-info-circle" aria-hidden="true"></i> البريد الإلكتروني لا يمكن تغييره
+                </p>
+              </div>
+              
+              <!-- Password Field -->
+              <div class="form-group">
+                <label for="profilePassword" class="form-label">
+                  <i class="fas fa-lock" aria-hidden="true"></i> كلمة مرور جديدة
+                </label>
+                <input 
+                  id="profilePassword" 
+                  type="password" 
+                  class="form-input" 
+                  placeholder="اتركها فارغة إذا لم تريد التغيير" 
+                  minlength="6" 
+                  autocomplete="new-password"
+                  aria-describedby="password-help"
+                />
+                <p id="password-help" style="font-size: 0.8rem; color: #64748b; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+                  <i class="fas fa-info-circle" aria-hidden="true"></i> 6 أحرف على الأقل
+                </p>
+              </div>
+            </form>
+          </section>
         </div>
       </div>
+
+      <!-- Footer Actions -->
+      <footer class="profile-modal-footer">
+        <button 
+          id="saveProfileBtn" 
+          type="button" 
+          class="profile-save-btn">
+          <i class="fas fa-check-circle" aria-hidden="true"></i> حفظ التغييرات
+        </button>
+        <button 
+          class="profile-logout-btn" 
+          onclick="window.logout()"
+          type="button">
+          <i class="fas fa-sign-out-alt" aria-hidden="true"></i> تسجيل الخروج
+        </button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       HEADER - Sticky Navigation
+       ========================================== -->
+  <header class="platform-header" role="banner">
+    <div class="header-content">
+      <!-- Logo -->
+      <a href="library.html" class="platform-logo" aria-label="العودة للمكتبة">
+        <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+      </a>
+
+      <!-- User Section -->
+      <button 
+        class="user-section loading" 
+        onclick="window.openProfile()"
+        aria-label="فتح الملف الشخصي"
+        aria-haspopup="dialog"
+        type="button">
+        <div class="user-avatar-header">
+          <img 
+            id="headerUserAvatar" 
+            alt="صورة المستخدم"
+            loading="lazy"
+          />
+        </div>
+        <div class="user-info">
+          <h3 id="headerUserName">المستخدم</h3>
+          <p id="headerUserUniversity">طالب</p>
+        </div>
+        <i class="fas fa-angle-down" id="userMenuIcon" aria-hidden="true"></i>
+      </button>
     </div>
   </header>
 
-  <main class="platform-container">
-    <!-- زر العودة -->
+  <!-- ==========================================
+       MAIN CONTENT
+       ========================================== -->
+  <main class="platform-container" role="main" id="main-content">
+    <!-- Back Button -->
     <div class="back-button-container">
-      <button class="back-button" onclick="window.location.href='library.html'" aria-label="العودة إلى المكتبة">
+      <button 
+        class="back-button" 
+        onclick="window.location.href='library.html'" 
+        aria-label="العودة إلى المكتبة"
+        type="button">
         <i class="fas fa-arrow-right" aria-hidden="true"></i>
         <span>عودة للمكتبة</span>
       </button>
     </div>
 
-    <!-- عنوان ووصف المادة في الوسط -->
+    <!-- Subject Hero - Centered -->
     <div class="subject-hero-center">
       <h1 id="subjectName">المادة</h1>
       <p id="subjectHeaderDesc">وصف المادة</p>
     </div>
 
-    <!-- شريط البحث -->
+    <!-- Search Bar -->
     <div class="subject-search-row">
-      <input id="lecturesSearch" class="form-input" placeholder="ابحث عن محاضرة...">
+      <input 
+        id="lecturesSearch" 
+        class="form-input" 
+        placeholder="ابحث عن محاضرة..."
+        type="search"
+        aria-label="البحث عن محاضرة"
+      />
     </div>
 
-    <!-- قائمة المحاضرات -->
-    <section id="lecturesListContainer" class="lectures-list-new"></section>
+    <!-- Lectures List -->
+    <section 
+      id="lecturesListContainer" 
+      class="lectures-list-new"
+      role="list"
+      aria-label="قائمة المحاضرات"></section>
   </main>
 
+  <!-- ==========================================
+       SCRIPTS
+       ========================================== -->
   <script type="module" src="js/subject.js"></script>
+
+  <!-- ==========================================
+       PAGE LOAD COMPLETION
+       ========================================== -->
+  <script>
+    window.addEventListener('load', () => {
+      document.body.classList.add('loaded');
+      
+      const announcement = document.createElement('div');
+      announcement.setAttribute('role', 'status');
+      announcement.setAttribute('aria-live', 'polite');
+      announcement.className = 'sr-only';
+      announcement.textContent = 'تم تحميل الصفحة بنجاح';
+      document.body.appendChild(announcement);
+      
+      setTimeout(() => announcement.remove(), 1000);
+    });
+  </script>
 </body>
 </html>

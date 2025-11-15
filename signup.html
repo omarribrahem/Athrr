@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <!-- Meta Tags -->
+  <!-- ==================================================
+       META TAGS - SEO & Security
+       Version: 26.0 - Atomic Functions Integrated
+       ================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,7 +35,6 @@
   
   <!-- Inline Critical CSS -->
   <style>
-    /* Base Layout */
     body {
       min-height: 100vh;
       display: flex;
@@ -58,6 +60,7 @@
       padding: 18px 22px;
       background: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
       display: flex;
@@ -134,9 +137,7 @@
       flex-shrink: 0;
     }
     
-    .toast-close:hover {
-      color: #64748b;
-    }
+    .toast-close:hover { color: #64748b; }
     
     /* Loading Overlay */
     .loading-overlay {
@@ -144,6 +145,7 @@
       inset: 0;
       background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       z-index: 99999;
       display: none;
       align-items: center;
@@ -163,9 +165,7 @@
       animation: spin 1s linear infinite;
     }
     
-    @keyframes spin { 
-      to { transform: rotate(360deg); } 
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
     
     .loading-text {
       color: white;
@@ -173,12 +173,50 @@
       font-weight: 600;
     }
     
-    /* CRITICAL FIX: Force rounded shadow for inputs */
-    .input-wrapper {
-      border-radius: 9999px !important;
+    /* Password Strength Colors */
+    .input-wrapper.password-weak {
+      border-color: rgba(220, 38, 38, 0.5) !important;
     }
     
-    /* Responsive Toast */
+    .input-wrapper.password-medium {
+      border-color: rgba(245, 158, 11, 0.5) !important;
+    }
+    
+    .input-wrapper.password-strong {
+      border-color: rgba(22, 163, 74, 0.5) !important;
+    }
+    
+    /* Terms Checkbox */
+    .terms-wrapper {
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: #475569;
+    }
+    
+    .terms-wrapper input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: #16a34a;
+    }
+    
+    .terms-wrapper a {
+      color: #16a34a;
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    
+    .terms-wrapper a:hover {
+      color: #14532d;
+      text-decoration: underline;
+    }
+    
+    /* Responsive */
     @media (max-width: 768px) {
       .toast-container {
         bottom: 10px;
@@ -256,7 +294,7 @@
         
         <!-- Username -->
         <div class="input-capsule">
-          <div class="input-wrapper">
+          <div class="input-wrapper" id="usernameWrapper">
             <div class="input-icon" aria-hidden="true">
               <i class="fas fa-at"></i>
             </div>
@@ -264,9 +302,9 @@
               type="text" 
               id="username" 
               class="capsule-input"
-              placeholder="اسم المستخدم (حروف وأرقام فقط)"
+              placeholder="اسم المستخدم (حروف صغيرة وأرقام فقط)"
               required
-              pattern="[a-zA-Z0-9_]+"
+              pattern="[a-z0-9_]+"
               autocomplete="username"
               aria-label="اسم المستخدم"
               aria-required="true">
@@ -353,6 +391,18 @@
           </div>
         </div>
         
+        <!-- Terms & Conditions -->
+        <div class="terms-wrapper">
+          <input 
+            type="checkbox" 
+            id="acceptTerms"
+            aria-label="أوافق على الشروط والأحكام"
+            required>
+          <label for="acceptTerms">
+            أوافق على <a href="#" onclick="alert('صفحة الشروط والأحكام قيد الإنشاء'); return false;">الشروط والأحكام</a>
+          </label>
+        </div>
+        
         <!-- Submit Button -->
         <button 
           type="submit" 
@@ -378,7 +428,7 @@
 
   <!-- Utilities Script -->
   <script>
-    /* Toast Notifications System */
+    /* Toast Notifications */
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
       const icons = {
@@ -421,13 +471,12 @@
       }, 4000);
     }
     
-    /* Loading Overlay Control */
+    /* Loading Control */
     function showLoading(show) {
-      const overlay = document.getElementById('loadingOverlay');
-      overlay.classList.toggle('active', show);
+      document.getElementById('loadingOverlay').classList.toggle('active', show);
     }
     
-    /* Password Visibility Toggle */
+    /* Password Toggle */
     function togglePassword() {
       const input = document.getElementById('password');
       const icon = document.getElementById('passwordIcon');
@@ -440,51 +489,185 @@
         icon.className = 'fas fa-eye';
       }
     }
+    
+    /* Password Strength Checker */
+    function checkPasswordStrength(password) {
+      let strength = 0;
+      if (password.length >= 6) strength++;
+      if (password.length >= 8) strength++;
+      if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+      if (/\d/.test(password)) strength++;
+      if (/[^a-zA-Z0-9]/.test(password)) strength++;
+      return strength;
+    }
+    
+    /* Disposable Email Check */
+    const disposableDomains = ['tempmail.com', '10minutemail.com', 'guerrillamail.com', 'mailinator.com'];
+    
+    function isDisposableEmail(email) {
+      const domain = email.split('@')[1];
+      return disposableDomains.some(d => domain && domain.includes(d));
+    }
+    
+    /* Password Strength Visual Feedback */
+    document.getElementById('password').addEventListener('input', (e) => {
+      const strength = checkPasswordStrength(e.target.value);
+      const wrapper = e.target.closest('.input-wrapper');
+      
+      wrapper.classList.remove('password-weak', 'password-medium', 'password-strong');
+      
+      if (e.target.value.length >= 6) {
+        if (strength <= 2) {
+          wrapper.classList.add('password-weak');
+        } else if (strength <= 3) {
+          wrapper.classList.add('password-medium');
+        } else {
+          wrapper.classList.add('password-strong');
+        }
+      }
+    });
+    
+    /* Email Confirmation Visual Feedback */
+    document.getElementById('emailConfirm').addEventListener('input', (e) => {
+      const email = document.getElementById('email').value;
+      const wrapper = e.target.closest('.input-wrapper');
+      
+      if (e.target.value && e.target.value === email) {
+        wrapper.classList.add('success');
+        wrapper.classList.remove('error');
+      } else if (e.target.value && e.target.value !== email) {
+        wrapper.classList.add('error');
+        wrapper.classList.remove('success');
+      } else {
+        wrapper.classList.remove('success', 'error');
+      }
+    });
   </script>
   
   <!-- Main Auth Script -->
   <script type="module">
-    import { signup, supabase, onAuthChange } from './js/app.js';
+    import { signup, validateUsername, supabase, onAuthChange } from './js/app.js';
     
     /* Auth State Check */
     onAuthChange((user) => {
       if (user) {
-        console.log('User already authenticated, redirecting to library...');
+        console.log('✅ User authenticated, redirecting...');
         window.location.href = 'library.html';
       }
     });
 
-    /* Form Submit Handler */
+    /* Timeout Wrapper */
+    function withTimeout(promise, ms = 15000) {
+      return Promise.race([
+        promise,
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('timeout')), ms)
+        )
+      ]);
+    }
+
+    /* ✅ Real-time Username Validation with Database Function */
+    let usernameTimeout;
+    const usernameInput = document.getElementById('username');
+    const usernameWrapper = document.getElementById('usernameWrapper');
+    
+    usernameInput.addEventListener('input', async (e) => {
+      clearTimeout(usernameTimeout);
+      const username = e.target.value.trim().toLowerCase();
+      
+      // Auto-convert to lowercase
+      if (e.target.value !== username) {
+        e.target.value = username;
+      }
+      
+      // Clear previous states
+      usernameWrapper.classList.remove('error', 'success', 'checking');
+      
+      if (username.length < 3) {
+        return;
+      }
+      
+      // Show checking state
+      usernameWrapper.classList.add('checking');
+      
+      usernameTimeout = setTimeout(async () => {
+        try {
+          // ✅ Use the new database validation function
+          const validation = await validateUsername(username);
+          
+          usernameWrapper.classList.remove('checking');
+          
+          if (validation.valid) {
+            usernameWrapper.classList.add('success');
+            usernameWrapper.classList.remove('error');
+          } else {
+            usernameWrapper.classList.add('error');
+            usernameWrapper.classList.remove('success');
+            showToast(validation.error, 'warning');
+          }
+        } catch (error) {
+          console.error('❌ Username validation error:', error);
+          usernameWrapper.classList.remove('checking');
+          usernameWrapper.classList.add('error');
+          showToast('خطأ في التحقق من اسم المستخدم', 'error');
+        }
+      }, 600);
+    });
+
+    /* Form Submit with Atomic Function */
     document.getElementById('signupForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const name = document.getElementById('name').value.trim();
-      const username = document.getElementById('username').value.trim();
+      const username = document.getElementById('username').value.trim().toLowerCase();
       const phone = document.getElementById('phone').value.trim();
       const email = document.getElementById('email').value.trim();
       const emailConfirm = document.getElementById('emailConfirm').value.trim();
       const password = document.getElementById('password').value;
+      const acceptTerms = document.getElementById('acceptTerms').checked;
       const btn = document.getElementById('signupBtn');
       
-      /* Validation */
+      /* Enhanced Validation */
       if (!name || name.length < 3) {
         showToast('يرجى إدخال اسمك الكامل (3 أحرف على الأقل)', 'error');
+        document.getElementById('name').focus();
         return;
       }
       
       if (!username || username.length < 3) {
         showToast('يرجى إدخال اسم مستخدم (3 أحرف على الأقل)', 'error');
+        document.getElementById('username').focus();
         return;
       }
       
-      if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-        showToast('اسم المستخدم يجب أن يحتوي على حروف وأرقام فقط (بدون مسافات)', 'error');
+      if (!/^[a-z0-9_]+$/.test(username)) {
+        showToast('اسم المستخدم: حروف إنجليزية صغيرة وأرقام و _ فقط', 'error');
+        document.getElementById('username').focus();
+        return;
+      }
+      
+      if (username.startsWith('_') || username.endsWith('_')) {
+        showToast('اسم المستخدم لا يمكن أن يبدأ أو ينتهي بـ _', 'error');
+        document.getElementById('username').focus();
+        return;
+      }
+      
+      if (/^[0-9]+$/.test(username)) {
+        showToast('اسم المستخدم لا يمكن أن يكون أرقاماً فقط', 'error');
+        document.getElementById('username').focus();
         return;
       }
       
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         showToast('البريد الإلكتروني غير صحيح', 'error');
+        document.getElementById('email').focus();
+        return;
+      }
+      
+      if (isDisposableEmail(email)) {
+        showToast('البريد الإلكتروني المؤقت غير مسموح', 'error');
+        document.getElementById('email').focus();
         return;
       }
       
@@ -496,50 +679,98 @@
       
       if (password.length < 6) {
         showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+        document.getElementById('password').focus();
         return;
+      }
+      
+      const strength = checkPasswordStrength(password);
+      if (strength < 2) {
+        const confirm = window.confirm('كلمة المرور ضعيفة. هل تريد المتابعة؟');
+        if (!confirm) return;
       }
       
       if (phone && !/^[\d\s\-\+\(\)]+$/.test(phone)) {
         showToast('رقم الهاتف غير صحيح', 'error');
+        document.getElementById('phone').focus();
         return;
       }
       
-      /* Submit */
+      if (!acceptTerms) {
+        showToast('يرجى الموافقة على الشروط والأحكام', 'warning');
+        document.getElementById('acceptTerms').focus();
+        return;
+      }
+      
+      /* ✅ Final username validation */
+      console.log('🔄 Validating username...');
+      try {
+        const finalValidation = await validateUsername(username);
+        if (!finalValidation.valid) {
+          showToast(finalValidation.error, 'error');
+          document.getElementById('username').focus();
+          return;
+        }
+      } catch (error) {
+        console.error('❌ Validation error:', error);
+        showToast('خطأ في التحقق من اسم المستخدم', 'error');
+        return;
+      }
+      
+      /* Submit with Atomic Function */
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإنشاء...';
       showLoading(true);
       
       try {
-        const result = await signup(
-          email, 
-          password, 
-          name, 
-          username, 
-          phone || null
+        console.log('🔄 Creating account...');
+        
+        const result = await withTimeout(
+          signup(email, password, name, username, phone || null),
+          20000
         );
         
         if (result.success) {
+          console.log('✅ Account created!');
           showToast('تم إنشاء الحساب بنجاح! جارٍ التوجيه...', 'success');
           
           setTimeout(() => {
             window.location.href = 'library.html';
           }, 1500);
         } else {
+          console.error('❌ Signup failed:', result.error);
+          
           showLoading(false);
           btn.disabled = false;
           btn.innerHTML = '<i class="fas fa-user-plus"></i> إنشاء الحساب';
           
-          showToast(result.message || 'حدث خطأ في إنشاء الحساب', 'error');
+          let errorMessage = result.message || 'حدث خطأ في إنشاء الحساب';
+          
+          if (result.error === 'username_taken') {
+            errorMessage = 'اسم المستخدم محجوز بالفعل';
+            document.getElementById('username').focus();
+          } else if (result.error === 'email_taken') {
+            errorMessage = 'البريد الإلكتروني مستخدم بالفعل';
+            document.getElementById('email').focus();
+          }
+          
+          showToast(errorMessage, 'error');
         }
-      } catch (e) {
+      } catch (error) {
+        console.error('❌ Exception:', error);
+        
         showLoading(false);
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-user-plus"></i> إنشاء الحساب';
         
-        console.error('Signup error:', e);
-        showToast('خطأ في الاتصال، حاول مجدداً', 'error');
+        if (error.message === 'timeout') {
+          showToast('انتهت المهلة، تحقق من اتصال الإنترنت', 'error');
+        } else {
+          showToast('خطأ في الاتصال، حاول مجدداً', 'error');
+        }
       }
     });
+    
+    console.log('✅ Signup V26.0 with Atomic Functions loaded');
   </script>
   
 </body>

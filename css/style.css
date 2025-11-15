@@ -1,9 +1,10 @@
 /* ==================================================
- * ATHR PLATFORM - BASE STYLES V24.1 FINAL
+ * ATHR PLATFORM - BASE STYLES V24.2 FINAL
  * Foundation CSS - Background, Colors, Typography
  * Standards: Apple HIG + Material 3 + BEM Methodology
  * Performance: GPU Optimized + Core Web Vitals
  * Accessibility: WCAG 2.1 AA Compliant
+ * FIXED: Skip-to-content visibility issue
  * ================================================== */
 
 /* ==================================================
@@ -672,9 +673,10 @@ select {
   border-width: 0;
 }
 
+/* FIXED: Skip to Content - Hidden by Default */
 .skip-to-content {
   position: absolute;
-  top: -40px;
+  top: -100px;
   left: 0;
   background: var(--color-primary);
   color: white;
@@ -683,10 +685,17 @@ select {
   border-radius: var(--radius-md);
   font-weight: 700;
   z-index: var(--z-tooltip);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
 }
 
 .skip-to-content:focus {
   top: var(--space-md);
+  opacity: 1;
+  pointer-events: auto;
+  outline: 3px solid white;
+  outline-offset: 3px;
 }
 
 /* ==================================================
@@ -826,10 +835,44 @@ select {
 }
 
 /* ==================================================
-   END OF FILE - V24.1 FINAL
-   Total Lines: 750+
+   END OF FILE - V24.2 FINAL
+   Total Lines: 760+
    Standards: Apple HIG, Material 3, BEM
    Performance: GPU Optimized, Core Web Vitals
    Accessibility: WCAG 2.1 AA
-   Fixed: Removed duplicate .skip-to-content
+   FIXED: Skip-to-content now properly hidden
+   Last Updated: 2025-11-15
    ================================================== */
+/* Quick Fix - Remove Container Outline */
+.auth-container,
+.auth-glass-card,
+.input-wrapper,
+input,
+textarea,
+select {
+  outline: none !important;
+}
+
+*:focus {
+  outline: none !important;
+}
+/* Username validation states */
+.input-wrapper.checking {
+  border-color: rgba(59, 130, 246, 0.5) !important;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.input-wrapper.success {
+  border-color: rgba(22, 163, 74, 0.5) !important;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+}
+
+.input-wrapper.error {
+  border-color: rgba(220, 38, 38, 0.5) !important;
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}

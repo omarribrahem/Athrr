@@ -1,10 +1,11 @@
 /* ==================================================
- * ATHR AUTH PAGES CSS V24.1 FINAL
+ * ATHR AUTH PAGES CSS V24.2 FINAL
  * Glass Morphism Authentication Design - Production Ready
  * Standards: Apple HIG + Material 3 + Fluent 2
  * Performance: GPU Accelerated + Core Web Vitals Optimized
  * Accessibility: WCAG 2.1 AA Compliant + ARIA Support
  * Browser Support: Modern browsers (Chrome 90+, Firefox 88+, Safari 14+)
+ * FIXED: Removed unwanted shadow box around input containers
  * ================================================== */
 
 /* ==================================================
@@ -227,6 +228,7 @@
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
+  outline: none;
 }
 
 /* ==================================================
@@ -244,6 +246,7 @@
   overflow: hidden;
   will-change: transform;
   transform: translateZ(0);
+  outline: none;
 }
 
 .auth-glass-card::before {
@@ -329,11 +332,12 @@
 }
 
 /* ==================================================
-   INPUT SYSTEM
+   INPUT SYSTEM - FIXED: Removed shadow box
    ================================================== */
 .input-capsule {
   margin-bottom: var(--space-lg);
   animation: inputSlideIn 0.4s var(--transition-emphasized) backwards;
+  outline: none;
 }
 
 .input-capsule:nth-child(1) { animation-delay: 0.4s; }
@@ -350,25 +354,24 @@
   padding: var(--space-xs);
   border: 2px solid var(--glass-border);
   transition: all var(--transition-base);
-  box-shadow: var(--shadow-xs);
+  box-shadow: none; /* ← FIXED: Removed shadow */
+  outline: none;
 }
 
 .input-wrapper:hover {
   border-color: rgba(22, 163, 74, 0.4);
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
-  box-shadow: 
-    0 4px 16px rgba(22, 163, 74, 0.1),
-    var(--shadow-sm);
+  box-shadow: none; /* ← FIXED: No shadow on hover */
+  outline: none;
 }
 
 .input-wrapper:focus-within {
   border-color: var(--glass-border-focus);
   background: rgba(255, 255, 255, 0.35);
-  box-shadow: 
-    0 0 0 4px rgba(22, 163, 74, 0.12),
-    0 4px 20px rgba(22, 163, 74, 0.15);
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.12); /* ← Keep only focus ring */
   transform: translateY(-2px) scale(1.005);
+  outline: none;
 }
 
 .input-icon {
@@ -386,13 +389,13 @@
   justify-content: center;
   z-index: 2;
   transition: all var(--transition-base);
-  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.15);
+  box-shadow: none; /* ← FIXED: Removed icon shadow */
 }
 
 .input-wrapper:focus-within .input-icon {
   background: rgba(22, 163, 74, 0.2);
   transform: translateY(-50%) scale(1.08);
-  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+  box-shadow: none; /* ← FIXED: No shadow on focus */
 }
 
 .input-icon i {
@@ -450,6 +453,7 @@
   cursor: pointer;
   transition: all var(--transition-base);
   z-index: 2;
+  outline: none;
 }
 
 .password-toggle:hover {
@@ -506,6 +510,7 @@
   cursor: pointer;
   accent-color: var(--color-primary);
   transition: transform var(--transition-fast);
+  outline: none;
 }
 
 .checkbox-wrapper input[type="checkbox"]:hover {
@@ -559,6 +564,7 @@
   overflow: hidden;
   animation: titleFadeIn 0.6s var(--transition-emphasized) 0.8s backwards;
   will-change: transform;
+  outline: none;
 }
 
 .submit-btn::before {
@@ -673,10 +679,12 @@
   border-color: var(--color-error);
   background: rgba(239, 68, 68, 0.08);
   animation: errorShake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  box-shadow: none;
 }
 
 .input-wrapper.error .input-icon {
   background: rgba(239, 68, 68, 0.15);
+  box-shadow: none;
 }
 
 .input-wrapper.error .input-icon i {
@@ -686,10 +694,12 @@
 .input-wrapper.success {
   border-color: var(--color-success);
   background: rgba(16, 185, 129, 0.08);
+  box-shadow: none;
 }
 
 .input-wrapper.success .input-icon {
   background: rgba(16, 185, 129, 0.15);
+  box-shadow: none;
 }
 
 .input-wrapper.success .input-icon i {
@@ -870,10 +880,11 @@
 }
 
 /* ==================================================
-   END OF FILE - V24.1 FINAL
+   END OF FILE - V24.2 FINAL
    Standards: Apple HIG, Material 3, Fluent 2
    Performance: GPU Accelerated, 60fps
    Accessibility: WCAG 2.1 AA
    Browser Support: Chrome 90+, Firefox 88+, Safari 14+
+   FIXED: Removed unwanted shadow box from input containers
    Last Updated: 2025-11-15
    ================================================== */

@@ -1,5 +1,6 @@
 // ==========================================
-// ✅ SUBJECT PAGE - V19.0 SUPABASE
+// ✅ SUBJECT PAGE - V20.0 ATOMIC + RATE LIMITING
+// Uses Database V2.0 Atomic Functions
 // Round Glass Capsules + Get Instead of Watch
 // NO STUDY TIME FEATURE
 // ==========================================
@@ -130,11 +131,11 @@ function updateSubjectHeader() {
 }
 
 // ==========================================
-// 🎨 RENDERING & UI - V19.0 GET BUTTON
+// 🎨 RENDERING & UI - V20.0 GET BUTTON
 // ==========================================
 
 /**
- * رسم قائمة المحاضرات - V19.0 GET BUTTON
+ * رسم قائمة المحاضرات - V20.0 GET BUTTON
  */
 function renderLectures(search = '') {
   let list = [...lectures];
@@ -252,11 +253,11 @@ function bindSearch() {
 }
 
 // ==========================================
-// 🔐 LECTURE ACCESS & PROTECTION - V19.0
+// 🔐 LECTURE ACCESS & PROTECTION - V20.0
 // ==========================================
 
 /**
- * معالجة زر "احصل" - V19.0
+ * معالجة زر "احصل" - V20.0
  * @param {string} lectureId - معرف المحاضرة
  * @param {boolean} isFree - هل المحاضرة مجانية؟
  */
@@ -271,7 +272,7 @@ window.handleGetLecture = async function(lectureId, isFree) {
 };
 
 /**
- * فتح محاضرة - V19.0
+ * فتح محاضرة - V20.0
  */
 window.openLecture = function(url) {
   if (!url || url === '#') {
@@ -290,7 +291,7 @@ window.openLecture = function(url) {
 };
 
 /**
- * إضافة محاضرة للمكتبة - V19.0 SUPABASE
+ * إضافة محاضرة للمكتبة - V20.0 SUPABASE
  */
 window.addToLibrary = async function(lectureId) {
   try {
@@ -321,7 +322,7 @@ window.addToLibrary = async function(lectureId) {
 };
 
 // ==========================================
-// 🎁 ACTIVATION SYSTEM - V19.0 SUPABASE
+// 🎁 ACTIVATION SYSTEM - V20.0 ATOMIC + RATE LIMITING
 // ==========================================
 
 /**
@@ -386,7 +387,7 @@ window.showActivationDialog = function(lectureId) {
 };
 
 /**
- * التحقق من صحة كود التفعيل - V19.0 SUPABASE
+ * ✅ V20.0 - التحقق من صحة كود التفعيل مع ATOMIC FUNCTION + RATE LIMITING
  */
 async function confirmActivation(lectureId, btnEl) {
   try {
@@ -411,108 +412,85 @@ async function confirmActivation(lectureId, btnEl) {
       return;
     }
 
-    // البحث عن الكود في Supabase
-    const { data: codeData, error: codeError } = await supabase
-      .from('activation_codes')
-      .select('*')
-      .eq('code', code)
-      .eq('is_active', true)
-      .maybeSingle();
+    // ✅ 1. Check rate limit first
+    console.log('🔄 Checking rate limit...');
+    const { data: rateLimitResult, error: rateLimitError } = await supabase.rpc('check_rate_limit', {
+      user_uuid: currentUser.id,
+      action_name: 'code_redemption',
+      max_attempts: 10,
+      window_minutes: 60,
+      block_minutes: 30
+    });
 
-    if (codeError || !codeData) {
-      showToast('❌ كود غير صالح', 'error');
+    if (rateLimitError) {
+      console.error('❌ Rate limit check error:', rateLimitError);
+      throw new Error('خطأ في التحقق من الحد');
+    }
+
+    if (!rateLimitResult.allowed) {
+      showToast(rateLimitResult.message || 'تم تجاوز عدد المحاولات المسموحة', 'error');
       btnEl.disabled = false;
       btnEl.innerHTML = '<i class="fas fa-check"></i> تفعيل';
       return;
     }
 
-    // ========== التحقق من شروط الكود ==========
+    console.log(`✅ Rate limit OK. Remaining attempts: ${rateLimitResult.remaining || 'N/A'}`);
 
-    // 1️⃣ التحقق من تاريخ انتهاء الصلاحية
-    if (codeData.expires_at) {
-      const now = new Date();
-      const expiryDate = new Date(codeData.expires_at);
+    // ✅ 2. Use atomic redeem_activation_code function
+    console.log('🔄 Redeeming code atomically...');
+    const { data: redeemResult, error: redeemError } = await supabase.rpc('redeem_activation_code', {
+      code_text: code,
+      user_uuid: currentUser.id
+    });
 
-      if (expiryDate < now) {
-        showToast('❌ الكود منتهي الصلاحية', 'error');
-        btnEl.disabled = false;
-        btnEl.innerHTML = '<i class="fas fa-check"></i> تفعيل';
-        return;
-      }
+    if (redeemError) {
+      console.error('❌ Redeem error:', redeemError);
+      throw new Error('خطأ في استرداد الكود');
     }
 
-    // 2️⃣ التحقق من الحد الأقصى للاستخدام
-    if (codeData.max_uses > 0) {
-      const usesCount = codeData.uses_count || 0;
-      if (usesCount >= codeData.max_uses) {
-        showToast('❌ الكود مستنفد (تم استخدام جميع النسخ)', 'error');
-        btnEl.disabled = false;
-        btnEl.innerHTML = '<i class="fas fa-check"></i> تفعيل';
-        return;
-      }
-    }
-
-    // ========== التفعيل صحيح - إضافة للمكتبة ==========
-    
-    // تحديد المحاضرات المراد إضافتها حسب نوع الكود
-    let lecturesToAdd = [];
-    if (codeData.target_type === 'lecture') {
-      lecturesToAdd = codeData.target_ids || [];
-    } else if (codeData.target_type === 'subject') {
-      const subjectId = codeData.target_ids?.[0];
-      if (subjectId) {
-        const { data: subjectLectures } = await supabase
-          .from('lectures')
-          .select('id')
-          .eq('subject', subjectId)
-          .eq('is_active', true);
-        
-        lecturesToAdd = subjectLectures ? subjectLectures.map(l => l.id) : [];
-      }
-    } else if (codeData.target_type === 'bundle') {
-      const subjectIds = codeData.target_ids || [];
-      const { data: bundleLectures } = await supabase
-        .from('lectures')
-        .select('id')
-        .in('subject', subjectIds)
-        .eq('is_active', true);
+    if (!redeemResult.success) {
+      // Handle specific errors
+      let errorMessage = redeemResult.message || 'خطأ في التفعيل';
       
-      lecturesToAdd = bundleLectures ? bundleLectures.map(l => l.id) : [];
+      if (redeemResult.error === 'invalid_code') {
+        errorMessage = 'كود غير صالح';
+      } else if (redeemResult.error === 'expired') {
+        errorMessage = 'الكود منتهي الصلاحية';
+      } else if (redeemResult.error === 'exhausted') {
+        errorMessage = 'الكود مستنفد (تم استخدام جميع النسخ)';
+      } else if (redeemResult.error === 'no_lectures') {
+        errorMessage = 'لم يتم العثور على محاضرات مرتبطة بهذا الكود';
+      }
+
+      showToast('❌ ' + errorMessage, 'error');
+      btnEl.disabled = false;
+      btnEl.innerHTML = '<i class="fas fa-check"></i> تفعيل';
+      return;
     }
 
-    // إضافة المحاضرات للمكتبة
-    const uniqueLectures = lecturesToAdd.filter(id => !userLectures.includes(id));
+    // ✅ Success!
+    console.log('✅ Code redeemed successfully!', redeemResult);
+
+    // Update local userLectures (refresh from database)
+    const { data: updatedLibrary } = await supabase
+      .from('user_library')
+      .select('lecture_id')
+      .eq('user_id', currentUser.id);
     
-    if (uniqueLectures.length > 0) {
-      const records = uniqueLectures.map(lid => ({
-        user_id: currentUser.id,
-        lecture_id: lid,
-        added_at: new Date().toISOString()
-      }));
-
-      const { error: insertError } = await supabase
-        .from('user_library')
-        .insert(records);
-
-      if (insertError) throw insertError;
-
-      userLectures = [...userLectures, ...uniqueLectures];
-    }
-
-    // تحديث عدد استخدامات الكود
-    await supabase
-      .from('activation_codes')
-      .update({
-        uses_count: (codeData.uses_count || 0) + 1,
-        last_used_at: new Date().toISOString()
-      })
-      .eq('id', codeData.id);
+    userLectures = updatedLibrary ? updatedLibrary.map(item => item.lecture_id) : [];
 
     // إغلاق النافذة
     document.querySelector('.custom-dialog-overlay')?.remove();
 
     // إظهار رسالة النجاح
-    showToast(`✅ تم التفعيل بنجاح! تمت إضافة ${uniqueLectures.length} محاضرة لمكتبتك`, 'success');
+    const addedCount = redeemResult.lectures_added || 0;
+    const totalCount = redeemResult.total_lectures || 0;
+    
+    showToast(
+      `✅ ${redeemResult.message || 'تم التفعيل بنجاح!'}\n` +
+      `تمت إضافة ${addedCount} محاضرة من ${totalCount} إلى مكتبتك`,
+      'success'
+    );
 
     // تحديث قائمة المحاضرات
     renderLectures(currentSearch);
@@ -598,6 +576,8 @@ window.showToast = function(msg, type = 'info') {
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
     animation: slideInRight 0.3s ease;
     border-radius: 8px;
+    max-width: 400px;
+    white-space: pre-line;
   `;
   t.textContent = msg;
   document.body.appendChild(t);
@@ -606,7 +586,7 @@ window.showToast = function(msg, type = 'info') {
   setTimeout(() => {
     t.style.animation = 'slideOutRight 0.3s ease';
     setTimeout(() => t.remove(), 300);
-  }, 3500);
+  }, 4500);
 };
 
 // إضافة الحركات للـ Toast
@@ -626,11 +606,12 @@ document.head.appendChild(style);
 // ==========================================
 // ✅ CONSOLE OUTPUT
 // ==========================================
-console.log('🎓 ATHR PLATFORM - Subject Page V19.0 SUPABASE Ready');
-console.log('✅ NEW: Supabase integration complete');
-console.log('✅ GET button instead of WATCH');
+console.log('🎓 ATHRR PLATFORM - Subject Page V20.0 ATOMIC + RATE LIMITING Ready');
+console.log('✅ NEW: Atomic code redemption with redeem_activation_code()');
+console.log('✅ NEW: Rate limiting (10 attempts per 60 minutes)');
+console.log('✅ NEW: Auto-lockout after 10 failed attempts (30 minutes)');
 console.log('📌 Free lectures → GET → Direct to library');
-console.log('🔐 Paid lectures → GET → Code dialog → Library');
+console.log('🔐 Paid lectures → GET → Code dialog → Atomic redemption → Library');
 console.log('📺 Owned lectures → WATCH button');
 console.log('🎨 Enhanced Glass Morphism Buttons');
-console.log('📱 Status: Responsive + RTL + Supabase + NO STUDY TIME');
+console.log('📱 Status: Production-Ready with Database V2.0 Functions');

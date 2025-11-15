@@ -4,6 +4,7 @@
   <!-- ==================================================
        META TAGS - SEO & Performance Optimization
        Standards: Google Lighthouse 100/100
+       Version: 25.0 - Production Ready
        ================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -14,7 +15,6 @@
   <meta name="keywords" content="منصة تعليمية، تعليم رقمي، محاضرات أونلاين، دروس، أثر، تعلم إلكتروني، جامعة، تطوير مهارات، دورات تدريبية">
   <meta name="author" content="منصة أثر التعليمية">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://athr.education/">
   
   <!-- Theme & PWA Configuration -->
   <meta name="theme-color" content="#16a34a">
@@ -28,28 +28,17 @@
   <meta property="og:site_name" content="منصة أثر التعليمية">
   <meta property="og:title" content="منصة أثر التعليمية - التعليم الرقمي المتطور">
   <meta property="og:description" content="منصة تعليمية رقمية متكاملة للتعلم الذكي والتطوير المستمر">
-  <meta property="og:image" content="https://athr.education/assets/og-image.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:url" content="https://athr.education/">
   <meta property="og:locale" content="ar_SA">
   
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="منصة أثر - التعليم الرقمي المتطور">
   <meta name="twitter:description" content="منصة تعليمية رقمية متكاملة للتعلم الذكي">
-  <meta name="twitter:image" content="https://athr.education/assets/twitter-card.jpg">
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   
   <title>منصة أثر - التعليم الرقمي المتطور</title>
   
   <!-- ==================================================
        PRECONNECT - Performance Optimization
-       DNS prefetch and preconnect for faster loading
        ================================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,7 +47,6 @@
   
   <!-- ==================================================
        FONTS - Google Fonts (Arabic + Latin)
-       Optimized font loading with display=swap
        ================================================== -->
   <link 
     href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" 
@@ -66,7 +54,6 @@
   
   <!-- ==================================================
        ICONS - Font Awesome 6
-       CDN with integrity check for security
        ================================================== -->
   <link 
     rel="stylesheet" 
@@ -82,7 +69,6 @@
   
   <!-- ==================================================
        AOS ANIMATION LIBRARY
-       Animate on scroll for smooth entrance effects
        ================================================== -->
   <link 
     href="https://unpkg.com/aos@2.3.1/dist/aos.css" 
@@ -90,10 +76,9 @@
   
   <!-- ==================================================
        INLINE CRITICAL CSS - Above the Fold
-       First Contentful Paint optimization
        ================================================== -->
   <style>
-    /* CSS Custom Properties - Design System */
+    /* CSS Custom Properties */
     :root {
       --color-primary: #16a34a;
       --color-primary-dark: #14532d;
@@ -111,7 +96,6 @@
       --transition-emphasized: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     }
     
-    /* Base Body Styles */
     body {
       min-height: 100vh;
       display: flex;
@@ -122,9 +106,15 @@
       padding: 20px;
       overflow-x: hidden;
       position: relative;
+      transition: opacity 0.3s ease;
     }
     
-    /* Hero Container */
+    /* Loading State - NEW */
+    body.checking-auth .hero-card {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    
     .hero-container {
       max-width: 920px;
       width: 100%;
@@ -135,17 +125,10 @@
     }
     
     @keyframes containerFadeIn {
-      from { 
-        opacity: 0; 
-        transform: scale(0.96); 
-      }
-      to { 
-        opacity: 1; 
-        transform: scale(1); 
-      }
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
     }
     
-    /* Hero Card - Glass Morphism */
     .hero-card {
       background: rgba(240, 253, 244, 0.35);
       backdrop-filter: blur(30px) saturate(180%);
@@ -164,17 +147,10 @@
     }
     
     @keyframes heroSlideUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
-    /* Ambient Gradient */
     .hero-card::before {
       content: '';
       position: absolute;
@@ -182,11 +158,7 @@
       right: -20%;
       width: 400px;
       height: 400px;
-      background: radial-gradient(
-        circle,
-        rgba(22, 163, 74, 0.1) 0%,
-        transparent 70%
-      );
+      background: radial-gradient(circle, rgba(22, 163, 74, 0.1) 0%, transparent 70%);
       pointer-events: none;
       animation: gradientFloat 10s ease-in-out infinite;
     }
@@ -196,7 +168,6 @@
       50% { transform: translate(-40px, -40px) scale(1.08); }
     }
     
-    /* Badge */
     .hero-badge {
       display: inline-flex;
       align-items: center;
@@ -227,7 +198,6 @@
       }
     }
     
-    /* Logo */
     .hero-logo {
       width: 120px;
       height: 120px;
@@ -268,19 +238,13 @@
       transform: scale(1.08) rotate(-3deg);
     }
     
-    /* Typography */
     .hero-title {
       font-size: clamp(2.5rem, 6vw, 3.8rem);
       font-weight: 900;
       margin: 0 0 25px;
       line-height: 1.15;
       letter-spacing: -0.02em;
-      background: linear-gradient(
-        135deg, 
-        #14532d 0%, 
-        #16a34a 40%, 
-        #10b981 100%
-      );
+      background: linear-gradient(135deg, #14532d 0%, #16a34a 40%, #10b981 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -290,14 +254,8 @@
     }
     
     @keyframes titleSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
     .hero-subtitle {
@@ -309,7 +267,6 @@
       animation: titleSlideIn 0.8s var(--transition-emphasized) 0.3s backwards;
     }
     
-    /* CTA Buttons */
     .cta-buttons {
       display: flex;
       gap: 20px;
@@ -337,7 +294,6 @@
       font-family: inherit;
     }
     
-    /* Primary Button */
     .cta-btn.primary {
       background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-medium) 100%);
       color: white;
@@ -373,7 +329,6 @@
       z-index: 1;
     }
     
-    /* Secondary Button */
     .cta-btn.secondary {
       background: rgba(255, 255, 255, 0.35);
       backdrop-filter: blur(12px);
@@ -397,7 +352,6 @@
       transform: translateY(-2px) scale(0.98);
     }
     
-    /* Footer */
     .home-footer {
       margin-top: 70px;
       text-align: center;
@@ -413,65 +367,23 @@
       font-weight: 500;
     }
     
-    /* Responsive Design */
+    /* Responsive */
     @media (max-width: 768px) {
-      .hero-card {
-        padding: 45px 35px;
-      }
-      
-      .hero-logo {
-        width: 100px;
-        height: 100px;
-        margin-bottom: 25px;
-      }
-      
-      .hero-logo i {
-        font-size: 3rem;
-      }
-      
-      .cta-buttons {
-        flex-direction: column;
-        gap: 15px;
-      }
-      
-      .cta-btn {
-        width: 100%;
-        padding: 16px 35px;
-      }
-      
-      .home-footer {
-        margin-top: 50px;
-      }
+      .hero-card { padding: 45px 35px; }
+      .hero-logo { width: 100px; height: 100px; margin-bottom: 25px; }
+      .hero-logo i { font-size: 3rem; }
+      .cta-buttons { flex-direction: column; gap: 15px; }
+      .cta-btn { width: 100%; padding: 16px 35px; }
+      .home-footer { margin-top: 50px; }
     }
     
     @media (max-width: 480px) {
-      body {
-        padding: 15px;
-      }
-      
-      .hero-card {
-        padding: 35px 25px;
-        border-radius: 20px;
-      }
-      
-      .hero-badge {
-        padding: 10px 20px;
-        font-size: 0.85rem;
-      }
-      
-      .hero-logo {
-        width: 90px;
-        height: 90px;
-      }
-      
-      .hero-logo i {
-        font-size: 2.5rem;
-      }
-      
-      .cta-btn {
-        padding: 14px 30px;
-        font-size: 1rem;
-      }
+      body { padding: 15px; }
+      .hero-card { padding: 35px 25px; border-radius: 20px; }
+      .hero-badge { padding: 10px 20px; font-size: 0.85rem; }
+      .hero-logo { width: 90px; height: 90px; }
+      .hero-logo i { font-size: 2.5rem; }
+      .cta-btn { padding: 14px 30px; font-size: 1rem; }
     }
     
     /* Accessibility */
@@ -480,7 +392,6 @@
         background: rgba(255, 255, 255, 0.95);
         border: 3px solid var(--text-primary);
       }
-      
       .hero-badge {
         background: var(--color-primary);
         color: white;
@@ -497,6 +408,24 @@
       }
     }
   </style>
+  
+  <!-- ==================================================
+       STRUCTURED DATA - SEO Enhancement - NEW
+       ================================================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "منصة أثر التعليمية",
+    "description": "منصة تعليمية رقمية متكاملة للتعلم الذكي والتطوير المستمر",
+    "url": "https://athr.education",
+    "foundingDate": "2025",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "SA"
+    }
+  }
+  </script>
 </head>
 
 <body>
@@ -507,7 +436,7 @@
     <div class="wave-layer"></div>
   </div>
 
-  <!-- Skip to Content Link -->
+  <!-- Skip to Content -->
   <a href="#main-content" class="skip-to-content">
     الانتقال إلى المحتوى الرئيسي
   </a>
@@ -587,27 +516,48 @@
   </footer>
 
   <!-- AOS Animation Library -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" 
+          onerror="console.warn('AOS failed to load')"></script>
   <script>
-    AOS.init({
-      duration: 800,
-      easing: 'ease-in-out',
-      once: true,
-      offset: 50,
-      disable: 'mobile',
-      anchorPlacement: 'top-bottom'
-    });
+    /* Initialize AOS - FIXED: Enable on all devices */
+    if (typeof AOS !== 'undefined') {
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        offset: 50,
+        disable: false,  // ← FIXED: Animations work on mobile now
+        anchorPlacement: 'top-bottom'
+      });
+    } else {
+      console.warn('AOS library not loaded, using CSS fallback');
+    }
   </script>
   
-  <!-- Auth Check & Auto-redirect -->
+  <!-- Auth Check & Auto-redirect - IMPROVED -->
   <script type="module">
     import { supabase } from './js/app.js';
     
     const checkAuth = async () => {
+      /* Add loading state - NEW */
+      document.body.classList.add('checking-auth');
+      
+      /* Timeout fallback - NEW */
+      const timeout = setTimeout(() => {
+        console.log('Auth check timeout, displaying landing page');
+        document.body.classList.remove('checking-auth');
+      }, 3000);
+      
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
         
-        if (error) throw error;
+        clearTimeout(timeout);
+        document.body.classList.remove('checking-auth');
+        
+        if (error) {
+          console.warn('Auth check error:', error);
+          return;
+        }
         
         if (session?.user) {
           console.log('User authenticated, redirecting to library...');
@@ -624,10 +574,13 @@
           console.log('No active session, displaying landing page');
         }
       } catch (error) {
-        console.error('Auth check error:', error);
+        clearTimeout(timeout);
+        document.body.classList.remove('checking-auth');
+        console.error('Auth check failed:', error);
       }
     };
     
+    /* Run auth check */
     checkAuth();
   </script>
   
