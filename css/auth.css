@@ -1,11 +1,11 @@
 /* ==================================================
- * ATHR AUTH PAGES CSS V24.2 FINAL
+ * ATHR AUTH PAGES CSS V26.0 ULTIMATE
  * Glass Morphism Authentication Design - Production Ready
  * Standards: Apple HIG + Material 3 + Fluent 2
  * Performance: GPU Accelerated + Core Web Vitals Optimized
  * Accessibility: WCAG 2.1 AA Compliant + ARIA Support
  * Browser Support: Modern browsers (Chrome 90+, Firefox 88+, Safari 14+)
- * FIXED: Removed unwanted shadow box around input containers
+ * ENHANCED: Full Dark Mode + Shimmer + Success Icons + Password Strength
  * ================================================== */
 
 /* ==================================================
@@ -137,56 +137,28 @@
    ================================================== */
 
 @keyframes authContainerSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(40px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(40px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes gradientRotate {
-  0%, 100% { 
-    transform: translate(0, 0) scale(1); 
-    opacity: 0.5;
-  }
-  50% { 
-    transform: translate(-50px, -50px) scale(1.08); 
-    opacity: 0.7;
-  }
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+  50% { transform: translate(-50px, -50px) scale(1.08); opacity: 0.7; }
 }
 
 @keyframes logoFloat {
-  0%, 100% { 
-    transform: translateY(0px) rotate(0deg); 
-  }
-  50% { 
-    transform: translateY(-10px) rotate(0.5deg); 
-  }
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(0.5deg); }
 }
 
 @keyframes titleFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes inputSlideIn {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes errorShake {
@@ -198,20 +170,33 @@
 }
 
 @keyframes errorSlideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes buttonSpin {
-  to { 
-    transform: rotate(360deg); 
-  }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes successPop {
+  0% { transform: translateY(-50%) scale(0); opacity: 0; }
+  60% { transform: translateY(-50%) scale(1.2); }
+  100% { transform: translateY(-50%) scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: translateY(-2px) scale(1); }
+  50% { opacity: 0.85; transform: translateY(-2px) scale(1.002); }
 }
 
 /* ==================================================
@@ -247,6 +232,7 @@
   will-change: transform;
   transform: translateZ(0);
   outline: none;
+  transition: all 0.3s ease;
 }
 
 .auth-glass-card::before {
@@ -332,7 +318,7 @@
 }
 
 /* ==================================================
-   INPUT SYSTEM - FIXED: Removed shadow box
+   INPUT SYSTEM - ENHANCED
    ================================================== */
 .input-capsule {
   margin-bottom: var(--space-lg);
@@ -354,7 +340,7 @@
   padding: var(--space-xs);
   border: 2px solid var(--glass-border);
   transition: all var(--transition-base);
-  box-shadow: none; /* ← FIXED: Removed shadow */
+  box-shadow: none;
   outline: none;
 }
 
@@ -362,14 +348,14 @@
   border-color: rgba(22, 163, 74, 0.4);
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
-  box-shadow: none; /* ← FIXED: No shadow on hover */
+  box-shadow: none;
   outline: none;
 }
 
 .input-wrapper:focus-within {
   border-color: var(--glass-border-focus);
   background: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.12); /* ← Keep only focus ring */
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.12);
   transform: translateY(-2px) scale(1.005);
   outline: none;
 }
@@ -389,13 +375,13 @@
   justify-content: center;
   z-index: 2;
   transition: all var(--transition-base);
-  box-shadow: none; /* ← FIXED: Removed icon shadow */
+  box-shadow: none;
 }
 
 .input-wrapper:focus-within .input-icon {
   background: rgba(22, 163, 74, 0.2);
   transform: translateY(-50%) scale(1.08);
-  box-shadow: none; /* ← FIXED: No shadow on focus */
+  box-shadow: none;
 }
 
 .input-icon i {
@@ -473,6 +459,32 @@
 
 .password-toggle:hover i {
   color: var(--text-primary);
+}
+
+/* ==================================================
+   LOADING STATE - Shimmer Skeleton
+   ================================================== */
+.input-wrapper.loading {
+  pointer-events: none;
+  opacity: 0.6;
+  position: relative;
+  overflow: hidden;
+}
+
+.input-wrapper.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
 }
 
 /* ==================================================
@@ -672,7 +684,7 @@
 }
 
 /* ==================================================
-   VALIDATION STATES
+   VALIDATION STATES - ENHANCED
    ================================================== */
 
 .input-wrapper.error {
@@ -706,6 +718,34 @@
   color: var(--color-success);
 }
 
+.input-wrapper.success::before {
+  content: '\f00c';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  right: 65px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-success);
+  font-size: 1.1rem;
+  z-index: 3;
+  animation: successPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.input-wrapper.checking {
+  border-color: rgba(59, 130, 246, 0.5);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.input-wrapper.checking .input-icon {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.input-wrapper.checking .input-icon i {
+  color: var(--color-info);
+  animation: buttonSpin 1s linear infinite;
+}
+
 .error-message {
   color: var(--color-error);
   font-size: var(--font-size-sm);
@@ -723,88 +763,86 @@
 }
 
 /* ==================================================
+   PASSWORD STRENGTH INDICATOR
+   ================================================== */
+.password-strength {
+  margin-top: var(--space-sm);
+  height: 4px;
+  background: rgba(203, 213, 225, 0.3);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+
+.password-strength-bar {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: all var(--transition-base);
+  transform-origin: left;
+}
+
+.password-strength-bar.weak {
+  width: 33%;
+  background: var(--color-error);
+}
+
+.password-strength-bar.medium {
+  width: 66%;
+  background: var(--color-warning);
+}
+
+.password-strength-bar.strong {
+  width: 100%;
+  background: var(--color-success);
+}
+
+.password-strength-text {
+  margin-top: var(--space-xs);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-semibold);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  animation: fadeIn 0.3s ease;
+}
+
+.password-strength-text.weak {
+  color: var(--color-error);
+}
+
+.password-strength-text.medium {
+  color: var(--color-warning);
+}
+
+.password-strength-text.strong {
+  color: var(--color-success);
+}
+
+/* ==================================================
    RESPONSIVE DESIGN
    ================================================== */
 
 @media (max-width: 768px) {
-  .auth-container {
-    padding: var(--space-md);
-  }
-  
-  .auth-glass-card {
-    padding: var(--space-2xl) var(--space-lg);
-  }
-  
-  .glass-logo {
-    width: 90px;
-    height: 90px;
-  }
-  
-  .glass-logo i {
-    font-size: 2.5rem;
-  }
-  
-  .auth-title {
-    font-size: var(--font-size-3xl);
-  }
-  
-  .auth-subtitle {
-    font-size: var(--font-size-sm);
-  }
-  
-  .capsule-input {
-    padding: 16px 70px 16px 24px;
-    font-size: var(--font-size-sm);
-  }
-  
-  .submit-btn {
-    padding: 16px var(--space-lg);
-    font-size: var(--font-size-base);
-  }
-  
-  .options-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  .auth-container { padding: var(--space-md); }
+  .auth-glass-card { padding: var(--space-2xl) var(--space-lg); }
+  .glass-logo { width: 90px; height: 90px; }
+  .glass-logo i { font-size: 2.5rem; }
+  .auth-title { font-size: var(--font-size-3xl); }
+  .auth-subtitle { font-size: var(--font-size-sm); }
+  .capsule-input { padding: 16px 70px 16px 24px; font-size: var(--font-size-sm); }
+  .submit-btn { padding: 16px var(--space-lg); font-size: var(--font-size-base); }
+  .options-row { flex-direction: column; align-items: flex-start; }
 }
 
 @media (max-width: 480px) {
-  .auth-container {
-    padding: var(--space-sm);
-  }
-  
-  .auth-glass-card {
-    padding: var(--space-xl) var(--space-md);
-    border-radius: var(--radius-2xl);
-  }
-  
-  .glass-logo {
-    width: 80px;
-    height: 80px;
-  }
-  
-  .glass-logo i {
-    font-size: 2.2rem;
-  }
-  
-  .auth-title {
-    font-size: var(--font-size-2xl);
-  }
-  
-  .capsule-input {
-    padding: 14px 65px 14px 20px;
-    font-size: var(--font-size-sm);
-  }
-  
-  .input-icon,
-  .password-toggle {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .input-icon i {
-    font-size: 1rem;
-  }
+  .auth-container { padding: var(--space-sm); }
+  .auth-glass-card { padding: var(--space-xl) var(--space-md); border-radius: var(--radius-2xl); }
+  .glass-logo { width: 80px; height: 80px; }
+  .glass-logo i { font-size: 2.2rem; }
+  .auth-title { font-size: var(--font-size-2xl); }
+  .capsule-input { padding: 14px 65px 14px 20px; font-size: var(--font-size-sm); }
+  .input-icon, .password-toggle { width: 40px; height: 40px; }
+  .input-icon i { font-size: 1rem; }
 }
 
 /* ==================================================
@@ -822,25 +860,13 @@
 }
 
 @media (prefers-contrast: high) {
-  .auth-glass-card {
-    background: rgba(255, 255, 255, 0.98);
-    border: 3px solid var(--text-primary);
-  }
-  
-  .input-wrapper {
-    background: white;
-    border: 3px solid var(--text-primary);
-  }
-  
-  .submit-btn {
-    border: 3px solid var(--text-primary);
-  }
+  .auth-glass-card { background: rgba(255, 255, 255, 0.98); border: 3px solid var(--text-primary); }
+  .input-wrapper { background: white; border: 3px solid var(--text-primary); }
+  .submit-btn { border: 3px solid var(--text-primary); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -863,28 +889,376 @@
    PRINT STYLES
    ================================================== */
 @media print {
-  .auth-glass-card {
-    background: white;
-    border: 2px solid black;
-    box-shadow: none;
-  }
-  
-  .auth-glass-card::before {
-    display: none;
-  }
-  
-  .submit-btn {
-    background: var(--color-primary);
-    box-shadow: none;
-  }
+  .auth-glass-card { background: white; border: 2px solid black; box-shadow: none; }
+  .auth-glass-card::before { display: none; }
+  .submit-btn { background: var(--color-primary); box-shadow: none; }
 }
 
 /* ==================================================
-   END OF FILE - V24.2 FINAL
+   ✅ ENHANCED: DARK MODE - FULL SUPPORT
+   ================================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #94a3b8;
+    --text-quaternary: #64748b;
+    --text-heading: #e2e8f0;
+    --text-inverse: #0f172a;
+    --bg-card: rgba(30, 41, 59, 0.60);
+    --bg-overlay: rgba(0, 0, 0, 0.75);
+    --glass-bg: rgba(30, 41, 59, 0.40);
+    --glass-bg-light: rgba(30, 41, 59, 0.30);
+    --glass-bg-medium: rgba(30, 41, 59, 0.50);
+    --glass-bg-strong: rgba(30, 41, 59, 0.70);
+    --glass-border: rgba(255, 255, 255, 0.10);
+    --glass-border-hover: rgba(255, 255, 255, 0.20);
+    --glass-border-focus: rgba(34, 197, 94, 0.5);
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.7), 0 8px 16px rgba(0, 0, 0, 0.6);
+    --shadow-2xl: 0 24px 48px rgba(0, 0, 0, 0.8), 0 12px 24px rgba(0, 0, 0, 0.7);
+    --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    --shadow-glass: 0 20px 50px rgba(0, 0, 0, 0.6), 
+                     inset 0 2px 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  .auth-glass-card {
+    background: var(--bg-card);
+    border-color: var(--glass-border);
+    box-shadow: var(--shadow-glass);
+  }
+  
+  .auth-glass-card::before {
+    background: radial-gradient(
+      circle,
+      rgba(34, 197, 94, 0.15) 0%,
+      transparent 70%
+    );
+  }
+  
+  .glass-logo {
+    background: rgba(30, 41, 59, 0.5);
+    border-color: var(--glass-border);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.5),
+      var(--shadow-inset);
+  }
+  
+  .glass-logo i {
+    color: var(--color-primary-light);
+    filter: drop-shadow(0 4px 8px rgba(34, 197, 94, 0.5));
+  }
+  
+  .auth-title {
+    color: var(--text-heading);
+    text-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.5),
+      0 4px 16px rgba(34, 197, 94, 0.3);
+  }
+  
+  .auth-subtitle {
+    color: var(--text-secondary);
+  }
+  
+  .input-wrapper {
+    background: rgba(30, 41, 59, 0.5);
+    border-color: var(--glass-border);
+  }
+  
+  .input-wrapper:hover {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: rgba(34, 197, 94, 0.4);
+  }
+  
+  .input-wrapper:focus-within {
+    background: rgba(30, 41, 59, 0.7);
+    border-color: var(--glass-border-focus);
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15);
+  }
+  
+  .input-icon {
+    background: rgba(34, 197, 94, 0.15);
+  }
+  
+  .input-wrapper:focus-within .input-icon {
+    background: rgba(34, 197, 94, 0.25);
+  }
+  
+  .input-icon i {
+    color: var(--color-primary-light);
+  }
+  
+  .capsule-input {
+    color: var(--text-primary);
+  }
+  
+  .capsule-input::placeholder {
+    color: var(--text-tertiary);
+  }
+  
+  .password-toggle {
+    background: rgba(30, 41, 59, 0.5);
+  }
+  
+  .password-toggle:hover {
+    background: rgba(30, 41, 59, 0.7);
+  }
+  
+  .password-toggle i {
+    color: var(--text-secondary);
+  }
+  
+  .password-toggle:hover i {
+    color: var(--text-primary);
+  }
+  
+  .checkbox-wrapper {
+    color: var(--text-secondary);
+  }
+  
+  .checkbox-wrapper:hover {
+    color: var(--text-primary);
+  }
+  
+  .forgot-link {
+    color: var(--color-primary-light);
+  }
+  
+  .forgot-link:hover {
+    color: var(--color-primary-lighter);
+    background: rgba(34, 197, 94, 0.15);
+  }
+  
+  .submit-btn {
+    background: linear-gradient(135deg, var(--color-primary-medium) 0%, var(--color-primary-light) 100%);
+    box-shadow: 
+      0 4px 20px rgba(34, 197, 94, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  
+  .submit-btn:hover {
+    box-shadow: 
+      0 8px 32px rgba(34, 197, 94, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  
+  .footer-links {
+    border-top-color: rgba(148, 163, 184, 0.2);
+  }
+  
+  .footer-links p {
+    color: var(--text-secondary);
+  }
+  
+  .footer-links a {
+    color: var(--color-primary-light);
+  }
+  
+  .footer-links a:hover {
+    color: var(--color-primary-lighter);
+    background: rgba(34, 197, 94, 0.15);
+  }
+  
+  /* Validation States Dark Mode */
+  .input-wrapper.error {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.5);
+  }
+  
+  .input-wrapper.error .input-icon {
+    background: rgba(239, 68, 68, 0.25);
+  }
+  
+  .input-wrapper.success {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.5);
+  }
+  
+  .input-wrapper.success .input-icon {
+    background: rgba(16, 185, 129, 0.25);
+  }
+  
+  .input-wrapper.checking {
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+  
+  .input-wrapper.checking .input-icon {
+    background: rgba(59, 130, 246, 0.25);
+  }
+  
+  .password-strength {
+    background: rgba(71, 85, 105, 0.3);
+  }
+}
+/* ==================================================
+   THEME TOGGLE INTEGRATION - NEW
+   For manual dark mode control alongside prefers-color-scheme
+   ================================================== */
+body.dark-mode {
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --text-quaternary: #64748b;
+  --text-heading: #e2e8f0;
+  --text-inverse: #0f172a;
+  --bg-card: rgba(30, 41, 59, 0.60);
+  --bg-overlay: rgba(0, 0, 0, 0.75);
+  --glass-bg: rgba(30, 41, 59, 0.40);
+  --glass-bg-light: rgba(30, 41, 59, 0.30);
+  --glass-bg-medium: rgba(30, 41, 59, 0.50);
+  --glass-bg-strong: rgba(30, 41, 59, 0.70);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-hover: rgba(255, 255, 255, 0.20);
+  --glass-border-focus: rgba(34, 197, 94, 0.5);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.7), 0 8px 16px rgba(0, 0, 0, 0.6);
+  --shadow-2xl: 0 24px 48px rgba(0, 0, 0, 0.8), 0 12px 24px rgba(0, 0, 0, 0.7);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                  inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  --shadow-glass: 0 20px 50px rgba(0, 0, 0, 0.6), 
+                   inset 0 2px 0 rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .auth-glass-card {
+  background: var(--bg-card);
+  border-color: var(--glass-border);
+  box-shadow: var(--shadow-glass);
+}
+
+body.dark-mode .auth-glass-card::before {
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.15) 0%,
+    transparent 70%
+  );
+}
+
+body.dark-mode .glass-logo {
+  background: rgba(30, 41, 59, 0.5);
+  border-color: var(--glass-border);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    var(--shadow-inset);
+}
+
+body.dark-mode .glass-logo i {
+  color: var(--color-primary-light);
+  filter: drop-shadow(0 4px 8px rgba(34, 197, 94, 0.5));
+}
+
+body.dark-mode .auth-title {
+  color: var(--text-heading);
+  text-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(34, 197, 94, 0.3);
+}
+
+body.dark-mode .input-wrapper {
+  background: rgba(30, 41, 59, 0.5);
+  border-color: var(--glass-border);
+}
+
+body.dark-mode .input-wrapper:hover {
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(34, 197, 94, 0.4);
+}
+
+body.dark-mode .input-wrapper:focus-within {
+  background: rgba(30, 41, 59, 0.7);
+  border-color: var(--glass-border-focus);
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15);
+}
+
+body.dark-mode .input-icon {
+  background: rgba(34, 197, 94, 0.15);
+}
+
+body.dark-mode .input-wrapper:focus-within .input-icon {
+  background: rgba(34, 197, 94, 0.25);
+}
+
+body.dark-mode .input-icon i {
+  color: var(--color-primary-light);
+}
+
+body.dark-mode .capsule-input {
+  color: var(--text-primary);
+}
+
+body.dark-mode .capsule-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+body.dark-mode .password-toggle {
+  background: rgba(30, 41, 59, 0.5);
+}
+
+body.dark-mode .password-toggle:hover {
+  background: rgba(30, 41, 59, 0.7);
+}
+
+body.dark-mode .submit-btn {
+  background: linear-gradient(135deg, var(--color-primary-medium) 0%, var(--color-primary-light) 100%);
+  box-shadow: 
+    0 4px 20px rgba(34, 197, 94, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .submit-btn:hover {
+  box-shadow: 
+    0 8px 32px rgba(34, 197, 94, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+body.dark-mode .footer-links {
+  border-top-color: rgba(148, 163, 184, 0.2);
+}
+
+body.dark-mode .footer-links a {
+  color: var(--color-primary-light);
+}
+
+body.dark-mode .footer-links a:hover {
+  color: var(--color-primary-lighter);
+  background: rgba(34, 197, 94, 0.15);
+}
+
+/* Validation States */
+body.dark-mode .input-wrapper.error {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+body.dark-mode .input-wrapper.error .input-icon {
+  background: rgba(239, 68, 68, 0.25);
+}
+
+body.dark-mode .input-wrapper.success {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.5);
+}
+
+body.dark-mode .input-wrapper.success .input-icon {
+  background: rgba(16, 185, 129, 0.25);
+}
+
+body.dark-mode .password-strength {
+  background: rgba(71, 85, 105, 0.3);
+}
+
+/* ==================================================
+   END OF FILE - V26.0 ULTIMATE
    Standards: Apple HIG, Material 3, Fluent 2
    Performance: GPU Accelerated, 60fps
    Accessibility: WCAG 2.1 AA
    Browser Support: Chrome 90+, Firefox 88+, Safari 14+
-   FIXED: Removed unwanted shadow box from input containers
-   Last Updated: 2025-11-15
+   ENHANCED: Full Dark Mode + Shimmer + Success Icons + Password Strength
+   Last Updated: 2025-11-16
    ================================================== */

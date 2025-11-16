@@ -1,7 +1,8 @@
 // ==========================================
-// ✅ ATHR PLATFORM CORE - V10.0 ATOMIC
+// ✅ ATHR PLATFORM CORE - V10.1 ENHANCED
 // Enhanced with Database V2.0 Functions
 // SUPABASE VERSION - Production Ready
+// NEW: Password Reset + Email Verification + Session Management + Extended Error Messages
 // ==========================================
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
@@ -63,10 +64,11 @@ let cacheTimestamp = null
 const CACHE_DURATION = 5 * 60 * 1000
 
 // ==========================================
-// ⚠️ ERROR MESSAGES
+// ⚠️ ERROR MESSAGES - ENHANCED V10.1
 // ==========================================
 function getErrorMessage(errorCode) {
   const errors = {
+    // Auth errors
     'auth/email-already-in-use': 'البريد الإلكتروني مستخدم بالفعل',
     'auth/invalid-email': 'البريد الإلكتروني غير صحيح',
     'auth/weak-password': 'كلمة المرور ضعيفة (6 أحرف على الأقل)',
@@ -75,21 +77,45 @@ function getErrorMessage(errorCode) {
     'auth/too-many-requests': 'محاولات كثيرة جداً، حاول بعد قليل',
     'auth/network-request-failed': 'خطأ في الاتصال بالإنترنت',
     'auth/invalid-credential': 'بيانات الدخول غير صحيحة',
+    'auth/user-disabled': 'تم تعطيل هذا الحساب',
+    'auth/operation-not-allowed': 'العملية غير مسموحة',
+    'auth/account-exists-with-different-credential': 'البريد مستخدم مع طريقة دخول أخرى',
+    'auth/invalid-verification-code': 'رمز التحقق غير صحيح',
+    'auth/invalid-verification-id': 'معرف التحقق غير صحيح',
+    'auth/missing-verification-code': 'رمز التحقق مفقود',
+    'auth/missing-verification-id': 'معرف التحقق مفقود',
+    'auth/code-expired': 'انتهت صلاحية الرمز',
+    'auth/invalid-phone-number': 'رقم الهاتف غير صحيح',
+    'auth/missing-phone-number': 'رقم الهاتف مفقود',
+    'auth/quota-exceeded': 'تم تجاوز الحد المسموح',
+    'auth/cancelled-popup-request': 'تم إلغاء عملية تسجيل الدخول',
+    'auth/popup-blocked': 'تم حظر النافذة المنبثقة',
+    'auth/popup-closed-by-user': 'تم إغلاق النافذة من قبل المستخدم',
+    'auth/unauthorized-domain': 'النطاق غير مصرح به',
+    
+    // Database errors
     'permission-denied': 'خطأ في الصلاحيات',
     'missing-fields': 'يرجى ملء جميع الحقول',
+    'missing-email': 'يرجى إدخال البريد الإلكتروني',
     'user-not-found': 'المستخدم غير موجود في قاعدة البيانات',
     'weak-password': 'كلمة المرور يجب أن تكون 6 أحرف على الأقل',
     'firestore-save-failed': 'فشل حفظ البيانات',
+    'username_taken': 'اسم المستخدم محجوز بالفعل',
+    'email_taken': 'البريد الإلكتروني مستخدم بالفعل',
+    'invalid-username': 'اسم المستخدم غير صالح',
+    'username-invalid': 'اسم المستخدم غير صالح',
+    
+    // Supabase specific
     'Invalid login credentials': 'بيانات الدخول غير صحيحة',
     'Email not confirmed': 'يرجى تأكيد البريد الإلكتروني أولاً',
-    'username_taken': 'اسم المستخدم محجوز بالفعل',
-    'email_taken': 'البريد الإلكتروني مستخدم بالفعل'
+    'User already registered': 'المستخدم مسجل بالفعل'
   }
-  return errors[errorCode] || 'حدث خطأ غير متوقع'
+  
+  return errors[errorCode] || `خطأ: ${errorCode}`
 }
 
 // ==========================================
-// ✅ LOGIN V10.0
+// ✅ LOGIN V10.1
 // ==========================================
 export async function login(email, password) {
   try {
@@ -164,7 +190,7 @@ export async function login(email, password) {
 }
 
 // ==========================================
-// ✅ VALIDATE USERNAME V10.0 (NEW)
+// ✅ VALIDATE USERNAME V10.1
 // ==========================================
 export async function validateUsername(username) {
   try {
@@ -182,7 +208,7 @@ export async function validateUsername(username) {
 }
 
 // ==========================================
-// ✅ SIGNUP V10.0 - ATOMIC WITH DATABASE FUNCTION
+// ✅ SIGNUP V10.1 - ATOMIC WITH DATABASE FUNCTION
 // ==========================================
 export async function signup(email, password, name, username, phoneNumber = null) {
   try {
@@ -214,7 +240,7 @@ export async function signup(email, password, name, username, phoneNumber = null
       }
     }
 
-    // ✅ NEW: Use database validation function
+    // Use database validation function
     const validation = await validateUsername(cleanUsername)
     if (!validation.valid) {
       return {
@@ -250,7 +276,7 @@ export async function signup(email, password, name, username, phoneNumber = null
 
     console.log('🔄 Saving to database with atomic function...')
 
-    // ✅ NEW: Use atomic create_user_account function
+    // Use atomic create_user_account function
     const { data: createResult, error: createError } = await supabase.rpc('create_user_account', {
       user_uid: user.id,
       user_name: name,
@@ -314,7 +340,7 @@ export async function signup(email, password, name, username, phoneNumber = null
 }
 
 // ==========================================
-// ✅ LOGOUT V10.0
+// ✅ LOGOUT V10.1
 // ==========================================
 export async function logout() {
   try {
@@ -350,7 +376,84 @@ export async function logout() {
 }
 
 // ==========================================
-// ✅ GET CURRENT USER V10.0
+// 🔑 PASSWORD RESET V10.1 - NEW
+// ==========================================
+export async function sendPasswordReset(email) {
+  try {
+    if (!email) {
+      return {
+        success: false,
+        error: 'missing-email',
+        message: 'يرجى إدخال البريد الإلكتروني'
+      }
+    }
+
+    console.log('🔄 Sending password reset email...')
+    
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password.html`
+    })
+
+    if (error) {
+      console.error('❌ Password reset error:', error)
+      return {
+        success: false,
+        error: error.message,
+        message: getErrorMessage(error.message)
+      }
+    }
+
+    console.log('✅ Password reset email sent')
+    return {
+      success: true,
+      message: 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني'
+    }
+  } catch (error) {
+    console.error('❌ Password reset error:', error)
+    return {
+      success: false,
+      error: error.message,
+      message: 'حدث خطأ في إرسال البريد الإلكتروني'
+    }
+  }
+}
+
+// ==========================================
+// 🔑 UPDATE PASSWORD V10.1 - NEW
+// ==========================================
+export async function updatePassword(newPassword) {
+  try {
+    if (!newPassword || newPassword.length < 6) {
+      return {
+        success: false,
+        error: 'weak-password',
+        message: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل'
+      }
+    }
+
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword
+    })
+
+    if (error) throw error
+
+    console.log('✅ Password updated successfully')
+    return {
+      success: true,
+      message: 'تم تحديث كلمة المرور بنجاح'
+    }
+  } catch (error) {
+    console.error('❌ Password update error:', error)
+    return {
+      success: false,
+      error: error.message,
+      message: getErrorMessage(error.message)
+    }
+  }
+}
+
+// ==========================================
+// ✅ GET CURRENT USER V10.1
 // ==========================================
 export async function getCurrentUser(forceRefresh = false) {
   const { data: { user: authUser } } = await supabase.auth.getUser()
@@ -385,6 +488,112 @@ export async function getCurrentUser(forceRefresh = false) {
 }
 
 // ==========================================
+// 📧 EMAIL VERIFICATION V10.1 - NEW
+// ==========================================
+export async function checkEmailVerification() {
+  try {
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    if (!user) return { verified: false }
+
+    return {
+      verified: user.email_confirmed_at !== null,
+      email: user.email,
+      confirmedAt: user.email_confirmed_at
+    }
+  } catch (error) {
+    console.error('❌ Email verification check error:', error)
+    return { verified: false, error: error.message }
+  }
+}
+
+// ==========================================
+// 📧 RESEND VERIFICATION EMAIL V10.1 - NEW
+// ==========================================
+export async function resendVerificationEmail() {
+  try {
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    if (!user) {
+      return {
+        success: false,
+        message: 'المستخدم غير مسجل الدخول'
+      }
+    }
+
+    if (user.email_confirmed_at) {
+      return {
+        success: false,
+        message: 'البريد الإلكتروني مؤكد بالفعل'
+      }
+    }
+
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email: user.email
+    })
+
+    if (error) throw error
+
+    return {
+      success: true,
+      message: 'تم إعادة إرسال رسالة التأكيد'
+    }
+  } catch (error) {
+    console.error('❌ Resend verification error:', error)
+    return {
+      success: false,
+      error: error.message,
+      message: 'حدث خطأ في إرسال البريد'
+    }
+  }
+}
+
+// ==========================================
+// 🕐 SESSION MANAGEMENT V10.1 - NEW
+// ==========================================
+export async function getActiveSession() {
+  try {
+    const { data: { session }, error } = await supabase.auth.getSession()
+    
+    if (error) throw error
+    
+    return {
+      active: session !== null,
+      session: session,
+      expiresAt: session?.expires_at,
+      user: session?.user
+    }
+  } catch (error) {
+    console.error('❌ Session check error:', error)
+    return { active: false, error: error.message }
+  }
+}
+
+// ==========================================
+// 🔄 EXTEND SESSION V10.1 - NEW
+// ==========================================
+export async function extendSession() {
+  try {
+    const { data, error } = await supabase.auth.refreshSession()
+    
+    if (error) throw error
+    
+    console.log('✅ Session extended')
+    return {
+      success: true,
+      session: data.session
+    }
+  } catch (error) {
+    console.error('❌ Session extend error:', error)
+    return {
+      success: false,
+      error: error.message
+    }
+  }
+}
+
+// ==========================================
 // ✅ CHECK ADMIN
 // ==========================================
 export async function isAdmin(userId) {
@@ -404,7 +613,7 @@ export async function isAdmin(userId) {
 }
 
 // ==========================================
-// ✅ UPDATE USER PROFILE V10.0
+// ✅ UPDATE USER PROFILE V10.1
 // ==========================================
 export async function updateUserProfile(userId, updates) {
   try {
@@ -492,9 +701,19 @@ export async function debugSupabase() {
   console.log('Current User:', user)
   console.log('Cached User:', cachedUser)
   console.log('Supabase Client:', supabase)
+  
+  // Check session
+  const session = await getActiveSession()
+  console.log('Active Session:', session)
+  
+  // Check email verification
+  const emailCheck = await checkEmailVerification()
+  console.log('Email Verified:', emailCheck)
+  
   console.log('=========================')
 }
 
 window.debugSupabase = debugSupabase
 
-console.log('✅ App.js V10.0 ATOMIC - Production Ready with Database V2.0 Functions')
+console.log('✅ App.js V10.1 ENHANCED - Production Ready')
+console.log('📦 New Features: Password Reset + Email Verification + Session Management + Extended Errors')

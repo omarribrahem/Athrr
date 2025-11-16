@@ -64,11 +64,11 @@
   />
 
   <!-- ==========================================
-       STYLESHEETS - Glass Morphism Design V19.0 CLEAN
-       ✅ FIXED: Using platform-clean.css for 2-column Profile Modal
+       STYLESHEETS - Glass Morphism Design
        ========================================== -->
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/platform.css" />
+
   <!-- ==========================================
        PWA MANIFEST
        ========================================== -->
@@ -171,8 +171,19 @@
   </a>
 
   <!-- ==========================================
-       PROFILE MODAL - ENHANCED V2.0
-       2-Column Layout: Avatar Left | Form Right
+       TOAST CONTAINER - Pre-rendered
+       ✅ NEW: Added for library.js V28.0
+       ========================================== -->
+  <div 
+    class="toast-container" 
+    data-singleton="true"
+    role="region" 
+    aria-label="الإشعارات" 
+    aria-live="polite"></div>
+
+  <!-- ==========================================
+       PROFILE MODAL - ENHANCED V3.0 ULTIMATE
+       ✅ All Events Connected + Rounded Design
        ========================================== -->
   <div 
     class="profile-modal" 
@@ -183,7 +194,7 @@
     aria-hidden="true"
     tabindex="-1">
     
-    <!-- Backdrop -->
+    <!-- Backdrop - Click to Close -->
     <div 
       class="profile-modal-overlay" 
       onclick="window.closeProfile()"
@@ -191,193 +202,204 @@
     
     <!-- Modal Content -->
     <div class="profile-modal-content" role="document">
+      <!-- Close Button -->
+      <button 
+        class="profile-close" 
+        onclick="window.closeProfile()"
+        aria-label="إغلاق الملف الشخصي"
+        type="button">
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+      
       <!-- Header -->
-      <header class="profile-modal-header">
-        <div>
-          <h2 id="profileModalTitle">
-            <i class="fas fa-user-circle" aria-hidden="true"></i>
-            الملف الشخصي
-          </h2>
-          <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 4px 0 0 0;">
-            إدارة معلوماتك الشخصية
-          </p>
-        </div>
-        <button 
-          class="profile-modal-close" 
-          onclick="window.closeProfile()" 
-          aria-label="إغلاق الملف الشخصي"
-          type="button">
-          <i class="fas fa-times" aria-hidden="true"></i>
-        </button>
+      <header class="profile-header">
+        <h2 id="profileModalTitle">
+          <i class="fas fa-user-circle" aria-hidden="true"></i>
+          الملف الشخصي
+        </h2>
+        <p>إدارة معلوماتك الشخصية</p>
       </header>
 
-      <!-- Body: 2-Column Grid Layout -->
-      <div class="profile-modal-body">
-        <div class="profile-grid-layout">
-          <!-- LEFT COLUMN: Avatar Section -->
-          <section class="profile-avatar-section" aria-label="إعدادات الصورة الرمزية">
-            <div class="profile-avatar-card">
-              <div class="profile-avatar-wrapper">
-                <div class="profile-avatar-large">
-                  <img 
-                    id="profileAvatarImg" 
-                    alt="صورة المستخدم" 
-                    loading="lazy"
-                  />
-                  <button 
-                    class="avatar-edit-overlay" 
-                    onclick="event.stopPropagation(); window.showAvatarSelector();" 
-                    aria-label="تغيير الصورة الرمزية"
-                    type="button">
-                    <i class="fas fa-camera" aria-hidden="true"></i>
-                    <span>تغيير</span>
-                  </button>
-                </div>
-              </div>
-              
-              <div style="text-align: center; margin-top: 16px;">
-                <h3 id="profileModalName" style="font-size: 1.1rem; font-weight: 700; margin: 0 0 4px 0; color: var(--text-primary);">
-                  المستخدم
-                </h3>
-                
-              </div>
-            </div>
-            
-            <!-- Avatar Selector -->
-            <div class="avatar-selector" id="avatarSelector" style="display:none; margin-top: 20px;">
-              <h4 style="font-size: 0.95rem; font-weight: 700; margin: 0 0 12px 0; color: var(--text-primary);">
-                اختر صورة رمزية
-              </h4>
-              <div 
-                class="avatars-grid" 
-                role="group" 
-                aria-label="اختر صورة رمزية"></div>
-              
-              <div class="avatar-selector-footer" style="display:flex; gap:12px; margin-top:16px;">
-                <button 
-                  type="button" 
-                  class="btn-confirm" 
-                  onclick="event.stopPropagation(); window.confirmAvatarSelection();" 
-                  style="flex:1; padding:12px; border-radius:var(--radius-lg); background: linear-gradient(135deg, #16a34a, #10b981); color: white; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s;">
-                  <i class="fas fa-check" aria-hidden="true"></i> تأكيد
-                </button>
-                <button 
-                  type="button" 
-                  class="btn-cancel" 
-                  onclick="event.stopPropagation(); window.cancelAvatarSelection();" 
-                  style="flex:1; padding:12px; border-radius:var(--radius-lg); background: rgba(100, 116, 139, 0.15); color: #64748b; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s;">
-                  <i class="fas fa-times" aria-hidden="true"></i> إلغاء
-                </button>
-              </div>
-            </div>
-          </section>
+      <!-- Body -->
+      <div class="profile-body">
+        <!-- Avatar Section -->
+        <div class="profile-avatar-section" aria-label="إعدادات الصورة الرمزية">
+          <div class="profile-avatar-wrapper">
+            <img 
+              id="profileAvatarImg" 
+              alt="صورة المستخدم" 
+              class="profile-avatar-img"
+              loading="lazy"
+            />
+            <button 
+              class="change-avatar-btn" 
+              onclick="window.showAvatarSelector()"
+              aria-label="تغيير الصورة الرمزية"
+              type="button">
+              <i class="fas fa-camera" aria-hidden="true"></i>
+            </button>
+          </div>
           
-          <!-- RIGHT COLUMN: Form Section -->
-          <section class="profile-form-section" aria-label="معلومات الملف الشخصي">
-            <form id="profileForm" onsubmit="return false;" novalidate>
-              <!-- Name Field -->
-              <div class="form-group">
-                <label for="profileName" class="form-label">
-                  <i class="fas fa-user" aria-hidden="true"></i> الاسم الكامل
-                </label>
-                <input 
-                  id="profileName" 
-                  type="text" 
-                  class="form-input" 
-                  autocomplete="name"
-                  required
-                  aria-required="true"
-                  placeholder="أدخل اسمك الكامل"
-                />
-              </div>
-              
-              <!-- Username Field -->
-              <div class="form-group">
-                <label for="profileUsername" class="form-label">
-                  <i class="fas fa-at" aria-hidden="true"></i> اسم المستخدم
-                </label>
-                <input 
-                  id="profileUsername" 
-                  type="text" 
-                  class="form-input" 
-                  autocomplete="username"
-                  required
-                  aria-required="true"
-                  pattern="[a-z0-9_]+"
-                  placeholder="حروف وأرقام و _ فقط"
-                />
-              </div>
-              
-              <!-- Phone Field -->
-              <div class="form-group">
-                <label for="profilePhone" class="form-label">
-                  <i class="fas fa-phone" aria-hidden="true"></i> رقم الهاتف
-                </label>
-                <input 
-                  id="profilePhone" 
-                  type="tel" 
-                  class="form-input" 
-                  autocomplete="tel"
-                  placeholder="اختياري"
-                />
-              </div>
-              
-              <!-- Email Field (Disabled) -->
-              <div class="form-group">
-                <label for="profileEmail" class="form-label">
-                  <i class="fas fa-envelope" aria-hidden="true"></i> البريد الإلكتروني
-                </label>
-                <input 
-                  id="profileEmail" 
-                  type="email" 
-                  class="form-input" 
-                  disabled 
-                  aria-disabled="true"
-                  style="background: rgba(100, 116, 139, 0.1); cursor: not-allowed; opacity: 0.7;" 
-                />
-                <p style="font-size: 0.8rem; color: #64748b; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
-                  <i class="fas fa-info-circle" aria-hidden="true"></i> البريد الإلكتروني لا يمكن تغييره
-                </p>
-              </div>
-              
-              <!-- Password Field -->
-              <div class="form-group">
-                <label for="profilePassword" class="form-label">
-                  <i class="fas fa-lock" aria-hidden="true"></i> كلمة مرور جديدة
-                </label>
-                <input 
-                  id="profilePassword" 
-                  type="password" 
-                  class="form-input" 
-                  placeholder="اتركها فارغة إذا لم تريد التغيير" 
-                  minlength="6" 
-                  autocomplete="new-password"
-                  aria-describedby="password-help"
-                />
-                <p id="password-help" style="font-size: 0.8rem; color: #64748b; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
-                  <i class="fas fa-info-circle" aria-hidden="true"></i> 6 أحرف على الأقل
-                </p>
-              </div>
-            </form>
-          </section>
+          <div style="text-align: center; margin-top: 16px;">
+            <h3 id="profileModalName" style="font-size: 1.1rem; font-weight: 700; margin: 0 0 4px 0; color: var(--text-primary);">
+              المستخدم
+            </h3>
+          </div>
         </div>
+        
+        <!-- Form -->
+        <form id="profileForm" onsubmit="return false;">
+          <!-- Name Field -->
+          <div class="form-group">
+            <label for="profileName" class="form-label">
+              <i class="fas fa-user" aria-hidden="true"></i> الاسم الكامل
+            </label>
+            <input 
+              id="profileName" 
+              type="text" 
+              class="form-input" 
+              autocomplete="name"
+              required
+              aria-required="true"
+              placeholder="أدخل اسمك الكامل"
+            />
+          </div>
+          
+          <!-- Username Field -->
+          <div class="form-group">
+            <label for="profileUsername" class="form-label">
+              <i class="fas fa-at" aria-hidden="true"></i> اسم المستخدم
+            </label>
+            <input 
+              id="profileUsername" 
+              type="text" 
+              class="form-input" 
+              autocomplete="username"
+              placeholder="حروف وأرقام و _ فقط"
+              style="direction: ltr;"
+            />
+          </div>
+          
+          <!-- Phone Field -->
+          <div class="form-group">
+            <label for="profilePhone" class="form-label">
+              <i class="fas fa-phone" aria-hidden="true"></i> رقم الهاتف
+            </label>
+            <input 
+              id="profilePhone" 
+              type="tel" 
+              class="form-input" 
+              autocomplete="tel"
+              placeholder="اختياري"
+              style="direction: ltr;"
+            />
+          </div>
+          
+          <!-- Email Field (Disabled) -->
+          <div class="form-group">
+            <label for="profileEmail" class="form-label">
+              <i class="fas fa-envelope" aria-hidden="true"></i> البريد الإلكتروني
+            </label>
+            <input 
+              id="profileEmail" 
+              type="email" 
+              class="form-input" 
+              disabled 
+              readonly
+              aria-disabled="true"
+            />
+            <p style="font-size: 0.8rem; color: #64748b; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+              <i class="fas fa-info-circle" aria-hidden="true"></i> البريد الإلكتروني لا يمكن تغييره
+            </p>
+          </div>
+          
+          <!-- Password Field -->
+          <div class="form-group">
+            <label for="profilePassword" class="form-label">
+              <i class="fas fa-lock" aria-hidden="true"></i> كلمة مرور جديدة
+            </label>
+            <input 
+              id="profilePassword" 
+              type="password" 
+              class="form-input" 
+              placeholder="اتركها فارغة إذا لم تريد التغيير" 
+              minlength="6" 
+              autocomplete="new-password"
+              aria-describedby="password-help"
+              style="direction: ltr;"
+            />
+            <p id="password-help" style="font-size: 0.8rem; color: #64748b; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+              <i class="fas fa-shield-alt" aria-hidden="true"></i> 6 أحرف على الأقل
+            </p>
+          </div>
+        </form>
       </div>
 
       <!-- Footer Actions -->
-      <footer class="profile-modal-footer">
+      <footer class="profile-actions">
         <button 
-          id="saveProfileBtn" 
           type="button" 
-          class="profile-save-btn">
-          <i class="fas fa-check-circle" aria-hidden="true"></i> حفظ التغييرات
+          class="profile-btn profile-btn-secondary" 
+          onclick="window.logout()">
+          <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+          <span>تسجيل الخروج</span>
         </button>
+        
         <button 
-          class="profile-logout-btn" 
-          onclick="window.logout()"
-          type="button">
-          <i class="fas fa-sign-out-alt" aria-hidden="true"></i> تسجيل الخروج
+          type="button" 
+          id="saveProfileBtn" 
+          class="profile-btn profile-btn-primary">
+          <i class="fas fa-check-circle" aria-hidden="true"></i>
+          <span>حفظ التعديلات</span>
         </button>
       </footer>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       AVATAR SELECTOR MODAL - Dark Mode Ready
+       ========================================== -->
+  <div 
+    id="avatarSelector" 
+    style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); z-index: 100001; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: var(--glass-bg-strong); backdrop-filter: blur(30px); border: 2px solid var(--glass-border); border-radius: 28px; max-width: 520px; width: 100%; padding: 36px; position: relative; box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3); transition: background 0.3s, border-color 0.3s;">
+      <!-- Close Button -->
+      <button 
+        onclick="window.closeAvatarSelector()" 
+        style="position: absolute; top: 20px; left: 20px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.6); border: 2px solid rgba(203, 213, 225, 0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s;"
+        aria-label="إغلاق"
+        type="button">
+        <i class="fas fa-times" style="color: #64748b; font-size: 18px;"></i>
+      </button>
+      
+      <!-- Title -->
+      <h3 style="text-align: center; margin: 0 0 28px 0; color: var(--text-heading); font-size: 1.65rem; font-weight: 800; line-height: 1.2;">
+        <i class="fas fa-images" style="color: var(--color-primary);"></i>
+        اختر صورة رمزية
+      </h3>
+      
+      <!-- Avatars Grid -->
+      <div class="avatars-grid"></div>
+      
+      <!-- Actions -->
+      <div style="display: flex; gap: 14px; margin-top: 28px;">
+        <button 
+          onclick="window.cancelAvatarSelection()" 
+          class="profile-btn profile-btn-secondary" 
+          style="flex: 1;"
+          type="button">
+          <i class="fas fa-times"></i>
+          إلغاء
+        </button>
+        <button 
+          onclick="window.confirmAvatarSelection()" 
+          class="profile-btn profile-btn-primary" 
+          style="flex: 1;"
+          type="button">
+          <i class="fas fa-check"></i>
+          تأكيد
+        </button>
+      </div>
     </div>
   </div>
 
@@ -395,7 +417,6 @@
       <!-- User Section (Right Side) -->
       <button 
         class="user-section loading" 
-        onclick="window.openProfile()"
         aria-label="فتح الملف الشخصي"
         aria-haspopup="dialog"
         type="button">
@@ -473,7 +494,7 @@
         </div>
       </div>
 
-      <!-- Progress Circle - Apple Watch Style -->
+      <!-- Progress Circle - Apple Watch Style - ✅ FIXED -->
       <div class="welcome-icon-wrapper" aria-hidden="true">
         <div class="stat-card-progress-circle">
           <svg class="progress-svg" viewBox="0 0 120 120">
@@ -496,7 +517,7 @@
     </section>
 
     <!-- ==========================================
-         TABS - iOS Segmented Control
+         TABS - iOS Segmented Control - ✅ FIXED
          ========================================== -->
     <nav 
       class="filter-tabs-container" 
@@ -508,12 +529,12 @@
         <button 
           class="tab-btn-new active" 
           data-tab="allSubjects" 
-          onclick="window.switchTab('allSubjects')"
           role="tab"
           aria-selected="true"
           aria-controls="allSubjects"
           id="tab-allSubjects"
-          type="button">
+          type="button"
+          onclick="window.switchTab('allSubjects')">
           <i class="fas fa-th-large" aria-hidden="true"></i> 
           <span>المواد</span>
         </button>
@@ -521,12 +542,12 @@
         <button 
           class="tab-btn-new" 
           data-tab="myLibrary" 
-          onclick="window.switchTab('myLibrary')"
           role="tab"
           aria-selected="false"
           aria-controls="myLibrary"
           id="tab-myLibrary"
-          type="button">
+          type="button"
+          onclick="window.switchTab('myLibrary')">
           <i class="fas fa-book" aria-hidden="true"></i> 
           <span>مكتبتي (<span id="headerLibraryCount" aria-live="polite">0</span>)</span>
         </button>
@@ -535,12 +556,12 @@
           class="tab-btn-new" 
           data-tab="continueWatching" 
           style="display:none;" 
-          onclick="window.switchTab('continueWatching')"
           role="tab"
           aria-selected="false"
           aria-controls="continueWatching"
           id="tab-continueWatching"
-          type="button">
+          type="button"
+          onclick="window.switchTab('continueWatching')">
           <i class="fas fa-play-circle" aria-hidden="true"></i> 
           <span>متابعة <span class="cw-badge" id="cwCount"></span></span>
         </button>
@@ -574,7 +595,7 @@
         aria-hidden="true"
         tabindex="0">
         
-        <!-- Empty State -->
+        <!-- Empty State - ✅ FIXED -->
         <div 
           id="libraryEmptyState" 
           class="library-empty-state" 
@@ -587,8 +608,8 @@
           </p>
           <button 
             class="browse-btn-new" 
-            onclick="window.switchTab('allSubjects')"
-            type="button">
+            type="button"
+            onclick="window.switchTab('allSubjects')">
             تصفح المواد
           </button>
         </div>
@@ -604,7 +625,7 @@
               </p>
             </div>
 
-            <!-- View Controls -->
+            <!-- View Controls - ✅ FIXED -->
             <div 
               class="library-view-controls" 
               role="radiogroup"
@@ -612,21 +633,21 @@
               <button 
                 class="view-control-btn active" 
                 data-view="grid" 
-                onclick="window.setLibraryView('grid')" 
                 aria-label="عرض شبكي"
                 aria-pressed="true"
                 role="radio"
-                type="button">
+                type="button"
+                onclick="window.setLibraryView('grid')">
                 <i class="fas fa-th" aria-hidden="true"></i>
               </button>
               <button 
                 class="view-control-btn" 
                 data-view="list" 
-                onclick="window.setLibraryView('list')" 
                 aria-label="عرض قائمة"
                 aria-pressed="false"
                 role="radio"
-                type="button">
+                type="button"
+                onclick="window.setLibraryView('list')">
                 <i class="fas fa-list" aria-hidden="true"></i>
               </button>
             </div>
@@ -656,7 +677,7 @@
     </div>
 
     <!-- ==========================================
-         LECTURES VIEW (Hidden by Default)
+         LECTURES VIEW (Hidden by Default) - ✅ FIXED
          ========================================== -->
     <section 
       id="lecturesView" 
@@ -665,9 +686,9 @@
       <header class="lectures-view-header">
         <button 
           class="back-button" 
-          onclick="window.backToLibrary()"
           aria-label="العودة للمكتبة"
-          type="button">
+          type="button"
+          onclick="window.backToLibrary()">
           <i class="fas fa-arrow-right" aria-hidden="true"></i> عودة
         </button>
         <h2 id="subjectTitle">المحاضرات</h2>
@@ -680,9 +701,85 @@
   </main>
 
   <!-- ==========================================
+       THEME TOGGLE BUTTON - Dark Mode
+       ✅ Glass Morphism Toggle
+       ========================================== -->
+  <button 
+    class="theme-toggle-btn" 
+    id="themeToggleBtn"
+    aria-label="تبديل الوضع المظلم"
+    aria-pressed="false"
+    type="button">
+    <i class="fas fa-sun" aria-hidden="true"></i>
+    <i class="fas fa-moon" aria-hidden="true"></i>
+  </button>
+
+  <!-- ==========================================
        SCRIPTS
        ========================================== -->
   
+  <!-- Theme Toggle Script -->
+  <script>
+    // ==========================================
+    // THEME TOGGLE FUNCTIONALITY
+    // Unified with platform.css + style.css
+    // ==========================================
+    (function() {
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      const currentTheme = localStorage.getItem('athr-theme') || 'light';
+      
+      // Apply saved theme on load
+      if (currentTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        if (themeToggleBtn) {
+          themeToggleBtn.setAttribute('aria-pressed', 'true');
+        }
+      }
+      
+      // Toggle theme function
+      function toggleTheme() {
+        const isDark = document.body.classList.toggle('dark-mode');
+        const newTheme = isDark ? 'dark' : 'light';
+        
+        // Save preference
+        localStorage.setItem('athr-theme', newTheme);
+        
+        // Update button state
+        if (themeToggleBtn) {
+          themeToggleBtn.setAttribute('aria-pressed', isDark);
+        }
+        
+        // Dispatch custom event for library.js integration
+        window.dispatchEvent(new CustomEvent('themechange', {
+          detail: { theme: newTheme }
+        }));
+        
+        // Announce to screen readers
+        const announcement = document.createElement('div');
+        announcement.setAttribute('role', 'status');
+        announcement.setAttribute('aria-live', 'polite');
+        announcement.className = 'sr-only';
+        announcement.textContent = isDark ? 'تم التبديل إلى الوضع المظلم' : 'تم التبديل إلى الوضع المضيء';
+        document.body.appendChild(announcement);
+        
+        setTimeout(() => announcement.remove(), 1000);
+      }
+      
+      // Attach event listener
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', toggleTheme);
+      }
+      
+      // Keyboard shortcut (Ctrl+Shift+D)
+      document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+          e.preventDefault();
+          toggleTheme();
+        }
+      });
+    })();
+  </script>
+
   <!-- AOS Animation Library -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>

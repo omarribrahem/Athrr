@@ -3,7 +3,7 @@
 <head>
   <!-- ==================================================
        META TAGS - SEO & Security
-       Version: 26.0 - Atomic Functions Integrated
+       Version: 27.0 - Enhanced with auth.css V25 Features
        ================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -173,19 +173,6 @@
       font-weight: 600;
     }
     
-    /* Password Strength Colors */
-    .input-wrapper.password-weak {
-      border-color: rgba(220, 38, 38, 0.5) !important;
-    }
-    
-    .input-wrapper.password-medium {
-      border-color: rgba(245, 158, 11, 0.5) !important;
-    }
-    
-    .input-wrapper.password-strong {
-      border-color: rgba(22, 163, 74, 0.5) !important;
-    }
-    
     /* Terms Checkbox */
     .terms-wrapper {
       margin: 20px 0;
@@ -276,7 +263,7 @@
         
         <!-- Full Name -->
         <div class="input-capsule">
-          <div class="input-wrapper">
+          <div class="input-wrapper" id="nameWrapper">
             <div class="input-icon" aria-hidden="true">
               <i class="fas fa-user"></i>
             </div>
@@ -313,7 +300,7 @@
         
         <!-- Phone Number (Optional) -->
         <div class="input-capsule">
-          <div class="input-wrapper">
+          <div class="input-wrapper" id="phoneWrapper">
             <div class="input-icon" aria-hidden="true">
               <i class="fas fa-phone"></i>
             </div>
@@ -330,7 +317,7 @@
         
         <!-- Email -->
         <div class="input-capsule">
-          <div class="input-wrapper">
+          <div class="input-wrapper" id="emailWrapper">
             <div class="input-icon" aria-hidden="true">
               <i class="fas fa-envelope"></i>
             </div>
@@ -348,7 +335,7 @@
         
         <!-- Email Confirmation -->
         <div class="input-capsule">
-          <div class="input-wrapper">
+          <div class="input-wrapper" id="emailConfirmWrapper">
             <div class="input-icon" aria-hidden="true">
               <i class="fas fa-check-circle"></i>
             </div>
@@ -366,7 +353,7 @@
         
         <!-- Password -->
         <div class="input-capsule">
-          <div class="input-wrapper">
+          <div class="input-wrapper" id="passwordWrapper">
             <div class="input-icon" aria-hidden="true">
               <i class="fas fa-lock"></i>
             </div>
@@ -383,12 +370,18 @@
             <button 
               type="button" 
               class="password-toggle" 
-              onclick="togglePassword()"
+              id="passwordToggle"
               aria-label="إظهار أو إخفاء كلمة المرور"
               tabindex="0">
               <i class="fas fa-eye" id="passwordIcon"></i>
             </button>
           </div>
+          
+          <!-- ✅ NEW: Password Strength Indicator -->
+          <div class="password-strength" id="passwordStrength" style="display:none;">
+            <div class="password-strength-bar" id="passwordStrengthBar"></div>
+          </div>
+          <div class="password-strength-text" id="passwordStrengthText" style="display:none;"></div>
         </div>
         
         <!-- Terms & Conditions -->
@@ -477,7 +470,7 @@
     }
     
     /* Password Toggle */
-    function togglePassword() {
+    document.getElementById('passwordToggle').addEventListener('click', () => {
       const input = document.getElementById('password');
       const icon = document.getElementById('passwordIcon');
       
@@ -488,7 +481,7 @@
         input.type = 'password';
         icon.className = 'fas fa-eye';
       }
-    }
+    });
     
     /* Password Strength Checker */
     function checkPasswordStrength(password) {
@@ -509,28 +502,50 @@
       return disposableDomains.some(d => domain && domain.includes(d));
     }
     
-    /* Password Strength Visual Feedback */
+    /* ✅ ENHANCED: Password Strength Visual Feedback */
     document.getElementById('password').addEventListener('input', (e) => {
-      const strength = checkPasswordStrength(e.target.value);
-      const wrapper = e.target.closest('.input-wrapper');
+      const password = e.target.value;
+      const strength = checkPasswordStrength(password);
+      const wrapper = document.getElementById('passwordWrapper');
+      const strengthBar = document.getElementById('passwordStrengthBar');
+      const strengthText = document.getElementById('passwordStrengthText');
+      const strengthContainer = document.getElementById('passwordStrength');
       
+      // Remove old classes
       wrapper.classList.remove('password-weak', 'password-medium', 'password-strong');
+      strengthBar.classList.remove('weak', 'medium', 'strong');
+      strengthText.classList.remove('weak', 'medium', 'strong');
       
-      if (e.target.value.length >= 6) {
+      if (password.length >= 6) {
+        strengthContainer.style.display = 'block';
+        strengthText.style.display = 'flex';
+        
         if (strength <= 2) {
           wrapper.classList.add('password-weak');
+          strengthBar.classList.add('weak');
+          strengthText.classList.add('weak');
+          strengthText.innerHTML = '<i class="fas fa-exclamation-circle"></i> ضعيفة';
         } else if (strength <= 3) {
           wrapper.classList.add('password-medium');
+          strengthBar.classList.add('medium');
+          strengthText.classList.add('medium');
+          strengthText.innerHTML = '<i class="fas fa-shield-alt"></i> متوسطة';
         } else {
           wrapper.classList.add('password-strong');
+          strengthBar.classList.add('strong');
+          strengthText.classList.add('strong');
+          strengthText.innerHTML = '<i class="fas fa-check-circle"></i> قوية';
         }
+      } else {
+        strengthContainer.style.display = 'none';
+        strengthText.style.display = 'none';
       }
     });
     
-    /* Email Confirmation Visual Feedback */
+    /* ✅ ENHANCED: Email Confirmation Visual Feedback with Success Icon */
     document.getElementById('emailConfirm').addEventListener('input', (e) => {
       const email = document.getElementById('email').value;
-      const wrapper = e.target.closest('.input-wrapper');
+      const wrapper = document.getElementById('emailConfirmWrapper');
       
       if (e.target.value && e.target.value === email) {
         wrapper.classList.add('success');
@@ -770,7 +785,7 @@
       }
     });
     
-    console.log('✅ Signup V26.0 with Atomic Functions loaded');
+    console.log('✅ Signup V27.0 with auth.css V25 Features loaded');
   </script>
   
 </body>

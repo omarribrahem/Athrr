@@ -7,13 +7,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  
+
   <!-- SEO Meta Tags -->
   <meta name="description" content="منصة أثر التعليمية - محاضرات المادة" />
   <meta name="keywords" content="تعليم، محاضرات، مكتبة رقمية، أثر" />
   <meta name="author" content="منصة أثر التعليمية" />
   <meta name="robots" content="index, follow" />
-  
+
   <!-- Theme & PWA -->
   <meta name="theme-color" content="#16a34a" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -80,7 +80,6 @@
     body:not(.loaded) {
       overflow: hidden;
     }
-    
     body:not(.loaded)::before {
       content: '';
       position: fixed;
@@ -88,7 +87,6 @@
       background: linear-gradient(135deg, #16a34a 0%, #10b981 100%);
       z-index: 99999;
     }
-    
     body:not(.loaded)::after {
       content: '';
       position: fixed;
@@ -103,7 +101,6 @@
       animation: spin 1s linear infinite;
       z-index: 999999;
     }
-    
     @keyframes spin {
       to { transform: translate(-50%, -50%) rotate(360deg); }
     }
@@ -129,7 +126,6 @@
 
   <!-- ==========================================
        PROFILE MODAL - ENHANCED V2.0
-       2-Column Layout: Avatar Left | Form Right
        ========================================== -->
   <div 
     class="profile-modal" 
@@ -139,16 +135,13 @@
     aria-labelledby="profileModalTitle" 
     aria-hidden="true"
     tabindex="-1">
-    
     <!-- Backdrop -->
     <div 
       class="profile-modal-overlay" 
       onclick="window.closeProfile()"
       aria-label="إغلاق"></div>
-    
     <!-- Modal Content -->
     <div class="profile-modal-content" role="document">
-      <!-- Header -->
       <header class="profile-modal-header">
         <div>
           <h2 id="profileModalTitle">
@@ -167,11 +160,9 @@
           <i class="fas fa-times" aria-hidden="true"></i>
         </button>
       </header>
-
-      <!-- Body: 2-Column Grid Layout -->
       <div class="profile-modal-body">
         <div class="profile-grid-layout">
-          <!-- LEFT COLUMN: Avatar Section -->
+          <!-- COLUMN 1: Avatar -->
           <section class="profile-avatar-section" aria-label="إعدادات الصورة الرمزية">
             <div class="profile-avatar-card">
               <div class="profile-avatar-wrapper">
@@ -191,7 +182,6 @@
                   </button>
                 </div>
               </div>
-              
               <div style="text-align: center; margin-top: 16px;">
                 <h3 id="profileModalName" style="font-size: 1.1rem; font-weight: 700; margin: 0 0 4px 0; color: var(--text-primary);">
                   المستخدم
@@ -201,7 +191,6 @@
                 </p>
               </div>
             </div>
-            
             <!-- Avatar Selector -->
             <div class="avatar-selector" id="avatarSelector" style="display:none; margin-top: 20px;">
               <h4 style="font-size: 0.95rem; font-weight: 700; margin: 0 0 12px 0; color: var(--text-primary);">
@@ -211,7 +200,6 @@
                 class="avatars-grid" 
                 role="group" 
                 aria-label="اختر صورة رمزية"></div>
-              
               <div class="avatar-selector-footer" style="display:flex; gap:12px; margin-top:16px;">
                 <button 
                   type="button" 
@@ -228,11 +216,10 @@
               </div>
             </div>
           </section>
-          
-          <!-- RIGHT COLUMN: Form Section -->
+          <!-- COLUMN 2: Profile Form -->
           <section class="profile-form-section" aria-label="معلومات الملف الشخصي">
             <form id="profileForm" onsubmit="return false;" novalidate>
-              <!-- Name Field -->
+              <!-- Name -->
               <div class="form-group">
                 <label for="profileName" class="form-label">
                   <i class="fas fa-user" aria-hidden="true"></i> الاسم الكامل
@@ -247,8 +234,7 @@
                   placeholder="أدخل اسمك الكامل"
                 />
               </div>
-              
-              <!-- Username Field -->
+              <!-- Username -->
               <div class="form-group">
                 <label for="profileUsername" class="form-label">
                   <i class="fas fa-at" aria-hidden="true"></i> اسم المستخدم
@@ -264,8 +250,7 @@
                   placeholder="حروف وأرقام و _ فقط"
                 />
               </div>
-              
-              <!-- Phone Field -->
+              <!-- Phone -->
               <div class="form-group">
                 <label for="profilePhone" class="form-label">
                   <i class="fas fa-phone" aria-hidden="true"></i> رقم الهاتف
@@ -278,8 +263,7 @@
                   placeholder="اختياري"
                 />
               </div>
-              
-              <!-- Email Field (Disabled) -->
+              <!-- Email (disabled) -->
               <div class="form-group">
                 <label for="profileEmail" class="form-label">
                   <i class="fas fa-envelope" aria-hidden="true"></i> البريد الإلكتروني
@@ -296,8 +280,7 @@
                   <i class="fas fa-info-circle" aria-hidden="true"></i> البريد الإلكتروني لا يمكن تغييره
                 </p>
               </div>
-              
-              <!-- Password Field -->
+              <!-- Password -->
               <div class="form-group">
                 <label for="profilePassword" class="form-label">
                   <i class="fas fa-lock" aria-hidden="true"></i> كلمة مرور جديدة
@@ -319,7 +302,6 @@
           </section>
         </div>
       </div>
-
       <!-- Footer Actions -->
       <footer class="profile-modal-footer">
         <button 
@@ -347,7 +329,6 @@
       <a href="library.html" class="platform-logo" aria-label="العودة للمكتبة">
         <i class="fas fa-graduation-cap" aria-hidden="true"></i>
       </a>
-
       <!-- User Section -->
       <button 
         class="user-section loading" 
@@ -423,14 +404,12 @@
   <script>
     window.addEventListener('load', () => {
       document.body.classList.add('loaded');
-      
       const announcement = document.createElement('div');
       announcement.setAttribute('role', 'status');
       announcement.setAttribute('aria-live', 'polite');
       announcement.className = 'sr-only';
       announcement.textContent = 'تم تحميل الصفحة بنجاح';
       document.body.appendChild(announcement);
-      
       setTimeout(() => announcement.remove(), 1000);
     });
   </script>

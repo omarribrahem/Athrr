@@ -3,7 +3,7 @@
 <head>
   <!-- ==================================================
        META TAGS - SEO & Security
-       Version: 25.0 - Production Ready
+       Version: 26.0 - Enhanced with auth.css V25 Features
        ================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -172,7 +172,7 @@
       font-weight: 600;
     }
     
-    /* NEW: Forgot Password Modal */
+    /* Forgot Password Modal */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -371,7 +371,7 @@
     <div class="loading-text">جاري تسجيل الدخول...</div>
   </div>
 
-  <!-- NEW: Forgot Password Modal -->
+  <!-- Forgot Password Modal -->
   <div 
     class="modal-overlay" 
     id="forgotPasswordModal" 
@@ -386,7 +386,7 @@
         <button 
           type="button" 
           class="modal-close" 
-          onclick="closeForgotPasswordModal()" 
+          id="modalCloseBtn"
           aria-label="إغلاق">
           <i class="fas fa-times"></i>
         </button>
@@ -395,7 +395,7 @@
         <p class="modal-description">
           أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور
         </p>
-        <div class="input-wrapper">
+        <div class="input-wrapper" id="forgotEmailWrapper">
           <div class="input-icon">
             <i class="fas fa-envelope"></i>
           </div>
@@ -411,14 +411,13 @@
         <button 
           type="button" 
           class="modal-btn modal-btn-secondary" 
-          onclick="closeForgotPasswordModal()">
+          id="modalCancelBtn">
           إلغاء
         </button>
         <button 
           type="button" 
           class="modal-btn modal-btn-primary" 
-          id="sendResetBtn"
-          onclick="sendResetEmail()">
+          id="sendResetBtn">
           <i class="fas fa-paper-plane"></i> إرسال
         </button>
       </div>
@@ -443,7 +442,7 @@
         
         <!-- Email Input -->
         <div class="input-capsule">
-          <div class="input-wrapper">
+          <div class="input-wrapper" id="emailWrapper">
             <div class="input-icon" aria-hidden="true">
               <i class="fas fa-envelope"></i>
             </div>
@@ -461,7 +460,7 @@
         
         <!-- Password Input -->
         <div class="input-capsule">
-          <div class="input-wrapper">
+          <div class="input-wrapper" id="passwordWrapper">
             <div class="input-icon" aria-hidden="true">
               <i class="fas fa-lock"></i>
             </div>
@@ -477,7 +476,7 @@
             <button 
               type="button" 
               class="password-toggle" 
-              onclick="togglePassword()"
+              id="passwordToggle"
               aria-label="إظهار أو إخفاء كلمة المرور"
               tabindex="0">
               <i class="fas fa-eye" id="passwordIcon"></i>
@@ -497,7 +496,7 @@
           <a 
             href="#" 
             class="forgot-link" 
-            onclick="showForgotPasswordModal(); return false;"
+            id="forgotLink"
             aria-label="نسيت كلمة المرور">
             نسيت كلمة المرور؟
           </a>
@@ -555,11 +554,15 @@
         </div>
         <button 
           class="toast-close" 
-          onclick="this.parentElement.remove()"
           aria-label="إغلاق الإشعار">
           <i class="fas fa-times"></i>
         </button>
       `;
+      
+      // ✅ FIXED: Use addEventListener
+      const closeBtn = toast.querySelector('.toast-close');
+      closeBtn.addEventListener('click', () => toast.remove());
+      
       container.appendChild(toast);
       
       setTimeout(() => {
@@ -576,21 +579,7 @@
       document.getElementById('loadingOverlay').classList.toggle('active', show);
     }
     
-    /* Password Visibility Toggle */
-    function togglePassword() {
-      const input = document.getElementById('password');
-      const icon = document.getElementById('passwordIcon');
-      
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.className = 'fas fa-eye-slash';
-      } else {
-        input.type = 'password';
-        icon.className = 'fas fa-eye';
-      }
-    }
-    
-    /* NEW: Modal Controls */
+    /* ✅ ENHANCED: Modal Controls with addEventListener */
     function showForgotPasswordModal() {
       document.getElementById('forgotPasswordModal').classList.add('active');
       setTimeout(() => document.getElementById('forgotEmail').focus(), 100);
@@ -599,20 +588,65 @@
     function closeForgotPasswordModal() {
       document.getElementById('forgotPasswordModal').classList.remove('active');
       document.getElementById('forgotEmail').value = '';
+      const wrapper = document.getElementById('forgotEmailWrapper');
+      wrapper.classList.remove('success', 'error');
     }
     
-    /* NEW: Send Reset Email */
+    // Setup modal listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      // Password Toggle
+      document.getElementById('passwordToggle').addEventListener('click', () => {
+        const input = document.getElementById('password');
+        const icon = document.getElementById('passwordIcon');
+        
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.className = 'fas fa-eye-slash';
+        } else {
+          input.type = 'password';
+          icon.className = 'fas fa-eye';
+        }
+      });
+      
+      // Forgot Link
+      document.getElementById('forgotLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        showForgotPasswordModal();
+      });
+      
+      // Modal Close Buttons
+      document.getElementById('modalCloseBtn').addEventListener('click', closeForgotPasswordModal);
+      document.getElementById('modalCancelBtn').addEventListener('click', closeForgotPasswordModal);
+      
+      // Modal Send Reset
+      document.getElementById('sendResetBtn').addEventListener('click', sendResetEmail);
+      
+      // Close modal on ESC
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeForgotPasswordModal();
+        }
+      });
+    });
+    
+    /* ✅ ENHANCED: Send Reset Email with Validation States */
     async function sendResetEmail() {
       const email = document.getElementById('forgotEmail').value.trim();
       const btn = document.getElementById('sendResetBtn');
+      const wrapper = document.getElementById('forgotEmailWrapper');
+      
+      // Clear states
+      wrapper.classList.remove('success', 'error');
       
       if (!email) {
+        wrapper.classList.add('error');
         showToast('يرجى إدخال البريد الإلكتروني', 'warning');
         return;
       }
       
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
+        wrapper.classList.add('error');
         showToast('البريد الإلكتروني غير صحيح', 'error');
         return;
       }
@@ -630,10 +664,16 @@
         
         if (error) throw error;
         
+        wrapper.classList.add('success');
         showLoading(false);
-        closeForgotPasswordModal();
+        
+        setTimeout(() => {
+          closeForgotPasswordModal();
+        }, 1000);
+        
         showToast('تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني ✓', 'success');
       } catch (e) {
+        wrapper.classList.add('error');
         showLoading(false);
         console.error('Forgot password error:', e);
         showToast('خطأ في إرسال البريد، حاول مجدداً', 'error');
@@ -643,7 +683,7 @@
       }
     }
     
-    /* NEW: Rate Limiting */
+    /* Rate Limiting */
     let loginAttempts = 0;
     let lockoutTime = null;
     
@@ -695,7 +735,7 @@
       ]);
     }
 
-    /* Form Submit Handler */
+    /* ✅ ENHANCED: Form Submit Handler with Visual States */
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -706,20 +746,30 @@
       const password = document.getElementById('password').value;
       const rememberMe = document.getElementById('rememberMe').checked;
       const btn = document.getElementById('loginBtn');
+      const emailWrapper = document.getElementById('emailWrapper');
+      const passwordWrapper = document.getElementById('passwordWrapper');
+      
+      // Clear states
+      emailWrapper.classList.remove('error', 'success');
+      passwordWrapper.classList.remove('error', 'success');
       
       /* Validation */
       if (!email || !password) {
+        if (!email) emailWrapper.classList.add('error');
+        if (!password) passwordWrapper.classList.add('error');
         showToast('يرجى إدخال البريد الإلكتروني وكلمة المرور', 'error');
         return;
       }
       
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
+        emailWrapper.classList.add('error');
         showToast('البريد الإلكتروني غير صحيح', 'error');
         return;
       }
       
       if (password.length < 6) {
+        passwordWrapper.classList.add('error');
         showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
         return;
       }
@@ -737,6 +787,10 @@
           loginAttempts = 0;
           lockoutTime = null;
           
+          /* Visual Success */
+          emailWrapper.classList.add('success');
+          passwordWrapper.classList.add('success');
+          
           /* Save email if remember me */
           if (rememberMe) {
             localStorage.setItem('athr_remember_email', email);
@@ -751,6 +805,9 @@
           }, 1000);
         } else {
           /* Handle failed login */
+          emailWrapper.classList.add('error');
+          passwordWrapper.classList.add('error');
+          
           if (handleFailedLogin()) {
             showLoading(false);
             btn.disabled = true;
@@ -768,6 +825,9 @@
           showToast(result.message || 'خطأ في تسجيل الدخول', 'error');
         }
       } catch (e) {
+        emailWrapper.classList.add('error');
+        passwordWrapper.classList.add('error');
+        
         showLoading(false);
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';

@@ -4,7 +4,7 @@
   <!-- ==================================================
        META TAGS - SEO & Performance Optimization
        Standards: Google Lighthouse 100/100
-       Version: 25.0 - Production Ready
+       Version: 26.0 - PERFECT EDITION
        ================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -38,12 +38,19 @@
   <title>منصة أثر - التعليم الرقمي المتطور</title>
   
   <!-- ==================================================
-       PRECONNECT - Performance Optimization
+       PRECONNECT & PRELOAD - Performance Optimization
+       ✅ NEW: Preload critical fonts
        ================================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://unpkg.com">
+  
+  <!-- Preload Critical Font -->
+  <link 
+    rel="preload" 
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" 
+    as="style">
   
   <!-- ==================================================
        FONTS - Google Fonts (Arabic + Latin)
@@ -109,7 +116,7 @@
       transition: opacity 0.3s ease;
     }
     
-    /* Loading State - NEW */
+    /* Loading State */
     body.checking-auth .hero-card {
       opacity: 0.6;
       pointer-events: none;
@@ -410,7 +417,7 @@
   </style>
   
   <!-- ==================================================
-       STRUCTURED DATA - SEO Enhancement - NEW
+       STRUCTURED DATA - SEO Enhancement
        ================================================== -->
   <script type="application/ld+json">
   {
@@ -452,9 +459,11 @@
       <!-- Badge -->
       <div 
         class="hero-badge" 
+        id="heroBadge"
         data-aos="fade-down" 
         data-aos-delay="100"
         role="status"
+        aria-live="polite"
         aria-label="منصة التعليم الرقمي">
         <i class="fas fa-graduation-cap" aria-hidden="true"></i> 
         <span>منصة التعليم الرقمي</span>
@@ -519,14 +528,14 @@
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" 
           onerror="console.warn('AOS failed to load')"></script>
   <script>
-    /* Initialize AOS - FIXED: Enable on all devices */
+    /* Initialize AOS */
     if (typeof AOS !== 'undefined') {
       AOS.init({
         duration: 800,
         easing: 'ease-in-out',
         once: true,
         offset: 50,
-        disable: false,  // ← FIXED: Animations work on mobile now
+        disable: false,
         anchorPlacement: 'top-bottom'
       });
     } else {
@@ -534,17 +543,17 @@
     }
   </script>
   
-  <!-- Auth Check & Auto-redirect - IMPROVED -->
+  <!-- ✅ ENHANCED: Auth Check with Better Error Handling -->
   <script type="module">
     import { supabase } from './js/app.js';
     
     const checkAuth = async () => {
-      /* Add loading state - NEW */
+      /* Add loading state */
       document.body.classList.add('checking-auth');
       
-      /* Timeout fallback - NEW */
+      /* Timeout fallback */
       const timeout = setTimeout(() => {
-        console.log('Auth check timeout, displaying landing page');
+        console.log('⏱️ Auth check timeout, displaying landing page');
         document.body.classList.remove('checking-auth');
       }, 3000);
       
@@ -555,28 +564,43 @@
         document.body.classList.remove('checking-auth');
         
         if (error) {
-          console.warn('Auth check error:', error);
+          console.warn('⚠️ Auth check error:', error.message);
           return;
         }
         
         if (session?.user) {
-          console.log('User authenticated, redirecting to library...');
+          console.log('✅ User authenticated, redirecting to library...');
           
-          const badge = document.querySelector('.hero-badge');
+          /* Update badge with redirect message */
+          const badge = document.getElementById('heroBadge');
           if (badge) {
             badge.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> <span>جاري التحويل...</span>';
           }
           
+          /* Smooth redirect */
           setTimeout(() => {
             window.location.href = 'library.html';
           }, 500);
         } else {
-          console.log('No active session, displaying landing page');
+          console.log('ℹ️ No active session, displaying landing page');
         }
       } catch (error) {
         clearTimeout(timeout);
         document.body.classList.remove('checking-auth');
-        console.error('Auth check failed:', error);
+        console.error('❌ Auth check failed:', error.message);
+        
+        /* Show error in badge (optional) */
+        const badge = document.getElementById('heroBadge');
+        if (badge && error.message !== 'timeout') {
+          setTimeout(() => {
+            badge.innerHTML = '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i> <span>خطأ في الاتصال</span>';
+          }, 500);
+          
+          /* Restore after 3 seconds */
+          setTimeout(() => {
+            badge.innerHTML = '<i class="fas fa-graduation-cap" aria-hidden="true"></i> <span>منصة التعليم الرقمي</span>';
+          }, 3500);
+        }
       }
     };
     
