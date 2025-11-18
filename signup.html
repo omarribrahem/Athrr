@@ -1,39 +1,23 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <!-- ==================================================
-       META TAGS - SEO & Security
-       Version: 27.0 - Enhanced with auth.css V25 Features
-       ================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="إنشاء حساب في منصة أثر التعليمية - سجّل الآن للحصول على وصول كامل للمحاضرات والدورات التعليمية">
+  <meta name="description" content="إنشاء حساب في منصة أثر التعليمية">
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#16a34a">
   
-  <title>إنشاء حساب - منصة أثر التعليمية</title>
+  <title>إنشاء حساب - منصة أثر</title>
   
-  <!-- Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
   
-  <!-- Icons -->
-  <link 
-    rel="stylesheet" 
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
-    crossorigin="anonymous" 
-    referrerpolicy="no-referrer">
-  
-  <!-- Stylesheets -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/auth.css">
   
-  <!-- Inline Critical CSS -->
   <style>
     body {
       min-height: 100vh;
@@ -44,7 +28,38 @@
       padding: 20px;
     }
     
-    /* Toast Notifications */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .loading-overlay.active { display: flex; }
+    
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(22, 163, 74, 0.2);
+      border-top-color: #16a34a;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    .loading-text {
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
     .toast-container {
       position: fixed;
       bottom: 20px;
@@ -60,7 +75,6 @@
       padding: 18px 22px;
       background: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
       display: flex;
@@ -139,41 +153,6 @@
     
     .toast-close:hover { color: #64748b; }
     
-    /* Loading Overlay */
-    .loading-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      z-index: 99999;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 20px;
-    }
-    
-    .loading-overlay.active { display: flex; }
-    
-    .loader {
-      width: 60px;
-      height: 60px;
-      border: 4px solid rgba(22, 163, 74, 0.2);
-      border-top-color: #16a34a;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin { to { transform: rotate(360deg); } }
-    
-    .loading-text {
-      color: white;
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-    
-    /* Terms Checkbox */
     .terms-wrapper {
       margin: 20px 0;
       display: flex;
@@ -185,10 +164,17 @@
     }
     
     .terms-wrapper input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       cursor: pointer;
       accent-color: #16a34a;
+      border: 2px solid #cbd5e1;
+      border-radius: 4px;
+    }
+    
+    .terms-wrapper label {
+      cursor: pointer;
+      user-select: none;
     }
     
     .terms-wrapper a {
@@ -203,7 +189,6 @@
       text-decoration: underline;
     }
     
-    /* Responsive */
     @media (max-width: 768px) {
       .toast-container {
         bottom: 10px;
@@ -220,36 +205,22 @@
 </head>
 
 <body>
-  <!-- Background Waves -->
   <div class="background-waves" aria-hidden="true">
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
   </div>
 
-  <!-- Toast Container -->
-  <div 
-    class="toast-container" 
-    id="toastContainer"
-    role="region" 
-    aria-live="polite" 
-    aria-label="الإشعارات"></div>
+  <div class="toast-container" id="toastContainer" role="region" aria-live="polite" aria-label="الإشعارات"></div>
   
-  <!-- Loading Overlay -->
-  <div 
-    class="loading-overlay" 
-    id="loadingOverlay"
-    role="status" 
-    aria-live="polite">
+  <div class="loading-overlay" id="loadingOverlay" role="status" aria-live="polite">
     <div class="loader" aria-hidden="true"></div>
     <div class="loading-text">جاري إنشاء الحساب...</div>
   </div>
 
-  <!-- Auth Container -->
   <div class="auth-container">
     <div class="auth-glass-card">
       
-      <!-- Logo Section -->
       <div class="logo-container">
         <div class="glass-logo" aria-hidden="true">
           <i class="fas fa-user-plus"></i>
@@ -258,155 +229,82 @@
         <p class="auth-subtitle">انضم إلى منصة أثر التعليمية</p>
       </div>
       
-      <!-- Signup Form -->
       <form id="signupForm" novalidate aria-label="نموذج إنشاء حساب جديد">
         
-        <!-- Full Name -->
         <div class="input-capsule">
           <div class="input-wrapper" id="nameWrapper">
             <div class="input-icon" aria-hidden="true">
               <i class="fas fa-user"></i>
             </div>
-            <input 
-              type="text" 
-              id="name" 
-              class="capsule-input"
-              placeholder="الاسم الكامل"
-              required
-              autocomplete="name"
-              aria-label="الاسم الكامل"
-              aria-required="true">
+            <input type="text" id="name" class="capsule-input" placeholder="الاسم الكامل" required autocomplete="name" aria-label="الاسم الكامل" aria-required="true">
           </div>
         </div>
         
-        <!-- Username -->
         <div class="input-capsule">
           <div class="input-wrapper" id="usernameWrapper">
             <div class="input-icon" aria-hidden="true">
               <i class="fas fa-at"></i>
             </div>
-            <input 
-              type="text" 
-              id="username" 
-              class="capsule-input"
-              placeholder="اسم المستخدم (حروف صغيرة وأرقام فقط)"
-              required
-              pattern="[a-z0-9_]+"
-              autocomplete="username"
-              aria-label="اسم المستخدم"
-              aria-required="true">
+            <input type="text" id="username" class="capsule-input" placeholder="اسم المستخدم (حروف صغيرة وأرقام فقط)" required pattern="[a-z0-9_]+" autocomplete="username" aria-label="اسم المستخدم" aria-required="true">
           </div>
         </div>
         
-        <!-- Phone Number (Optional) -->
         <div class="input-capsule">
           <div class="input-wrapper" id="phoneWrapper">
             <div class="input-icon" aria-hidden="true">
               <i class="fas fa-phone"></i>
             </div>
-            <input 
-              type="tel" 
-              id="phone" 
-              class="capsule-input"
-              placeholder="رقم الهاتف (اختياري)"
-              autocomplete="tel"
-              aria-label="رقم الهاتف"
-              aria-required="false">
+            <input type="tel" id="phone" class="capsule-input" placeholder="رقم الهاتف (اختياري)" autocomplete="tel" aria-label="رقم الهاتف" aria-required="false">
           </div>
         </div>
         
-        <!-- Email -->
         <div class="input-capsule">
           <div class="input-wrapper" id="emailWrapper">
             <div class="input-icon" aria-hidden="true">
               <i class="fas fa-envelope"></i>
             </div>
-            <input 
-              type="email" 
-              id="email" 
-              class="capsule-input"
-              placeholder="البريد الإلكتروني"
-              required
-              autocomplete="email"
-              aria-label="البريد الإلكتروني"
-              aria-required="true">
+            <input type="email" id="email" class="capsule-input" placeholder="البريد الإلكتروني" required autocomplete="email" aria-label="البريد الإلكتروني" aria-required="true">
           </div>
         </div>
         
-        <!-- Email Confirmation -->
         <div class="input-capsule">
           <div class="input-wrapper" id="emailConfirmWrapper">
             <div class="input-icon" aria-hidden="true">
               <i class="fas fa-check-circle"></i>
             </div>
-            <input 
-              type="email" 
-              id="emailConfirm" 
-              class="capsule-input"
-              placeholder="تأكيد البريد الإلكتروني"
-              required
-              autocomplete="off"
-              aria-label="تأكيد البريد الإلكتروني"
-              aria-required="true">
+            <input type="email" id="emailConfirm" class="capsule-input" placeholder="تأكيد البريد الإلكتروني" required autocomplete="off" aria-label="تأكيد البريد الإلكتروني" aria-required="true">
           </div>
         </div>
         
-        <!-- Password -->
         <div class="input-capsule">
           <div class="input-wrapper" id="passwordWrapper">
             <div class="input-icon" aria-hidden="true">
               <i class="fas fa-lock"></i>
             </div>
-            <input 
-              type="password" 
-              id="password" 
-              class="capsule-input"
-              placeholder="كلمة المرور (6 أحرف على الأقل)"
-              required
-              minlength="6"
-              autocomplete="new-password"
-              aria-label="كلمة المرور"
-              aria-required="true">
-            <button 
-              type="button" 
-              class="password-toggle" 
-              id="passwordToggle"
-              aria-label="إظهار أو إخفاء كلمة المرور"
-              tabindex="0">
+            <input type="password" id="password" class="capsule-input" placeholder="كلمة المرور (8 أحرف على الأقل)" required minlength="8" autocomplete="new-password" aria-label="كلمة المرور" aria-required="true">
+            <button type="button" class="password-toggle" id="passwordToggle" aria-label="إظهار أو إخفاء كلمة المرور" tabindex="0">
               <i class="fas fa-eye" id="passwordIcon"></i>
             </button>
           </div>
           
-          <!-- ✅ NEW: Password Strength Indicator -->
           <div class="password-strength" id="passwordStrength" style="display:none;">
             <div class="password-strength-bar" id="passwordStrengthBar"></div>
           </div>
           <div class="password-strength-text" id="passwordStrengthText" style="display:none;"></div>
         </div>
         
-        <!-- Terms & Conditions -->
         <div class="terms-wrapper">
-          <input 
-            type="checkbox" 
-            id="acceptTerms"
-            aria-label="أوافق على الشروط والأحكام"
-            required>
+          <input type="checkbox" id="acceptTerms" aria-label="أوافق على الشروط والأحكام" required>
           <label for="acceptTerms">
             أوافق على <a href="#" onclick="alert('صفحة الشروط والأحكام قيد الإنشاء'); return false;">الشروط والأحكام</a>
           </label>
         </div>
         
-        <!-- Submit Button -->
-        <button 
-          type="submit" 
-          class="submit-btn" 
-          id="signupBtn"
-          aria-label="إنشاء الحساب">
+        <button type="submit" class="submit-btn" id="signupBtn" aria-label="إنشاء الحساب">
           <i class="fas fa-user-plus"></i> إنشاء الحساب
         </button>
       </form>
       
-      <!-- Footer Links -->
       <div class="footer-links">
         <p>لديك حساب بالفعل؟ 
           <a href="login.html">سجّل دخولك</a>
@@ -419,16 +317,16 @@
     </div>
   </div>
 
-  <!-- Utilities Script -->
+  <script src="js/script.js"></script>
+
   <script>
-    /* Toast Notifications */
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
       const icons = {
-        success: '<i class="fas fa-check-circle"></i>',
-        error: '<i class="fas fa-exclamation-circle"></i>',
-        warning: '<i class="fas fa-exclamation-triangle"></i>',
-        info: '<i class="fas fa-info-circle"></i>'
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        warning: 'fa-exclamation-triangle',
+        info: 'fa-info-circle'
       };
       const titles = { 
         success: 'نجح', 
@@ -440,19 +338,41 @@
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
       toast.setAttribute('role', 'alert');
-      toast.innerHTML = `
-        <div class="toast-icon" aria-hidden="true">${icons[type]}</div>
-        <div class="toast-content">
-          <div class="toast-title">${titles[type]}</div>
-          <div class="toast-message">${message}</div>
-        </div>
-        <button 
-          class="toast-close" 
-          onclick="this.parentElement.remove()"
-          aria-label="إغلاق الإشعار">
-          <i class="fas fa-times"></i>
-        </button>
-      `;
+      
+      const iconDiv = document.createElement('div');
+      iconDiv.className = 'toast-icon';
+      iconDiv.setAttribute('aria-hidden', 'true');
+      const icon = document.createElement('i');
+      icon.className = `fas ${icons[type]}`;
+      iconDiv.appendChild(icon);
+      
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'toast-content';
+      
+      const titleDiv = document.createElement('div');
+      titleDiv.className = 'toast-title';
+      titleDiv.textContent = titles[type];
+      
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'toast-message';
+      messageDiv.textContent = message;
+      
+      contentDiv.appendChild(titleDiv);
+      contentDiv.appendChild(messageDiv);
+      
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'toast-close';
+      closeBtn.setAttribute('aria-label', 'إغلاق الإشعار');
+      const closeIcon = document.createElement('i');
+      closeIcon.className = 'fas fa-times';
+      closeBtn.appendChild(closeIcon);
+      
+      toast.appendChild(iconDiv);
+      toast.appendChild(contentDiv);
+      toast.appendChild(closeBtn);
+      
+      closeBtn.addEventListener('click', () => toast.remove());
+      
       container.appendChild(toast);
       
       setTimeout(() => {
@@ -464,12 +384,10 @@
       }, 4000);
     }
     
-    /* Loading Control */
     function showLoading(show) {
       document.getElementById('loadingOverlay').classList.toggle('active', show);
     }
     
-    /* Password Toggle */
     document.getElementById('passwordToggle').addEventListener('click', () => {
       const input = document.getElementById('password');
       const icon = document.getElementById('passwordIcon');
@@ -483,35 +401,13 @@
       }
     });
     
-    /* Password Strength Checker */
-    function checkPasswordStrength(password) {
-      let strength = 0;
-      if (password.length >= 6) strength++;
-      if (password.length >= 8) strength++;
-      if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
-      if (/\d/.test(password)) strength++;
-      if (/[^a-zA-Z0-9]/.test(password)) strength++;
-      return strength;
-    }
-    
-    /* Disposable Email Check */
-    const disposableDomains = ['tempmail.com', '10minutemail.com', 'guerrillamail.com', 'mailinator.com'];
-    
-    function isDisposableEmail(email) {
-      const domain = email.split('@')[1];
-      return disposableDomains.some(d => domain && domain.includes(d));
-    }
-    
-    /* ✅ ENHANCED: Password Strength Visual Feedback */
     document.getElementById('password').addEventListener('input', (e) => {
       const password = e.target.value;
-      const strength = checkPasswordStrength(password);
       const wrapper = document.getElementById('passwordWrapper');
       const strengthBar = document.getElementById('passwordStrengthBar');
       const strengthText = document.getElementById('passwordStrengthText');
       const strengthContainer = document.getElementById('passwordStrength');
       
-      // Remove old classes
       wrapper.classList.remove('password-weak', 'password-medium', 'password-strong');
       strengthBar.classList.remove('weak', 'medium', 'strong');
       strengthText.classList.remove('weak', 'medium', 'strong');
@@ -519,6 +415,30 @@
       if (password.length >= 6) {
         strengthContainer.style.display = 'block';
         strengthText.style.display = 'flex';
+        
+        let strength = 0;
+        
+        if (typeof window.validatePassword === 'function') {
+          const passCheck = window.validatePassword(password);
+          
+          if (passCheck.valid) {
+            if (password.length >= 12 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password) && /[^a-zA-Z0-9]/.test(password)) {
+              strength = 4;
+            } else if (password.length >= 10 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password)) {
+              strength = 3;
+            } else {
+              strength = 2;
+            }
+          } else {
+            strength = 1;
+          }
+        } else {
+          if (password.length >= 6) strength++;
+          if (password.length >= 8) strength++;
+          if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+          if (/\d/.test(password)) strength++;
+          if (/[^a-zA-Z0-9]/.test(password)) strength++;
+        }
         
         if (strength <= 2) {
           wrapper.classList.add('password-weak');
@@ -542,7 +462,6 @@
       }
     });
     
-    /* ✅ ENHANCED: Email Confirmation Visual Feedback with Success Icon */
     document.getElementById('emailConfirm').addEventListener('input', (e) => {
       const email = document.getElementById('email').value;
       const wrapper = document.getElementById('emailConfirmWrapper');
@@ -558,12 +477,9 @@
       }
     });
   </script>
-  
-  <!-- Main Auth Script -->
   <script type="module">
-    import { signup, validateUsername, supabase, onAuthChange } from './js/app.js';
+    import { signup, validateUsername, onAuthChange } from './js/app.js';
     
-    /* Auth State Check */
     onAuthChange((user) => {
       if (user) {
         console.log('✅ User authenticated, redirecting...');
@@ -571,7 +487,6 @@
       }
     });
 
-    /* Timeout Wrapper */
     function withTimeout(promise, ms = 15000) {
       return Promise.race([
         promise,
@@ -580,34 +495,46 @@
         )
       ]);
     }
+    
+    const disposableDomains = ['tempmail.com', '10minutemail.com', 'guerrillamail.com', 'mailinator.com'];
+    
+    function isDisposableEmail(email) {
+      const domain = email.split('@')[1];
+      return disposableDomains.some(d => domain && domain.includes(d));
+    }
 
-    /* ✅ Real-time Username Validation with Database Function */
     let usernameTimeout;
     const usernameInput = document.getElementById('username');
     const usernameWrapper = document.getElementById('usernameWrapper');
     
     usernameInput.addEventListener('input', async (e) => {
       clearTimeout(usernameTimeout);
-      const username = e.target.value.trim().toLowerCase();
+      let username = e.target.value.trim().toLowerCase();
       
-      // Auto-convert to lowercase
+      if (typeof window.validateUsername === 'function') {
+        const clientCheck = window.validateUsername(username);
+        if (!clientCheck.valid && username.length >= 3) {
+          usernameWrapper.classList.remove('checking', 'success');
+          usernameWrapper.classList.add('error');
+          return;
+        }
+        username = clientCheck.username || username;
+      }
+      
       if (e.target.value !== username) {
         e.target.value = username;
       }
       
-      // Clear previous states
       usernameWrapper.classList.remove('error', 'success', 'checking');
       
       if (username.length < 3) {
         return;
       }
       
-      // Show checking state
       usernameWrapper.classList.add('checking');
       
       usernameTimeout = setTimeout(async () => {
         try {
-          // ✅ Use the new database validation function
           const validation = await validateUsername(username);
           
           usernameWrapper.classList.remove('checking');
@@ -618,7 +545,7 @@
           } else {
             usernameWrapper.classList.add('error');
             usernameWrapper.classList.remove('success');
-            showToast(validation.error, 'warning');
+            showToast(validation.error || 'اسم المستخدم غير صالح', 'warning');
           }
         } catch (error) {
           console.error('❌ Username validation error:', error);
@@ -629,100 +556,126 @@
       }, 600);
     });
 
-    /* Form Submit with Atomic Function */
     document.getElementById('signupForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      const name = document.getElementById('name').value.trim();
-      const username = document.getElementById('username').value.trim().toLowerCase();
-      const phone = document.getElementById('phone').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const emailConfirm = document.getElementById('emailConfirm').value.trim();
-      const password = document.getElementById('password').value;
-      const acceptTerms = document.getElementById('acceptTerms').checked;
+      const nameInput = document.getElementById('name');
+      const usernameInput = document.getElementById('username');
+      const phoneInput = document.getElementById('phone');
+      const emailInput = document.getElementById('email');
+      const emailConfirmInput = document.getElementById('emailConfirm');
+      const passwordInput = document.getElementById('password');
+      const acceptTermsInput = document.getElementById('acceptTerms');
+      
+      const name = nameInput.value.trim();
+      const username = usernameInput.value.trim().toLowerCase();
+      const phone = phoneInput.value.trim();
+      const email = emailInput.value.trim();
+      const emailConfirm = emailConfirmInput.value.trim();
+      const password = passwordInput.value;
+      const acceptTerms = acceptTermsInput.checked;
       const btn = document.getElementById('signupBtn');
       
-      /* Enhanced Validation */
       if (!name || name.length < 3) {
         showToast('يرجى إدخال اسمك الكامل (3 أحرف على الأقل)', 'error');
-        document.getElementById('name').focus();
+        nameInput.focus();
         return;
       }
       
       if (!username || username.length < 3) {
         showToast('يرجى إدخال اسم مستخدم (3 أحرف على الأقل)', 'error');
-        document.getElementById('username').focus();
+        usernameInput.focus();
         return;
       }
       
-      if (!/^[a-z0-9_]+$/.test(username)) {
-        showToast('اسم المستخدم: حروف إنجليزية صغيرة وأرقام و _ فقط', 'error');
-        document.getElementById('username').focus();
-        return;
+      if (typeof window.validateUsername === 'function') {
+        const usernameCheck = window.validateUsername(username);
+        if (!usernameCheck.valid) {
+          showToast(usernameCheck.error, 'error');
+          usernameInput.focus();
+          return;
+        }
+      } else {
+        if (!/^[a-z0-9_]+$/.test(username)) {
+          showToast('اسم المستخدم: حروف إنجليزية صغيرة وأرقام و _ فقط', 'error');
+          usernameInput.focus();
+          return;
+        }
+        
+        if (username.startsWith('_') || username.endsWith('_')) {
+          showToast('اسم المستخدم لا يمكن أن يبدأ أو ينتهي بـ _', 'error');
+          usernameInput.focus();
+          return;
+        }
+        
+        if (/^[0-9]+$/.test(username)) {
+          showToast('اسم المستخدم لا يمكن أن يكون أرقاماً فقط', 'error');
+          usernameInput.focus();
+          return;
+        }
       }
       
-      if (username.startsWith('_') || username.endsWith('_')) {
-        showToast('اسم المستخدم لا يمكن أن يبدأ أو ينتهي بـ _', 'error');
-        document.getElementById('username').focus();
-        return;
-      }
-      
-      if (/^[0-9]+$/.test(username)) {
-        showToast('اسم المستخدم لا يمكن أن يكون أرقاماً فقط', 'error');
-        document.getElementById('username').focus();
-        return;
-      }
-      
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        showToast('البريد الإلكتروني غير صحيح', 'error');
-        document.getElementById('email').focus();
-        return;
+      if (typeof window.validateEmail === 'function') {
+        const emailCheck = window.validateEmail(email);
+        if (!emailCheck.valid) {
+          showToast(emailCheck.error, 'error');
+          emailInput.focus();
+          return;
+        }
+      } else {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          showToast('البريد الإلكتروني غير صحيح', 'error');
+          emailInput.focus();
+          return;
+        }
       }
       
       if (isDisposableEmail(email)) {
         showToast('البريد الإلكتروني المؤقت غير مسموح', 'error');
-        document.getElementById('email').focus();
+        emailInput.focus();
         return;
       }
       
       if (email !== emailConfirm) {
         showToast('البريدان الإلكترونيان غير متطابقين', 'error');
-        document.getElementById('emailConfirm').focus();
+        emailConfirmInput.focus();
         return;
       }
       
-      if (password.length < 6) {
-        showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
-        document.getElementById('password').focus();
-        return;
-      }
-      
-      const strength = checkPasswordStrength(password);
-      if (strength < 2) {
-        const confirm = window.confirm('كلمة المرور ضعيفة. هل تريد المتابعة؟');
-        if (!confirm) return;
+      if (typeof window.validatePassword === 'function') {
+        const passCheck = window.validatePassword(password);
+        if (!passCheck.valid) {
+          showToast(passCheck.error, 'error');
+          passwordInput.focus();
+          return;
+        }
+      } else {
+        if (password.length < 8) {
+          showToast('كلمة المرور يجب أن تكون 8 أحرف على الأقل', 'error');
+          passwordInput.focus();
+          return;
+        }
       }
       
       if (phone && !/^[\d\s\-\+\(\)]+$/.test(phone)) {
         showToast('رقم الهاتف غير صحيح', 'error');
-        document.getElementById('phone').focus();
+        phoneInput.focus();
         return;
       }
       
       if (!acceptTerms) {
         showToast('يرجى الموافقة على الشروط والأحكام', 'warning');
-        document.getElementById('acceptTerms').focus();
+        acceptTermsInput.focus();
         return;
       }
       
-      /* ✅ Final username validation */
       console.log('🔄 Validating username...');
       try {
         const finalValidation = await validateUsername(username);
         if (!finalValidation.valid) {
           showToast(finalValidation.error, 'error');
-          document.getElementById('username').focus();
+          usernameInput.focus();
           return;
         }
       } catch (error) {
@@ -731,7 +684,6 @@
         return;
       }
       
-      /* Submit with Atomic Function */
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإنشاء...';
       showLoading(true);
@@ -762,10 +714,10 @@
           
           if (result.error === 'username_taken') {
             errorMessage = 'اسم المستخدم محجوز بالفعل';
-            document.getElementById('username').focus();
+            usernameInput.focus();
           } else if (result.error === 'email_taken') {
             errorMessage = 'البريد الإلكتروني مستخدم بالفعل';
-            document.getElementById('email').focus();
+            emailInput.focus();
           }
           
           showToast(errorMessage, 'error');
@@ -785,7 +737,7 @@
       }
     });
     
-    console.log('✅ Signup V27.0 with auth.css V25 Features loaded');
+    console.log('✅ Signup V28.0 Security Enhanced loaded');
   </script>
   
 </body>

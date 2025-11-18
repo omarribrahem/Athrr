@@ -1,11 +1,13 @@
 // ==========================================
-// ✨ ATHR LIBRARY V28.0 - PRODUCTION ULTIMATE
+// ✨ ATHR LIBRARY V29.0 - SECURITY ENHANCED
 // World-Class Standards + Performance + Security
-// Apple HIG + Material 3 + Atomic Operations
-// ENHANCED: Theme Integration, Keyboard Nav, Error Boundary
+// Apple HIG + Material 3 + Atomic Operations + XSS Protection
+// ENHANCED: Theme Integration, Keyboard Nav, Error Boundary, Input Sanitization
 // ==========================================
 
+
 import { supabase, generateAvatarUrl, AVATAR_CONFIGS, onAuthChange } from './app.js';
+
 
 // ==========================================
 // 📊 STATE MANAGEMENT - Centralized Store
@@ -25,13 +27,16 @@ let searchIndex = [];
 let lastCheckedUsername = '';
 let usernameCheckTimeout = null;
 
+
 // ==========================================
-// 🔔 GLASS TOAST SYSTEM - WORLD-CLASS
+// 🔔 GLASS TOAST SYSTEM - XSS-SAFE V29.0
 // Standards: iOS 15+ Notification + Material 3 Snackbar
 // Best Practices: WCAG 2.1 AA Compliant + GPU Accelerated
+// Security: XSS Protected using DOM methods
 // ==========================================
 
-// Create Toast Container - Singleton Pattern (FIXED)
+
+// Create Toast Container - Singleton Pattern
 const toastContainer = (() => {
   const existingContainer = document.querySelector('.toast-container[data-singleton="true"]');
   if (existingContainer) return existingContainer;
@@ -47,11 +52,13 @@ const toastContainer = (() => {
   return container;
 })();
 
+
 let toastIdCounter = 0;
 const activeToasts = new Map();
 
+
 /**
- * عرض Toast بمعايير عالمية
+ * ✅ XSS-SAFE Toast Display
  * @param {string} message - الرسالة المعروضة
  * @param {string} type - success | error | info | warning
  * @param {number} duration - المدة بالميلي ثانية (0 = لا نهائي)
@@ -81,25 +88,55 @@ window.showToast = function(message, type = 'info', duration = 4000) {
   toast.setAttribute('aria-live', 'assertive');
   toast.setAttribute('aria-atomic', 'true');
   
-  toast.innerHTML = `
-    <div class="glass-toast-content">
-      <div class="glass-toast-icon-wrapper">
-        <i class="fas ${icons[type]} glass-toast-icon"></i>
-      </div>
-      <div class="glass-toast-text">
-        <h4 class="glass-toast-title">${titles[type]}</h4>
-        <p class="glass-toast-message">${message}</p>
-      </div>
-      <button 
-        class="glass-toast-close" 
-        aria-label="إغلاق الإشعار">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    ${duration > 0 ? `<div class="glass-toast-progress"></div>` : ''}
-  `;
+  // ✅ XSS-Safe: Create elements using DOM methods
+  const content = document.createElement('div');
+  content.className = 'glass-toast-content';
   
-  const closeBtn = toast.querySelector('.glass-toast-close');
+  // Icon wrapper
+  const iconWrapper = document.createElement('div');
+  iconWrapper.className = 'glass-toast-icon-wrapper';
+  const icon = document.createElement('i');
+  icon.className = `fas ${icons[type]} glass-toast-icon`;
+  iconWrapper.appendChild(icon);
+  
+  // Text container
+  const textDiv = document.createElement('div');
+  textDiv.className = 'glass-toast-text';
+  
+  const titleEl = document.createElement('h4');
+  titleEl.className = 'glass-toast-title';
+  titleEl.textContent = titles[type]; // ✅ Safe
+  
+  const messageEl = document.createElement('p');
+  messageEl.className = 'glass-toast-message';
+  messageEl.textContent = typeof window.sanitizeText === 'function' 
+    ? window.sanitizeText(message) 
+    : String(message || '').trim(); // ✅ Safe
+  
+  textDiv.appendChild(titleEl);
+  textDiv.appendChild(messageEl);
+  
+  // Close button
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'glass-toast-close';
+  closeBtn.setAttribute('aria-label', 'إغلاق الإشعار');
+  const closeIcon = document.createElement('i');
+  closeIcon.className = 'fas fa-times';
+  closeBtn.appendChild(closeIcon);
+  
+  // Assemble
+  content.appendChild(iconWrapper);
+  content.appendChild(textDiv);
+  content.appendChild(closeBtn);
+  toast.appendChild(content);
+  
+  // Progress bar (if duration > 0)
+  if (duration > 0) {
+    const progressBar = document.createElement('div');
+    progressBar.className = 'glass-toast-progress';
+    toast.appendChild(progressBar);
+  }
+  
   closeBtn.addEventListener('click', () => removeToast(toastId), { once: true });
   
   toastContainer.appendChild(toast);
@@ -125,11 +162,16 @@ window.showToast = function(message, type = 'info', duration = 4000) {
       removeToast(toastId);
     },
     update: (newMessage) => {
-      const messageEl = toast.querySelector('.glass-toast-message');
-      if (messageEl) messageEl.textContent = newMessage;
+      const msgEl = toast.querySelector('.glass-toast-message');
+      if (msgEl) {
+        msgEl.textContent = typeof window.sanitizeText === 'function' 
+          ? window.sanitizeText(newMessage) 
+          : String(newMessage || '').trim();
+      }
     }
   };
 };
+
 
 function removeToast(toastId) {
   const toast = activeToasts.get(toastId);
@@ -145,9 +187,11 @@ function removeToast(toastId) {
   }
 }
 
+
 window.clearAllToasts = function() {
   activeToasts.forEach((toast, id) => removeToast(id));
 };
+
 
 // ==========================================
 // 🚀 INITIALIZATION - App Bootstrap
@@ -168,8 +212,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+
 // ==========================================
-// ✅ LIBRARY INITIALIZATION - V28.0 OPTIMIZED
+// ✅ LIBRARY INITIALIZATION - V29.0 OPTIMIZED
 // ==========================================
 async function initializeLibrary() {
   let loadingToast = null;
@@ -290,6 +335,7 @@ async function initializeLibrary() {
   }
 }
 
+
 // ==========================================
 // 🔍 SEARCH INDEX - OPTIMIZED
 // ==========================================
@@ -301,7 +347,7 @@ function buildSearchIndex() {
       type: 'subject',
       id,
       searchText: `${subject.name_ar || ''} ${subject.name_en || ''} ${subject.description || ''}`.toLowerCase(),
-      title: subject.name_ar,
+      title: subject.name_ar || 'بدون عنوان',
       subtitle: `${lecturesDB[id]?.length || 0} محاضرة`,
       color: subject.color || '#16a34a',
       icon: subject.icon || 'fa-book'
@@ -315,9 +361,9 @@ function buildSearchIndex() {
         id: lecture.id,
         subjectId,
         searchText: `${lecture.title || ''} ${lecture.description || ''}`.toLowerCase(),
-        title: lecture.title,
+        title: lecture.title || 'بدون عنوان',
         subtitle: `في: ${subjects[subjectId]?.name_ar || 'بدون عنوان'}`,
-        color: lecture.color,
+        color: lecture.color || '#16a34a',
         icon: lecture.icon || 'fa-video'
       });
     });
@@ -325,6 +371,7 @@ function buildSearchIndex() {
   
   console.log(`✅ Search index built: ${searchIndex.length} items`);
 }
+
 
 // ==========================================
 // 📚 LIBRARY VIEW TOGGLE
@@ -346,6 +393,7 @@ window.setLibraryView = function(view) {
   renderModernLibrary();
   showToast(view === 'grid' ? 'عرض شبكي' : 'عرض قائمة', 'info', 1500);
 };
+
 
 // ==========================================
 // 🎨 RENDER MODERN LIBRARY
@@ -373,6 +421,7 @@ function renderModernLibrary() {
   renderModernLibraryCards(container, subjectsWithLecs, currentLibraryView);
 }
 
+
 function renderModernLibraryCards(container, subjectsWithLecs, viewMode) {
   const isListView = viewMode === 'list';
   const fragment = document.createDocumentFragment();
@@ -389,6 +438,7 @@ function renderModernLibraryCards(container, subjectsWithLecs, viewMode) {
   container.appendChild(fragment);
 }
 
+
 function createModernLibraryCard(sid, subj, lecs, isListView) {
   const total = lecturesDB[sid]?.length || 1;
   const prog = Math.round((lecs.length / total) * 100);
@@ -401,6 +451,7 @@ function createModernLibraryCard(sid, subj, lecs, isListView) {
   card.setAttribute('tabindex', '0');
   card.setAttribute('aria-label', `${subj.name_ar}: ${lecs.length} محاضرة`);
   
+  // ✅ XSS-Safe: Using innerHTML but with safe data only (no user input)
   card.innerHTML = `
     <div class="modern-library-card-banner" style="background: linear-gradient(135deg, ${col}, ${adjustColor(col, 20)});">
       <i class="fas ${icon} modern-library-card-banner-icon"></i>
@@ -410,7 +461,7 @@ function createModernLibraryCard(sid, subj, lecs, isListView) {
     </div>
     
     <div class="modern-library-card-body" style="${isListView ? 'flex: 1;' : ''}">
-      <h3 class="modern-library-card-title">${subj.name_ar || 'بدون عنوان'}</h3>
+      <h3 class="modern-library-card-title"></h3>
       <div class="modern-library-card-meta">
         <span class="modern-library-card-meta-item">
           <i class="fas fa-video"></i> ${lecs.length}${isListView ? '/' + total : ''} محاضرة
@@ -439,6 +490,10 @@ function createModernLibraryCard(sid, subj, lecs, isListView) {
     </div>
   `;
   
+  // ✅ XSS-Safe: Set text content separately
+  const titleEl = card.querySelector('.modern-library-card-title');
+  if (titleEl) titleEl.textContent = subj.name_ar || 'بدون عنوان';
+  
   card.addEventListener('click', () => {
     window.location.href = `subject.html?s=${sid}`;
   });
@@ -451,10 +506,11 @@ function createModernLibraryCard(sid, subj, lecs, isListView) {
   });
   
   const btn = card.querySelector('.modern-library-btn');
-  btn.addEventListener('click', (e) => e.stopPropagation());
+  if (btn) btn.addEventListener('click', (e) => e.stopPropagation());
   
   return card;
 }
+
 
 // ==========================================
 // 💀 LOADING SKELETON
@@ -487,10 +543,12 @@ function showLoadingSkeleton() {
   grid.appendChild(fragment);
 }
 
+
 function hideLoadingSkeleton() {
   const grid = document.getElementById('subjectsGrid');
   if (grid) grid.classList.remove('loading');
 }
+
 
 // ==========================================
 // ✅ HEADER INFO UPDATE
@@ -507,6 +565,7 @@ function updateHeaderInfo() {
   document.querySelector('.user-section')?.classList.remove('loading');
 }
 
+
 // ==========================================
 // 📊 LIBRARY COUNT UPDATE
 // ==========================================
@@ -514,6 +573,7 @@ function updateLibraryCount() {
   const cnt = document.getElementById('headerLibraryCount');
   if (cnt) cnt.textContent = userLectures.length;
 }
+
 
 // ==========================================
 // 📈 OVERALL PROGRESS
@@ -538,8 +598,11 @@ function updateOverallProgress() {
     circle.style.strokeDashoffset = `${offset}`;
   }
 }
+// ==================== CONTINUED FROM PART 1 ====================
+
+
 // ==========================================
-// 🎧 EVENT LISTENERS SETUP - OPTIMIZED
+// 🎧 EVENT LISTENERS SETUP - OPTIMIZED V29.0
 // ==========================================
 function initializeEventListeners() {
   // User Section Click
@@ -618,12 +681,13 @@ function initializeEventListeners() {
     }, 500));
   }
   
-  // ✅ NEW: Setup search keyboard navigation
+  // Setup search keyboard navigation
   setupSearchKeyboardNav();
 }
 
+
 // ==========================================
-// ⌨️ KEYBOARD SHORTCUTS
+// ⌨️ KEYBOARD SHORTCUTS V29.0
 // ==========================================
 function handleKeyboardShortcuts(e) {
   // Escape - Close Modals
@@ -647,8 +711,9 @@ function handleKeyboardShortcuts(e) {
   }
 }
 
+
 // ==========================================
-// 🔍 KEYBOARD NAVIGATION FOR SEARCH - NEW
+// 🔍 KEYBOARD NAVIGATION FOR SEARCH V29.0
 // ==========================================
 function setupSearchKeyboardNav() {
   const searchInput = document.getElementById('globalSearch');
@@ -691,6 +756,7 @@ function setupSearchKeyboardNav() {
   });
 }
 
+
 function updateSearchFocus(items, index) {
   items.forEach((item, i) => {
     item.classList.toggle('keyboard-focus', i === index);
@@ -700,8 +766,9 @@ function updateSearchFocus(items, index) {
   });
 }
 
+
 // ==========================================
-// 🔍 GLOBAL SEARCH - OPTIMIZED
+// 🔍 GLOBAL SEARCH - XSS-SAFE V29.0
 // ==========================================
 window.handleGlobalSearch = function(query) {
   clearTimeout(searchTimeout);
@@ -724,6 +791,7 @@ window.handleGlobalSearch = function(query) {
   }, 300);
 };
 
+
 window.clearSearch = function() {
   const input = document.getElementById('globalSearch');
   if (input) {
@@ -737,6 +805,7 @@ window.clearSearch = function() {
   const searchClear = document.getElementById('searchClear');
   if (searchClear) searchClear.style.display = 'none';
 };
+
 
 function performSearch(query) {
   const searchResults = document.getElementById('searchResults');
@@ -755,6 +824,10 @@ function performSearch(query) {
   renderSearchResults(results);
 }
 
+
+/**
+ * ✅ XSS-SAFE: Render search results using DOM methods
+ */
 function renderSearchResults(results) {
   const container = document.getElementById('searchResults');
   
@@ -778,15 +851,31 @@ function renderSearchResults(results) {
     item.setAttribute('role', 'button');
     item.setAttribute('aria-label', result.title);
     
-    item.innerHTML = `
-      <div class="search-result-icon" style="background: rgba(${hexToRgb(result.color)}, 0.15);">
-        <i class="fas ${result.icon}" style="color: ${result.color};"></i>
-      </div>
-      <div class="search-result-text">
-        <p class="search-result-title">${result.title}</p>
-        <p class="search-result-subtitle">${result.subtitle}</p>
-      </div>
-    `;
+    // ✅ XSS-Safe: Create elements using DOM methods
+    const iconDiv = document.createElement('div');
+    iconDiv.className = 'search-result-icon';
+    iconDiv.style.background = `rgba(${hexToRgb(result.color)}, 0.15)`;
+    const icon = document.createElement('i');
+    icon.className = `fas ${result.icon}`;
+    icon.style.color = result.color;
+    iconDiv.appendChild(icon);
+    
+    const textDiv = document.createElement('div');
+    textDiv.className = 'search-result-text';
+    
+    const titleP = document.createElement('p');
+    titleP.className = 'search-result-title';
+    titleP.textContent = result.title; // ✅ Safe
+    
+    const subtitleP = document.createElement('p');
+    subtitleP.className = 'search-result-subtitle';
+    subtitleP.textContent = result.subtitle; // ✅ Safe
+    
+    textDiv.appendChild(titleP);
+    textDiv.appendChild(subtitleP);
+    
+    item.appendChild(iconDiv);
+    item.appendChild(textDiv);
     
     item.addEventListener('click', () => {
       searchResultClick(result.type, result.id, result.subjectId);
@@ -805,6 +894,7 @@ function renderSearchResults(results) {
   container.appendChild(fragment);
   container.style.display = 'block';
 }
+
 
 function searchResultClick(type, id, subjectId) {
   const searchInput = document.getElementById('globalSearch');
@@ -825,6 +915,7 @@ function searchResultClick(type, id, subjectId) {
   }
 }
 
+
 function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? 
@@ -832,8 +923,9 @@ function hexToRgb(hex) {
     '22, 163, 74';
 }
 
+
 // ==========================================
-// 📑 TABS SYSTEM
+// 📑 TABS SYSTEM V29.0
 // ==========================================
 window.switchTab = function(tabId) {
   currentTab = tabId;
@@ -859,8 +951,9 @@ window.switchTab = function(tabId) {
   }
 };
 
+
 // ==========================================
-// 🎨 RENDER SUBJECTS GRID
+// 🎨 RENDER SUBJECTS GRID - XSS-SAFE V29.0
 // ==========================================
 function renderSubjectsGrid() {
   const container = document.getElementById('subjectsGrid');
@@ -890,6 +983,10 @@ function renderSubjectsGrid() {
   container.appendChild(fragment);
 }
 
+
+/**
+ * ✅ XSS-SAFE: Create subject card using DOM methods where needed
+ */
 function createSubjectCard(subjectId, subject) {
   const lectures = lecturesDB[subjectId] || [];
   const ownedLectures = lectures.filter(l => userLectures.includes(l.id)).length;
@@ -906,6 +1003,7 @@ function createSubjectCard(subjectId, subject) {
   card.setAttribute('tabindex', '0');
   card.setAttribute('aria-label', `${subject.name_ar}: ${lectures.length} محاضرة، التقدم ${progress}%`);
   
+  // ✅ XSS-Safe: Using innerHTML for structure, textContent for user data
   card.innerHTML = `
     ${isProtected ? `
       <div class="status-icon-mini" aria-label="محمية">
@@ -917,8 +1015,8 @@ function createSubjectCard(subjectId, subject) {
       <i class="fas ${icon}" style="color:#${iconColor};" aria-hidden="true"></i>
     </div>
 
-    <h3 class="subject-title">${subject.name_ar || 'بدون عنوان'}</h3>
-    <p class="subject-desc">${subject.description || 'لا يوجد وصف'}</p>
+    <h3 class="subject-title"></h3>
+    <p class="subject-desc"></p>
 
     <div class="subject-meta">
       <span><i class="fas fa-layer-group" aria-hidden="true"></i> ${lectures.length} محاضرة</span>
@@ -936,6 +1034,12 @@ function createSubjectCard(subjectId, subject) {
     </div>
   `;
   
+  // ✅ XSS-Safe: Set text content separately
+  const titleEl = card.querySelector('.subject-title');
+  const descEl = card.querySelector('.subject-desc');
+  if (titleEl) titleEl.textContent = subject.name_ar || 'بدون عنوان';
+  if (descEl) descEl.textContent = subject.description || 'لا يوجد وصف';
+  
   card.addEventListener('click', () => {
     window.location.href = `subject.html?s=${subjectId}`;
   });
@@ -948,13 +1052,14 @@ function createSubjectCard(subjectId, subject) {
   });
   
   const btn = card.querySelector('.capsule-btn-sm');
-  btn.addEventListener('click', (e) => e.stopPropagation());
+  if (btn) btn.addEventListener('click', (e) => e.stopPropagation());
   
   return card;
 }
 
+
 // ==========================================
-// 📚 RENDER MY LIBRARY
+// 📚 RENDER MY LIBRARY V29.0
 // ==========================================
 function renderMyLibrary() {
   const container = document.getElementById('myLibraryGrid');
@@ -1001,6 +1106,7 @@ function renderMyLibrary() {
   renderModernLibrary();
 }
 
+
 function createMyLibraryCard(sid, subj, lecs) {
   const total = lecturesDB[sid]?.length || 1;
   const prog = Math.round((lecs.length / total) * 100);
@@ -1019,7 +1125,7 @@ function createMyLibraryCard(sid, subj, lecs) {
       <i class="fas ${icon}" style="color:#${iconColor};" aria-hidden="true"></i>
     </div>
 
-    <h3 class="subject-title">${subj.name_ar || 'بدون عنوان'}</h3>
+    <h3 class="subject-title"></h3>
     <p class="subject-desc">${lecs.length} من ${total} محاضرة</p>
 
     <div class="subject-meta">
@@ -1038,6 +1144,10 @@ function createMyLibraryCard(sid, subj, lecs) {
     </div>
   `;
   
+  // ✅ XSS-Safe: Set text content separately
+  const titleEl = card.querySelector('.subject-title');
+  if (titleEl) titleEl.textContent = subj.name_ar || 'بدون عنوان';
+  
   card.addEventListener('click', () => {
     window.location.href = `subject.html?s=${sid}`;
   });
@@ -1050,13 +1160,14 @@ function createMyLibraryCard(sid, subj, lecs) {
   });
   
   const btn = card.querySelector('.capsule-btn-sm');
-  btn.addEventListener('click', (e) => e.stopPropagation());
+  if (btn) btn.addEventListener('click', (e) => e.stopPropagation());
   
   return card;
 }
 
+
 // ==========================================
-// ▶️ CONTINUE WATCHING - Recent Activity
+// ▶️ CONTINUE WATCHING V29.0
 // ==========================================
 async function loadContinueWatching() {
   const container = document.getElementById('continueWatchingGrid');
@@ -1109,6 +1220,7 @@ async function loadContinueWatching() {
   updateSmartGreeting();
 }
 
+
 function createContinueCapsule(lec) {
   const bg = lec.color || '#16a34a';
   const icon = lec.icon || 'fa-book';
@@ -1127,14 +1239,20 @@ function createContinueCapsule(lec) {
     </div>
     
     <div class="lecture-info">
-      <h3>${lec.title}</h3>
-      <p><i class="fas fa-tag" aria-hidden="true"></i> ${lec.subjectName}</p>
+      <h3></h3>
+      <p><i class="fas fa-tag" aria-hidden="true"></i> <span class="subject-name"></span></p>
     </div>
     
     <span class="lecture-status-active">
       <i class="fas fa-play-circle" aria-hidden="true"></i> متابعة
     </span>
   `;
+  
+  // ✅ XSS-Safe: Set text content separately
+  const titleEl = capsule.querySelector('h3');
+  const subjectNameEl = capsule.querySelector('.subject-name');
+  if (titleEl) titleEl.textContent = lec.title || 'بدون عنوان';
+  if (subjectNameEl) subjectNameEl.textContent = lec.subjectName || '';
   
   capsule.addEventListener('click', () => {
     window.location.href = `subject.html?s=${lec.subjectId}`;
@@ -1149,8 +1267,9 @@ function createContinueCapsule(lec) {
   return capsule;
 }
 
+
 // ==========================================
-// ✅ SMART GREETING
+// ✅ SMART GREETING - XSS-SAFE V29.0
 // ==========================================
 function updateSmartGreeting() {
   const box = document.getElementById('smartGreeting');
@@ -1175,13 +1294,22 @@ function updateSmartGreeting() {
     const last = continueItems[0];
     sub.textContent = 'نكمل من حيث توقفت؟';
     btn.style.display = 'inline-flex';
-    btn.innerHTML = `<i class="fas fa-play"></i> ${last.title.substring(0, 20)}...`;
+    
+    // ✅ XSS-Safe: Use DOM methods instead of innerHTML
+    const btnIcon = document.createElement('i');
+    btnIcon.className = 'fas fa-play';
+    const btnText = document.createTextNode(` ${(last.title || 'المحاضرة').substring(0, 20)}...`);
+    btn.innerHTML = '';
+    btn.appendChild(btnIcon);
+    btn.appendChild(btnText);
     
     btn.replaceWith(btn.cloneNode(true));
     const newBtn = document.getElementById('greetContinueBtn');
-    newBtn.addEventListener('click', () => {
-      window.location.href = `subject.html?s=${last.subjectId}`;
-    });
+    if (newBtn) {
+      newBtn.addEventListener('click', () => {
+        window.location.href = `subject.html?s=${last.subjectId}`;
+      });
+    }
     
   } else if (owned > 0) {
     sub.textContent = `أتممت ${ownedPct}% من مكتبتك — اختر مادة لتكمل التقدم`;
@@ -1194,8 +1322,9 @@ function updateSmartGreeting() {
   box.style.display = 'flex';
 }
 
+
 // ==========================================
-// ➕ ADD TO LIBRARY
+// ➕ ADD TO LIBRARY V29.0
 // ==========================================
 window.addToLibrary = async function(lectureId) {
   if (userLectures.includes(lectureId)) {
@@ -1243,8 +1372,9 @@ window.addToLibrary = async function(lectureId) {
   }
 };
 
+
 // ==========================================
-// ➕ ADD MULTIPLE LECTURES
+// ➕ ADD MULTIPLE LECTURES V29.0
 // ==========================================
 window.addMultipleLecturesToLibrary = async function(lectureIds = []) {
   try {
@@ -1290,8 +1420,9 @@ window.addMultipleLecturesToLibrary = async function(lectureIds = []) {
   }
 };
 
+
 // ==========================================
-// 🔑 ACTIVATION DIALOG
+// 🔑 ACTIVATION DIALOG V29.0
 // ==========================================
 window.showActivationDialog = function(lectureId) {
   const dialog = document.createElement('div');
@@ -1379,8 +1510,9 @@ window.showActivationDialog = function(lectureId) {
   }
 };
 
+
 // ==========================================
-// ✅ VALIDATION HELPERS
+// ✅ VALIDATION HELPERS V29.0
 // ==========================================
 function showValidationError(input, message) {
   if (!input) return;
@@ -1416,6 +1548,7 @@ function showValidationError(input, message) {
   }, 400);
 }
 
+
 function clearValidationError(input) {
   if (!input) return;
   
@@ -1429,8 +1562,9 @@ function clearValidationError(input) {
   }
 }
 
+
 // ==========================================
-// ✅ CONFIRM ACTIVATION - V28.0 ATOMIC
+// ✅ CONFIRM ACTIVATION V29.0 - ATOMIC + RATE LIMITED
 // ==========================================
 async function confirmActivation(lectureId, btnEl) {
   const codeInput = document.getElementById('activationCodeInput');
@@ -1546,8 +1680,9 @@ async function confirmActivation(lectureId, btnEl) {
   }
 }
 
+
 // ==========================================
-// ▶️ OPEN LECTURE
+// ▶️ OPEN LECTURE V29.0
 // ==========================================
 window.openLecture = function(url) {
   if (!url || url === '#') { 
@@ -1558,8 +1693,9 @@ window.openLecture = function(url) {
   window.open(url, '_blank', 'noopener,noreferrer');
 };
 
+
 // ==========================================
-// ✅ PROFILE MODAL
+// ✅ PROFILE MODAL V29.0
 // ==========================================
 window.openProfile = function() {
   const modal = document.getElementById('profileModal');
@@ -1588,10 +1724,12 @@ window.openProfile = function() {
   }, 300);
 };
 
+
 window.closeProfile = function() {
   document.getElementById('profileModal')?.classList.remove('active');
   selectedAvatarConfig = null;
 };
+
 
 window.backToLibrary = function() {
   const lecturesView = document.getElementById('lecturesView');
@@ -1599,8 +1737,9 @@ window.backToLibrary = function() {
   window.switchTab('allSubjects');
 };
 
+
 // ==========================================
-// ✅ USERNAME AVAILABILITY CHECK
+// ✅ USERNAME AVAILABILITY CHECK - ENHANCED V29.0
 // ==========================================
 async function checkUsernameAvailability(username) {
   clearTimeout(usernameCheckTimeout);
@@ -1611,6 +1750,19 @@ async function checkUsernameAvailability(username) {
   
   const usernameEl = document.getElementById('profileUsername');
   const wrapper = usernameEl?.closest('.input-wrapper');
+  
+  // ✅ SECURITY: Use validateUsername from script.js
+  if (typeof window.validateUsername === 'function') {
+    const clientCheck = window.validateUsername(username);
+    if (!clientCheck.valid) {
+      if (wrapper) {
+        wrapper.classList.remove('checking', 'success');
+        wrapper.classList.add('error');
+      }
+      showValidationError(usernameEl, clientCheck.error);
+      return;
+    }
+  }
   
   if (wrapper) {
     wrapper.classList.add('checking');
@@ -1649,8 +1801,9 @@ async function checkUsernameAvailability(username) {
   }, 500);
 }
 
+
 // ==========================================
-// ✅ SAVE PROFILE
+// ✅ SAVE PROFILE - ENHANCED VALIDATION V29.0
 // ==========================================
 async function saveProfile(e) {
   if (e) e.preventDefault();
@@ -1679,7 +1832,15 @@ async function saveProfile(e) {
       return;
     }
 
-    if (!/^[a-z0-9_]+$/.test(newUsername)) {
+    // ✅ SECURITY: Enhanced username validation
+    if (typeof window.validateUsername === 'function') {
+      const usernameCheck = window.validateUsername(newUsername);
+      if (!usernameCheck.valid) {
+        showToast(usernameCheck.error, 'warning');
+        usernameEl?.focus();
+        return;
+      }
+    } else if (!/^[a-z0-9_]+$/.test(newUsername)) {
       showToast('اسم المستخدم: حروف وأرقام و _ فقط', 'warning');
       usernameEl?.focus();
       return;
@@ -1734,9 +1895,22 @@ async function saveProfile(e) {
 
     if (updateError) throw updateError;
     
+    // ✅ SECURITY: Enhanced password validation
     if (newPass) {
-      if (newPass.length < 6) {
-        showToast('كلمة المرور: 6 أحرف على الأقل', 'warning');
+      if (typeof window.validatePassword === 'function') {
+        const passCheck = window.validatePassword(newPass);
+        if (!passCheck.valid) {
+          showToast(passCheck.error, 'warning');
+          passEl?.focus();
+          
+          if (btnEl) {
+            btnEl.disabled = false;
+            btnEl.innerHTML = '<i class="fas fa-check-circle"></i> حفظ التغييرات';
+          }
+          return;
+        }
+      } else if (newPass.length < 8) {
+        showToast('كلمة المرور: 8 أحرف على الأقل', 'warning');
         passEl?.focus();
         
         if (btnEl) {
@@ -1789,18 +1963,21 @@ async function saveProfile(e) {
   }
 }
 
+
 // ==========================================
-// 🎨 AVATAR SELECTOR
+// 🎨 AVATAR SELECTOR V29.0
 // ==========================================
 window.showAvatarSelector = function() {
   const selector = document.getElementById('avatarSelector');
   if (selector) selector.style.display = 'block';
 };
 
+
 window.closeAvatarSelector = function() {
   const selector = document.getElementById('avatarSelector');
   if (selector) selector.style.display = 'none';
 };
+
 
 window.loadAvatarSelector = function() {
   const grid = document.querySelector('.avatars-grid');
@@ -1845,6 +2022,7 @@ window.loadAvatarSelector = function() {
   grid.appendChild(fragment);
 };
 
+
 function selectDiceAvatar(seed, params, optionEl) {
   const avatarUrl = `https://api.dicebear.com/9.x/adventurer/svg?seed=${encodeURIComponent(seed)}&${params}`;
   
@@ -1867,6 +2045,7 @@ function selectDiceAvatar(seed, params, optionEl) {
   showToast('تم اختيار الصورة', 'success', 2000);
 }
 
+
 window.confirmAvatarSelection = function() {
   if (selectedAvatarConfig) {
     const imgEl = document.getElementById('profileAvatarImg');
@@ -1876,13 +2055,15 @@ window.confirmAvatarSelection = function() {
   window.closeAvatarSelector();
 };
 
+
 window.cancelAvatarSelection = function() {
   selectedAvatarConfig = null;
   window.closeAvatarSelector();
 };
 
+
 // ==========================================
-// 🚪 LOGOUT
+// 🚪 LOGOUT V29.0
 // ==========================================
 window.logout = async function() {
   try {
@@ -1905,8 +2086,9 @@ window.logout = async function() {
   }
 };
 
+
 // ==========================================
-// 🛠️ UTILITY FUNCTIONS
+// 🛠️ UTILITY FUNCTIONS V29.0
 // ==========================================
 
 function adjustColor(color, percent) {
@@ -1917,6 +2099,7 @@ function adjustColor(color, percent) {
   const B = Math.min(255, Math.max(0, (num & 0x0000FF) + amt));
   return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
 }
+
 
 function debounce(func, wait) {
   let timeout;
@@ -1930,8 +2113,9 @@ function debounce(func, wait) {
   };
 }
 
+
 // ==========================================
-// 🎨 THEME MANAGER INTEGRATION - NEW
+// 🎨 THEME MANAGER INTEGRATION V29.0
 // ==========================================
 if (window.themeManager) {
   window.addEventListener('themechange', (e) => {
@@ -1945,8 +2129,9 @@ if (window.themeManager) {
   });
 }
 
+
 // ==========================================
-// 📱 VIEW CONTROLS INTEGRATION - NEW
+// 📱 VIEW CONTROLS INTEGRATION V29.0
 // ==========================================
 if (window.viewControls) {
   window.addEventListener('viewchange', (e) => {
@@ -1956,8 +2141,9 @@ if (window.viewControls) {
   });
 }
 
+
 // ==========================================
-// 🛡️ ERROR BOUNDARY - NEW
+// 🛡️ ERROR BOUNDARY V29.0
 // ==========================================
 window.addEventListener('error', (e) => {
   console.error('🔴 Global Error:', e.error);
@@ -1967,6 +2153,7 @@ window.addEventListener('error', (e) => {
   }
 });
 
+
 window.addEventListener('unhandledrejection', (e) => {
   console.error('🔴 Unhandled Promise Rejection:', e.reason);
   
@@ -1975,8 +2162,9 @@ window.addEventListener('unhandledrejection', (e) => {
   }
 });
 
+
 // ==========================================
-// 📊 PERFORMANCE MONITORING - NEW
+// 📊 PERFORMANCE MONITORING V29.0
 // ==========================================
 if ('performance' in window) {
   window.addEventListener('load', () => {
@@ -1993,13 +2181,15 @@ if ('performance' in window) {
   });
 }
 
+
 // ==========================================
-// 🎯 CONSOLE LOG - Version Info
+// 🎯 CONSOLE LOG - Version Info V29.0
 // ==========================================
 console.log(`
-%c✨ ATHR LIBRARY V28.0 - ULTIMATE PRODUCTION EDITION
-%cStandards: Apple HIG + Material 3 + Database V2.0
+%c✨ ATHR LIBRARY V29.0 - SECURITY ENHANCED EDITION
+%cStandards: Apple HIG + Material 3 + Database V2.0 + XSS Protection
 %cFeatures: Atomic Code + Rate Limiting + Search Index + Theme Integration
+%cSecurity: XSS-Safe Toast + Input Sanitization + Enhanced Validation
 %cOptimizations: DocumentFragment + addEventListener + Caching + Error Boundary
 %cPerformance: O(n) Search + GPU Accelerated + Memory Safe + 60fps
 %cAccessibility: WCAG 2.1 AA | RTL Optimized | Keyboard Nav | Production Ready
@@ -2007,19 +2197,21 @@ console.log(`
 'color: #16a34a; font-size: 16px; font-weight: bold;',
 'color: #10b981; font-size: 12px;',
 'color: #3b82f6; font-size: 11px;',
+'color: #ef4444; font-size: 11px; font-weight: bold;',
 'color: #f59e0b; font-size: 11px; font-weight: bold;',
 'color: #8b5cf6; font-size: 11px;',
 'color: #64748b; font-size: 10px;'
 );
 
+
 // ==========================================
-// 🎯 END OF FILE - V28.0 ULTIMATE PRODUCTION
-// Total: ~1,800 lines
-// Standards: Apple HIG, Material 3, Atomic Operations
+// 🎯 END OF FILE - V29.0 SECURITY ENHANCED
+// Total: ~1,900 lines
+// Standards: Apple HIG, Material 3, Atomic Operations, XSS Protection
 // Performance: GPU Accelerated, O(n) Search, 60fps
 // Memory: DocumentFragment, Event Cleanup, Singleton Pattern
 // Accessibility: WCAG 2.1 AA, Keyboard Navigation, ARIA
-// Security: Rate Limiting, Atomic Functions, Validation
+// Security: XSS-Safe Toast, Input Sanitization, Rate Limiting, Enhanced Validation
 // Integration: Theme Manager, View Controls, Error Boundary
-// Production-Ready: ✅ ALL FEATURES COMPLETE
+// Production-Ready: ✅ ALL FEATURES COMPLETE + SECURITY ENHANCED
 // ==========================================

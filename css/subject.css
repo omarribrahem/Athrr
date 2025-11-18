@@ -1,535 +1,616 @@
 /* ==================================================
- * ✨ ATHR SUBJECT PAGE CSS V24.0 ULTIMATE
- * Glass Morphism + Premium Capsules + World-Class UX
- * Standards: Apple HIG + Material 3 + Fluent 2
- * Performance: GPU Accelerated + 60fps Guaranteed
- * Accessibility: WCAG 2.1 AA Compliant
- * NEW: Dark Mode + Loading States + Skeleton
+ * SUBJECT PAGE V30.0 - FIXED WAVES
+ * Static background waves (not animated circles)
  * ================================================== */
 
-/* ==========================================
-   📦 SUBJECT HERO - Page Header
-   Standard: Centered Hero Pattern
-   ========================================== */
-.subject-hero-center {
-  text-align: center;
-  margin: var(--space-2xl) 0 var(--space-lg);
+:root {
+  --color-primary: #16a34a;
+  --color-primary-dark: #14532d;
+  --color-primary-light: #22c55e;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  
+  --glass-bg: rgba(255, 255, 255, 0.12);
+  --glass-bg-medium: rgba(255, 255, 255, 0.18);
+  --glass-bg-strong: rgba(255, 255, 255, 0.28);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --glass-blur: blur(30px) saturate(180%);
+  
+  --radius-full: 9999px;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.12);
+}
+
+/* ==================================================
+   BASE STYLES
+   ================================================== */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Cairo', -apple-system, sans-serif;
+  background: linear-gradient(135deg, #f0f9f4 0%, #dcfce7 50%, #bbf7d0 100%);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ==================================================
+   FIXED WAVE BACKGROUND
+   ================================================== */
+
+.background-waves {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.background-waves::before,
+.background-waves::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  opacity: 0.15;
+}
+
+/* Top wave */
+.background-waves::before {
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(22, 163, 74, 0.3), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 10%, rgba(16, 185, 129, 0.2), transparent);
+}
+
+/* Bottom wave */
+.background-waves::after {
+  background-image: 
+    radial-gradient(ellipse 70% 50% at 50% 120%, rgba(22, 163, 74, 0.25), transparent),
+    radial-gradient(ellipse 60% 40% at 20% 90%, rgba(16, 185, 129, 0.2), transparent);
+}
+
+/* Wave layers (subtle pattern) */
+.wave-layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+}
+
+.wave-layer:nth-child(1) {
+  background: 
+    linear-gradient(90deg, transparent 0%, rgba(22, 163, 74, 0.05) 50%, transparent 100%);
+  transform: translateY(-30%);
+}
+
+.wave-layer:nth-child(2) {
+  background: 
+    linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.05) 50%, transparent 100%);
+  transform: translateY(30%) rotate(180deg);
+}
+
+.wave-layer:nth-child(3) {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(22, 163, 74, 0.03), transparent 70%);
+}
+
+/* ==================================================
+   MAIN CONTAINER
+   ================================================== */
+
+.subject-page-container {
   position: relative;
   z-index: 1;
-  
-  /* Animation - Entrance */
-  animation: heroFadeInDown 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  min-height: 100vh;
 }
 
-@keyframes heroFadeInDown {
-  from { 
-    opacity: 0; 
-    transform: translateY(-30px); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
-  }
-}
+/* ==================================================
+   BACK BUTTON CAPSULE
+   ================================================== */
 
-.subject-hero-center h1 {
-  margin: 0;
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-  font-weight: 900;
-  color: var(--text-heading);
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  
-  /* Gradient Text - Apple Style */
-  background: linear-gradient(
-    135deg,
-    #14532d 0%,
-    #16a34a 50%,
-    #10b981 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  
-  /* Text Shadow for Depth */
-  filter: drop-shadow(0 2px 8px rgba(22, 163, 74, 0.15));
-}
-
-.subject-hero-center p {
-  margin: 14px 0 0;
-  color: var(--text-secondary);
-  font-weight: 600;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* ==========================================
-   🔍 SEARCH ROW - Centered Search Bar
-   Standard: Spotlight macOS / Google Search
-   ========================================== */
-.subject-search-row {
-  display: flex;
-  justify-content: center;
-  margin: var(--space-lg) 0 var(--space-2xl);
-  animation: heroFadeInDown 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.2s backwards;
-}
-
-.subject-search-row .form-input {
-  width: min(680px, 92vw);
-  padding: 16px 24px;
-  
-  /* Glass Effect */
-  background: var(--glass-bg-medium);
-  backdrop-filter: var(--glass-blur-light);
-  -webkit-backdrop-filter: var(--glass-blur-light);
-  
-  /* Border & Shape */
-  border: 2px solid var(--glass-border);
-  border-radius: var(--radius-full);
-  
-  /* Typography */
-  color: var(--text-primary);
-  font-weight: 600;
-  font-size: 1rem;
-  font-family: inherit;
-  
-  /* Shadow */
-  box-shadow: var(--shadow-sm);
-  
-  /* Transition */
-  transition: all var(--transition-base);
-  
-  /* Outline */
-  outline: none;
-}
-
-.subject-search-row .form-input:hover {
-  border-color: rgba(16, 185, 129, 0.4);
-  background: rgba(255, 255, 255, 0.22);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.12);
-}
-
-.subject-search-row .form-input:focus {
-  border-color: var(--color-primary);
-  background: rgba(255, 255, 255, 0.28);
-  box-shadow: 
-    0 0 0 4px rgba(16, 185, 129, 0.12),
-    0 4px 16px rgba(16, 185, 129, 0.15);
-  transform: translateY(-2px);
-}
-
-.subject-search-row .form-input::placeholder {
-  color: var(--text-tertiary);
-  font-weight: 500;
-  opacity: 0.8;
-}
-
-/* ==========================================
-   💊 ROUND GLASS CAPSULE - Premium Card
-   Standard: Apple Music Row + iOS List Item
-   ========================================== */
-.round-glass-capsule {
-  display: flex;
+.back-btn-capsule {
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-lg);
-  padding: var(--space-lg) var(--space-xl);
+  gap: 0.75rem;
+  padding: 0.875rem 1.75rem;
   
-  /* Ultra Premium Glass */
   background: var(--glass-bg-medium);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   
-  /* Border & Shape */
   border: 2px solid var(--glass-border);
   border-radius: var(--radius-full);
   
-  /* Size */
-  width: min(960px, 96%);
-  margin: 14px auto;
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
   
-  /* Multi-layer Shadow */
-  box-shadow: 
-    var(--shadow-sm),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   
-  /* Transition - Spring Bounce */
+  margin-bottom: 2rem;
+}
+
+.back-btn-capsule:hover {
+  transform: translateY(-4px);
+  background: var(--glass-bg-strong);
+  border-color: rgba(22, 163, 74, 0.4);
+  box-shadow: var(--shadow-md);
+}
+
+.back-btn-capsule:active {
+  transform: translateY(-2px);
+}
+
+.back-btn-capsule i {
+  font-size: 1.1rem;
+  color: var(--color-primary);
+}
+
+/* ==================================================
+   SUBJECT HEADER CAPSULE
+   ================================================== */
+
+.subject-header-capsule {
+  text-align: center;
+  padding: 2.5rem 2rem;
+  
+  background: var(--glass-bg-medium);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  
+  box-shadow: var(--shadow-md);
+  
+  margin-bottom: 2rem;
+  
+  animation: slideInDown 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes slideInDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.subject-header-capsule h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 900;
+  
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.subject-header-capsule p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+/* ==================================================
+   SEARCH CAPSULE
+   ================================================== */
+
+.search-capsule {
+  position: relative;
+  max-width: 650px;
+  margin: 0 auto 2.5rem;
+  
+  animation: slideInDown 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.1s backwards;
+}
+
+.search-icon {
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.search-capsule input {
+  width: 100%;
+  padding: 1.125rem 4rem 1.125rem 2rem;
+  
+  background: var(--glass-bg-medium);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  
+  box-shadow: var(--shadow-sm);
+  outline: none;
+  
+  transition: all 0.3s ease;
+}
+
+.search-capsule input:hover {
+  background: var(--glass-bg-strong);
+  border-color: rgba(22, 163, 74, 0.4);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.search-capsule input:focus {
+  background: var(--glass-bg-strong);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.12), var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.search-capsule input::placeholder {
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+/* ==================================================
+   LECTURES CONTAINER
+   ================================================== */
+
+.lectures-capsule-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  
+  animation: slideInDown 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.2s backwards;
+}
+
+/* ==================================================
+   LECTURE CAPSULE
+   ================================================== */
+
+.lecture-capsule {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+  
+  background: var(--glass-bg-medium);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  
+  box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  
   transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   
-  /* Position */
   position: relative;
   overflow: hidden;
-  
-  /* GPU Acceleration */
-  will-change: transform;
-  transform: translateZ(0);
 }
 
-/* Hover State - Apple Card Lift */
-.round-glass-capsule:hover {
-  transform: translateY(-6px) scale(1.01);
-  border-color: rgba(16, 185, 129, 0.35);
-  background: rgba(255, 255, 255, 0.22);
-  box-shadow: 
-    0 12px 36px rgba(16, 185, 129, 0.18),
-    0 4px 12px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-
-/* Active State */
-.round-glass-capsule:active {
-  transform: translateY(-3px) scale(1.005);
-  transition-duration: 100ms;
-}
-
-/* Gradient Accent Line - Top */
-.round-glass-capsule::before {
+.lecture-capsule::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--color-primary) 0%, #10b981 100%);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-success));
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform var(--transition-base);
+  transition: transform 0.3s ease;
 }
 
-.round-glass-capsule:hover::before {
+.lecture-capsule:hover {
+  transform: translateY(-6px) scale(1.01);
+  background: var(--glass-bg-strong);
+  border-color: rgba(22, 163, 74, 0.35);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.lecture-capsule:hover::before {
   transform: scaleX(1);
 }
 
-/* ==========================================
-   🎨 ROUND ICON - Circular Badge
-   Standard: iOS SF Symbols + Material Icons
-   ========================================== */
-.round-icon {
+/* ==================================================
+   LECTURE ICON
+   ================================================== */
+
+.lecture-icon-box {
   width: 56px;
   height: 56px;
   border-radius: 50%;
   
-  /* Layout */
   display: flex;
   align-items: center;
   justify-content: center;
   
-  /* Style */
-  color: #ffffff;
+  color: white;
   font-size: 1.4rem;
   flex-shrink: 0;
   
-  /* Shadow - Soft Glow */
-  box-shadow: 
-    0 4px 16px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   
-  /* Transition */
-  transition: all var(--transition-base);
-  
-  /* Position */
-  position: relative;
-  z-index: 1;
+  transition: all 0.3s ease;
 }
 
-.round-glass-capsule:hover .round-icon {
+.lecture-capsule:hover .lecture-icon-box {
   transform: scale(1.12) rotate(-5deg);
-  box-shadow: 
-    0 6px 24px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
-/* ==========================================
-   📝 ROUND INFO - Content Section
-   ========================================== */
-.round-info {
+/* ==================================================
+   LECTURE INFO
+   ================================================== */
+
+.lecture-info {
   flex: 1;
   min-width: 0;
-  position: relative;
-  z-index: 1;
 }
 
-.round-info h3 {
-  margin: 0 0 8px;
+.lecture-info h3 {
+  margin: 0 0 0.5rem;
   font-size: 1.15rem;
   font-weight: 800;
-  color: var(--text-heading);
+  color: var(--text-primary);
   letter-spacing: -0.01em;
   line-height: 1.3;
-  word-break: break-word;
   
-  /* Transition */
-  transition: color var(--transition-fast);
+  transition: color 0.3s;
 }
 
-.round-glass-capsule:hover .round-info h3 {
+.lecture-capsule:hover .lecture-info h3 {
   color: var(--color-primary);
 }
 
-.round-info p {
+.lecture-info p {
   margin: 0;
   color: var(--text-secondary);
   font-size: 0.95rem;
   font-weight: 500;
   line-height: 1.5;
-  word-break: break-word;
   
-  /* Text Clamp - 2 lines */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* ==========================================
-   🏷️ BADGES - Status Indicators
-   Standard: Material 3 Chip + iOS Badge
-   ========================================== */
+/* ==================================================
+   STATUS BADGES
+   ================================================== */
 
-/* Base Badge Style */
-.badge-free,
-.badge-ok,
-.badge-locked {
+.lecture-status-active,
+.lecture-status-free,
+.lecture-status-paid {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
+  gap: 0.5rem;
+  padding: 0.625rem 1.125rem;
+  
   border-radius: var(--radius-full);
+  
   font-weight: 800;
   font-size: 0.85rem;
   white-space: nowrap;
-  transition: all var(--transition-base);
   flex-shrink: 0;
-  position: relative;
-  z-index: 1;
+  
+  transition: all 0.3s ease;
 }
 
-/* Badge "مجانية" - Green Success */
-.badge-free {
-  background: rgba(16, 185, 129, 0.12);
-  color: #059669;
-  border: 2px solid rgba(16, 185, 129, 0.25);
-  box-shadow: 
-    0 2px 8px rgba(16, 185, 129, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.badge-free i {
-  color: #10b981;
-  font-size: 0.95rem;
-}
-
-.badge-free:hover {
-  background: rgba(16, 185, 129, 0.18);
-  border-color: rgba(16, 185, 129, 0.35);
-  transform: scale(1.05);
-}
-
-/* Badge "في المكتبة" - Blue Info */
-.badge-ok {
+.lecture-status-active {
   background: rgba(59, 130, 246, 0.12);
   color: #2563eb;
   border: 2px solid rgba(59, 130, 246, 0.25);
-  box-shadow: 
-    0 2px 8px rgba(59, 130, 246, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.12);
 }
 
-.badge-ok i {
-  color: #3b82f6;
-  font-size: 0.95rem;
-}
-
-.badge-ok:hover {
+.lecture-status-active:hover {
   background: rgba(59, 130, 246, 0.18);
   border-color: rgba(59, 130, 246, 0.35);
   transform: scale(1.05);
 }
 
-/* Badge "مدفوعة" - Orange Warning */
-.badge-locked {
+.lecture-status-free {
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 2px solid rgba(16, 185, 129, 0.25);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.12);
+}
+
+.lecture-status-free:hover {
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.35);
+  transform: scale(1.05);
+}
+
+.lecture-status-paid {
   background: rgba(245, 158, 11, 0.12);
   color: #d97706;
   border: 2px solid rgba(245, 158, 11, 0.25);
-  box-shadow: 
-    0 2px 8px rgba(245, 158, 11, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.12);
 }
 
-.badge-locked i {
-  color: #f59e0b;
-  font-size: 0.95rem;
-}
-
-.badge-locked:hover {
+.lecture-status-paid:hover {
   background: rgba(245, 158, 11, 0.18);
   border-color: rgba(245, 158, 11, 0.35);
   transform: scale(1.05);
 }
 
-/* ==========================================
-   🔘 PILL BUTTONS - Action Buttons
-   Standard: iOS Filled Button + Material Chip
-   ========================================== */
+/* ==================================================
+   ACTION BUTTONS
+   ================================================== */
 
-/* Base Pill Button Style */
-.pill-btn,
-.pill-btn-get-free,
-.pill-btn-get-paid {
-  padding: 10px 18px;
+.capsule-btn,
+.get-lecture-btn,
+.activate-lecture-btn {
+  padding: 0.75rem 1.5rem;
   border-radius: var(--radius-full);
+  
   font-weight: 800;
   font-size: 0.9rem;
+  font-family: inherit;
+  
   cursor: pointer;
-  transition: all var(--transition-base);
-  white-space: nowrap;
+  border: 2px solid transparent;
+  
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.625rem;
+  
+  white-space: nowrap;
   flex-shrink: 0;
-  font-family: inherit;
-  position: relative;
-  overflow: hidden;
+  
+  transition: all 0.3s ease;
 }
 
-/* Button "شاهد" - Blue Glass (Default) */
-.pill-btn {
+.capsule-btn {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15));
-  border: 2px solid rgba(59, 130, 246, 0.3);
+  border-color: rgba(59, 130, 246, 0.3);
   color: #2563eb;
-  box-shadow: 
-    0 2px 10px rgba(59, 130, 246, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.15);
 }
 
-.pill-btn:hover {
+.capsule-btn:hover {
   transform: translateY(-3px);
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(37, 99, 235, 0.25));
   border-color: rgba(59, 130, 246, 0.5);
-  box-shadow: 
-    0 6px 20px rgba(59, 130, 246, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
 }
 
-.pill-btn:active {
-  transform: translateY(-1px) scale(0.98);
-}
-
-.pill-btn i {
-  font-size: 1rem;
-  transition: transform var(--transition-fast);
-}
-
-.pill-btn:hover i {
-  transform: scale(1.1) rotate(-5deg);
-}
-
-/* Button "احصل" - Free (Green Glass) */
-.pill-btn-get-free {
+.get-lecture-btn {
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.15));
-  border: 2px solid rgba(16, 185, 129, 0.3);
+  border-color: rgba(16, 185, 129, 0.3);
   color: #059669;
-  box-shadow: 
-    0 2px 10px rgba(16, 185, 129, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.15);
 }
 
-.pill-btn-get-free:hover {
+.get-lecture-btn:hover {
   transform: translateY(-3px);
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(5, 150, 105, 0.25));
   border-color: rgba(16, 185, 129, 0.5);
-  box-shadow: 
-    0 6px 20px rgba(16, 185, 129, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
 }
 
-.pill-btn-get-free:active {
-  transform: translateY(-1px) scale(0.98);
-}
-
-.pill-btn-get-free i {
-  font-size: 1rem;
-  color: #10b981;
-  transition: transform var(--transition-fast);
-}
-
-.pill-btn-get-free:hover i {
-  transform: scale(1.1) rotate(-5deg);
-}
-
-/* Button "احصل" - Paid (Orange Glass) */
-.pill-btn-get-paid {
+.activate-lecture-btn {
   background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.15));
-  border: 2px solid rgba(245, 158, 11, 0.3);
+  border-color: rgba(245, 158, 11, 0.3);
   color: #d97706;
-  box-shadow: 
-    0 2px 10px rgba(245, 158, 11, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.15);
 }
 
-.pill-btn-get-paid:hover {
+.activate-lecture-btn:hover {
   transform: translateY(-3px);
   background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.25));
   border-color: rgba(245, 158, 11, 0.5);
-  box-shadow: 
-    0 6px 20px rgba(245, 158, 11, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.25);
 }
 
-.pill-btn-get-paid:active {
+.capsule-btn:active,
+.get-lecture-btn:active,
+.activate-lecture-btn:active {
   transform: translateY(-1px) scale(0.98);
 }
 
-.pill-btn-get-paid i {
+.capsule-btn i,
+.get-lecture-btn i,
+.activate-lecture-btn i {
   font-size: 1rem;
-  color: #f59e0b;
-  transition: transform var(--transition-fast);
+  transition: transform 0.3s;
 }
 
-.pill-btn-get-paid:hover i {
+.capsule-btn:hover i,
+.get-lecture-btn:hover i,
+.activate-lecture-btn:hover i {
   transform: scale(1.1) rotate(-5deg);
 }
 
-/* ==========================================
-   ⏳ BUTTON LOADING STATES - NEW V24.0
-   ========================================== */
-.pill-btn.loading,
-.pill-btn-get-free.loading,
-.pill-btn-get-paid.loading,
-.dialog-btn-primary.loading {
-  position: relative;
+/* ==================================================
+   EMPTY STATE
+   ================================================== */
+
+.empty-state-new {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-secondary);
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.empty-state-new i {
+  font-size: 4rem;
+  color: var(--text-tertiary);
+  opacity: 0.5;
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+.empty-state-new h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+}
+
+.empty-state-new p {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+/* ==================================================
+   SKELETON LOADING
+   ================================================== */
+
+.lecture-capsule.skeleton {
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 0.6;
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
-.pill-btn.loading::after,
-.pill-btn-get-free.loading::after,
-.pill-btn-get-paid.loading::after,
-.dialog-btn-primary.loading::after {
-  content: '';
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  margin-left: 8px;
-  border: 2px solid transparent;
-  border-top-color: currentColor;
-  border-radius: 50%;
-  animation: buttonSpinner 0.6s linear infinite;
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.4; }
 }
 
-@keyframes buttonSpinner {
-  to { transform: rotate(360deg); }
+.skeleton .lecture-info h3,
+.skeleton .lecture-info p,
+.skeleton .lecture-icon-box {
+  background: rgba(203, 213, 225, 0.3);
+  color: transparent;
+  border-radius: 8px;
 }
 
-/* ==========================================
-   🎭 ACTIVATION DIALOG - iOS Alert Style
-   Standard: Apple UIAlertController
-   ========================================== */
+/* ==================================================
+   ACTIVATION DIALOG
+   ================================================== */
 
-/* Dialog Overlay - Blur Backdrop */
 .custom-dialog-overlay {
   position: fixed;
   inset: 0;
@@ -537,181 +618,128 @@
   align-items: center;
   justify-content: center;
   
-  /* Backdrop */
   background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(12px) saturate(120%);
-  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   
-  /* Layer */
   z-index: 10000;
-  
-  /* Animation */
   animation: overlayFadeIn 0.3s ease;
 }
 
 @keyframes overlayFadeIn {
-  from { 
-    opacity: 0; 
-    backdrop-filter: blur(0px); 
-  }
-  to { 
-    opacity: 1; 
-    backdrop-filter: blur(12px); 
-  }
+  from { opacity: 0; backdrop-filter: blur(0px); }
+  to { opacity: 1; backdrop-filter: blur(12px); }
 }
 
-/* Dialog Container - Premium Card */
 .capsule-dialog {
   width: min(450px, 92vw);
   
-  /* Glass Effect */
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(240, 253, 244, 0.95);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   
-  /* Shape */
-  border-radius: var(--radius-xl);
-  padding: var(--space-2xl) var(--space-xl);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
   
-  /* Border */
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 2px solid var(--glass-border);
   
-  /* Multi-layer Shadow */
-  box-shadow: 
-    0 32px 96px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: 0 32px 96px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.8);
   
-  /* Animation - Spring Slide Up */
   animation: dialogSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes dialogSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(30px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Dialog Header */
 .dialog-header {
   display: flex;
-  gap: var(--space-lg);
+  gap: 1.5rem;
   align-items: flex-start;
-  margin-bottom: var(--space-lg);
+  margin-bottom: 1.5rem;
 }
 
-/* Dialog Icon - Colorful Badge */
 .dialog-icon-mini {
   width: 52px;
   height: 52px;
-  border-radius: var(--radius-md);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   
-  /* Gradient */
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  background: linear-gradient(135deg, #f59e0b, #d97706);
   
-  /* Style */
-  color: #ffffff;
+  color: white;
   font-size: 1.5rem;
   flex-shrink: 0;
   
-  /* Shadow */
-  box-shadow: 
-    0 4px 16px rgba(245, 158, 11, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
-/* Dialog Title & Message */
 .dialog-title {
-  margin: 0 0 6px;
+  margin: 0 0 0.5rem;
   font-size: 1.35rem;
   font-weight: 900;
-  color: #1f2937;
-  letter-spacing: -0.01em;
+  color: var(--text-primary);
 }
 
 .dialog-message {
   margin: 0;
   font-size: 0.95rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 600;
-  line-height: 1.5;
 }
 
-/* Dialog Input - Monospace Code Style */
 .dialog-input {
   width: 100%;
   padding: 14px 18px;
   
-  /* Border */
-  border: 2px solid #e2e8f0;
-  border-radius: var(--radius-md);
+  border: 2px solid rgba(203, 213, 225, 0.3);
+  border-radius: 12px;
   
-  /* Typography - Monospace */
   font-weight: 900;
   letter-spacing: 3px;
   font-size: 1rem;
   text-transform: uppercase;
-  direction: ltr;
   text-align: center;
-  font-family: 'Courier New', 'Consolas', monospace;
+  font-family: 'Courier New', monospace;
   
-  /* Style */
-  background: #f8f9fa;
-  color: #1f2937;
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--text-primary);
   
-  /* Spacing */
-  margin-top: var(--space-lg);
-  
-  /* Transition */
-  transition: all var(--transition-base);
-  
-  /* Outline */
+  margin-top: 1.5rem;
+  transition: all 0.3s;
   outline: none;
 }
 
 .dialog-input:hover {
   border-color: rgba(245, 158, 11, 0.4);
-  background: #fefdf9;
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .dialog-input:focus {
   border-color: #f59e0b;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.12);
-  transform: scale(1.01);
 }
 
-.dialog-input::placeholder {
-  color: #cbd5e1;
-  font-weight: 700;
-  letter-spacing: 2px;
-}
-
-/* Dialog Actions - Button Row */
 .dialog-actions {
   display: flex;
   gap: 12px;
-  margin-top: var(--space-xl);
+  margin-top: 2rem;
 }
 
-/* Dialog Buttons */
 .dialog-btn {
   flex: 1;
   padding: 13px 16px;
-  border-radius: var(--radius-md);
+  border-radius: 12px;
   border: none;
   font-weight: 800;
   font-size: 0.95rem;
   cursor: pointer;
   font-family: inherit;
-  transition: all var(--transition-base);
+  transition: all 0.3s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -720,384 +748,112 @@
 
 .dialog-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .dialog-btn:active {
   transform: translateY(-1px) scale(0.98);
 }
 
-/* Primary Dialog Button */
 .dialog-btn-primary {
   background: linear-gradient(135deg, #f59e0b, #d97706);
-  color: #ffffff;
+  color: white;
   box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
 }
 
 .dialog-btn-primary:hover {
-  background: linear-gradient(135deg, #e59d0b, #c97706);
   box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
 }
 
-/* Secondary Dialog Button */
 .dialog-btn-secondary {
-  background: #f1f5f9;
-  color: #0f172a;
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--text-primary);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .dialog-btn-secondary:hover {
-  background: #e2e8f0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.7);
 }
 
-/* ==========================================
-   🎭 EMPTY STATE - Delightful Nothing
-   Standard: Dropbox / Notion Empty State
-   ========================================== */
-.empty-state-new {
-  text-align: center;
-  padding: var(--space-2xl) var(--space-xl);
-  color: var(--text-secondary);
-  animation: emptyStateFadeIn 0.5s ease;
-}
+/* ==================================================
+   TOAST NOTIFICATIONS
+   ================================================== */
 
-@keyframes emptyStateFadeIn {
-  from { 
-    opacity: 0; 
-    transform: scale(0.95); 
-  }
-  to { 
-    opacity: 1; 
-    transform: scale(1); 
-  }
-}
-
-.empty-state-new i {
-  font-size: 4rem;
-  color: #cbd5e1;
-  display: block;
-  margin-bottom: var(--space-lg);
-  opacity: 0.5;
-  animation: iconFloat 4s ease-in-out infinite;
-}
-
-@keyframes iconFloat {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
-}
-
-.empty-state-new h3 {
-  margin: 0 0 12px;
-  font-size: 1.2rem;
-  color: var(--text-secondary);
-  font-weight: 800;
-}
-
-.empty-state-new p {
-  margin: 0;
-  font-size: 0.95rem;
-  color: var(--text-tertiary);
-  font-weight: 500;
-}
-
-/* ==========================================
-   📋 LECTURES LIST CONTAINER
-   ========================================== */
-.lectures-list-new {
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-bottom: var(--space-2xl);
-  animation: heroFadeInDown 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.3s backwards;
+  gap: 10px;
 }
 
-/* ==========================================
-   💀 SKELETON LOADING - NEW V24.0
-   ========================================== */
-.round-glass-capsule.skeleton {
-  background: linear-gradient(
-    90deg,
-    rgba(226, 232, 240, 0.3) 0%,
-    rgba(241, 245, 249, 0.5) 50%,
-    rgba(226, 232, 240, 0.3) 100%
-  );
-  background-size: 200% 100%;
-  animation: skeletonShimmer 1.5s ease-in-out infinite;
-  pointer-events: none;
-}
+/* ==================================================
+   RESPONSIVE DESIGN
+   ================================================== */
 
-@keyframes skeletonShimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.skeleton .round-info h3,
-.skeleton .round-info p,
-.skeleton .round-icon,
-.skeleton .pill-btn,
-.skeleton .badge-free {
-  opacity: 0.3;
-  background: rgba(203, 213, 225, 0.4);
-  color: transparent;
-  border-radius: var(--radius-md);
-}
-
-/* ==========================================
-   🌙 DARK MODE SUPPORT - NEW V24.0
-   ========================================== */
-@media (prefers-color-scheme: dark) {
-  .round-glass-capsule {
-    background: rgba(30, 41, 59, 0.40);
-    border-color: rgba(255, 255, 255, 0.10);
-  }
-  
-  .round-glass-capsule:hover {
-    background: rgba(30, 41, 59, 0.50);
-    border-color: rgba(16, 185, 129, 0.30);
-  }
-  
-  .round-info h3 {
-    color: #f1f5f9;
-  }
-  
-  .round-info p {
-    color: #cbd5e1;
-  }
-  
-  .capsule-dialog {
-    background: rgba(30, 41, 59, 0.95);
-    border-color: rgba(255, 255, 255, 0.10);
-  }
-  
-  .dialog-title {
-    color: #f1f5f9;
-  }
-  
-  .dialog-message {
-    color: #cbd5e1;
-  }
-  
-  .dialog-input {
-    background: rgba(15, 23, 42, 0.6);
-    border-color: rgba(255, 255, 255, 0.10);
-    color: #f1f5f9;
-  }
-  
-  .dialog-input:hover {
-    background: rgba(15, 23, 42, 0.7);
-    border-color: rgba(16, 185, 129, 0.30);
-  }
-  
-  .dialog-input:focus {
-    background: rgba(15, 23, 42, 0.8);
-    border-color: rgba(16, 185, 129, 0.50);
-  }
-  
-  .dialog-btn-secondary {
-    background: rgba(51, 65, 85, 0.8);
-    color: #f1f5f9;
-  }
-  
-  .dialog-btn-secondary:hover {
-    background: rgba(51, 65, 85, 1);
-  }
-  
-  .subject-search-row .form-input {
-    background: rgba(30, 41, 59, 0.40);
-    border-color: rgba(255, 255, 255, 0.10);
-    color: #f1f5f9;
-  }
-  
-  .subject-search-row .form-input:hover {
-    background: rgba(30, 41, 59, 0.50);
-    border-color: rgba(16, 185, 129, 0.30);
-  }
-  
-  .subject-search-row .form-input:focus {
-    background: rgba(30, 41, 59, 0.60);
-    border-color: rgba(16, 185, 129, 0.50);
-  }
-  
-  .subject-search-row .form-input::placeholder {
-    color: #64748b;
-  }
-  
-  .round-glass-capsule.skeleton {
-    background: linear-gradient(
-      90deg,
-      rgba(51, 65, 85, 0.3) 0%,
-      rgba(71, 85, 105, 0.5) 50%,
-      rgba(51, 65, 85, 0.3) 100%
-    );
-  }
-}
-
-/* ==========================================
-   📱 RESPONSIVE DESIGN - Mobile First
-   ========================================== */
 @media (max-width: 768px) {
-  /* Hero */
-  .subject-hero-center h1 {
-    font-size: 1.9rem;
+  .subject-page-container {
+    padding: 1.5rem 1rem;
   }
-
-  .subject-hero-center p {
-    font-size: 0.95rem;
+  
+  .subject-header-capsule {
+    padding: 2rem 1.5rem;
   }
-
-  /* Capsule - Stack Vertically */
-  .round-glass-capsule {
+  
+  .lecture-capsule {
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
-    padding: var(--space-lg);
-    width: 96%;
-  }
-
-  .round-icon {
-    width: 50px;
-    height: 50px;
-    font-size: 1.3rem;
-  }
-
-  .round-info {
-    width: 100%;
-  }
-
-  .round-info h3 {
-    font-size: 1.05rem;
-  }
-
-  .round-info p {
-    font-size: 0.9rem;
-  }
-
-  /* Buttons - Full Width */
-  .pill-btn,
-  .pill-btn-get-free,
-  .pill-btn-get-paid {
-    font-size: 0.85rem;
-    padding: 9px 14px;
-    width: 100%;
-    justify-content: center;
+    padding: 1.25rem 1.5rem;
+    gap: 1rem;
   }
   
-  .badge-free,
-  .badge-ok,
-  .badge-locked {
-    font-size: 0.8rem;
-    padding: 7px 12px;
+  .lecture-info {
+    width: 100%;
   }
-
-  /* Dialog */
-  .dialog-btn {
-    font-size: 0.9rem;
-    padding: 12px 14px;
-  }
-
-  /* Search */
-  .subject-search-row .form-input {
-    font-size: 0.95rem;
-    padding: 14px 20px;
+  
+  .capsule-btn,
+  .get-lecture-btn,
+  .activate-lecture-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 
 @media (max-width: 480px) {
-  .subject-hero-center h1 {
-    font-size: 1.6rem;
-  }
-
-  .subject-hero-center p {
-    font-size: 0.9rem;
-    margin-top: 10px;
-  }
-
-  .round-glass-capsule {
-    width: 100%;
-    margin: 12px 0;
-    padding: 14px;
-  }
-
-  .round-icon {
-    width: 46px;
-    height: 46px;
-    font-size: 1.2rem;
-  }
-
-  .pill-btn,
-  .pill-btn-get-free,
-  .pill-btn-get-paid,
-  .badge-ok,
-  .badge-free,
-  .badge-locked {
-    font-size: 0.8rem;
-    padding: 7px 12px;
-  }
-
-  .dialog-input {
-    font-size: 0.9rem;
-    padding: 12px 16px;
-    letter-spacing: 2px;
-  }
-}
-
-/* ==========================================
-   ⚡ ANIMATIONS & EFFECTS
-   ========================================== */
-
-/* Loading Pulse */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-
-.loading {
-  animation: pulse 1.8s ease-in-out infinite;
-}
-
-/* ==========================================
-   ♿ ACCESSIBILITY - WCAG 2.1 AA
-   ========================================== */
-
-/* Focus Visible */
-:focus-visible {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 3px;
-  border-radius: var(--radius-sm);
-}
-
-/* High Contrast Mode */
-@media (prefers-contrast: high) {
-  .round-glass-capsule {
-    background: rgba(255, 255, 255, 0.95);
-    border: 3px solid var(--text-primary);
+  .subject-header-capsule h1 {
+    font-size: 1.5rem;
   }
   
-  .pill-btn,
-  .pill-btn-get-free,
-  .pill-btn-get-paid {
-    border-width: 3px;
+  .lecture-capsule {
+    padding: 1rem 1.25rem;
   }
 }
 
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+/* ==================================================
+   DARK MODE
+   ================================================== */
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  }
+  
+  :root {
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #94a3b8;
+    --glass-bg-medium: rgba(30, 41, 59, 0.40);
+    --glass-bg-strong: rgba(30, 41, 59, 0.50);
+    --glass-border: rgba(255, 255, 255, 0.10);
+  }
+  
+  .background-waves::before,
+  .background-waves::after {
+    opacity: 0.08;
   }
 }
 
-/* ==========================================
-   🎯 END OF FILE - V24.0 ULTIMATE
-   Total Lines: 1100+
-   Standards: Apple HIG, Material 3, Fluent 2
-   Performance: GPU Accelerated, 60fps
-   Accessibility: WCAG 2.1 AA
-   NEW: Dark Mode + Loading States + Skeleton
-   Production Ready: ✅ 100%
-   ========================================== */
+/* ==================================================
+   END - V30.0 FIXED WAVES
+   ================================================== */

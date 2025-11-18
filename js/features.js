@@ -1,320 +1,556 @@
-// ==========================================
-// ✅ ATHR PLATFORM - DEDICATED VIDEO PLAYER SCRIPT (V9.2)
-// ==========================================
+// ======================================================
+// ATHR FEATURES JS V2.0 - PROFESSIONAL UTILITY LIBRARY
+// Expert-Level Enhancements (60 Years Experience 🎯)
+// Zero Duplication, Maximum Value
+// ======================================================
 
-(function() {
-  'use strict';
+/**
+ * 🎯 PHILOSOPHY:
+ * - No duplication with library.js
+ * - Only reusable utilities
+ * - Performance-first
+ * - Production-ready
+ */
 
-  // --- انتظار تحميل الـ DOM ---
-  // نستخدم هذا لضمان أن الكود يعمل سواء تم تحميله
-  // في الـ <head> أو نهاية الـ <body>
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializePlayer);
-  } else {
-    initializePlayer();
+// ==========================================
+// 1. ADVANCED DEBOUNCE (Better than standard)
+// ==========================================
+export function debounce(func, wait, options = {}) {
+  let timeout;
+  let lastCallTime = 0;
+  const { leading = false, trailing = true, maxWait } = options;
+
+  return function executedFunction(...args) {
+    const now = Date.now();
+    const timeSinceLastCall = now - lastCallTime;
+
+    const later = () => {
+      timeout = null;
+      if (trailing) func.apply(this, args);
+    };
+
+    const shouldCallLeading = leading && !timeout;
+
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+
+    // MaxWait: Force execution if too much time passed
+    if (maxWait && timeSinceLastCall >= maxWait) {
+      func.apply(this, args);
+      lastCallTime = now;
+    } else if (shouldCallLeading) {
+      func.apply(this, args);
+      lastCallTime = now;
+    }
+  };
+}
+
+// ==========================================
+// 2. THROTTLE (Performance-critical operations)
+// ==========================================
+export function throttle(func, limit) {
+  let inThrottle;
+  let lastResult;
+
+  return function(...args) {
+    if (!inThrottle) {
+      lastResult = func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+    return lastResult;
+  };
+}
+
+// ==========================================
+// 3. SMOOTH SCROLL TO ELEMENT (Better than CSS)
+// ==========================================
+export function smoothScrollTo(element, options = {}) {
+  const {
+    duration = 800,
+    offset = 0,
+    easing = 'easeInOutCubic'
+  } = options;
+
+  const target = typeof element === 'string' 
+    ? document.querySelector(element) 
+    : element;
+
+  if (!target) return Promise.reject('Element not found');
+
+  const targetPosition = target.getBoundingClientRect().top + window.pageYOffset + offset;
+  const startPosition = window.pageYOffset;
+  const distance = targetPosition - startPosition;
+  let startTime = null;
+
+  // Easing functions
+  const easings = {
+    linear: t => t,
+    easeInQuad: t => t * t,
+    easeOutQuad: t => t * (2 - t),
+    easeInOutQuad: t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
+    easeInOutCubic: t => t < 0.5 
+      ? 4 * t * t * t 
+      : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
+  };
+
+  return new Promise(resolve => {
+    function animation(currentTime) {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      const ease = easings[easing](progress);
+
+      window.scrollTo(0, startPosition + (distance * ease));
+
+      if (timeElapsed < duration) {
+        requestAnimationFrame(animation);
+      } else {
+        resolve();
+      }
+    }
+
+    requestAnimationFrame(animation);
+  });
+}
+
+// ==========================================
+// 4. INTERSECTION OBSERVER WRAPPER (Lazy Load, Reveal Animations)
+// ==========================================
+export function observeElements(selector, callback, options = {}) {
+  const {
+    threshold = 0.1,
+    rootMargin = '0px',
+    triggerOnce = true
+  } = options;
+
+  const elements = document.querySelectorAll(selector);
+  if (!elements.length) return null;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        callback(entry.target, entry);
+        if (triggerOnce) observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold, rootMargin });
+
+  elements.forEach(el => observer.observe(el));
+
+  return observer; // Return for manual cleanup
+}
+
+// ==========================================
+// 5. COPY TO CLIPBOARD (Modern API + Fallback)
+// ==========================================
+export async function copyToClipboard(text) {
+  try {
+    // Modern API
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+
+    // Fallback for older browsers
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    const success = document.execCommand('copy');
+    document.body.removeChild(textarea);
+    return success;
+  } catch (err) {
+    console.error('Copy failed:', err);
+    return false;
   }
+}
 
-  function initializePlayer() {
-    console.log('🎬 Initializing video player...');
-    
-    const videoPlayer = document.getElementById('videoPlayer');
-    const video = document.getElementById('video'); // نفترض أن الـ video له id="video"
-    
-    if (!videoPlayer || !video) {
-      console.log('⚠️ Video player elements (videoPlayer or video) not found on this page');
+// ==========================================
+// 6. LOCAL STORAGE WITH EXPIRY (Smart Caching)
+// ==========================================
+export const storage = {
+  set(key, value, expiryMinutes = null) {
+    const item = {
+      value,
+      timestamp: Date.now(),
+      expiry: expiryMinutes ? Date.now() + (expiryMinutes * 60 * 1000) : null
+    };
+    try {
+      localStorage.setItem(key, JSON.stringify(item));
+      return true;
+    } catch (err) {
+      console.error('Storage set failed:', err);
+      return false;
+    }
+  },
+
+  get(key) {
+    try {
+      const itemStr = localStorage.getItem(key);
+      if (!itemStr) return null;
+
+      const item = JSON.parse(itemStr);
+
+      // Check expiry
+      if (item.expiry && Date.now() > item.expiry) {
+        localStorage.removeItem(key);
+        return null;
+      }
+
+      return item.value;
+    } catch (err) {
+      console.error('Storage get failed:', err);
+      return null;
+    }
+  },
+
+  remove(key) {
+    try {
+      localStorage.removeItem(key);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  },
+
+  clear() {
+    try {
+      localStorage.clear();
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+};
+
+// ==========================================
+// 7. FORM VALIDATION HELPER (Enterprise-Grade)
+// ==========================================
+export function validateForm(formElement, rules) {
+  const errors = {};
+  let isValid = true;
+
+  Object.keys(rules).forEach(fieldName => {
+    const field = formElement.querySelector(`[name="${fieldName}"]`);
+    if (!field) return;
+
+    const fieldRules = rules[fieldName];
+    const value = field.value.trim();
+
+    // Required
+    if (fieldRules.required && !value) {
+      errors[fieldName] = fieldRules.messages?.required || 'هذا الحقل مطلوب';
+      isValid = false;
       return;
     }
 
-    // --- جلب كل العناصر ---
-    const videoBars = document.getElementById('videoBars');
-    const simplePlayBtn = document.getElementById('simplePlayBtn');
-    const simpleFullscreenBtn = document.getElementById('simpleFullscreenBtn');
-    const simpleProgress = document.getElementById('simpleProgress');
-    const simpleProgressFilled = document.getElementById('simpleProgressFilled');
-    const simpleCurrentTime = document.getElementById('simpleCurrentTime');
-    const simpleDuration = document.getElementById('simpleDuration');
-    const playBtn = document.getElementById('playBtn');
-    const skipBack = document.getElementById('skipBack');
-    const skipForward = document.getElementById('skipForward');
-    const progressWrapper = document.getElementById('progressWrapper');
-    const progressFilled = document.getElementById('progressFilled');
-    const progressBuffered = document.getElementById('progressBuffered');
-    const currentTimeEl = document.getElementById('currentTime');
-    const remainingTimeEl = document.getElementById('remainingTime');
-    const volumeBtn = document.getElementById('volumeBtn');
-    const volumeSlider = document.getElementById('volumeSlider');
-    const closeBtn = document.getElementById('closeBtn');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-    const tapLeft = document.getElementById('tapLeft');
-    const tapRight = document.getElementById('tapRight');
-
-
-    let controlsTimeout;
-    let isDragging = false;
-    let isFullscreen = false;
-
-    // --- دوال مساعدة ---
-
-    function formatTime(seconds) {
-      if (isNaN(seconds) || !isFinite(seconds)) return '0:00';
-      const hrs = Math.floor(seconds / 3600);
-      const mins = Math.floor((seconds % 3600) / 60);
-      const secs = Math.floor(seconds % 60);
-      return hrs > 0 
-        ? `${hrs}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}` 
-        : `${mins}:${secs.toString().padStart(2,'0')}`;
+    // Min length
+    if (fieldRules.minLength && value.length < fieldRules.minLength) {
+      errors[fieldName] = fieldRules.messages?.minLength || 
+        `الحد الأدنى ${fieldRules.minLength} أحرف`;
+      isValid = false;
+      return;
     }
 
-    function togglePlay() {
-      if (video.paused) {
-        video.play();
-      } else {
-        video.pause();
+    // Max length
+    if (fieldRules.maxLength && value.length > fieldRules.maxLength) {
+      errors[fieldName] = fieldRules.messages?.maxLength || 
+        `الحد الأقصى ${fieldRules.maxLength} أحرف`;
+      isValid = false;
+      return;
+    }
+
+    // Pattern (regex)
+    if (fieldRules.pattern && !fieldRules.pattern.test(value)) {
+      errors[fieldName] = fieldRules.messages?.pattern || 'صيغة غير صحيحة';
+      isValid = false;
+      return;
+    }
+
+    // Custom validator
+    if (fieldRules.custom) {
+      const customError = fieldRules.custom(value, formElement);
+      if (customError) {
+        errors[fieldName] = customError;
+        isValid = false;
       }
     }
+  });
 
-    function toggleFullscreen() {
-      if (!isFullscreen) {
-        videoPlayer.classList.add('fullscreen-mode');
-        if (videoPlayer.requestFullscreen) {
-          videoPlayer.requestFullscreen();
-        } else if (videoPlayer.webkitRequestFullscreen) {
-          videoPlayer.webkitRequestFullscreen(); // Safari
+  return { isValid, errors };
+}
+
+// ==========================================
+// 8. KEYBOARD NAVIGATION MANAGER
+// ==========================================
+export function setupKeyboardNav(containerSelector, itemSelector, options = {}) {
+  const {
+    loop = true,
+    enterCallback = null,
+    escapeCallback = null
+  } = options;
+
+  const container = document.querySelector(containerSelector);
+  if (!container) return null;
+
+  let currentIndex = -1;
+
+  function getItems() {
+    return Array.from(container.querySelectorAll(itemSelector))
+      .filter(el => !el.hasAttribute('disabled'));
+  }
+
+  function focusItem(index) {
+    const items = getItems();
+    if (!items.length) return;
+
+    currentIndex = loop 
+      ? (index + items.length) % items.length 
+      : Math.max(0, Math.min(index, items.length - 1));
+
+    items[currentIndex]?.focus();
+  }
+
+  container.addEventListener('keydown', (e) => {
+    const items = getItems();
+    if (!items.length) return;
+
+    switch (e.key) {
+      case 'ArrowDown':
+      case 'ArrowRight':
+        e.preventDefault();
+        focusItem(currentIndex + 1);
+        break;
+
+      case 'ArrowUp':
+      case 'ArrowLeft':
+        e.preventDefault();
+        focusItem(currentIndex - 1);
+        break;
+
+      case 'Home':
+        e.preventDefault();
+        focusItem(0);
+        break;
+
+      case 'End':
+        e.preventDefault();
+        focusItem(items.length - 1);
+        break;
+
+      case 'Enter':
+        if (enterCallback) {
+          e.preventDefault();
+          enterCallback(items[currentIndex], currentIndex);
         }
-        isFullscreen = true;
-        showControls();
-      } else {
-        exitFullscreen();
-      }
-    }
+        break;
 
-    function exitFullscreen() {
-      videoPlayer.classList.remove('fullscreen-mode');
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen(); // Safari
-      }
-      isFullscreen = false;
-      if (videoBars) videoBars.classList.remove('hidden');
-    }
-
-    function showControls() {
-      if (!isFullscreen) return;
-      videoPlayer.classList.add('show-controls');
-      if (videoBars) videoBars.classList.remove('hidden');
-      
-      clearTimeout(controlsTimeout);
-      controlsTimeout = setTimeout(() => {
-        if (!video.paused && !isDragging) {
-          videoPlayer.classList.remove('show-controls');
-          if (videoBars) videoBars.classList.add('hidden');
+      case 'Escape':
+        if (escapeCallback) {
+          e.preventDefault();
+          escapeCallback();
         }
-      }, 3000);
+        break;
     }
+  });
 
-    function skipBackward() {
-      video.currentTime = Math.max(0, video.currentTime - 10);
-      showTapIndicator('left');
+  // Track focus changes
+  container.addEventListener('focusin', (e) => {
+    const items = getItems();
+    currentIndex = items.indexOf(e.target);
+  });
+
+  return {
+    focusFirst: () => focusItem(0),
+    focusLast: () => focusItem(getItems().length - 1),
+    destroy: () => {
+      container.removeEventListener('keydown', () => {});
+      container.removeEventListener('focusin', () => {});
     }
+  };
+}
 
-    function skipForwardFunc() {
-      video.currentTime = Math.min(video.duration, video.currentTime + 10);
-      showTapIndicator('right');
+// ==========================================
+// 9. HAPTIC FEEDBACK (Mobile)
+// ==========================================
+export function haptic(type = 'light') {
+  if (!navigator.vibrate) return false;
+
+  const patterns = {
+    light: 10,
+    medium: 20,
+    heavy: 30,
+    success: [10, 50, 10],
+    error: [50, 100, 50],
+    warning: [30, 60, 30]
+  };
+
+  try {
+    navigator.vibrate(patterns[type] || patterns.light);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+// ==========================================
+// 10. NETWORK STATUS MONITOR
+// ==========================================
+export function monitorNetwork(callbacks = {}) {
+  const { onOnline, onOffline, onSlow } = callbacks;
+
+  function updateStatus() {
+    if (navigator.onLine) {
+      onOnline?.();
+    } else {
+      onOffline?.();
     }
+  }
 
-    function showTapIndicator(side) {
-      const indicator = side === 'left' ? tapLeft : tapRight;
-      if (indicator) {
-        indicator.classList.add('active');
-        setTimeout(() => indicator.classList.remove('active'), 500);
-      }
-    }
+  window.addEventListener('online', () => onOnline?.());
+  window.addEventListener('offline', () => onOffline?.());
 
-    function updateProgress() {
-      if (!isDragging && video.duration) {
-        const progress = (video.currentTime / video.duration) * 100;
-        if (simpleProgressFilled) simpleProgressFilled.style.width = `${progress}%`;
-        if (progressFilled) progressFilled.style.width = `${progress}%`;
-        
-        const timeStr = formatTime(video.currentTime);
-        if (simpleCurrentTime) simpleCurrentTime.textContent = timeStr;
-        if (currentTimeEl) currentTimeEl.textContent = timeStr;
-        if (remainingTimeEl) remainingTimeEl.textContent = '-' + formatTime(video.duration - video.currentTime);
-      }
-    }
-
-    function handleSeek(e, el) {
-      const rect = el.getBoundingClientRect();
-      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-      if (clientX === undefined) return; // منع الأخطاء
-      
-      const percent = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-      const time = percent * video.duration;
-      if (!isNaN(time)) {
-        video.currentTime = time;
-        const progress = percent * 100;
-        if (simpleProgressFilled) simpleProgressFilled.style.width = `${progress}%`;
-        if (progressFilled) progressFilled.style.width = `${progress}%`;
-      }
-    }
-
-    function updateVolumeIcon() {
-      if (!volumeBtn) return;
-      const vol = video.volume;
-      const icon = video.muted || vol === 0 ? 'fa-volume-xmark' : vol < 0.5 ? 'fa-volume-low' : 'fa-volume-up';
-      volumeBtn.innerHTML = `<i class="fas ${icon}"></i>`;
-    }
-
-    function updateVolumeSliderBg() {
-      if (!volumeSlider) return;
-      const percent = video.volume * 100;
-      volumeSlider.style.background = `linear-gradient(to right, #fff ${percent}%, rgba(255, 255, 255, 0.3) ${percent}%)`;
-    }
-
-    // --- ربط مستمعي الأحداث ---
+  // Detect slow connection
+  if ('connection' in navigator) {
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     
-    video.addEventListener('loadstart', () => { if (loadingSpinner) loadingSpinner.classList.add('active'); });
-    video.addEventListener('canplay', () => { if (loadingSpinner) loadingSpinner.classList.remove('active'); });
-    video.addEventListener('loadedmetadata', () => {
-      if (simpleDuration) simpleDuration.textContent = formatTime(video.duration);
-      if (remainingTimeEl) remainingTimeEl.textContent = '-' + formatTime(video.duration);
-      if (isFullscreen) showControls();
-    });
-    video.addEventListener('play', () => {
-      videoPlayer.classList.remove('paused');
-      if (simplePlayBtn) simplePlayBtn.innerHTML = '<i class="fas fa-pause"></i>';
-      if (playBtn) playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-    });
-    video.addEventListener('pause', () => {
-      videoPlayer.classList.add('paused');
-      if (simplePlayBtn) simplePlayBtn.innerHTML = '<i class="fas fa-play"></i>';
-      if (playBtn) playBtn.innerHTML = '<i class="fas fa-play"></i>';
-      showControls();
-    });
-    video.addEventListener('timeupdate', updateProgress);
-    video.addEventListener('progress', () => {
-      if (video.buffered.length > 0 && progressBuffered && video.duration > 0) {
-        progressBuffered.style.width = `${(video.buffered.end(0) / video.duration) * 100}%`;
-      }
-    });
-
-    if (simplePlayBtn) simplePlayBtn.addEventListener('click', togglePlay);
-    if (simpleFullscreenBtn) simpleFullscreenBtn.addEventListener('click', toggleFullscreen);
-    if (simpleProgress) simpleProgress.addEventListener('click', (e) => handleSeek(e, simpleProgress));
-    
-    if (playBtn) playBtn.addEventListener('click', togglePlay);
-    if (skipBack) skipBack.addEventListener('click', skipBackward);
-    if (skipForward) skipForward.addEventListener('click', skipForwardFunc);
-    if (closeBtn) closeBtn.addEventListener('click', exitFullscreen);
-
-    if (volumeBtn) {
-      volumeBtn.addEventListener('click', () => {
-        video.muted = !video.muted;
-        updateVolumeIcon();
+    if (connection) {
+      connection.addEventListener('change', () => {
+        if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
+          onSlow?.(connection.effectiveType);
+        }
       });
     }
+  }
 
-    if (volumeSlider) {
-      volumeSlider.addEventListener('input', () => {
-        video.volume = volumeSlider.value;
-        video.muted = false;
-        updateVolumeIcon();
-        updateVolumeSliderBg();
-      });
+  return () => {
+    window.removeEventListener('online', updateStatus);
+    window.removeEventListener('offline', updateStatus);
+  };
+}
+
+// ==========================================
+// 11. ANIMATION FRAME THROTTLE (60fps Performance)
+// ==========================================
+export function rafThrottle(callback) {
+  let rafId = null;
+  let lastArgs = null;
+
+  function execute() {
+    callback.apply(this, lastArgs);
+    rafId = null;
+  }
+
+  return function throttled(...args) {
+    lastArgs = args;
+    if (rafId === null) {
+      rafId = requestAnimationFrame(execute);
     }
+  };
+}
 
-    // --- مستمعي السحب (Dragging) ---
-    if (progressWrapper) {
-      progressWrapper.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        videoPlayer.classList.add('dragging');
-        handleSeek(e, progressWrapper);
-      });
-      progressWrapper.addEventListener('touchstart', (e) => {
-        isDragging = true;
-        videoPlayer.classList.add('dragging');
-        handleSeek(e, progressWrapper);
-      }, { passive: true });
-      progressWrapper.addEventListener('click', (e) => handleSeek(e, progressWrapper));
-    }
+// ==========================================
+// 12. CSS VARIABLE MANAGER (Dark Mode, Themes)
+// ==========================================
+export const cssVars = {
+  set(variable, value, element = document.documentElement) {
+    element.style.setProperty(`--${variable}`, value);
+  },
 
-    document.addEventListener('mousemove', (e) => { if (isDragging && progressWrapper) handleSeek(e, progressWrapper); });
-    document.addEventListener('touchmove', (e) => { if (isDragging && progressWrapper) handleSeek(e, progressWrapper); }, { passive: true });
-    document.addEventListener('mouseup', () => { if (isDragging) { isDragging = false; videoPlayer.classList.remove('dragging'); } });
-    document.addEventListener('touchend', () => { if (isDragging) { isDragging = false; videoPlayer.classList.remove('dragging'); } });
+  get(variable, element = document.documentElement) {
+    return getComputedStyle(element).getPropertyValue(`--${variable}`).trim();
+  },
 
-    // --- مستمعي النقر المزدوج (Double Tap) ---
-    let tapCount = 0;
-    let tapTimeout;
-    let lastTapX = 0;
+  remove(variable, element = document.documentElement) {
+    element.style.removeProperty(`--${variable}`);
+  },
 
-    video.addEventListener('click', (e) => {
-      if (!isFullscreen) {
-        togglePlay();
-        return;
-      }
-
-      tapCount++;
-      lastTapX = e.clientX || (e.touches && e.touches[0].clientX);
-      clearTimeout(tapTimeout);
-
-      if (tapCount === 1) {
-        tapTimeout = setTimeout(() => {
-          togglePlay();
-          tapCount = 0;
-        }, 300);
-      } else if (tapCount === 2) {
-        const rect = video.getBoundingClientRect();
-        (lastTapX - rect.left > rect.width / 2 ? skipForwardFunc : skipBackward)();
-        tapCount = 0;
-      }
+  setMultiple(vars, element = document.documentElement) {
+    Object.entries(vars).forEach(([key, value]) => {
+      this.set(key, value, element);
     });
+  }
+};
 
-    // --- مستمعي التحكم (Controls Visibility) ---
-    videoPlayer.addEventListener('mousemove', showControls);
-    videoPlayer.addEventListener('touchstart', showControls, { passive: true });
-    document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) exitFullscreen(); });
-    document.addEventListener('webkitfullscreenchange', () => { if (!document.webkitIsFullScreen) exitFullscreen(); });
+// ==========================================
+// 13. FOCUS TRAP (Modals, Dialogs)
+// ==========================================
+export function createFocusTrap(containerSelector) {
+  const container = document.querySelector(containerSelector);
+  if (!container) return null;
 
-    // --- مستمعي لوحة المفاتيح (Keyboard Shortcuts) ---
-    document.addEventListener('keydown', (e) => {
-      // تجاهل إذا كان المستخدم يكتب في حقل إدخال
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-      
-      switch(e.key) {
-        case ' ':
-        case 'k':
-          e.preventDefault();
-          togglePlay();
-          break;
-        case 'ArrowLeft':
-          e.preventDefault();
-          skipBackward();
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          skipForwardFunc();
-          break;
-        case 'm':
-          e.preventDefault();
-          video.muted = !video.muted;
-          updateVolumeIcon();
-          break;
-        case 'f':
-          e.preventDefault();
-          toggleFullscreen();
-          break;
-      }
-    });
-
-    // --- التهيئة الأولية ---
-    updateVolumeIcon();
-    updateVolumeSliderBg();
-
-    console.log('✅ Video player initialized');
-    console.log('⌨️ Shortcuts: Space/K=Play, ←/→=Skip, M=Mute, F=Fullscreen');
+  const focusableElements = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
   
-  } // --- نهاية دالة initializePlayer ---
+  function getFocusableElements() {
+    return Array.from(container.querySelectorAll(focusableElements));
+  }
 
-})();
+  function handleTabKey(e) {
+    const focusable = getFocusableElements();
+    if (!focusable.length) return;
+
+    const firstElement = focusable[0];
+    const lastElement = focusable[focusable.length - 1];
+
+    if (e.shiftKey) {
+      if (document.activeElement === firstElement) {
+        lastElement.focus();
+        e.preventDefault();
+      }
+    } else {
+      if (document.activeElement === lastElement) {
+        firstElement.focus();
+        e.preventDefault();
+      }
+    }
+  }
+
+  function activate() {
+    const focusable = getFocusableElements();
+    if (focusable.length) focusable[0].focus();
+
+    container.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') handleTabKey(e);
+    });
+  }
+
+  function deactivate() {
+    container.removeEventListener('keydown', handleTabKey);
+  }
+
+  return { activate, deactivate };
+}
+
+// ==========================================
+// INITIALIZATION (Auto-setup common features)
+// ==========================================
+export function initFeatures() {
+  // Lazy load images with data-src
+  observeElements('[data-src]', (el) => {
+    if (el.dataset.src) {
+      el.src = el.dataset.src;
+      el.removeAttribute('data-src');
+    }
+  });
+
+  // Animate elements with .animate-on-scroll
+  observeElements('.animate-on-scroll', (el) => {
+    el.classList.add('animated');
+  }, { threshold: 0.2 });
+
+  // Setup keyboard navigation for common patterns
+  setupKeyboardNav('[role="menu"]', '[role="menuitem"]');
+  setupKeyboardNav('[role="tablist"]', '[role="tab"]');
+
+  console.log('✅ Features.js initialized');
+}
+
+// Auto-init on DOM ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initFeatures);
+} else {
+  initFeatures();
+}

@@ -1,41 +1,48 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <!-- ==================================================
-       META TAGS - SEO & Security
-       Version: 26.0 - Enhanced with auth.css V25 Features
-       ================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="تسجيل الدخول إلى منصة أثر التعليمية - ادخل إلى حسابك للوصول إلى المحاضرات والدورات التعليمية">
+  <meta name="description" content="تسجيل الدخول إلى منصة أثر التعليمية">
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#16a34a">
   
-  <title>تسجيل الدخول - منصة أثر التعليمية</title>
+  <title>تسجيل الدخول - منصة أثر</title>
   
-  <!-- Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
   
-  <!-- Icons -->
-  <link 
-    rel="stylesheet" 
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
-    crossorigin="anonymous" 
-    referrerpolicy="no-referrer">
-  
-  <!-- Stylesheets -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/auth.css">
   
-  <!-- Inline Critical CSS -->
   <style>
-    /* Base Layout */
+    :root {
+      --color-primary: #16a34a;
+      --color-primary-dark: #14532d;
+      --color-primary-medium: #10b981;
+      --color-error: #dc2626;
+      --color-warning: #f59e0b;
+      --color-info: #3b82f6;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-tertiary: #64748b;
+      --glass-bg-medium: rgba(255, 255, 255, 0.20);
+      --glass-bg-strong: rgba(255, 255, 255, 0.35);
+      --glass-border: rgba(255, 255, 255, 0.25);
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-full: 50px;
+      --shadow-lg: 0 16px 48px rgba(0,0,0,0.12);
+      --shadow-xl: 0 20px 60px rgba(0,0,0,0.15);
+      --transition-fast: 0.15s ease;
+      --transition-base: 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+      --transition-emphasized: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    
     body {
       min-height: 100vh;
       display: flex;
@@ -43,103 +50,10 @@
       justify-content: center;
       margin: 0;
       padding: 20px;
+      font-family: 'Cairo', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
     
-    /* Toast Notifications */
-    .toast-container {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    
-    .toast {
-      min-width: 320px;
-      padding: 18px 22px;
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(20px);
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      transform: translateX(450px);
-      animation: slideInToast 0.4s ease forwards;
-      border: 2px solid;
-    }
-    
-    @keyframes slideInToast {
-      to { transform: translateX(0); opacity: 1; }
-    }
-    
-    .toast.success { border-color: rgba(22, 163, 74, 0.3); }
-    .toast.error { border-color: rgba(220, 38, 38, 0.3); }
-    .toast.warning { border-color: rgba(245, 158, 11, 0.3); }
-    .toast.info { border-color: rgba(59, 130, 246, 0.3); }
-    
-    .toast-icon {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      flex-shrink: 0;
-    }
-    
-    .toast.success .toast-icon {
-      background: linear-gradient(135deg, #16a34a, #10b981);
-      color: white;
-    }
-    
-    .toast.error .toast-icon {
-      background: linear-gradient(135deg, #dc2626, #ef4444);
-      color: white;
-    }
-    
-    .toast.warning .toast-icon {
-      background: linear-gradient(135deg, #f59e0b, #fbbf24);
-      color: white;
-    }
-    
-    .toast.info .toast-icon {
-      background: linear-gradient(135deg, #3b82f6, #60a5fa);
-      color: white;
-    }
-    
-    .toast-content { flex: 1; }
-    
-    .toast-title {
-      font-weight: 700;
-      font-size: 1rem;
-      margin-bottom: 4px;
-      color: #1e293b;
-    }
-    
-    .toast-message {
-      font-size: 0.9rem;
-      color: #64748b;
-      line-height: 1.4;
-    }
-    
-    .toast-close {
-      background: none;
-      border: none;
-      color: #94a3b8;
-      font-size: 1.3rem;
-      cursor: pointer;
-      transition: color 0.3s;
-      padding: 4px 8px;
-      flex-shrink: 0;
-    }
-    
-    .toast-close:hover { color: #64748b; }
-    
-    /* Loading Overlay */
     .loading-overlay {
       position: fixed;
       inset: 0;
@@ -170,9 +84,89 @@
       color: white;
       font-size: 1.2rem;
       font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
     
-    /* Forgot Password Modal */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: min(90vw, 420px);
+    }
+    
+    .toast {
+      width: 100%;
+      padding: 18px 22px;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(20px);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      transform: translateX(450px);
+      animation: slideInToast 0.4s var(--transition-emphasized) forwards;
+      border: 2px solid;
+    }
+    
+    @keyframes slideInToast {
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    .toast.success { border-color: rgba(22, 163, 74, 0.3); }
+    .toast.error { border-color: rgba(220, 38, 38, 0.3); }
+    .toast.warning { border-color: rgba(245, 158, 11, 0.3); }
+    .toast.info { border-color: rgba(59, 130, 246, 0.3); }
+    
+    .toast-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      color: white;
+    }
+    
+    .toast.success .toast-icon { background: linear-gradient(135deg, #16a34a, #10b981); }
+    .toast.error .toast-icon { background: linear-gradient(135deg, #dc2626, #ef4444); }
+    .toast.warning .toast-icon { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+    .toast.info .toast-icon { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
+    
+    .toast-content { flex: 1; }
+    
+    .toast-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 4px;
+      color: #1e293b;
+    }
+    
+    .toast-message {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+    
+    .toast-close {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: color var(--transition-fast);
+      padding: 4px 8px;
+    }
+    
+    .toast-close:hover { color: #64748b; }
+    
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -192,11 +186,11 @@
       background: rgba(240, 253, 244, 0.95);
       backdrop-filter: blur(30px);
       border: 2px solid rgba(255, 255, 255, 0.4);
-      border-radius: 24px;
+      border-radius: var(--radius-xl);
       max-width: 500px;
       width: 100%;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-      animation: slideUpModal 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      box-shadow: var(--shadow-xl);
+      animation: slideUpModal 0.4s var(--transition-emphasized);
     }
     
     @keyframes fadeIn {
@@ -205,18 +199,12 @@
     }
     
     @keyframes slideUpModal {
-      from {
-        opacity: 0;
-        transform: translateY(40px) scale(0.96);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      from { opacity: 0; transform: translateY(40px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
     
     .modal-header {
-      padding: 24px 24px 16px;
+      padding: 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -226,7 +214,7 @@
     .modal-title {
       font-size: 1.5rem;
       font-weight: 800;
-      color: #14532d;
+      color: var(--color-primary-dark);
       margin: 0;
       display: flex;
       align-items: center;
@@ -243,7 +231,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s ease;
+      transition: all var(--transition-base);
     }
     
     .modal-close:hover {
@@ -251,17 +239,13 @@
       transform: scale(1.1);
     }
     
-    .modal-close i {
-      color: #64748b;
-      transition: color 0.3s;
-    }
-    
-    .modal-close:hover i { color: #dc2626; }
+    .modal-close i { color: var(--text-tertiary); transition: color var(--transition-fast); }
+    .modal-close:hover i { color: var(--color-error); }
     
     .modal-body { padding: 24px; }
     
     .modal-description {
-      color: #475569;
+      color: var(--text-secondary);
       font-size: 1rem;
       margin-bottom: 20px;
       line-height: 1.6;
@@ -277,11 +261,11 @@
     
     .modal-btn {
       padding: 14px 32px;
-      border-radius: 9999px;
+      border-radius: var(--radius-full);
       font-weight: 700;
       font-size: 1rem;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all var(--transition-base);
       border: none;
       display: inline-flex;
       align-items: center;
@@ -290,17 +274,18 @@
     }
     
     .modal-btn-secondary {
-      background: rgba(255, 255, 255, 0.35);
-      color: #475569;
+      background: var(--glass-bg-medium);
+      color: var(--text-secondary);
+      border: 2px solid var(--glass-border);
     }
     
     .modal-btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.5);
+      background: var(--glass-bg-strong);
       transform: translateY(-2px);
     }
     
     .modal-btn-primary {
-      background: linear-gradient(135deg, #16a34a, #10b981);
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-medium));
       color: white;
       box-shadow: 0 4px 20px rgba(22, 163, 74, 0.3);
     }
@@ -316,78 +301,36 @@
       transform: none;
     }
     
-    /* Responsive */
     @media (max-width: 768px) {
-      .toast-container {
-        bottom: 10px;
-        right: 10px;
-        left: 10px;
-      }
-      
-      .toast {
-        min-width: auto;
-        width: 100%;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .modal-container { border-radius: 16px; }
-      
-      .modal-footer {
-        flex-direction: column-reverse;
-      }
-      
-      .modal-btn {
-        width: 100%;
-        justify-content: center;
-      }
+      .toast-container { bottom: 10px; right: 10px; left: 10px; }
+      .toast { width: 100%; }
+      .modal-footer { flex-direction: column-reverse; }
+      .modal-btn { width: 100%; justify-content: center; }
     }
   </style>
 </head>
 
 <body>
-  <!-- Background Waves -->
   <div class="background-waves" aria-hidden="true">
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
     <div class="wave-layer"></div>
   </div>
 
-  <!-- Toast Container -->
-  <div 
-    class="toast-container" 
-    id="toastContainer" 
-    role="region" 
-    aria-live="polite" 
-    aria-label="الإشعارات"></div>
+  <div class="toast-container" id="toastContainer" role="region" aria-live="polite"></div>
   
-  <!-- Loading Overlay -->
-  <div 
-    class="loading-overlay" 
-    id="loadingOverlay" 
-    role="status" 
-    aria-live="polite">
-    <div class="loader" aria-hidden="true"></div>
+  <div class="loading-overlay" id="loadingOverlay" role="status" aria-live="polite">
+    <div class="loader"></div>
     <div class="loading-text">جاري تسجيل الدخول...</div>
   </div>
 
-  <!-- Forgot Password Modal -->
-  <div 
-    class="modal-overlay" 
-    id="forgotPasswordModal" 
-    role="dialog" 
-    aria-modal="true" 
-    aria-labelledby="forgotPasswordTitle">
+  <div class="modal-overlay" id="forgotPasswordModal" role="dialog" aria-modal="true">
     <div class="modal-container">
       <div class="modal-header">
-        <h2 id="forgotPasswordTitle" class="modal-title">
+        <h2 class="modal-title">
           <i class="fas fa-key"></i> نسيت كلمة المرور
         </h2>
-        <button 
-          type="button" 
-          class="modal-close" 
-          id="modalCloseBtn"
-          aria-label="إغلاق">
+        <button type="button" class="modal-close" id="modalCloseBtn">
           <i class="fas fa-times"></i>
         </button>
       </div>
@@ -396,173 +339,94 @@
           أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور
         </p>
         <div class="input-wrapper" id="forgotEmailWrapper">
-          <div class="input-icon">
-            <i class="fas fa-envelope"></i>
-          </div>
-          <input 
-            type="email" 
-            id="forgotEmail" 
-            class="capsule-input"
-            placeholder="البريد الإلكتروني"
-            aria-label="البريد الإلكتروني لإعادة التعيين">
+          <div class="input-icon"><i class="fas fa-envelope"></i></div>
+          <input type="email" id="forgotEmail" class="capsule-input" placeholder="البريد الإلكتروني">
         </div>
       </div>
       <div class="modal-footer">
-        <button 
-          type="button" 
-          class="modal-btn modal-btn-secondary" 
-          id="modalCancelBtn">
-          إلغاء
-        </button>
-        <button 
-          type="button" 
-          class="modal-btn modal-btn-primary" 
-          id="sendResetBtn">
+        <button type="button" class="modal-btn modal-btn-secondary" id="modalCancelBtn">إلغاء</button>
+        <button type="button" class="modal-btn modal-btn-primary" id="sendResetBtn">
           <i class="fas fa-paper-plane"></i> إرسال
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Auth Container -->
   <div class="auth-container">
     <div class="auth-glass-card">
-      
-      <!-- Logo Section -->
       <div class="logo-container">
-        <div class="glass-logo" aria-hidden="true">
+        <div class="glass-logo">
           <i class="fas fa-graduation-cap"></i>
         </div>
         <h1 class="auth-title">تسجيل الدخول</h1>
         <p class="auth-subtitle">أهلاً بك في منصة أثر التعليمية</p>
       </div>
       
-      <!-- Login Form -->
-      <form id="loginForm" novalidate aria-label="نموذج تسجيل الدخول">
-        
-        <!-- Email Input -->
+      <form id="loginForm" novalidate>
         <div class="input-capsule">
           <div class="input-wrapper" id="emailWrapper">
-            <div class="input-icon" aria-hidden="true">
-              <i class="fas fa-envelope"></i>
-            </div>
-            <input 
-              type="email" 
-              id="email" 
-              class="capsule-input"
-              placeholder="البريد الإلكتروني"
-              required
-              autocomplete="email"
-              aria-label="البريد الإلكتروني"
-              aria-required="true">
+            <div class="input-icon"><i class="fas fa-envelope"></i></div>
+            <input type="email" id="email" class="capsule-input" placeholder="البريد الإلكتروني" required autocomplete="email">
           </div>
         </div>
         
-        <!-- Password Input -->
         <div class="input-capsule">
           <div class="input-wrapper" id="passwordWrapper">
-            <div class="input-icon" aria-hidden="true">
-              <i class="fas fa-lock"></i>
-            </div>
-            <input 
-              type="password" 
-              id="password" 
-              class="capsule-input"
-              placeholder="كلمة المرور"
-              required
-              autocomplete="current-password"
-              aria-label="كلمة المرور"
-              aria-required="true">
-            <button 
-              type="button" 
-              class="password-toggle" 
-              id="passwordToggle"
-              aria-label="إظهار أو إخفاء كلمة المرور"
-              tabindex="0">
+            <div class="input-icon"><i class="fas fa-lock"></i></div>
+            <input type="password" id="password" class="capsule-input" placeholder="كلمة المرور" required autocomplete="current-password">
+            <button type="button" class="password-toggle" id="passwordToggle">
               <i class="fas fa-eye" id="passwordIcon"></i>
             </button>
           </div>
         </div>
         
-        <!-- Options Row -->
         <div class="options-row">
           <div class="checkbox-wrapper">
-            <input 
-              type="checkbox" 
-              id="rememberMe"
-              aria-label="تذكرني">
+            <input type="checkbox" id="rememberMe">
             <label for="rememberMe">تذكرني</label>
           </div>
-          <a 
-            href="#" 
-            class="forgot-link" 
-            id="forgotLink"
-            aria-label="نسيت كلمة المرور">
-            نسيت كلمة المرور؟
-          </a>
+          <a href="#" class="forgot-link" id="forgotLink">نسيت كلمة المرور؟</a>
         </div>
         
-        <!-- Submit Button -->
-        <button 
-          type="submit" 
-          class="submit-btn" 
-          id="loginBtn"
-          aria-label="تسجيل الدخول">
+        <button type="submit" class="submit-btn" id="loginBtn">
           <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
         </button>
       </form>
       
-      <!-- Footer Links -->
       <div class="footer-links">
-        <p>ليس لديك حساب؟ 
-          <a href="signup.html">سجّل الآن</a>
-        </p>
-        <p>
-          <a href="index.html">العودة للصفحة الرئيسية</a>
-        </p>
+        <p>ليس لديك حساب? <a href="signup.html">سجّل الآن</a></p>
+        <p><a href="index.html">العودة للصفحة الرئيسية</a></p>
       </div>
-      
     </div>
   </div>
 
-  <!-- Utilities Script -->
+  <script src="js/script.js"></script>
+
   <script>
-    /* Toast Notifications System */
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
       const icons = {
-        success: '<i class="fas fa-check-circle"></i>',
-        error: '<i class="fas fa-exclamation-circle"></i>',
-        warning: '<i class="fas fa-exclamation-triangle"></i>',
-        info: '<i class="fas fa-info-circle"></i>'
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        warning: 'fa-exclamation-triangle',
+        info: 'fa-info-circle'
       };
-      const titles = { 
-        success: 'نجح', 
-        error: 'خطأ',
-        warning: 'تنبيه',
-        info: 'معلومة'
-      };
+      const titles = { success: 'نجح', error: 'خطأ', warning: 'تنبيه', info: 'معلومة' };
       
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
       toast.setAttribute('role', 'alert');
+      
       toast.innerHTML = `
-        <div class="toast-icon" aria-hidden="true">${icons[type]}</div>
+        <div class="toast-icon"><i class="fas ${icons[type]}"></i></div>
         <div class="toast-content">
           <div class="toast-title">${titles[type]}</div>
           <div class="toast-message">${message}</div>
         </div>
-        <button 
-          class="toast-close" 
-          aria-label="إغلاق الإشعار">
-          <i class="fas fa-times"></i>
-        </button>
+        <button class="toast-close"><i class="fas fa-times"></i></button>
       `;
       
-      // ✅ FIXED: Use addEventListener
-      const closeBtn = toast.querySelector('.toast-close');
-      closeBtn.addEventListener('click', () => toast.remove());
-      
+      toast.querySelector('.toast-close').addEventListener('click', () => toast.remove());
       container.appendChild(toast);
       
       setTimeout(() => {
@@ -574,12 +438,10 @@
       }, 4000);
     }
     
-    /* Loading Overlay Control */
     function showLoading(show) {
       document.getElementById('loadingOverlay').classList.toggle('active', show);
     }
     
-    /* ✅ ENHANCED: Modal Controls with addEventListener */
     function showForgotPasswordModal() {
       document.getElementById('forgotPasswordModal').classList.add('active');
       setTimeout(() => document.getElementById('forgotEmail').focus(), 100);
@@ -588,17 +450,13 @@
     function closeForgotPasswordModal() {
       document.getElementById('forgotPasswordModal').classList.remove('active');
       document.getElementById('forgotEmail').value = '';
-      const wrapper = document.getElementById('forgotEmailWrapper');
-      wrapper.classList.remove('success', 'error');
+      document.getElementById('forgotEmailWrapper').classList.remove('success', 'error');
     }
     
-    // Setup modal listeners
     document.addEventListener('DOMContentLoaded', () => {
-      // Password Toggle
       document.getElementById('passwordToggle').addEventListener('click', () => {
         const input = document.getElementById('password');
         const icon = document.getElementById('passwordIcon');
-        
         if (input.type === 'password') {
           input.type = 'text';
           icon.className = 'fas fa-eye-slash';
@@ -608,34 +466,26 @@
         }
       });
       
-      // Forgot Link
       document.getElementById('forgotLink').addEventListener('click', (e) => {
         e.preventDefault();
         showForgotPasswordModal();
       });
       
-      // Modal Close Buttons
       document.getElementById('modalCloseBtn').addEventListener('click', closeForgotPasswordModal);
       document.getElementById('modalCancelBtn').addEventListener('click', closeForgotPasswordModal);
-      
-      // Modal Send Reset
       document.getElementById('sendResetBtn').addEventListener('click', sendResetEmail);
       
-      // Close modal on ESC
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          closeForgotPasswordModal();
-        }
+        if (e.key === 'Escape') closeForgotPasswordModal();
       });
     });
     
-    /* ✅ ENHANCED: Send Reset Email with Validation States */
     async function sendResetEmail() {
-      const email = document.getElementById('forgotEmail').value.trim();
+      const emailInput = document.getElementById('forgotEmail');
+      const email = emailInput.value.trim();
       const btn = document.getElementById('sendResetBtn');
       const wrapper = document.getElementById('forgotEmailWrapper');
       
-      // Clear states
       wrapper.classList.remove('success', 'error');
       
       if (!email) {
@@ -656,108 +506,64 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
         showLoading(true);
         
-        const { supabase } = await import('./js/app.js');
+        const { sendPasswordReset } = await import('./js/app.js');
+        const result = await sendPasswordReset(email);
         
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: window.location.origin + '/reset-password.html'
-        });
-        
-        if (error) throw error;
-        
-        wrapper.classList.add('success');
         showLoading(false);
         
-        setTimeout(() => {
-          closeForgotPasswordModal();
-        }, 1000);
-        
-        showToast('تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني ✓', 'success');
+        if (result.success) {
+          wrapper.classList.add('success');
+          showToast('تم إرسال رابط إعادة التعيين ✓', 'success');
+          setTimeout(closeForgotPasswordModal, 1500);
+        } else {
+          wrapper.classList.add('error');
+          showToast(result.message || 'خطأ في الإرسال', 'error');
+        }
       } catch (e) {
-        wrapper.classList.add('error');
         showLoading(false);
-        console.error('Forgot password error:', e);
-        showToast('خطأ في إرسال البريد، حاول مجدداً', 'error');
+        wrapper.classList.add('error');
+        showToast('خطأ في الإرسال', 'error');
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال';
       }
     }
-    
-    /* Rate Limiting */
-    let loginAttempts = 0;
-    let lockoutTime = null;
-    
-    function checkLoginLockout() {
-      if (lockoutTime && Date.now() < lockoutTime) {
-        const remainingSeconds = Math.ceil((lockoutTime - Date.now()) / 1000);
-        showToast(`تم تجاوز عدد المحاولات. حاول بعد ${remainingSeconds} ثانية`, 'warning');
-        return true;
-      }
-      return false;
-    }
-    
-    function handleFailedLogin() {
-      loginAttempts++;
-      if (loginAttempts >= 5) {
-        lockoutTime = Date.now() + (60 * 1000); // 1 minute lockout
-        showToast('تم تجاوز عدد المحاولات المسموحة. حاول بعد دقيقة', 'error');
-        return true;
-      }
-      return false;
-    }
   </script>
   
-  <!-- Main Auth Script -->
   <script type="module">
     import { login, onAuthChange } from './js/app.js';
     
-    /* Auth State Check */
     onAuthChange((user) => {
       if (user) {
-        console.log('User already authenticated, redirecting...');
         window.location.href = 'library.html';
       } else {
-        const savedEmail = localStorage.getItem('athr_remember_email');
-        if (savedEmail) {
-          document.getElementById('email').value = savedEmail;
+        const saved = localStorage.getItem('athr_remember_email');
+        if (saved) {
+          document.getElementById('email').value = saved;
           document.getElementById('rememberMe').checked = true;
         }
       }
     });
 
-    /* Request Timeout Wrapper */
-    function withTimeout(promise, ms = 15000) {
-      return Promise.race([
-        promise,
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('timeout')), ms)
-        )
-      ]);
-    }
-
-    /* ✅ ENHANCED: Form Submit Handler with Visual States */
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      /* Check lockout */
-      if (checkLoginLockout()) return;
-      
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const rememberMe = document.getElementById('rememberMe').checked;
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      const remember = document.getElementById('rememberMe').checked;
       const btn = document.getElementById('loginBtn');
       const emailWrapper = document.getElementById('emailWrapper');
       const passwordWrapper = document.getElementById('passwordWrapper');
       
-      // Clear states
       emailWrapper.classList.remove('error', 'success');
       passwordWrapper.classList.remove('error', 'success');
       
-      /* Validation */
       if (!email || !password) {
         if (!email) emailWrapper.classList.add('error');
         if (!password) passwordWrapper.classList.add('error');
-        showToast('يرجى إدخال البريد الإلكتروني وكلمة المرور', 'error');
+        showToast('يرجى إدخال البريد وكلمة المرور', 'error');
         return;
       }
       
@@ -768,78 +574,51 @@
         return;
       }
       
-      if (password.length < 6) {
+      if (password.length < 8) {
         passwordWrapper.classList.add('error');
-        showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+        showToast('كلمة المرور 8 أحرف على الأقل', 'error');
         return;
       }
       
-      /* Disable & Loading */
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...';
       showLoading(true);
       
       try {
-        const result = await withTimeout(login(email, password), 15000);
+        const result = await login(email, password);
         
         if (result.success) {
-          /* Reset attempts on success */
-          loginAttempts = 0;
-          lockoutTime = null;
-          
-          /* Visual Success */
           emailWrapper.classList.add('success');
           passwordWrapper.classList.add('success');
           
-          /* Save email if remember me */
-          if (rememberMe) {
+          if (remember) {
             localStorage.setItem('athr_remember_email', email);
           } else {
             localStorage.removeItem('athr_remember_email');
           }
           
-          showToast('تم تسجيل الدخول بنجاح! جارٍ التوجيه...', 'success');
+          showToast('تم تسجيل الدخول بنجاح! ✓', 'success');
           
           setTimeout(() => {
             window.location.href = 'library.html';
           }, 1000);
         } else {
-          /* Handle failed login */
           emailWrapper.classList.add('error');
           passwordWrapper.classList.add('error');
-          
-          if (handleFailedLogin()) {
-            showLoading(false);
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-ban"></i> محظور مؤقتاً';
-            return;
-          }
-          
-          document.getElementById('password').value = '';
-          document.getElementById('password').focus();
-          
+          passwordInput.value = '';
           showLoading(false);
           btn.disabled = false;
           btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
-          
           showToast(result.message || 'خطأ في تسجيل الدخول', 'error');
         }
       } catch (e) {
         emailWrapper.classList.add('error');
         passwordWrapper.classList.add('error');
-        
         showLoading(false);
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
-        
-        document.getElementById('password').value = '';
-        
-        if (e.message === 'timeout') {
-          showToast('انتهت المهلة، تحقق من اتصال الإنترنت', 'error');
-        } else {
-          console.error('Login error:', e);
-          showToast('خطأ في الاتصال، حاول مجدداً', 'error');
-        }
+        passwordInput.value = '';
+        showToast('خطأ في الاتصال', 'error');
       }
     });
   </script>
