@@ -18,6 +18,8 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/auth.css">
   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
   <style>
     :root {
       --color-primary: #16a34a;
@@ -353,6 +355,7 @@
   </div>
 
   <div class="auth-container">
+    <div class="auth-form-container">
     <div class="auth-glass-card">
       <div class="logo-container">
         <div class="glass-logo">
@@ -398,230 +401,13 @@
         <p><a href="index.html">العودة للصفحة الرئيسية</a></p>
       </div>
     </div>
+    </div>
   </div>
 
   <script src="js/script.js"></script>
-
-  <script>
-    function showToast(message, type = 'info') {
-      const container = document.getElementById('toastContainer');
-      const icons = {
-        success: 'fa-check-circle',
-        error: 'fa-exclamation-circle',
-        warning: 'fa-exclamation-triangle',
-        info: 'fa-info-circle'
-      };
-      const titles = { success: 'نجح', error: 'خطأ', warning: 'تنبيه', info: 'معلومة' };
-      
-      const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
-      toast.setAttribute('role', 'alert');
-      
-      toast.innerHTML = `
-        <div class="toast-icon"><i class="fas ${icons[type]}"></i></div>
-        <div class="toast-content">
-          <div class="toast-title">${titles[type]}</div>
-          <div class="toast-message">${message}</div>
-        </div>
-        <button class="toast-close"><i class="fas fa-times"></i></button>
-      `;
-      
-      toast.querySelector('.toast-close').addEventListener('click', () => toast.remove());
-      container.appendChild(toast);
-      
-      setTimeout(() => {
-        if (toast.parentElement) {
-          toast.style.opacity = '0';
-          toast.style.transform = 'translateX(450px)';
-          setTimeout(() => toast.remove(), 300);
-        }
-      }, 4000);
-    }
-    
-    function showLoading(show) {
-      document.getElementById('loadingOverlay').classList.toggle('active', show);
-    }
-    
-    function showForgotPasswordModal() {
-      document.getElementById('forgotPasswordModal').classList.add('active');
-      setTimeout(() => document.getElementById('forgotEmail').focus(), 100);
-    }
-    
-    function closeForgotPasswordModal() {
-      document.getElementById('forgotPasswordModal').classList.remove('active');
-      document.getElementById('forgotEmail').value = '';
-      document.getElementById('forgotEmailWrapper').classList.remove('success', 'error');
-    }
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('passwordToggle').addEventListener('click', () => {
-        const input = document.getElementById('password');
-        const icon = document.getElementById('passwordIcon');
-        if (input.type === 'password') {
-          input.type = 'text';
-          icon.className = 'fas fa-eye-slash';
-        } else {
-          input.type = 'password';
-          icon.className = 'fas fa-eye';
-        }
-      });
-      
-      document.getElementById('forgotLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        showForgotPasswordModal();
-      });
-      
-      document.getElementById('modalCloseBtn').addEventListener('click', closeForgotPasswordModal);
-      document.getElementById('modalCancelBtn').addEventListener('click', closeForgotPasswordModal);
-      document.getElementById('sendResetBtn').addEventListener('click', sendResetEmail);
-      
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeForgotPasswordModal();
-      });
-    });
-    
-    async function sendResetEmail() {
-      const emailInput = document.getElementById('forgotEmail');
-      const email = emailInput.value.trim();
-      const btn = document.getElementById('sendResetBtn');
-      const wrapper = document.getElementById('forgotEmailWrapper');
-      
-      wrapper.classList.remove('success', 'error');
-      
-      if (!email) {
-        wrapper.classList.add('error');
-        showToast('يرجى إدخال البريد الإلكتروني', 'warning');
-        return;
-      }
-      
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        wrapper.classList.add('error');
-        showToast('البريد الإلكتروني غير صحيح', 'error');
-        return;
-      }
-      
-      try {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
-        showLoading(true);
-        
-        const { sendPasswordReset } = await import('./js/app.js');
-        const result = await sendPasswordReset(email);
-        
-        showLoading(false);
-        
-        if (result.success) {
-          wrapper.classList.add('success');
-          showToast('تم إرسال رابط إعادة التعيين ✓', 'success');
-          setTimeout(closeForgotPasswordModal, 1500);
-        } else {
-          wrapper.classList.add('error');
-          showToast(result.message || 'خطأ في الإرسال', 'error');
-        }
-      } catch (e) {
-        showLoading(false);
-        wrapper.classList.add('error');
-        showToast('خطأ في الإرسال', 'error');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال';
-      }
-    }
-  </script>
-  
   <script type="module">
-    import { login, onAuthChange } from './js/app.js';
-    
-    onAuthChange((user) => {
-      if (user) {
-        window.location.href = 'library.html';
-      } else {
-        const saved = localStorage.getItem('athr_remember_email');
-        if (saved) {
-          document.getElementById('email').value = saved;
-          document.getElementById('rememberMe').checked = true;
-        }
-      }
-    });
-
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const emailInput = document.getElementById('email');
-      const passwordInput = document.getElementById('password');
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
-      const remember = document.getElementById('rememberMe').checked;
-      const btn = document.getElementById('loginBtn');
-      const emailWrapper = document.getElementById('emailWrapper');
-      const passwordWrapper = document.getElementById('passwordWrapper');
-      
-      emailWrapper.classList.remove('error', 'success');
-      passwordWrapper.classList.remove('error', 'success');
-      
-      if (!email || !password) {
-        if (!email) emailWrapper.classList.add('error');
-        if (!password) passwordWrapper.classList.add('error');
-        showToast('يرجى إدخال البريد وكلمة المرور', 'error');
-        return;
-      }
-      
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        emailWrapper.classList.add('error');
-        showToast('البريد الإلكتروني غير صحيح', 'error');
-        return;
-      }
-      
-      if (password.length < 8) {
-        passwordWrapper.classList.add('error');
-        showToast('كلمة المرور 8 أحرف على الأقل', 'error');
-        return;
-      }
-      
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحميل...';
-      showLoading(true);
-      
-      try {
-        const result = await login(email, password);
-        
-        if (result.success) {
-          emailWrapper.classList.add('success');
-          passwordWrapper.classList.add('success');
-          
-          if (remember) {
-            localStorage.setItem('athr_remember_email', email);
-          } else {
-            localStorage.removeItem('athr_remember_email');
-          }
-          
-          showToast('تم تسجيل الدخول بنجاح! ✓', 'success');
-          
-          setTimeout(() => {
-            window.location.href = 'library.html';
-          }, 1000);
-        } else {
-          emailWrapper.classList.add('error');
-          passwordWrapper.classList.add('error');
-          passwordInput.value = '';
-          showLoading(false);
-          btn.disabled = false;
-          btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
-          showToast(result.message || 'خطأ في تسجيل الدخول', 'error');
-        }
-      } catch (e) {
-        emailWrapper.classList.add('error');
-        passwordWrapper.classList.add('error');
-        showLoading(false);
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
-        passwordInput.value = '';
-        showToast('خطأ في الاتصال', 'error');
-      }
-    });
+    import { initializeLoginPage } from './js/auth.js';
+    document.addEventListener('DOMContentLoaded', initializeLoginPage);
   </script>
-  
 </body>
 </html>

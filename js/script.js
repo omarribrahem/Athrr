@@ -22,6 +22,10 @@ console.log('%cAthr Educational Platform V3.0 - Security Enhanced', 'color: #4d7
 console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #22c55e;');
 
 
+// Import validation functions for global access
+import { validateEmail } from './validation.js';
+window.validateEmail = validateEmail;
+
 
 // ==================== LIBRARIES INITIALIZATION ====================
 document.addEventListener('DOMContentLoaded', function() {

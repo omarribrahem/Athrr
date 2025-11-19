@@ -584,7 +584,24 @@
           id="subjectsGrid" 
           class="subjects-grid"
           role="list"
-          aria-label="قائمة المواد"></div>
+          aria-label="قائمة المواد">
+          <!-- Skeleton Loader -->
+          <div class="subject-card skeleton">
+            <div class="skeleton-icon"></div>
+            <div class="skeleton-text"></div>
+            <div class="skeleton-text short"></div>
+          </div>
+          <div class="subject-card skeleton">
+            <div class="skeleton-icon"></div>
+            <div class="skeleton-text"></div>
+            <div class="skeleton-text short"></div>
+          </div>
+          <div class="subject-card skeleton">
+            <div class="skeleton-icon"></div>
+            <div class="skeleton-text"></div>
+            <div class="skeleton-text short"></div>
+          </div>
+          </div>
       </section>
       
       <!-- My Library Panel -->
@@ -718,6 +735,7 @@
   <!-- ==========================================
        SCRIPTS
        ========================================== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   
   <!-- Theme Toggle Script -->
   <script>
