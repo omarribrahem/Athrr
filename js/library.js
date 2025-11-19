@@ -436,6 +436,22 @@ function renderModernLibraryCards(container, subjectsWithLecs, viewMode) {
   
   container.innerHTML = '';
   container.appendChild(fragment);
+
+  // Animate the cards
+  gsap.from(".subject-card:not(.skeleton)", {
+    duration: 0.5,
+    opacity: 0,
+    y: 20,
+    stagger: 0.05,
+    ease: "power2.out"
+  });
+
+  // Add hover effect
+  document.querySelectorAll('.subject-card:not(.skeleton)').forEach(card => {
+    gsap.set(card, { transformOrigin: "center center" });
+    card.addEventListener('mouseenter', () => gsap.to(card, { scale: 1.03, duration: 0.2, ease: "power2.out" }));
+    card.addEventListener('mouseleave', () => gsap.to(card, { scale: 1, duration: 0.2, ease: "power2.out" }));
+  });
 }
 
 
