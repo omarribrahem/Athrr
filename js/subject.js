@@ -45,13 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
 async function init() {
   if (isLoading) return;
   isLoading = true;
+  showSkeleton();
 
   try {
     const params = new URLSearchParams(location.search);
     currentSubjectId = params.get('s') || params.get('id');
     if (!currentSubjectId) throw new Error('المادة غير محددة');
-
-    showSkeleton();
 
     await Promise.all([
       loadSubjectData(),
@@ -62,10 +61,11 @@ async function init() {
     updateSubjectHeader();
     renderLectures();
     showToast('تم التحميل', 'success', 1500);
-
   } catch (err) {
-    showToast(err.message || 'حدث خطأ في التحميل', 'error');
-    showErrorState(err.message);
+    console.error("Initialization failed:", err);
+    const errorMessage = err.message.includes("Failed to fetch") ? "فشل الاتصال بالشبكة" : err.message;
+    showToast(errorMessage, 'error');
+    showErrorState(errorMessage);
   } finally {
     isLoading = false;
   }
@@ -100,10 +100,10 @@ async function loadLectures() {
 async function loadUserLibrary() {
   const { data, error } = await supabase
     .from('user_library')
-    .select('lecture_id')
+    .select('lecture_id, is_completed')
     .eq('user_id', currentUser.id);
   if (error) return userLectures = [];
-  userLectures = data ? data.map(i => i.lecture_id) : [];
+  userLectures = data || [];
 }
 
 // =========================
@@ -167,38 +167,47 @@ function renderLectures(searchQuery = '') {
   filtered.forEach(lecture => fragment.appendChild(createLectureCard(lecture)));
   container.innerHTML = '';
   container.appendChild(fragment);
+
+  // Animate the cards
+  gsap.from(".lecture-capsule", {
+    duration: 0.5,
+    opacity: 0,
+    y: 20,
+    stagger: 0.05,
+    ease: "power2.out"
+  });
 }
 
 // =========================
 // رندر كبسولة محاضرة واحدة
 // =========================
 function createLectureCard(lecture) {
-  const isOwned = userLectures.includes(lecture.id);
+  const userLecture = userLectures.find(ul => ul.lecture_id === lecture.id);
+  const isOwned = !!userLecture;
+  const isCompleted = userLecture && userLecture.is_completed;
   const isFree = lecture.is_free || lecture.price === 0 || lecture.protection === 'free';
   const color = lecture.color || currentSubject.color || '#3b82f6';
   const icon = lecture.icon || currentSubject.icon || 'fa-video';
 
   const card = document.createElement('div');
-  card.className = 'lecture-capsule';
+  card.className = `lecture-capsule ${isCompleted ? 'completed' : ''}`;
   card.setAttribute('data-lecture-id', lecture.id);
 
-  // Status badge
   let statusHtml = '';
-  let statusClass = '';
-  if (isOwned) {
-    statusClass = 'lecture-status-active';
-    statusHtml = `<span class="${statusClass}"><i class="fas fa-check-circle"></i> في المكتبة</span>`;
+  if (isCompleted) {
+    statusHtml = `<span class="lecture-status-completed"><i class="fas fa-check-double"></i> مكتملة</span>`;
+  } else if (isOwned) {
+    statusHtml = `<span class="lecture-status-active"><i class="fas fa-check-circle"></i> في المكتبة</span>`;
   } else if (isFree) {
-    statusClass = 'lecture-status-free';
-    statusHtml = `<span class="${statusClass}"><i class="fas fa-gift"></i> مجانية</span>`;
+    statusHtml = `<span class="lecture-status-free"><i class="fas fa-gift"></i> مجانية</span>`;
   } else {
-    statusClass = 'lecture-status-paid';
-    statusHtml = `<span class="${statusClass}"><i class="fas fa-lock"></i> مدفوعة</span>`;
+    statusHtml = `<span class="lecture-status-paid"><i class="fas fa-lock"></i> مدفوعة</span>`;
   }
 
-  // Action button
   let actionHtml = '';
-  if (isOwned) {
+  if (isCompleted) {
+    actionHtml = `<button class="capsule-btn" data-action="watch"><i class="fas fa-redo"></i> أعد المشاهدة</button>`;
+  } else if (isOwned) {
     actionHtml = `<button class="capsule-btn" data-action="watch"><i class="fas fa-play"></i> شاهد</button>`;
   } else if (isFree) {
     actionHtml = `<button class="get-lecture-btn" data-action="get"><i class="fas fa-download"></i> احصل عليها</button>`;
@@ -218,13 +227,11 @@ function createLectureCard(lecture) {
     ${actionHtml}
   `;
 
-  // Event
   const btn = card.querySelector('button[data-action]');
   if (btn) {
-    const action = btn.getAttribute('data-action');
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      handleLectureAction(lecture, action);
+      handleLectureAction(lecture, btn.getAttribute('data-action'));
     });
   }
 
