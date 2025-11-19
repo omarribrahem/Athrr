@@ -156,7 +156,7 @@ window.validateEmail = function(email) {
   ];
   
   const domain = trimmedEmail.split('@')[1];
-  if (disposableDomains.includes(domain)) {
+  if (disposableDomains.some(d => domain.endsWith(d))) {
     return { valid: false, error: 'هذا البريد الإلكتروني غير مسموح به' };
   }
   
