@@ -181,7 +181,17 @@
   z-index: 1;
   margin: 0 auto;
   padding: var(--space-lg);
-  animation: authContainerSlideIn 0.6s var(--transition-emphasized);
+}
+
+.auth-form-container {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.auth-form-container.fade-in {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* ==================================================
@@ -309,12 +319,13 @@
   border-color: rgba(22, 163, 74, 0.4);
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .input-wrapper:focus-within {
   border-color: var(--glass-border-focus);
   background: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.12);
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.12), 0 4px 12px rgba(0,0,0,0.08);
   transform: translateY(-2px) scale(1.005);
 }
 
@@ -504,6 +515,7 @@
   width: 100%;
   padding: 18px var(--space-lg);
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-medium) 100%);
+  background-size: 200% 200%;
   border: none;
   border-radius: var(--radius-full);
   font-size: var(--font-size-lg);
@@ -541,6 +553,7 @@
 }
 
 .submit-btn:hover {
+  background-position: right center;
   transform: translateY(-4px);
   box-shadow: 
     0 8px 32px rgba(22, 163, 74, 0.4),
